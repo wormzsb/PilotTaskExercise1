@@ -1,0 +1,34 @@
+[TaskOrder]
+Task6
+
+[Task6(任务6-双任务模式三维图形记忆判别能力测试)]
+TaskName	0-任务6-双任务模式三维图形记忆判别能力测试
+PracMode	1
+ExperMode	0
+MainTask	1
+SubTask	1
+Background	0
+InitSpeed	0.000000
+CubeNum1	1
+CubeNum2	0
+CubeNum3	0
+CubeNum4	0
+Prototype	0
+RefAxis	0
+MemTaskMode	0
+PracTime	60
+ExperTime	60
+PracTimes	1
+ExperTimes	1
+JoyMoveDirection	0
+SubTaskInterval	2
+PresentTime	5
+ReactTime	2
+Speed	10.000000
+SpeedMin	10.000000
+SpeedMax	20.000000
+AccelerationMin	5.000000
+AccelerationMax	10.000000
+SpeedMode	0
+Direction	0
+

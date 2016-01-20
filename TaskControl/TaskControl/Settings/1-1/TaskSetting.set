@@ -1,0 +1,159 @@
+[TaskOrder]
+Task1
+Task2
+Task3
+Task6
+Task7
+
+[Task1(任务1-目标跟踪能力测试)]
+TaskName	0-任务1-目标跟踪能力测试
+PracMode	0
+ExperMode	1
+Background	0
+Track	0
+Direction	0
+MoveMode	0
+SpeedMode	0
+Pause	0
+PauseNum	-1
+Speed	100.00
+InitSpeed	-1.00
+SpeedMin	-1.00
+SpeedMax	-1.00
+AccelerationMin	-1.00
+AccelerationMax	-1.00
+AngleSpeedMin	-1.00
+AngleSpeedMax	-1.00
+RotateAngleMin	-1.00
+RotateAngleMax	-1.00
+PracTime	60
+ExperTime	60
+PracTimes	1
+ExperTimes	1
+JoyMoveDirection	0
+
+[Task2(任务2-操作力保持及时间知觉能力测试)]
+TaskName	1-任务2-操作力保持及时间知觉能力测试
+PracMode	1
+ExperMode	0
+MainTask	1
+SubTask	1
+Background	0
+Direction	0
+InitSpeed	50.00
+HoldTimeNum	4
+HoldTime1	3.0
+HoldTime2	6.0
+HoldTime3	9.0
+HoldTime4	12.0
+HoldTime5	-1.0
+HoldTime6	-1.0
+HoldTime7	-1.0
+HoldTime8	-1.0
+HoldTime9	-1.0
+HoldTime10	-1.0
+HoldTime11	-1.0
+HoldTime12	-1.0
+PracTime	60
+ExperTime	60
+PracTimes	1
+ExperTimes	1
+JoyMoveDirection	0
+SubTaskInterval	2
+SpeedMode	0
+Speed	100.000000
+SpeedMin	50.000000
+SpeedMax	150.000000
+AccelerationMin	2.000000
+AccelerationMax	5.000000
+Track	0
+
+[Task3(任务3-双任务模式突发事件反应时测试)]
+TaskName	2-任务3-双任务模式突发事件反应时测试
+PracMode	1
+ExperMode	0
+MainTask	1
+SubTask	1
+MainTaskMode	0
+Background	0
+InitSpeed	50.00
+EventMode	0
+CodePairMode	-1
+CodePairNum	-1
+DisplayMode	-1
+EventFrequency	0
+PracTime	60
+ExperTime	60
+PracTimes	1
+ExperTimes	1
+JoyMoveDirection	0
+PlanePos	15
+Direction	0
+SpeedMode	0
+Speed	100.000000
+SpeedMin	50.000000
+SpeedMax	150.000000
+AccelerationMin	2.000000
+AccelerationMax	5.000000
+Track	0
+Plane	1
+Helicopter	1
+PresentTime	2
+IntervalMin	4
+IntervalMax	8
+ReactTime	2
+
+[Task6(任务6-双任务模式三维图形记忆判别能力测试)]
+TaskName	3-任务6-双任务模式三维图形记忆判别能力测试
+PracMode	1
+ExperMode	0
+MainTask	1
+SubTask	1
+Background	0
+InitSpeed	50.000000
+CubeNum1	1
+CubeNum2	0
+CubeNum3	0
+CubeNum4	0
+Prototype	0
+RefAxis	0
+MemTaskMode	0
+PracTime	60
+ExperTime	60
+PracTimes	1
+ExperTimes	1
+JoyMoveDirection	0
+SubTaskInterval	4
+PresentTime	4
+ReactTime	2
+Speed	100.000000
+SpeedMin	50.000000
+SpeedMax	150.000000
+AccelerationMin	2.000000
+AccelerationMax	5.000000
+SpeedMode	0
+Direction	0
+
+[Task7(任务7-速度知觉能力测试)]
+TaskName	4-任务7-速度知觉能力测试
+PracMode	1
+ExperMode	0
+SpeedMode	0
+BallColorR	0
+BallColorG	255
+BallColorB	0
+BallStartPos	1
+BallSpeed	50
+BallSpeedAcc	10
+BallSpeedMax	-842150451
+BallRadius	10
+BckGrndColorR	48
+BckGrndColorG	48
+BckGrndColorB	48
+ObstacleColorR	255
+ObstacleColorG	0
+ObstacleColorB	0
+ObstacleRadius	150
+PracTimes	1
+ExpTimes	1
+IntervalTime	3

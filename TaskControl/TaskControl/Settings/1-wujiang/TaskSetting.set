@@ -1,0 +1,39 @@
+[TaskOrder]
+Task2
+
+[Task2(任务2-操作力保持及时间知觉能力测试)]
+TaskName	0-任务2-操作力保持及时间知觉能力测试
+PracMode	1
+ExperMode	0
+MainTask	1
+SubTask	1
+Background	0
+Direction	0
+InitSpeed	50.00
+HoldTimeNum	5
+HoldTime1	0.0
+HoldTime2	0.0
+HoldTime3	0.0
+HoldTime4	0.0
+HoldTime5	0.0
+HoldTime6	-1.0
+HoldTime7	-1.0
+HoldTime8	-1.0
+HoldTime9	-1.0
+HoldTime10	-1.0
+HoldTime11	-1.0
+HoldTime12	-1.0
+PracTime	60
+ExperTime	60
+PracTimes	1
+ExperTimes	1
+JoyMoveDirection	0
+SubTaskInterval	2
+SpeedMode	0
+Speed	10.000000
+SpeedMin	10.000000
+SpeedMax	60.000000
+AccelerationMin	3.000000
+AccelerationMax	5.000000
+Track	0
+

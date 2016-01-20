@@ -1,0 +1,10 @@
+位移误差平均值(DistanceAve)	0.00
+位移误差标准差(DistanceSqt)	0.00
+击中总时间(HitTimeTotal)	0
+击中时间比(HitTimeRate)	0.00
+击中数(HIT)	29
+漏报数(MISS)	1
+正确拒斥数(CR)	28
+虚报数(FA)	2
+靶事件反应时平均值(m_RTAvg)	656.53
+靶事件反应时标准差(m_RTSqr)	125.19

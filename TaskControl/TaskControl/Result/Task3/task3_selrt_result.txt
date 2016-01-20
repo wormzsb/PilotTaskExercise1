@@ -1,0 +1,6 @@
+FileName	ID	Name	Sex	Session	PracMode	ExperMode	MainTask	SubTask	MainTaskMode	Background	InitSpeed	EventMode	CodePairMode	CodePairNum	DisplayMode	EventFrequency	PracTime	ExperTime	PracTimes	ExperTimes	HIT	MISS	CR	FA	m_RTTotalAvg	m_RTTotalSqr
+T3_1-event-任务3-双任务模式突发事件反应时测试5-001-李凡-1-20081201112349	001	李凡	男	1	1	1	1	1	0	0	100.00	1	-1	-1	-1	30	30	270	1	1	0	66	68	0	4863622.00	5697.27
+FileName	ID	Name	Sex	Session	PracMode	ExperMode	MainTask	SubTask	MainTaskMode	Background	InitSpeed	EventMode	CodePairMode	CodePairNum	DisplayMode	EventFrequency	PracTime	ExperTime	PracTimes	ExperTimes	HIT	MISS	CR	FA	m_RTTotalAvg	m_RTTotalSqr
+T2-hold-任务2-操作力保持及时间知觉能力测试3-001-张本庆-4-20090323160317	001	张本庆	男	4	1	1	1	1	0	0	200.00	1	-1	-1	-1	30	30	270	1	1	65	2	63	4	747.60	181.93
+FileName	ID	Name	Sex	Session	PracMode	ExperMode	MainTask	SubTask	MainTaskMode	Background	InitSpeed	EventMode	CodePairMode	CodePairNum	DisplayMode	EventFrequency	PracTime	ExperTime	PracTimes	ExperTimes	HIT	MISS	CR	FA	m_RTTotalAvg	m_RTTotalSqr
+	001	张本庆	男	4	1	1	0	1	-1	0	-1.00	1	-1	-1	-1	20	30	180	1	1	29	1	28	2	656.53	125.19

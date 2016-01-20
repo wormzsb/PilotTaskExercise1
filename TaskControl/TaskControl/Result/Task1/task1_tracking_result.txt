@@ -1,0 +1,2 @@
+FileName	ID	Name	Sex	Session	DistanceError	AngleError	PracMode	ExperMode	Background	Track	Direction	MoveMode	SpeedMode	Pause	PauseNum	InitSpeed	SpeedMin	SpeedMax	AccelerationMin	AccelerationMax	AngleSpeedMin	AngleSpeedMax	RotateAngleMin	RotateAngleMax	PracTime	ExperTime	PracTimes	ExperTimes	DistanceAve	DistanceSqt	RotateErrorAve	RotateErrorSqt	HitTimeTotal	HitTimeRate
+	001	ÖÜÊ«»ª	ÄÐ	2	10.00	10.00	1	1	0	0	0	1	1	0	-1	50.00	50.00	300.00	5.00	5.00	10.00	10.00	0.00	90.00	150	420	1	1	16.29	11.62	4.33	10.87	110440	0.27

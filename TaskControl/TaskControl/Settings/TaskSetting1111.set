@@ -1,0 +1,26 @@
+[TaskOrder]
+Task7
+
+[Task7(任务7-速度知觉)]
+TaskName	任务7-速度知觉
+PracMode	1
+ExperMode	1
+SpeedMode	0
+BallColorR	0
+BallColorG	255
+BallColorB	25
+BallStartPos	4
+BallSpeed	22
+BallSpeedAcc	10
+BallSpeedMax	-842150451
+BallRadius	32
+BckGrndColorR	12
+BckGrndColorG	48
+BckGrndColorB	48
+ObstacleColorR	255
+ObstacleColorG	0
+ObstacleColorB	0
+ObstacleRadius	50
+PracTimes	3
+ExpTimes	2
+IntervalTime	3

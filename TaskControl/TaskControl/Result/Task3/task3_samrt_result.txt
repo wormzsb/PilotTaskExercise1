@@ -1,0 +1,4 @@
+FileName	ID	Name	Sex	Session	PracMode	ExperMode	MainTask	SubTask	MainTaskMode	Background	InitSpeed	EventMode	CodePairMode	CodePairNum	DisplayMode	EventFrequency	PracTime	ExperTime	PracTimes	ExperTimes	HIT	MISS	CR	FA	RTTimeAvg	RTTimeSqr
+	001	朱宏玮	男	2	1	1	1	1	0	0	100.00	0	-1	-1	-1	20	30	180	1	1	60	0		1	382.82	73.32
+FileName	ID	Name	Sex	Session	PracMode	ExperMode	MainTask	SubTask	MainTaskMode	Background	InitSpeed	EventMode	CodePairMode	CodePairNum	DisplayMode	EventFrequency	PracTime	ExperTime	PracTimes	ExperTimes	HIT	MISS	CR	FA	RTTimeAvg	RTTimeSqr
+T3_1-event-任务3-双任务模式突发事件反应时测试7-001-袁洪振-4-20090219154337	001	袁洪振	男	4	1	1	1	1	0	0	100.00	0	-1	-1	-1	20	30	180	1	1	60	0		1	286.70	41.88
