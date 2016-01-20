@@ -1,0 +1,2 @@
+ID	Name	Sex	Session	DistanceError	PracMode	ExperMode	MainTask	SubTask	MainTaskMode	Background	InitSpeed	EventMode	CodePairMode	CodePairNum	DisplayMode	EventFrequency	PracTime	ExperTime	PracTimes	ExperTimes
+001	hjx	ÄÐ	1	10.00	0	1	1	1	0	0	10.00	1	-1	-1	-1	5	-1	60	1	1

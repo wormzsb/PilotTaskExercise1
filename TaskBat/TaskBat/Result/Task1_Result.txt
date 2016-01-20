@@ -1,0 +1,6 @@
+位移误差平均值(DistanceAve)	15.06
+位移误差标准差(DistanceSqt)	10.49
+角度误差平均值(RotateErrorAve)	0.00
+角度误差标准差(RotateErrorSqt)	0.00
+击中总时间(HitTimeTotal)	126840
+击中时间比(HitTimeRate)	0.31

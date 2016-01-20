@@ -1,0 +1,12 @@
+TaskName	任务2-目标跟踪能力测试
+PracMode	1
+ExperMode	1
+HoldTimeMin	1
+HoldTimeMax	10
+PracTime	20
+PracTimes	1
+TskTimePerGroup	5
+TskNumPerGroup	2
+TskGroups	2
+BreakTime	10
+

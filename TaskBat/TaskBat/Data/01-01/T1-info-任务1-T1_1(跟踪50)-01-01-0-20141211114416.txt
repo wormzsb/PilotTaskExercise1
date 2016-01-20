@@ -1,0 +1,2 @@
+ID	Name	Sex	Session	DistanceError	AngleError	PracMode	ExperMode	Background	Track	Direction	MoveMode	SpeedMode	Pause	PauseNum	Speed	InitSpeed	SpeedMin	SpeedMax	AccelerationMin	AccelerationMax	AngleSpeedMin	AngleSpeedMax	RotateAngleMin	RotateAngleMax	PracTime	ExperTime	PracTimes	ExperTimes
+01	01	ÄÐ	0	10.00	10.00	0	1	0	0	0	0	0	0	-1	50.00	-1.00	-1.00	-1.00	-1.00	-1.00	-1.00	-1.00	-1.00	-1.00	-1	120	-1	1

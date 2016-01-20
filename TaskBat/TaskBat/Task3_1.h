@@ -1,0 +1,146 @@
+#pragma once
+
+#include "resource.h"
+#include "Datatype.h"
+#include <direct.h>
+#include <stdio.h>
+#include <d3d9.h>
+#include <d3dx9.h>
+#include <time.h>   
+#include <string>   
+#include "RandFcn.h" 
+#include "Input.h"
+#include "resource.h"
+#define WM_THREADSTOP (WM_USER+1)
+
+namespace t3
+{
+	extern int rtn; 
+	extern HINSTANCE gHinstance; 
+	extern char szFeedBack[100]; 
+	// define a data structure to hold our data ?optional
+	extern struct MYDATA {
+		int nTime; 
+		int nNumber;
+	};
+	extern int rangex; 
+	extern int iPlaneCnt; 
+	extern int	iHelicopterCnt; 
+	extern BOOL m_bShowFeedback;//显示反馈
+	extern float acce;	//目标加速度
+	extern int iDirection;   //顺逆时针
+	extern int g_nThreadExitCount;                               //当前运行的线程数
+	extern DWORD dwInputThreadID;                                 //瞄准器输入线程ID 
+
+	extern double alpha, omiga, v, a, b, r, r1, r2, Rx, Ry, fai, AngleSpeed, inc_v;
+	extern double m_PostPointX, m_PostPointY;                           //当前瞄准器坐标
+	extern int JoyX, JoyY;                                              //当前操纵杆输入值  
+	extern struct TaskSetting3   m_Setting;                            //任务3设置参数
+	extern struct HardSetting   m_HardSetting;                         //硬件设置参数
+	extern struct PartInfo   m_PartInfo;                               //被试者信息
+	extern short m_TrialType;                                          //测试类型
+	extern int m_TrialTime;                                            //测试时间
+	extern int m_TrialTimes;                                           //测试次数
+	extern int iJoyMoveDirection;  //手柄移动正向反向
+	extern int x_resolution;  			//屏幕分辨率
+	extern int y_resolution;               //屏幕分辨率
+	extern int rec_x_begin;
+	extern int rec_y_begin;
+	extern int rec_x_end;
+	extern int rec_y_end;
+	extern const float FontScale;         //字体随屏幕分辨率的放缩尺度
+
+	extern const char Insturction11[];
+	extern const char Insturction12[];
+	extern const char Insturction13[];
+	extern const char Insturction2[];
+	extern const char Insturction3[];
+	extern const char FeedBack[2][10];
+
+	extern LPDIRECT3D9             g_pD3D;               //directx3d对象
+	extern LPDIRECT3DDEVICE9       g_pd3dDevice;               //directx设备对象
+	extern LPDIRECT3DTEXTURE9      g_pTextureInst;            //纹理对象
+	extern LPDIRECT3DTEXTURE9      g_pTexture0;               //纹理对象
+	extern LPDIRECT3DTEXTURE9      g_pTexture1;               //纹理对象
+	extern LPDIRECT3DTEXTURE9      g_pTexture2;               //纹理对象
+	extern LPDIRECT3DTEXTURE9      g_pTexture3[2];          //纹理对象
+	extern LPD3DXSPRITE            g_pSprite;                 //精灵对象
+	extern LPD3DXFONT              g_pFont;                  //字体对象
+	extern LPD3DXFONT              g_pFont1;                  //字体对象
+	extern LPDIRECT3DVERTEXBUFFER9      m_pVertexBuffer;      //顶点对象
+
+	extern D3DXMATRIX m_Transform;                                    //坐标变换矩阵
+	extern float TimeInt;                                             //时间间隔 
+	extern short m_EventNo;                                           //突发事件序号
+	extern short m_EventCount;                                        //突发事件总数
+	extern int m_RecordNo;                                            //突发事件记录序号
+	extern short m_EventKeyNum;                                       //突发事件按键数 
+	extern short m_SureDownNum;
+	extern BOOL m_bDisplayReady;                                      //渲染设备就绪标志
+	extern struct CUSTOMVERTEX
+	{
+		FLOAT x, y, z, rhw;   
+		DWORD color;   
+	};  
+	extern BOOL m_bEventStart;                                        //突发事件开始标志
+	extern BOOL m_bEventReactTime;  									//是否进入等待反应时间标志
+	extern int iPlanePos;
+#define D3DFVF_CUSTOMVERTEX (D3DFVF_XYZRHW|D3DFVF_DIFFUSE)
+
+	extern const double m_MoveInt;                             //采样间隔40ms
+	extern double m_SampleInt;
+	extern BOOL m_bEventAcc;                                          //按键确认正确标志
+
+	extern UINT m_PointNum;
+	extern UINT m_MemNum, m_MemEvent;
+
+	extern short *m_EventType;                                 //存放突发事件类型的数组
+	extern int *m_EventOrder;                                  //存放突发事件类型序列的数组
+	extern int *m_EventInterval;                               //存放突发事件开始间隔的数组
+	extern unsigned long *m_EventStartTime;                    //存放突发事件开始时间的数组 
+	extern unsigned long *m_EventSureTime;                     //存放突发事件确认时间的数组
+	extern short *m_SureButtonNo;                              //存放突发事件确认键类型的数组
+	extern BOOL *m_bHit;                                       //存放击中状态的数组
+	extern SPOINT *m_ObjPoint;                                 //存放目标坐标的数组
+	extern SPOINT *m_PostPoint;                                //存放瞄准器坐标的数组
+	extern float *m_Distance;                                  //存放目标和瞄准器距离的数组
+	extern unsigned long *m_PointTime;                         //存放采样时间的数组
+	extern POINT *m_EventPoint;                                //存放突发事件显示坐标的数组
+	extern float *m_ObjSpeedX;                                 //存放目标速度的数组
+	extern float *m_ObjSpeedY;                                 //存放目标速度的数组
+	extern float *m_PostSpeedX;                                //存放瞄准器速度的数组
+	extern float *m_PostSpeedY;                                //存放瞄准器速度的数组
+	extern RECT strurect, lerect, rerect, erect, txtrect, coderect;
+	extern D3DRECT wcoderect;
+
+	extern short m_TestState;
+	extern char m_file1[220];
+	extern char m_file2[220];
+	extern HWND hWnd;
+	extern char m_TesterName[40];
+	extern char m_DataName[60];
+	extern char m_TaskNumStr[100];
+	extern int m_Condition;
+
+	//Timer
+	extern LARGE_INTEGER litmp;
+	extern LONGLONG QPart0, QPart1, QPart2, QPart3, QPart4;
+	extern double dfMinus, dfFreq, dfTim, dfTotal, dfTotalPause, dfTotalEvent;
+	VOID MoveTrace();
+	BOOL ReadSetting();
+	VOID SaveName();
+	VOID SaveData();
+	HRESULT InitD3D(HWND hWnd);
+	VOID CleanupMem();
+	VOID Cleanup();
+	VOID Render();
+	void RandPlanePoint(int cnt, POINT* m_EventInterval);
+	void RandEvent();
+	VOID TestInit();
+	BOOL CALLBACK PauseMsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+	LRESULT WINAPI MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+	VOID UpdateState();
+	DWORD WINAPI InputThreadProcedure(LPVOID lpStartupParam);
+	int APIENTRY _tWinMain(HINSTANCE &hInstance, HINSTANCE &hPrevInstance, LPTSTR &lpCmdLine, int &nCmdShow, HWND &_hWnd, std::string winClassName, std::string winName);
+	void hideLastWindow(bool &bUnClosedLastWin, std::string &winClassName, std::string &winName, HINSTANCE &hInstance);
+}

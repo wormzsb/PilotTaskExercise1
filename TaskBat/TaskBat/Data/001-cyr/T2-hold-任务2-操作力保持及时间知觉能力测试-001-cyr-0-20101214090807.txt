@@ -1,0 +1,4 @@
+Pra_Test	HoldNum	HoldTime	StartTime	SureTime	Test_RT	HoldError	Error_Ratio
+1	1	3000	500100	500746	646	-2354	-0.78
+1	2	2000	502725	503026	301	-1699	-0.85
+1	3	1000	505022	505809	787	-213	-0.21

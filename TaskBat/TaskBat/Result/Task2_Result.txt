@@ -1,0 +1,16 @@
+位移误差平均值(DistanceAve)	9.26
+位移误差标准差(DistanceSqt)	7.48
+击中总时间(HitTimeTotal)	170520
+击中时间比(HitTimeRate)	0.67
+保持时间1误差率(HoldTimeRate1)	293.33
+保持时间2误差率(HoldTimeRate2)	-49.67
+保持时间3误差率(HoldTimeRate3)	-1056.00
+保持时间4误差率(HoldTimeRate4)	696.00
+保持时间5误差率(HoldTimeRate5)	-136.67
+保持时间6误差率(HoldTimeRate6)	-116.67
+保持时间7误差率(HoldTimeRate7)	-460.67
+保持时间8误差率(HoldTimeRate8)	-874.33
+保持时间9误差率(HoldTimeRate9)	-1.#J
+保持时间10误差率(HoldTimeRate10)	-1.#J
+保持时间11误差率(HoldTimeRate11)	-1.#J
+保持时间12误差率(HoldTimeRate12)	-1.#J

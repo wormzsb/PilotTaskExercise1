@@ -1,0 +1,1 @@
+Pra_Test	Trial	PointNum	PointTime	ObjPointX	ObjPointY	PostPointX	PostPointY	ObjRotate	PostRotate	Distance	RotateError	Hit	ObjSpeedX	ObjSpeedY	PostSpeedX	PostSpeedY	ObjRotateSpeed	PostRotateSpeed

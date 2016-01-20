@@ -1,0 +1,2 @@
+ID	Name	Sex	Session	DistanceError	PracMode	ExperMode	MainTask	SubTask	Background	Direction	InitSpeed	HoldTimeNum	HoldTime1	HoldTime2	HoldTime3	HoldTime4	HoldTime5	HoldTime6	HoldTime7	HoldTime8	HoldTime9	HoldTime10	HoldTime11	HoldTime12	PracTime	ExperTime	PracTimes	ExperTimes
+001	hjx	ÄÐ	1	10.00	1	1	1	1	0	0	5.00	5	0.0	0.0	0.0	0.0	0.0	-1.0	-1.0	-1.0	-1.0	-1.0	-1.0	-1.0	-1	-1	1	1

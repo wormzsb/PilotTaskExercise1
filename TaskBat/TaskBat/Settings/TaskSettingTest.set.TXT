@@ -1,0 +1,34 @@
+[TaskOrder]
+Task1
+
+[Task1(任务1-目标跟踪能力测试)]
+TaskName	任务1-目标跟踪能力测试
+PracMode	1
+ExperMode	1
+Background	0
+Track	0
+Direction	0
+MoveMode	1
+SpeedMode	0
+Pause	1
+PauseNum	2
+Speed	500.00
+InitSpeed	-1.00
+SpeedMin	-1.00
+SpeedMax	-1.00
+AccelerationMin	0.00
+AccelerationMax	0.00
+AngleSpeedMin	100.00
+AngleSpeedMax	200.00
+RotateAngleMin	10.00
+RotateAngleMax	90.00
+PracTime	60
+ExperTime	60
+PracTimes	1
+ExperTimes	1
+Acceleration	1
+JoySensity	1.2
+TargetRadius	400
+TskNumPerGroup	2
+TskGroups	1
+BreakTime	5
