@@ -141,10 +141,46 @@ void CSettingDlg7::Save()
 	pDoc->m_Setting7[m_DlgIdx].m_iObstacleRadius = m_iObstacleRadius;
 	pDoc->m_Setting7[m_DlgIdx].m_iBallRadius = m_iSmallBallRadius;
 	pDoc->m_Setting7[m_DlgIdx].m_iBallCenterDis = m_iBallCenterDis;
-	pDoc->m_Setting7[m_DlgIdx].m_iPracTimes = m_iPracTimes * 12;
-	pDoc->m_Setting7[m_DlgIdx].m_iExpTimes = m_iPracTimes * 12;
 	pDoc->m_Setting7[m_DlgIdx].m_iIntervalTime = m_iInterval;
+	printf(m_iBallCenterDis+"");
+
+	int i = 0;
+
+	if (m_bStartPosTop == true) {
+		pDoc->m_Setting7[m_DlgIdx].m_iTop = 1;
+		i++;
+	}
+	else {
+		pDoc->m_Setting7[m_DlgIdx].m_iTop = 0;
+	}
+
+	if (m_bStartPosBottom == true) {
+		pDoc->m_Setting7[m_DlgIdx].m_iBottom = 1;
+		i++;
+	}
+	else {
+		pDoc->m_Setting7[m_DlgIdx].m_iBottom = 0;
+	}
+
+	if (m_bStartPosLeft == true) {
+		pDoc->m_Setting7[m_DlgIdx].m_iLeft = 1;
+		i++;
+	}
+	else {
+		pDoc->m_Setting7[m_DlgIdx].m_iLeft = 0;
+	}
+
+	if (m_bStartPosRight == true) {
+		pDoc->m_Setting7[m_DlgIdx].m_iRight = 1;
+		i++;
+	}
+	else {
+		pDoc->m_Setting7[m_DlgIdx].m_iRight = 0;
+	}
 	
+	pDoc->m_Setting7[m_DlgIdx].m_iPracTimes = m_iPracTimes * i * 3;
+	pDoc->m_Setting7[m_DlgIdx].m_iExpTimes = m_iPracTimes * i * 3;
+
 	// ≥ı ºŒª÷√
 	setStartPos();
 }

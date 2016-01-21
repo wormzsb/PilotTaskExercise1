@@ -1,122 +1,26 @@
 [TaskOrder]
 Task7
-Task7
-Task7
-Task7
-Task7
 
 [Task7(任务7-速度知觉能力测试)]
 TaskName	0-任务7-速度知觉能力测试
 PracMode	1
 ExperMode	0
 SpeedMode	0
-BallColorR	0
-BallColorG	255
+BallColorR	255
+BallColorG	0
 BallColorB	0
 BallStartPos	15
 BallSpeed	50
 BallSpeedAcc	10
-BallSpeedMax	-1163005939
-BallRadius	10
-BckGrndColorR	48
-BckGrndColorG	48
-BckGrndColorB	48
-ObstacleColorR	255
-ObstacleColorG	0
-ObstacleColorB	0
-ObstacleRadius	150
-PracTimes	3
-ExpTimes	3
-IntervalTime	3
-[Task7(任务7-速度知觉能力测试)]
-TaskName	1-任务7-速度知觉能力测试
-PracMode	1
-ExperMode	0
-SpeedMode	0
-BallColorR	0
-BallColorG	255
-BallColorB	0
-BallStartPos	15
-BallSpeed	50
-BallSpeedAcc	10
-BallSpeedMax	-1163005939
-BallRadius	10
-BckGrndColorR	48
-BckGrndColorG	48
-BckGrndColorB	48
-ObstacleColorR	255
-ObstacleColorG	0
-ObstacleColorB	0
-ObstacleRadius	150
-PracTimes	1
-ExpTimes	1
-IntervalTime	3
-[Task7(任务7-速度知觉能力测试)]
-TaskName	2-任务7-速度知觉能力测试
-PracMode	1
-ExperMode	0
-SpeedMode	0
-BallColorR	0
-BallColorG	255
-BallColorB	0
-BallStartPos	15
-BallSpeed	50
-BallSpeedAcc	10
-BallSpeedMax	-1163005939
-BallRadius	10
-BckGrndColorR	48
-BckGrndColorG	48
-BckGrndColorB	48
-ObstacleColorR	255
-ObstacleColorG	0
-ObstacleColorB	0
-ObstacleRadius	150
-PracTimes	3
-ExpTimes	3
-IntervalTime	3
-[Task7(任务7-速度知觉能力测试)]
-TaskName	3-任务7-速度知觉能力测试
-PracMode	1
-ExperMode	0
-SpeedMode	0
-BallColorR	0
-BallColorG	255
-BallColorB	0
-BallStartPos	15
-BallSpeed	50
-BallSpeedAcc	10
-BallSpeedMax	-1163005939
-BallRadius	10
-BckGrndColorR	48
-BckGrndColorG	48
-BckGrndColorB	48
-ObstacleColorR	255
-ObstacleColorG	0
-ObstacleColorB	0
-ObstacleRadius	150
-PracTimes	1
-ExpTimes	1
-IntervalTime	3
-[Task7(任务7-速度知觉能力测试)]
-TaskName	4-任务7-速度知觉能力测试
-PracMode	1
-ExperMode	0
-SpeedMode	0
-BallColorR	0
-BallColorG	255
-BallColorB	0
-BallStartPos	15
-BallSpeed	50
-BallSpeedAcc	10
-BallSpeedMax	-1163005939
-BallRadius	10
-BckGrndColorR	48
-BckGrndColorG	48
-BckGrndColorB	48
-ObstacleColorR	255
-ObstacleColorG	0
-ObstacleColorB	0
-ObstacleRadius	150
-PracTimes	1
-ExpTimes	1
-IntervalTime	3
+BallSpeedMax	0
+BallRadius	15
+BckGrndColorR	6620178
+BckGrndColorG	3213176
+BckGrndColorB	3475706
+ObstacleColorR	6685912
+ObstacleColorG	7408308
+ObstacleColorB	2427638
+ObstacleRadius	1
+PracTimes	24576
+ExpTimes	24576
+IntervalTime	0

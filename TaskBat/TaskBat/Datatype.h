@@ -221,6 +221,7 @@ struct TaskSetting7
 	int		m_iBallSpeedAcc;
 	int		m_iBallSpeedMax;
 	int		m_iBallRadius;
+	int     m_iBallCenterDis;
 	int     m_iBckGrndColorR;
 	int     m_iBckGrndColorG;
 	int     m_iBckGrndColorB;
