@@ -697,6 +697,11 @@ void CSelectView::SaveSetting(CString FileName)
 				fprintf(fp,"BallColorG\t%d\n",pDoc->m_Setting7[DocNo].m_iBallColorG);
 				fprintf(fp,"BallColorB\t%d\n",pDoc->m_Setting7[DocNo].m_iBallColorB);
 				fprintf(fp,"BallStartPos\t%d\n",pDoc->m_Setting7[DocNo].m_iBallStartPos);
+				fprintf(fp, "PosTop\t%d\n", pDoc->m_Setting7[DocNo].m_iTop);
+				fprintf(fp, "PosBottom\t%d\n", pDoc->m_Setting7[DocNo].m_iBottom);
+				fprintf(fp, "PosLeft\t%d\n", pDoc->m_Setting7[DocNo].m_iLeft);
+				fprintf(fp, "PosRight\t%d\n", pDoc->m_Setting7[DocNo].m_iRight);
+				fprintf(fp, "BallCenterDis\t%d\n", pDoc->m_Setting7[DocNo].m_iBallCenterDis);
 				fprintf(fp,"BallSpeed\t%d\n",pDoc->m_Setting7[DocNo].m_iBallSpeed);
 				fprintf(fp,"BallSpeedAcc\t%d\n",pDoc->m_Setting7[DocNo].m_iBallSpeedAcc);
 				fprintf(fp,"BallSpeedMax\t%d\n",pDoc->m_Setting7[DocNo].m_iBallSpeedMax);

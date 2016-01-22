@@ -214,6 +214,10 @@ struct TaskSetting7
 
 	BOOL    m_PracMode;
 	BOOL    m_ExperMode;
+	int		m_iTop;
+	int		m_iBottom;
+	int		m_iLeft;
+	int		m_iRight;
 	int		m_iSpeedMode;
 	int		m_iBallColorR;
 	int		m_iBallColorG;
