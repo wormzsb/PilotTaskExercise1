@@ -1,62 +1,39 @@
 [TaskOrder]
-Task1
-Task6
+Task2
 
-[Task1(任务1-目标跟踪能力测试)]
-TaskName	0-任务1-目标跟踪能力测试
-PracMode	0
-ExperMode	1
-Background	0
-Track	0
-Direction	0
-MoveMode	0
-SpeedMode	0
-Pause	0
-PauseNum	-1
-Speed	5.00
-InitSpeed	-1.00
-SpeedMin	-1.00
-SpeedMax	-1.00
-AccelerationMin	-1.00
-AccelerationMax	-1.00
-AngleSpeedMin	-1.00
-AngleSpeedMax	-1.00
-RotateAngleMin	-1.00
-RotateAngleMax	-1.00
-PracTime	60
-ExperTime	60
-PracTimes	1
-ExperTimes	1
-JoyMoveDirection	0
-
-[Task6(任务6-双任务模式三维图形记忆判别能力测试)]
-TaskName	1-任务6-双任务模式三维图形记忆判别能力测试
+[Task2(任务2-操作力保持及时间知觉能力测试)]
+TaskName	0-任务2-操作力保持及时间知觉能力测试
 PracMode	1
 ExperMode	0
 MainTask	1
 SubTask	1
 Background	0
-InitSpeed	0.000000
-CubeNum1	1
-CubeNum2	0
-CubeNum3	0
-CubeNum4	0
-Prototype	0
-RefAxis	0
-MemTaskMode	0
+Direction	0
+InitSpeed	50.00
+HoldTimeNum	4
+HoldTime1	3.0
+HoldTime2	6.0
+HoldTime3	9.0
+HoldTime4	12.0
+HoldTime5	-1.0
+HoldTime6	-1.0
+HoldTime7	-1.0
+HoldTime8	-1.0
+HoldTime9	-1.0
+HoldTime10	-1.0
+HoldTime11	-1.0
+HoldTime12	-1.0
 PracTime	60
 ExperTime	60
 PracTimes	1
 ExperTimes	1
 JoyMoveDirection	0
 SubTaskInterval	2
-PresentTime	5
-ReactTime	2
-Speed	10.000000
-SpeedMin	10.000000
-SpeedMax	20.000000
-AccelerationMin	5.000000
-AccelerationMax	10.000000
 SpeedMode	0
-Direction	0
+Speed	100.000000
+SpeedMin	50.000000
+SpeedMax	150.000000
+AccelerationMin	2.000000
+AccelerationMax	5.000000
+Track	0
 

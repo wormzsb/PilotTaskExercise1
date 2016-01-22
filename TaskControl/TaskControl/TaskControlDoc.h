@@ -4,6 +4,9 @@
 
 #pragma once
 
+#include<vector>
+#include<algorithm>
+using namespace std;
 
 class CTaskControlDoc : public CDocument
 {
@@ -208,8 +211,14 @@ public:
 
 	BOOL bBatch;
 	int m_TrialNum;
+
+	// хннЯ2 
+	vector<double> m_HoldTimeErrAve;
+
 // Operations
 public:
+	void initAnalyseResult();
+	void getTask2HoldError();
     void NewTester();
     void NewSetting();
 	BOOL ReadDataFile();

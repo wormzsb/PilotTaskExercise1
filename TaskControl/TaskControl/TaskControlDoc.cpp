@@ -881,7 +881,7 @@ BOOL CTaskControlDoc::ReadT2Trace()
 			m_PointNum = i;
 			
 			fclose(fp);
-			if(m_ExperStart1>=m_PointNum-1)
+			if(m_ExperStart1>m_PointNum)
 			{
 				return FALSE;
 			}
@@ -1022,7 +1022,7 @@ BOOL CTaskControlDoc::ReadT2Hold()
 			m_ExperStart2 = m_ExperStart2+1;
 			m_HoldNo = i;
 			fclose(fp);
-			if(m_ExperStart2>=m_HoldNo-1)
+			if(m_ExperStart2>m_HoldNo)
 			{
 				return FALSE;
 			}
@@ -2672,16 +2672,9 @@ void CTaskControlDoc::MemClear()
 	}
 }
 
-void CTaskControlDoc::DataAnalysis()
+void CTaskControlDoc::initAnalyseResult()
 {
-	int i,j;
-	FILE *fp;
-
-    CString m_SaveName;
-	int m_PointTotal = 0;
-	UINT m_TimeTotal = 0;
-    int TouchNo;
-
+	//初始化分析结果
 	m_DistanceTotal = 0;
 	m_RotateErrorTotal = 0;
 	m_DistanceAve = 0;
@@ -2697,16 +2690,37 @@ void CTaskControlDoc::DataAnalysis()
 	m_FalseCount = 0;
 	m_CodeRTTotal = 0;
 	m_RTTotal = 0;
-//	m_NoRTTotal = 0;
 	m_CodeRTAvg = 0;
 	m_CodeRTSqr = 0;
 	m_RTAvg = 0;
-//	m_NoRTAvg = 0;
 	m_RTSqr = 0;
-//	m_NoRTSqr = 0;
 	m_Acce = 0;
 	m_TargetCount = 0;
 	m_NoTargetCount = 0;
+	m_HoldTimeErrAve.clear();
+}
+
+
+void CTaskControlDoc::getTask2HoldError()
+{
+	//m_HoldError
+}
+
+// 数据分析函数
+// 所有的task的分析都在这里
+void CTaskControlDoc::DataAnalysis()
+{
+	int i,j;
+	FILE *fp;
+
+    CString m_SaveName;
+	int m_PointTotal = 0;
+	UINT m_TimeTotal = 0;
+    int TouchNo;
+
+	//初始化分析结果
+	initAnalyseResult();
+
 
 	CString cs;
 	CString str;
@@ -2719,12 +2733,7 @@ void CTaskControlDoc::DataAnalysis()
 			m_TrialNum = m_Setting1[0].m_ExperTimes;
 			for(j=0;j<m_TrialNum;j++)
 			{
-				//i = 0;
-				//do
-				//{
-				//	i++;
-				//}while((m_PointTime[i]-m_PointTime[m_StartPoint[j]])<=5000);
-				m_ValidStart[j] = m_StartPoint[j] + 125;
+				m_ValidStart[j] = m_StartPoint[j] + 125; //从第125个开始计算
 				for(i=m_ValidStart[j];i<m_StartPoint[j+1];i++)
 				{
 					m_DistanceTotal += m_Distance[i];
@@ -2739,7 +2748,7 @@ void CTaskControlDoc::DataAnalysis()
 			}
 			m_DistanceAve = m_DistanceTotal/(float)m_PointTotal;
 			m_RotateErrorAve = m_RotateErrorTotal/(float)m_PointTotal;
-			m_HitTimeTotal = m_HitCount*40;
+			m_HitTimeTotal = m_HitCount*40;	//采样时间是40ms
 			m_HitTimeRate = (float)m_HitTimeTotal/(float)m_TimeTotal;
 			m_DistanceTotal = 0;
 			m_RotateErrorTotal = 0;
@@ -2788,17 +2797,14 @@ void CTaskControlDoc::DataAnalysis()
 			}
 		}
 		break;
+	// 任务二
+	// 1: tracking; 2: holding
 	case 2:
 		if(m_bOpenFile1)
 		{
-			m_TrialNum = 1;
+			m_TrialNum = 1;//为什么是1，先保留着吧
             for(j=0;j<m_TrialNum;j++)
 			{
-				//i = 0;
-				//do
-				//{
-				//	i++;
-				//}while((m_PointTime[i]-m_PointTime[m_StartPoint[j]])<=5000);
 				m_ValidStart[j] = m_StartPoint[j] + 125;
 				for(i=m_ValidStart[j];i<m_StartPoint[j+1];i++)
 				{
@@ -2811,7 +2817,7 @@ void CTaskControlDoc::DataAnalysis()
 				}
 				m_TimeTotal+=(m_PointTime[m_StartPoint[j+1]-1]-m_PointTime[m_ValidStart[j]]);
 			}
-			m_DistanceAve = m_DistanceTotal/(float)m_PointTotal;
+			m_DistanceAve = m_DistanceTotal/(float)m_PointTotal;//平均误差距离
 			m_HitTimeTotal = m_HitCount*40;
 			m_HitTimeRate = (float)m_HitTimeTotal/(float)m_TimeTotal;
 			m_DistanceTotal = 0;
@@ -2822,18 +2828,21 @@ void CTaskControlDoc::DataAnalysis()
 					m_DistanceTotal += pow((m_Distance[i]-m_DistanceAve),2);
 				}
 			}
-			m_DistanceSqt = pow((double)m_DistanceTotal/(double)(m_PointTotal-1),0.5);
+			m_DistanceSqt = pow((double)m_DistanceTotal/(double)(m_PointTotal-1),0.5);//误差距离标准差
 		}
+
+
+
 		if(m_bOpenFile2)
 		{
-			for(i=0;i<12;i++)
+			/*for(i=0;i<12;i++)
 			{
 				m_HoldErrorTotal[i] = 0;
 				m_HoldCountTotal[i] = 0;
-			}
-			for(i=m_ExperStart2;i<m_HoldNo;i++)
-			{
-				for(j=0;j<12;j++)
+			}*/
+			//for(i=m_ExperStart2;i<m_HoldNo;i++)
+			//{
+				/*for(j=0;j<12;j++)
 				{
 					if((float)m_HoldTime[i]/1000.0==m_Setting2[0].m_HoldTime[j])
 					{
@@ -2841,10 +2850,40 @@ void CTaskControlDoc::DataAnalysis()
 						m_HoldCountTotal[j]++;
 						continue;
 					}
-				}
-			}
+				}*/
+			//}
 	//		pos = pDoc->m_FileName.ReverseFind('\\');
 	//	    pos1 = pDoc->m_FileName.ReverseFind('-');
+			vector<int> uniqueHoldTimeVec;
+
+			for (int i = 0; i < m_Setting2[0].m_HoldTimeNum; i++)//放入误差绝对值
+				m_HoldTimeErrAve.push_back(fabs(m_HoldError[i]));
+			for (int i = 0; i < m_Setting2[0].m_HoldTimeNum; i++)//查找不同的holdtime
+			{
+				if (uniqueHoldTimeVec.empty()) uniqueHoldTimeVec.push_back(m_HoldTime[i]);
+				else if (find(uniqueHoldTimeVec.begin(), uniqueHoldTimeVec.end(), m_HoldTime[i]) == uniqueHoldTimeVec.end())
+					uniqueHoldTimeVec.push_back(m_HoldTime[i]);
+			}
+			for (int i = 0; i < uniqueHoldTimeVec.size(); i++)
+			{
+				int count = 0;
+				double err = 0.;
+				vector<int> ind;
+				for (int j = 0; j < m_Setting2[0].m_HoldTimeNum; j++)//查找相同的holdtime，用他们的err的绝对值的均值代替
+				{
+					if (uniqueHoldTimeVec[i] == m_HoldTime[j])
+					{
+						count++;
+						err += fabs(m_HoldTimeErrAve[j]);
+						ind.push_back(j);
+					}
+				}
+				err /= count;
+				for (int j = 0; j < ind.size(); j++) // 写到相同的holdtime的holdTimeError中
+				{
+					m_HoldTimeErrAve[ind[j]] = err;
+				}
+			}
 		}
 		if(m_bOpenFile1)
 		{
@@ -2907,7 +2946,8 @@ void CTaskControlDoc::DataAnalysis()
 						m_Setting2[0].m_HoldTimeNum, m_Setting2[0].m_HoldTime[0], m_Setting2[0].m_HoldTime[1], m_Setting2[0].m_HoldTime[2], m_Setting2[0].m_HoldTime[3], m_Setting2[0].m_HoldTime[4], m_Setting2[0].m_HoldTime[5], m_Setting2[0].m_HoldTime[6], m_Setting2[0].m_HoldTime[7], m_Setting2[0].m_HoldTime[8], m_Setting2[0].m_HoldTime[9], m_Setting2[0].m_HoldTime[10], m_Setting2[0].m_HoldTime[11], m_Setting2[0].m_PracTime, m_Setting2[0].m_ExperTime, m_Setting2[0].m_PracTimes, m_Setting2[0].m_ExperTimes);
 					for(i=0;i<m_Setting2[0].m_HoldTimeNum;i++)
 					{	
-						fprintf(fp,"%.2f\t",(float)m_HoldErrorTotal[i]/(float)m_HoldCountTotal[i]);
+						//fprintf(fp, "%.2f\t", (float)m_HoldErrorTotal[i] / (float)m_HoldCountTotal[i]);//错了
+						fprintf(fp,"%.2f\t", m_HoldTimeErrAve[i]);
 					}
 					for(i=m_Setting2[0].m_HoldTimeNum;i<12;i++)
 					{

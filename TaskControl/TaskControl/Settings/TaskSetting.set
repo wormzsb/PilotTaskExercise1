@@ -1,122 +1,39 @@
 [TaskOrder]
-Task7
-Task7
-Task7
-Task7
-Task7
+Task2
 
-[Task7(任务7-速度知觉能力测试)]
-TaskName	0-任务7-速度知觉能力测试
+[Task2(任务2-操作力保持及时间知觉能力测试)]
+TaskName	0-任务2-操作力保持及时间知觉能力测试
 PracMode	1
 ExperMode	0
-SpeedMode	0
-BallColorR	0
-BallColorG	255
-BallColorB	0
-BallStartPos	15
-BallSpeed	50
-BallSpeedAcc	10
-BallSpeedMax	-1163005939
-BallRadius	10
-BckGrndColorR	48
-BckGrndColorG	48
-BckGrndColorB	48
-ObstacleColorR	255
-ObstacleColorG	0
-ObstacleColorB	0
-ObstacleRadius	150
-PracTimes	3
-ExpTimes	3
-IntervalTime	3
-[Task7(任务7-速度知觉能力测试)]
-TaskName	1-任务7-速度知觉能力测试
-PracMode	1
-ExperMode	0
-SpeedMode	0
-BallColorR	0
-BallColorG	255
-BallColorB	0
-BallStartPos	15
-BallSpeed	50
-BallSpeedAcc	10
-BallSpeedMax	-1163005939
-BallRadius	10
-BckGrndColorR	48
-BckGrndColorG	48
-BckGrndColorB	48
-ObstacleColorR	255
-ObstacleColorG	0
-ObstacleColorB	0
-ObstacleRadius	150
+MainTask	1
+SubTask	1
+Background	0
+Direction	0
+InitSpeed	50.00
+HoldTimeNum	4
+HoldTime1	3.0
+HoldTime2	6.0
+HoldTime3	9.0
+HoldTime4	12.0
+HoldTime5	-1.0
+HoldTime6	-1.0
+HoldTime7	-1.0
+HoldTime8	-1.0
+HoldTime9	-1.0
+HoldTime10	-1.0
+HoldTime11	-1.0
+HoldTime12	-1.0
+PracTime	60
+ExperTime	60
 PracTimes	1
-ExpTimes	1
-IntervalTime	3
-[Task7(任务7-速度知觉能力测试)]
-TaskName	2-任务7-速度知觉能力测试
-PracMode	1
-ExperMode	0
+ExperTimes	1
+JoyMoveDirection	0
+SubTaskInterval	2
 SpeedMode	0
-BallColorR	0
-BallColorG	255
-BallColorB	0
-BallStartPos	15
-BallSpeed	50
-BallSpeedAcc	10
-BallSpeedMax	-1163005939
-BallRadius	10
-BckGrndColorR	48
-BckGrndColorG	48
-BckGrndColorB	48
-ObstacleColorR	255
-ObstacleColorG	0
-ObstacleColorB	0
-ObstacleRadius	150
-PracTimes	3
-ExpTimes	3
-IntervalTime	3
-[Task7(任务7-速度知觉能力测试)]
-TaskName	3-任务7-速度知觉能力测试
-PracMode	1
-ExperMode	0
-SpeedMode	0
-BallColorR	0
-BallColorG	255
-BallColorB	0
-BallStartPos	15
-BallSpeed	50
-BallSpeedAcc	10
-BallSpeedMax	-1163005939
-BallRadius	10
-BckGrndColorR	48
-BckGrndColorG	48
-BckGrndColorB	48
-ObstacleColorR	255
-ObstacleColorG	0
-ObstacleColorB	0
-ObstacleRadius	150
-PracTimes	1
-ExpTimes	1
-IntervalTime	3
-[Task7(任务7-速度知觉能力测试)]
-TaskName	4-任务7-速度知觉能力测试
-PracMode	1
-ExperMode	0
-SpeedMode	0
-BallColorR	0
-BallColorG	255
-BallColorB	0
-BallStartPos	15
-BallSpeed	50
-BallSpeedAcc	10
-BallSpeedMax	-1163005939
-BallRadius	10
-BckGrndColorR	48
-BckGrndColorG	48
-BckGrndColorB	48
-ObstacleColorR	255
-ObstacleColorG	0
-ObstacleColorB	0
-ObstacleRadius	150
-PracTimes	1
-ExpTimes	1
-IntervalTime	3
+Speed	100.000000
+SpeedMin	50.000000
+SpeedMax	150.000000
+AccelerationMin	2.000000
+AccelerationMax	5.000000
+Track	0
+

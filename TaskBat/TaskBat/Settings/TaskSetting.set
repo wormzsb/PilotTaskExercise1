@@ -1,194 +1,88 @@
 [TaskOrder]
-Task7
-Task7
-Task7
-Task7
-Task7
-Task7
-Task7
-Task7
+Task1
+Task2
+Task1
 
-[Task7(任务7-速度知觉能力测试)]
-TaskName	0-任务7-速度知觉能力测试
+[Task1(任务1-目标跟踪能力测试)]
+TaskName	任务1-目标跟踪能力测试
+PracMode	0
+ExperMode	1
+Background	0
+Track	0
+Direction	0
+MoveMode	0
+SpeedMode	0
+Pause	0
+PauseNum	-1
+Speed	100.00
+InitSpeed	-1.00
+SpeedMin	-1.00
+SpeedMax	-1.00
+AccelerationMin	-1.00
+AccelerationMax	-1.00
+AngleSpeedMin	-1.00
+AngleSpeedMax	-1.00
+RotateAngleMin	-1.00
+RotateAngleMax	-1.00
+PracTime	60
+ExperTime	60
+PracTimes	1
+ExperTimes	1
+JoyMoveDirection	0
+
+[Task2(任务2-操作力保持及时间知觉能力测试)]
+TaskName	任务2-操作力保持及时间知觉能力测试
 PracMode	1
 ExperMode	0
+MainTask	1
+SubTask	1
+Background	0
+Direction	0
+InitSpeed	5.00
+HoldTimeNum	5
+HoldTime1	3.0
+HoldTime2	5.0
+HoldTime3	2.0
+HoldTime4	2.0
+HoldTime5	2.0
+HoldTime6	-1.0
+HoldTime7	-1.0
+HoldTime8	-1.0
+HoldTime9	-1.0
+HoldTime10	-1.0
+HoldTime11	-1.0
+HoldTime12	-1.0
+PracTime	60
+ExperTime	60
+PracTimes	1
+ExperTimes	1
+JoyMoveDirection	0
+SubTaskInterval	2
+
+[Task1(任务1-目标跟踪能力测试)]
+TaskName	任务1-目标跟踪能力测试
+PracMode	0
+ExperMode	1
+Background	0
+Track	0
+Direction	0
+MoveMode	0
 SpeedMode	0
-BallColorR	0
-BallColorG	255
-BallColorB	0
-BallStartPos	15
-BallSpeed	50
-BallSpeedAcc	10
-BallSpeedMax	1610644228
-BallRadius	10
-BckGrndColorR	48
-BckGrndColorG	48
-BckGrndColorB	48
-ObstacleColorR	255
-ObstacleColorG	0
-ObstacleColorB	0
-ObstacleRadius	350
-PracTimes	5
-ExpTimes	5
-IntervalTime	1
-[Task7(任务7-速度知觉能力测试)]
-TaskName	1-任务7-速度知觉能力测试
-PracMode	1
-ExperMode	0
-SpeedMode	0
-BallColorR	0
-BallColorG	255
-BallColorB	0
-BallStartPos	15
-BallSpeed	50
-BallSpeedAcc	10
-BallSpeedMax	1610644228
-BallRadius	20
-BckGrndColorR	48
-BckGrndColorG	48
-BckGrndColorB	48
-ObstacleColorR	255
-ObstacleColorG	0
-ObstacleColorB	0
-ObstacleRadius	384
-PracTimes	5
-ExpTimes	5
-IntervalTime	1
-[Task7(任务7-速度知觉能力测试)]
-TaskName	2-任务7-速度知觉能力测试
-PracMode	1
-ExperMode	0
-SpeedMode	0
-BallColorR	0
-BallColorG	255
-BallColorB	0
-BallStartPos	15
-BallSpeed	50
-BallSpeedAcc	10
-BallSpeedMax	1610644228
-BallRadius	30
-BckGrndColorR	48
-BckGrndColorG	48
-BckGrndColorB	48
-ObstacleColorR	255
-ObstacleColorG	0
-ObstacleColorB	0
-ObstacleRadius	30
-PracTimes	5
-ExpTimes	5
-IntervalTime	1
-[Task7(任务7-速度知觉能力测试)]
-TaskName	3-任务7-速度知觉能力测试
-PracMode	1
-ExperMode	0
-SpeedMode	0
-BallColorR	0
-BallColorG	255
-BallColorB	0
-BallStartPos	15
-BallSpeed	50
-BallSpeedAcc	10
-BallSpeedMax	1610644228
-BallRadius	40
-BckGrndColorR	48
-BckGrndColorG	48
-BckGrndColorB	48
-ObstacleColorR	255
-ObstacleColorG	0
-ObstacleColorB	0
-ObstacleRadius	40
-PracTimes	5
-ExpTimes	5
-IntervalTime	1
-[Task7(任务7-速度知觉能力测试)]
-TaskName	4-任务7-速度知觉能力测试
-PracMode	1
-ExperMode	0
-SpeedMode	0
-BallColorR	0
-BallColorG	255
-BallColorB	0
-BallStartPos	15
-BallSpeed	50
-BallSpeedAcc	10
-BallSpeedMax	1610644228
-BallRadius	50
-BckGrndColorR	48
-BckGrndColorG	48
-BckGrndColorB	48
-ObstacleColorR	255
-ObstacleColorG	0
-ObstacleColorB	0
-ObstacleRadius	50
-PracTimes	5
-ExpTimes	5
-IntervalTime	1
-[Task7(任务7-速度知觉能力测试)]
-TaskName	5-任务7-速度知觉能力测试
-PracMode	1
-ExperMode	0
-SpeedMode	0
-BallColorR	0
-BallColorG	255
-BallColorB	0
-BallStartPos	15
-BallSpeed	50
-BallSpeedAcc	10
-BallSpeedMax	1610644228
-BallRadius	60
-BckGrndColorR	48
-BckGrndColorG	48
-BckGrndColorB	48
-ObstacleColorR	255
-ObstacleColorG	0
-ObstacleColorB	0
-ObstacleRadius	60
-PracTimes	5
-ExpTimes	5
-IntervalTime	1
-[Task7(任务7-速度知觉能力测试)]
-TaskName	6-任务7-速度知觉能力测试
-PracMode	1
-ExperMode	0
-SpeedMode	0
-BallColorR	0
-BallColorG	255
-BallColorB	0
-BallStartPos	15
-BallSpeed	50
-BallSpeedAcc	10
-BallSpeedMax	1610644228
-BallRadius	70
-BckGrndColorR	48
-BckGrndColorG	48
-BckGrndColorB	48
-ObstacleColorR	255
-ObstacleColorG	0
-ObstacleColorB	0
-ObstacleRadius	70
-PracTimes	5
-ExpTimes	5
-IntervalTime	1
-[Task7(任务7-速度知觉能力测试)]
-TaskName	7-任务7-速度知觉能力测试
-PracMode	1
-ExperMode	0
-SpeedMode	0
-BallColorR	0
-BallColorG	255
-BallColorB	0
-BallStartPos	15
-BallSpeed	50
-BallSpeedAcc	10
-BallSpeedMax	1610644228
-BallRadius	80
-BckGrndColorR	48
-BckGrndColorG	48
-BckGrndColorB	48
-ObstacleColorR	255
-ObstacleColorG	0
-ObstacleColorB	0
-ObstacleRadius	80
-PracTimes	5
-ExpTimes	5
-IntervalTime	1
+Pause	0
+PauseNum	-1
+Speed	5.00
+InitSpeed	-1.00
+SpeedMin	-1.00
+SpeedMax	-1.00
+AccelerationMin	-1.00
+AccelerationMax	-1.00
+AngleSpeedMin	-1.00
+AngleSpeedMax	-1.00
+RotateAngleMin	-1.00
+RotateAngleMax	-1.00
+PracTime	60
+ExperTime	60
+PracTimes	1
+ExperTimes	1
+JoyMoveDirection	0
+
