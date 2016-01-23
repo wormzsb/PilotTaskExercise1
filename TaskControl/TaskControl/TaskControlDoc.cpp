@@ -3036,7 +3036,7 @@ void CTaskControlDoc::DataAnalysis()
 			{
 				if (m_EventType[i] == 0 && m_SureButtonNo[i] == 0) //统计击中数
 					m_TrueCount++;
-				if (m_EventType[i] == 0 && m_SureButtonNo[i] == 0) // 统计漏报数
+				if (m_EventType[i] == 0 && m_SureButtonNo[i] == 1) // 统计漏报数
 					m_MissingCount++;
 				//if (m_EventType[i] == 1 && m_SureButtonNo[i] == 1) //统计正确拒斥数
 				//	m_CRCount++;
@@ -3086,7 +3086,7 @@ void CTaskControlDoc::DataAnalysis()
 				{
 					if (m_EventType[i] == 0 && m_SureButtonNo[i] == 0) //统计击中数
 						m_TrueCount++;
-					if (m_EventType[i] == 0 && m_SureButtonNo[i] == 0) // 统计漏报数
+					if (m_EventType[i] == 0 && m_SureButtonNo[i] == 1) // 统计漏报数
 						m_MissingCount++;
 					if (m_EventType[i] == 1 && m_SureButtonNo[i] == 1) //统计正确拒斥数
 						m_CRCount++;
