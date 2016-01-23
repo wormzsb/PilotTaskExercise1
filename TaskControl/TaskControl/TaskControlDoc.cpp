@@ -190,9 +190,15 @@ CTaskControlDoc::CTaskControlDoc()
 	m_DefSetting7.m_iBallColorG = 0;
 	m_DefSetting7.m_iBallColorB = 0;
 	m_DefSetting7.m_iBallRadius = 15;
-	m_DefSetting7.m_iBallSpeed = 50;
+	m_DefSetting7.m_iBallSpeed1 = 50;
+	m_DefSetting7.m_iBallSpeed2 = 100;
+	m_DefSetting7.m_iBallSpeed3 = 150;
 	m_DefSetting7.m_iBallSpeedAcc = 10;
 	m_DefSetting7.m_iBallStartPos = 15;
+	m_DefSetting7.m_iTop = 1;
+	m_DefSetting7.m_iBottom = 1;
+	m_DefSetting7.m_iLeft = 1;
+	m_DefSetting7.m_iRight = 1;
 	m_DefSetting7.m_iBckGrndColorR = 0;
 	m_DefSetting7.m_iBckGrndColorG = 0;
 	m_DefSetting7.m_iBckGrndColorB = 0;

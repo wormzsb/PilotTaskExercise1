@@ -287,8 +287,10 @@
 #define IDC_BALL_CLR_B                  1195
 #define IDC_BALL_SPEED                  1196
 #define IDC_BALL_SPEED2                 1196
+#define IDC_SPEED2                      1196
 #define IDC_BALL_ACC                    1197
 #define IDC_BALL_SPEED3                 1197
+#define IDC_SPEED3                      1197
 #define IDC_BALL_RADIUS                 1198
 #define IDC_SMALL_BALL_RADIUS           1199
 #define IDC_CHECK_PRAC                  1200
@@ -299,6 +301,7 @@
 #define IDC_EDIT3                       1205
 #define IDC_BALL_CENTER_DIS             1207
 #define IDC_BALL_SPEED1                 1210
+#define IDC_SPEED1                      1211
 #define IDC_LEFT                        1282
 #define IDC_LEFT6                       1282
 #define IDC_BOTTOM                      1283
@@ -337,7 +340,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        158
 #define _APS_NEXT_COMMAND_VALUE         32795
-#define _APS_NEXT_CONTROL_VALUE         1211
+#define _APS_NEXT_CONTROL_VALUE         1212
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

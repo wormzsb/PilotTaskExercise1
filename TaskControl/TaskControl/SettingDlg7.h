@@ -36,7 +36,9 @@ public:
 	int m_iObstacleColorG;
 	int m_iObstacleColorB;
 	int m_iSpeedMode;
-	int m_iSmallBallSpeed;
+	int m_iSpeed1;
+	int m_iSpeed2;
+	int m_iSpeed3;
 	int m_iSmallBallAcc;
 	int m_iStartPos;
 	int m_iObstacleRadius;

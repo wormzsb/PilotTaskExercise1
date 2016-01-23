@@ -32,7 +32,9 @@ CSettingDlg7::CSettingDlg7(CWnd* pParent /*=NULL*/)
 	m_iObstacleColorG = 0;
 	m_iObstacleColorB = 0;
 	m_iSpeedMode = 0;
-	m_iSmallBallSpeed = -1;
+	m_iSpeed1 = 50;
+	m_iSpeed2 = 100;
+	m_iSpeed3 = 150;
 	//m_iSmallBallAcc = 10;
 	//m_iStartPos = 0;
 	m_iObstacleRadius = 50;
@@ -63,7 +65,9 @@ void CSettingDlg7::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_BALL_CLR_G, m_iObstacleColorG);
 	DDX_Text(pDX, IDC_BALL_CLR_B, m_iObstacleColorB);
 	//DDX_Radio(pDX, IDC_SPEED_CONSTANT, m_iSpeedMode);
-	DDX_Radio(pDX,IDC_BALL_SPEED, m_iSmallBallSpeed);
+	DDX_Radio(pDX,IDC_SPEED1, m_iSpeed1);
+	DDX_Radio(pDX, IDC_SPEED2, m_iSpeed2);
+	DDX_Radio(pDX, IDC_SPEED3, m_iSpeed3);
 	//DDX_Text(pDX, IDC_BALL_ACC, m_iSmallBallAcc);
 
 	DDX_Text(pDX, IDC_BALL_RADIUS, m_iObstacleRadius);
@@ -124,16 +128,9 @@ void CSettingDlg7::Save()
 	pDoc->m_Setting7[m_DlgIdx].m_iObstacleColorG = m_iObstacleColorG;
 	pDoc->m_Setting7[m_DlgIdx].m_iObstacleColorB = m_iObstacleColorB;
 	pDoc->m_Setting7[m_DlgIdx].m_iSpeedMode = m_iSpeedMode;
-	if (m_iSmallBallSpeed == -1) {
-		pDoc->m_Setting7[m_DlgIdx].m_iBallSpeed = 50;
-	}
-	else if (m_iSmallBallSpeed == 0) {
-		pDoc->m_Setting7[m_DlgIdx].m_iBallSpeed = 100;
-	}
-	else if (m_iSmallBallSpeed == 1) {
-		pDoc->m_Setting7[m_DlgIdx].m_iBallSpeed = 150;
-	}
-
+	pDoc->m_Setting7[m_DlgIdx].m_iBallSpeed1 = m_iSpeed1;
+	pDoc->m_Setting7[m_DlgIdx].m_iBallSpeed2 = m_iSpeed2;
+	pDoc->m_Setting7[m_DlgIdx].m_iBallSpeed3 = m_iSpeed3;
 
 
 	//pDoc->m_Setting7[m_DlgIdx].m_iBallSpeedAcc = m_iSmallBallAcc;
@@ -241,17 +238,48 @@ BOOL CSettingDlg7::OnInitDialog()
 	m_iObstacleColorG = pDoc->m_Setting7[m_DlgIdx].m_iObstacleColorG;
 	m_iObstacleColorB = pDoc->m_Setting7[m_DlgIdx].m_iObstacleColorB;
 	m_iSpeedMode = pDoc->m_Setting7[m_DlgIdx].m_iSpeedMode;
-	m_iSmallBallSpeed = pDoc->m_Setting7[m_DlgIdx].m_iBallSpeed;
+	m_iSpeed1 = pDoc->m_Setting7[m_DlgIdx].m_iBallSpeed1;
+	m_iSpeed2 = pDoc->m_Setting7[m_DlgIdx].m_iBallSpeed2;
+	m_iSpeed3 = pDoc->m_Setting7[m_DlgIdx].m_iBallSpeed3;
 	//m_iSmallBallAcc = pDoc->m_Setting7[m_DlgIdx].m_iBallSpeedAcc;
 	m_iStartPos = pDoc->m_Setting7[m_DlgIdx].m_iBallStartPos;
-	m_bStartPosTop = (m_iStartPos & S_TOP) >> (unsigned)log2((double)S_TOP);
-	m_bStartPosRight = (m_iStartPos & S_RIGHT) >> (unsigned)log2((double)S_RIGHT);
-	m_bStartPosBottom = (m_iStartPos & S_BOTTOM) >> (unsigned)log2((double)S_BOTTOM);
-	m_bStartPosLeft = (m_iStartPos & S_LEFT) >> (unsigned)log2((double)S_LEFT);
+	int i = 0;
+	if (pDoc->m_Setting7[m_DlgIdx].m_iTop == 1) {
+		m_bStartPosTop = true;
+		i++;
+	}
+	else {
+		m_bStartPosTop = false;
+	}
+
+	if (pDoc->m_Setting7[m_DlgIdx].m_iTop == 1) {
+		m_bStartPosTop = true;
+		i++;
+	}
+	else {
+		m_bStartPosTop = false;
+	}
+
+	if (pDoc->m_Setting7[m_DlgIdx].m_iTop == 1) {
+		m_bStartPosTop = true;
+		i++;
+	}
+	else {
+		m_bStartPosTop = false;
+	}
+
+	if (pDoc->m_Setting7[m_DlgIdx].m_iTop == 1) {
+		m_bStartPosTop = true;
+		i++;
+	}
+	else {
+		m_bStartPosTop = false;
+	}
+	
 	m_iObstacleRadius = pDoc->m_Setting7[m_DlgIdx].m_iObstacleRadius;
 	m_iSmallBallRadius = pDoc->m_Setting7[m_DlgIdx].m_iBallRadius;
 	m_iBallCenterDis = pDoc->m_Setting7[m_DlgIdx].m_iBallCenterDis;
-	m_iPracTimes = 	pDoc->m_Setting7[m_DlgIdx].m_iPracTimes;
+	m_iPracTimes = 	pDoc->m_Setting7[m_DlgIdx].m_iPracTimes/(i*3);
 	m_iExpTimes = m_iPracTimes;
 	m_iInterval = pDoc->m_Setting7[m_DlgIdx].m_iIntervalTime;
 

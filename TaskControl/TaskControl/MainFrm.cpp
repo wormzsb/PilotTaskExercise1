@@ -568,7 +568,9 @@ void CMainFrame::ReadSetting(CString FileName)
 				fscanf_s(fp, "PosBottom\t%d\n", &pDoc->m_Setting7[i7].m_iBottom);
 				fscanf_s(fp, "PosLeft\t%d\n", &pDoc->m_Setting7[i7].m_iLeft);
 				fscanf_s(fp, "PosRight\t%d\n", &pDoc->m_Setting7[i7].m_iRight);
-				fscanf_s(fp,"BallSpeed\t%d\n",&pDoc->m_Setting7[i7].m_iBallSpeed);
+				fscanf_s(fp,"BallSpeed1\t%d\n",&pDoc->m_Setting7[i7].m_iBallSpeed1);
+				fscanf_s(fp, "BallSpeed2\t%d\n", &pDoc->m_Setting7[i7].m_iBallSpeed2);
+				fscanf_s(fp, "BallSpeed3\t%d\n", &pDoc->m_Setting7[i7].m_iBallSpeed3);
 				fscanf_s(fp,"BallSpeedAcc\t%d\n",&pDoc->m_Setting7[i7].m_iBallSpeedAcc);
 				fscanf_s(fp,"BallSpeedMax\t%d\n",&pDoc->m_Setting7[i7].m_iBallSpeedMax);
 
