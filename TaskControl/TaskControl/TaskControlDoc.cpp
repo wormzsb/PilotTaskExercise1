@@ -887,7 +887,7 @@ BOOL CTaskControlDoc::ReadT2Trace()
 			m_PointNum = i;
 			
 			fclose(fp);
-			if(m_ExperStart1>=m_PointNum-1)
+			if(m_ExperStart1>m_PointNum)
 			{
 				return FALSE;
 			}
@@ -1028,7 +1028,7 @@ BOOL CTaskControlDoc::ReadT2Hold()
 			m_ExperStart2 = m_ExperStart2+1;
 			m_HoldNo = i;
 			fclose(fp);
-			if(m_ExperStart2>=m_HoldNo-1)
+			if(m_ExperStart2>m_HoldNo)
 			{
 				return FALSE;
 			}
@@ -1190,7 +1190,8 @@ BOOL CTaskControlDoc::ReadT3Trace()
 			m_ExperStart1 = m_ExperStart1+1;
 			m_PointNum = i;		
 			fclose(fp);
-			if(m_ExperStart1>=m_PointNum-1)
+			if (m_ExperStart1 > m_PointNum)
+				//if(m_ExperStart1>=m_PointNum-1)
 			{
 				return FALSE;
 			}
@@ -1210,7 +1211,7 @@ BOOL CTaskControlDoc::ReadT3Trace()
 	}
 	return FALSE;
 }
-
+//已经废弃不用了
 BOOL CTaskControlDoc::ReadT3Code()
 {
 	CMainFrame*   pMain   =(CMainFrame*)AfxGetMainWnd();
@@ -1340,7 +1341,8 @@ BOOL CTaskControlDoc::ReadT3Code()
 			m_ExperStart1 = m_ExperStart1+1;
 			m_CodeNo = i;
 			fclose(fp);
-			if(m_ExperStart1>=m_CodeNo-1)
+			if (m_ExperStart1 > m_CodeNo)
+				//if(m_ExperStart1>=m_CodeNo-1)
 			{
 				return FALSE;
 			}
@@ -1477,7 +1479,8 @@ BOOL CTaskControlDoc::ReadT3Event()
 			m_ExperStart2 = m_ExperStart2+1;
 			m_RecordNo = i;
 			fclose(fp);
-			if(m_ExperStart2>=m_RecordNo-1)
+			if (m_ExperStart2 > m_RecordNo)
+				//if(m_ExperStart2>=m_RecordNo-1)
 			{
 				return FALSE;
 			}
@@ -2678,16 +2681,9 @@ void CTaskControlDoc::MemClear()
 	}
 }
 
-void CTaskControlDoc::DataAnalysis()
+void CTaskControlDoc::initAnalyseResult()
 {
-	int i,j;
-	FILE *fp;
-
-    CString m_SaveName;
-	int m_PointTotal = 0;
-	UINT m_TimeTotal = 0;
-    int TouchNo;
-
+	//初始化分析结果
 	m_DistanceTotal = 0;
 	m_RotateErrorTotal = 0;
 	m_DistanceAve = 0;
@@ -2703,16 +2699,37 @@ void CTaskControlDoc::DataAnalysis()
 	m_FalseCount = 0;
 	m_CodeRTTotal = 0;
 	m_RTTotal = 0;
-//	m_NoRTTotal = 0;
 	m_CodeRTAvg = 0;
 	m_CodeRTSqr = 0;
 	m_RTAvg = 0;
-//	m_NoRTAvg = 0;
 	m_RTSqr = 0;
-//	m_NoRTSqr = 0;
 	m_Acce = 0;
 	m_TargetCount = 0;
 	m_NoTargetCount = 0;
+	m_HoldTimeErrAve.clear();
+}
+
+
+void CTaskControlDoc::getTask2HoldError()
+{
+	//m_HoldError
+}
+
+// 数据分析函数
+// 前人的所有的task的分析都在这里TT
+void CTaskControlDoc::DataAnalysis()
+{
+	int i,j;
+	FILE *fp;
+
+    CString m_SaveName;
+	int m_PointTotal = 0;
+	UINT m_TimeTotal = 0;
+    int TouchNo;
+
+	//初始化分析结果
+	initAnalyseResult();
+
 
 	CString cs;
 	CString str;
@@ -2725,12 +2742,7 @@ void CTaskControlDoc::DataAnalysis()
 			m_TrialNum = m_Setting1[0].m_ExperTimes;
 			for(j=0;j<m_TrialNum;j++)
 			{
-				//i = 0;
-				//do
-				//{
-				//	i++;
-				//}while((m_PointTime[i]-m_PointTime[m_StartPoint[j]])<=5000);
-				m_ValidStart[j] = m_StartPoint[j] + 125;
+				m_ValidStart[j] = m_StartPoint[j] + 125; //从第125个开始计算
 				for(i=m_ValidStart[j];i<m_StartPoint[j+1];i++)
 				{
 					m_DistanceTotal += m_Distance[i];
@@ -2745,7 +2757,7 @@ void CTaskControlDoc::DataAnalysis()
 			}
 			m_DistanceAve = m_DistanceTotal/(float)m_PointTotal;
 			m_RotateErrorAve = m_RotateErrorTotal/(float)m_PointTotal;
-			m_HitTimeTotal = m_HitCount*40;
+			m_HitTimeTotal = m_HitCount*40;	//采样时间是40ms
 			m_HitTimeRate = (float)m_HitTimeTotal/(float)m_TimeTotal;
 			m_DistanceTotal = 0;
 			m_RotateErrorTotal = 0;
@@ -2794,17 +2806,14 @@ void CTaskControlDoc::DataAnalysis()
 			}
 		}
 		break;
+	// 任务二
+	// 1: tracking; 2: holding
 	case 2:
 		if(m_bOpenFile1)
 		{
-			m_TrialNum = 1;
+			m_TrialNum = 1;//为什么是1，先保留着吧
             for(j=0;j<m_TrialNum;j++)
 			{
-				//i = 0;
-				//do
-				//{
-				//	i++;
-				//}while((m_PointTime[i]-m_PointTime[m_StartPoint[j]])<=5000);
 				m_ValidStart[j] = m_StartPoint[j] + 125;
 				for(i=m_ValidStart[j];i<m_StartPoint[j+1];i++)
 				{
@@ -2817,7 +2826,7 @@ void CTaskControlDoc::DataAnalysis()
 				}
 				m_TimeTotal+=(m_PointTime[m_StartPoint[j+1]-1]-m_PointTime[m_ValidStart[j]]);
 			}
-			m_DistanceAve = m_DistanceTotal/(float)m_PointTotal;
+			m_DistanceAve = m_DistanceTotal/(float)m_PointTotal;//平均误差距离
 			m_HitTimeTotal = m_HitCount*40;
 			m_HitTimeRate = (float)m_HitTimeTotal/(float)m_TimeTotal;
 			m_DistanceTotal = 0;
@@ -2828,18 +2837,21 @@ void CTaskControlDoc::DataAnalysis()
 					m_DistanceTotal += pow((m_Distance[i]-m_DistanceAve),2);
 				}
 			}
-			m_DistanceSqt = pow((double)m_DistanceTotal/(double)(m_PointTotal-1),0.5);
+			m_DistanceSqt = pow((double)m_DistanceTotal/(double)(m_PointTotal-1),0.5);//误差距离标准差
 		}
+
+
+
 		if(m_bOpenFile2)
 		{
-			for(i=0;i<12;i++)
+			/*for(i=0;i<12;i++)
 			{
 				m_HoldErrorTotal[i] = 0;
 				m_HoldCountTotal[i] = 0;
-			}
-			for(i=m_ExperStart2;i<m_HoldNo;i++)
-			{
-				for(j=0;j<12;j++)
+			}*/
+			//for(i=m_ExperStart2;i<m_HoldNo;i++)
+			//{
+				/*for(j=0;j<12;j++)
 				{
 					if((float)m_HoldTime[i]/1000.0==m_Setting2[0].m_HoldTime[j])
 					{
@@ -2847,10 +2859,40 @@ void CTaskControlDoc::DataAnalysis()
 						m_HoldCountTotal[j]++;
 						continue;
 					}
-				}
-			}
+				}*/
+			//}
 	//		pos = pDoc->m_FileName.ReverseFind('\\');
 	//	    pos1 = pDoc->m_FileName.ReverseFind('-');
+			vector<int> uniqueHoldTimeVec;
+
+			for (int i = 0; i < m_Setting2[0].m_HoldTimeNum; i++)//放入误差绝对值
+				m_HoldTimeErrAve.push_back(fabs(m_HoldError[i]));
+			for (int i = 0; i < m_Setting2[0].m_HoldTimeNum; i++)//查找不同的holdtime
+			{
+				if (uniqueHoldTimeVec.empty()) uniqueHoldTimeVec.push_back(m_HoldTime[i]);
+				else if (find(uniqueHoldTimeVec.begin(), uniqueHoldTimeVec.end(), m_HoldTime[i]) == uniqueHoldTimeVec.end())
+					uniqueHoldTimeVec.push_back(m_HoldTime[i]);
+			}
+			for (int i = 0; i < uniqueHoldTimeVec.size(); i++)
+			{
+				int count = 0;
+				double err = 0.;
+				vector<int> ind;
+				for (int j = 0; j < m_Setting2[0].m_HoldTimeNum; j++)//查找相同的holdtime，用他们的err的绝对值的均值代替
+				{
+					if (uniqueHoldTimeVec[i] == m_HoldTime[j])
+					{
+						count++;
+						err += fabs(m_HoldTimeErrAve[j]);
+						ind.push_back(j);
+					}
+				}
+				err /= count;
+				for (int j = 0; j < ind.size(); j++) // 写到相同的holdtime的holdTimeError中
+				{
+					m_HoldTimeErrAve[ind[j]] = err;
+				}
+			}
 		}
 		if(m_bOpenFile1)
 		{
@@ -2913,7 +2955,8 @@ void CTaskControlDoc::DataAnalysis()
 						m_Setting2[0].m_HoldTimeNum, m_Setting2[0].m_HoldTime[0], m_Setting2[0].m_HoldTime[1], m_Setting2[0].m_HoldTime[2], m_Setting2[0].m_HoldTime[3], m_Setting2[0].m_HoldTime[4], m_Setting2[0].m_HoldTime[5], m_Setting2[0].m_HoldTime[6], m_Setting2[0].m_HoldTime[7], m_Setting2[0].m_HoldTime[8], m_Setting2[0].m_HoldTime[9], m_Setting2[0].m_HoldTime[10], m_Setting2[0].m_HoldTime[11], m_Setting2[0].m_PracTime, m_Setting2[0].m_ExperTime, m_Setting2[0].m_PracTimes, m_Setting2[0].m_ExperTimes);
 					for(i=0;i<m_Setting2[0].m_HoldTimeNum;i++)
 					{	
-						fprintf(fp,"%.2f\t",(float)m_HoldErrorTotal[i]/(float)m_HoldCountTotal[i]);
+						//fprintf(fp, "%.2f\t", (float)m_HoldErrorTotal[i] / (float)m_HoldCountTotal[i]);//错了
+						fprintf(fp,"%.2f\t", m_HoldTimeErrAve[i]);
 					}
 					for(i=m_Setting2[0].m_HoldTimeNum;i<12;i++)
 					{
@@ -2925,10 +2968,11 @@ void CTaskControlDoc::DataAnalysis()
 			}
 		}
 		break;
+	// 任务3
 	case 3:
-		if(m_bOpenFile1)
+		if(m_bOpenFile1)//trace文件
 		{
-			if(m_MainTaskMode == 0)
+			if(m_MainTaskMode == 0)//主任务存在；怎么实际意思和这个变量名是相反的？
 			{
 				m_TrialNum = 1;
 				for(j=0;j<m_TrialNum;j++)
@@ -2963,7 +3007,7 @@ void CTaskControlDoc::DataAnalysis()
 				}
 				m_DistanceSqt = pow((double)m_DistanceTotal/(double)(m_PointTotal-1),0.5);
 			}
-			else
+			else//没有主任务--这部分已经被废弃了，被event部分取代
 			{
 				m_TrueCode = 0;
 				m_FalseCode = 0;
@@ -2992,11 +3036,23 @@ void CTaskControlDoc::DataAnalysis()
 				m_CodeRTSqr = pow((double)m_CodeRTTotal/(double)(m_TrueCode-1),0.5);
 			}
 		}
-        if(m_bOpenFile2)
+        if(m_bOpenFile2)//Event
 		{			
-			if(m_Setting3[0].m_EventMode==0)
+			if(m_Setting3[0].m_EventMode==0)// eventMode==0 简单模式
 			{
-				for(i=m_ExperStart2;i<m_RecordNo;i++)
+				if (m_EventType[i] == 0 && m_SureButtonNo[i] == 0) //统计击中数
+					m_TrueCount++;
+				if (m_EventType[i] == 0 && m_SureButtonNo[i] == 1) // 统计漏报数
+					m_MissingCount++;
+				//if (m_EventType[i] == 1 && m_SureButtonNo[i] == 1) //统计正确拒斥数
+				//	m_CRCount++;
+				//if (m_EventType[i] == 1 && m_SureButtonNo[i] == 0) //统计虚报数
+				//	m_FalseCount++;
+				if (m_EventType[i] == 0 && m_bEventAcc[i] == 1) //统计靶事件反应时
+					m_RTTotal += m_EventRT[i];
+				
+				//---old code---//
+				/*for(i=m_ExperStart2;i<m_RecordNo;i++)
 				{
 					if(m_bEventAcc[i] == 1)
 					{
@@ -3011,7 +3067,7 @@ void CTaskControlDoc::DataAnalysis()
 					{
 						m_MissingCount++;
 					}
-				}
+				}*/
 				m_RTAvg = (float)m_RTTotal/(float)m_TrueCount;
 				m_RTTotal = 0;
 				for(i=m_ExperStart2;i<m_RecordNo;i++)
@@ -3023,42 +3079,61 @@ void CTaskControlDoc::DataAnalysis()
 				}
 				m_RTSqr = pow((double)m_RTTotal/(double)(m_TrueCount-1),0.5);
 			}
-			else
+			else //选择模式
 			{
-				for(i=m_ExperStart2;i<m_RecordNo;i++)
+				//// 初始化统计变量
+				//m_TrueCount = 0;
+				//m_MissingCount = 0;
+				//m_CRCount = 0;
+				//m_FalseCount = 0;
+				//m_RTTotal = 0; //靶事件反应总时
+
+				for(i=/*m_ExperStart2*/0;i<m_RecordNo;i++)//遍历所有记录
 				{
-					if(m_EventType[i] == 1)
-					{
-						if(m_bEventAcc[i] == 1)
-						{
-							m_TrueCount++;
-							m_RTTotal += m_EventRT[i];
-						}
-						else
-						{
-							m_MissingCount++;
-						}
-//						m_TargetCount++;
-					}
-					else
-					{
-						if(m_bEventAcc[i] == 1)
-						{
-							m_CRCount++;
-							m_RTTotal += m_EventRT[i];
-						}
-						else
-						{
-							m_FalseCount++;
-						}
-//						m_NoTargetCount++;
-					}			
+					if (m_EventType[i] == 0 && m_SureButtonNo[i] == 0) //统计击中数
+						m_TrueCount++;
+					if (m_EventType[i] == 0 && m_SureButtonNo[i] == 1) // 统计漏报数
+						m_MissingCount++;
+					if (m_EventType[i] == 1 && m_SureButtonNo[i] == 1) //统计正确拒斥数
+						m_CRCount++;
+					if (m_EventType[i] == 1 && m_SureButtonNo[i] == 0) //统计虚报数
+						m_FalseCount++;
+					if (m_EventType[i] == 0 && m_bEventAcc[i] == 1) //统计靶事件反应时
+						m_RTTotal += m_EventRT[i];
+
+					//旧代码
+//					if(m_EventType[i] == 1)
+//					{
+//						if(m_bEventAcc[i] == 1)
+//						{
+//							m_TrueCount++;
+//							m_RTTotal += m_EventRT[i];
+//						}
+//						else
+//						{
+//							m_MissingCount++;
+//						}
+////						m_TargetCount++;
+//					}
+//					else
+//					{
+//						if(m_bEventAcc[i] == 1)
+//						{
+//							m_CRCount++;
+//							m_RTTotal += m_EventRT[i];
+//						}
+//						else
+//						{
+//							m_FalseCount++;
+//						}
+////						m_NoTargetCount++;
+//					}	
 				}
-				m_RTAvg = (float)m_RTTotal/(float)(m_TrueCount+m_CRCount);
+				m_RTAvg = (float)m_RTTotal/(float)(m_TrueCount+m_CRCount);//靶事件反应时平均值
 //				m_NoRTAvg = (float)m_NoRTTotal/(float)(m_CRCount);
 				m_RTTotal = 0;
 //				m_NoRTTotal = 0;
-				for(i=m_ExperStart2;i<m_RecordNo;i++)
+				for(i=/*m_ExperStart2*/0;i<m_RecordNo;i++)
 				{
 					if(m_bEventAcc[i] == 1)
 					{
@@ -3072,14 +3147,14 @@ void CTaskControlDoc::DataAnalysis()
 //						}
 					}
 				}
-				m_RTSqr = pow((double)m_RTTotal/(double)(m_TrueCount+m_CRCount-1),0.5);
+				m_RTSqr = pow((double)m_RTTotal/(double)(m_TrueCount+m_CRCount-1),0.5);//靶事件反应时标准差
 //				m_NoRTSqr = pow((float)m_NoRTTotal/(float)(m_CRCount-1),0.5);
 			}
 		}
 
 //		pos = pDoc->m_FileName.ReverseFind('\\');
 //		pos1 = pDoc->m_FileName.ReverseFind('-');
-		if(m_bOpenFile1)
+		if(m_bOpenFile1)//记录track部分的统计结果
 		{
 			if(!bExitItem1)
 			{
@@ -3109,7 +3184,7 @@ void CTaskControlDoc::DataAnalysis()
 						fclose(fp);
 					}
 				}
-				else
+				else//这部分已经被废弃了，被event部分取代
 				{
 					_mkdir("Result");
 					_mkdir("Result\\Task3");
@@ -3145,7 +3220,7 @@ void CTaskControlDoc::DataAnalysis()
 		{
 			if(!bExitItem2)
 			{
-				if(m_Setting3[0].m_EventMode ==0)
+				if(m_Setting3[0].m_EventMode ==0)//简单任务
 				{
 					_mkdir("Result");
 					_mkdir("Result\\Task3");
@@ -3171,7 +3246,7 @@ void CTaskControlDoc::DataAnalysis()
 						fclose(fp);
 					}
 				}
-				else
+				else//选择任务
 				{
 					_mkdir("Result");
 					_mkdir("Result\\Task3");

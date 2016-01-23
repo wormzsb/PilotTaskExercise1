@@ -143,14 +143,20 @@ void CAnalysisDlg::DisplayResult()
 		{
 			for(i=0;i<pDoc->m_Setting2[0].m_HoldTimeNum;i++)
 			{
-				str.Format("%.2f",(float)pDoc->m_HoldErrorTotal[i]/(float)pDoc->m_HoldCountTotal[i]);
+				//str.Format("%.2f", (float)pDoc->m_HoldErrorTotal[i] / (float)pDoc->m_HoldCountTotal[i]);
+				str.Format("%.2f",pDoc->m_HoldTimeErrAve[i]);
 				m_ResultList.AddItem(i+4,1,str,-1);
+			}
+			for (int i = pDoc->m_Setting2[0].m_HoldTimeNum; i < 12; i++)
+			{
+				str.Format("未设置");
+				m_ResultList.AddItem(i + 4, 1, str, -1);
 			}
 		}
 		break;
 	//任务3
 	case 3:
-		if(pDoc->m_MainTaskMode == 0)
+		if(pDoc->m_MainTaskMode == 0)//存在主任务
 		{
 			m_ResultList.AddItem(0,0,"位移误差平均值(DistanceAve)",-1);
 			m_ResultList.AddItem(1,0,"位移误差标准差(DistanceSqt)",-1);
@@ -158,7 +164,7 @@ void CAnalysisDlg::DisplayResult()
 			m_ResultList.AddItem(3,0,"击中时间比(HitTimeRate)",-1);
 			j=4;
 		}
-		else
+		else//废弃
 		{
 			m_ResultList.AddItem(0,0,"正确编码数(TrueCode)",-1);
 			m_ResultList.AddItem(1,0,"错误编码数(FalseCode)",-1);
@@ -168,7 +174,7 @@ void CAnalysisDlg::DisplayResult()
 			m_ResultList.AddItem(5,0,"编码反应时标准差(CodeRTSqr)",-1);
 			j=6;
 		}
-		if(pDoc->m_Setting3[0].m_EventMode ==0)
+		if(pDoc->m_Setting3[0].m_EventMode ==0)//简单任务
 		{
 			m_ResultList.AddItem(j,0,"击中数(HIT)",-1);
 			m_ResultList.AddItem(j+1,0,"漏报数(MISS)",-1);
@@ -177,7 +183,7 @@ void CAnalysisDlg::DisplayResult()
 			m_ResultList.AddItem(j+4,0,"突发事件反应时间平均值(RTAvg)",-1);
 			m_ResultList.AddItem(j+5,0,"突发事件反应时间标准差(RTSqr)",-1);
 		}
-		else
+		else//选择任务
 		{
 			m_ResultList.AddItem(j,0,"击中数(HIT)",-1);
 			m_ResultList.AddItem(j+1,0,"漏报数(MISS)",-1);
@@ -189,7 +195,7 @@ void CAnalysisDlg::DisplayResult()
 
 		if(pDoc->m_bOpenFile1)
 		{
-			if(pDoc->m_MainTaskMode == 0)
+			if(pDoc->m_MainTaskMode == 0)//存在主任务
 			{
 				str.Format("%.2f",pDoc->m_DistanceAve);
 				m_ResultList.AddItem(0,1,str,-1);
@@ -201,7 +207,7 @@ void CAnalysisDlg::DisplayResult()
 				m_ResultList.AddItem(3,1,str,-1);
 				j=4;
 			}
-			else
+			else//废弃
 			{
 				str.Format("%d",pDoc->m_TrueCode);
 				m_ResultList.AddItem(0,1,str,-1);
@@ -220,24 +226,24 @@ void CAnalysisDlg::DisplayResult()
 		}
         if(pDoc->m_bOpenFile2)
 		{
-			if(pDoc->m_Setting3[0].m_EventMode ==0)
+			if(pDoc->m_Setting3[0].m_EventMode ==0)//简单任务
 			{
-				str.Format("%d",pDoc->m_TrueCount);
+				str.Format("%d",pDoc->m_TrueCount);//击中数HIT
 				m_ResultList.AddItem(j,1,str,-1);
-				str.Format("%d",pDoc->m_MissingCount);
+				str.Format("%d",pDoc->m_MissingCount);//漏报数MISS
 				m_ResultList.AddItem(j+1,1,str,-1);
-//				str.Format("%d",pDoc->m_CRCount);
+//				str.Format("%d",pDoc->m_CRCount);//正确拒斥数CR：留空
 				m_ResultList.AddItem(j+2,1,"",-1);
-				str.Format("%d",pDoc->m_FalseCount);
+				str.Format("%d",pDoc->m_FalseCount);//虚报数FA：留空
 				m_ResultList.AddItem(j+3,1,str,-1);
-				str.Format("%.2f",pDoc->m_RTAvg);
+				str.Format("%.2f",pDoc->m_RTAvg);//突发事件反映时间平均值RTAvg
 				m_ResultList.AddItem(j+4,1,str,-1);
-				str.Format("%.2f",pDoc->m_RTSqr);
+				str.Format("%.2f",pDoc->m_RTSqr);//突发事件反映时间标准差RTSqr
 				m_ResultList.AddItem(j+5,1,str,-1);
 			}
-			else
+			else//选择任务
 			{
-				str.Format("%d",pDoc->m_TrueCount);
+				str.Format("%d",pDoc->m_TrueCount);//注释同简单任务
 				m_ResultList.AddItem(j,1,str,-1);
 				str.Format("%d",pDoc->m_MissingCount);
 				m_ResultList.AddItem(j+1,1,str,-1);

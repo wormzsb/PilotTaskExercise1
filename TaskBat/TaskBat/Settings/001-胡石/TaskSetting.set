@@ -1,88 +1,38 @@
 [TaskOrder]
-Task1
-Task2
-Task1
+Task3
 
-[Task1(任务1-目标跟踪能力测试)]
-TaskName	任务1-目标跟踪能力测试
-PracMode	0
-ExperMode	1
-Background	0
-Track	0
-Direction	0
-MoveMode	0
-SpeedMode	0
-Pause	0
-PauseNum	-1
-Speed	100.00
-InitSpeed	-1.00
-SpeedMin	-1.00
-SpeedMax	-1.00
-AccelerationMin	-1.00
-AccelerationMax	-1.00
-AngleSpeedMin	-1.00
-AngleSpeedMax	-1.00
-RotateAngleMin	-1.00
-RotateAngleMax	-1.00
-PracTime	60
-ExperTime	60
-PracTimes	1
-ExperTimes	1
-JoyMoveDirection	0
-
-[Task2(任务2-操作力保持及时间知觉能力测试)]
-TaskName	任务2-操作力保持及时间知觉能力测试
+[Task3(任务3-双任务模式突发事件反应时测试)]
+TaskName	0-任务3-双任务模式突发事件反应时测试
 PracMode	1
 ExperMode	0
-MainTask	1
+MainTask	0
 SubTask	1
+MainTaskMode	-1
 Background	0
-Direction	0
-InitSpeed	5.00
-HoldTimeNum	5
-HoldTime1	0.0
-HoldTime2	0.0
-HoldTime3	0.0
-HoldTime4	0.0
-HoldTime5	0.0
-HoldTime6	-1.0
-HoldTime7	-1.0
-HoldTime8	-1.0
-HoldTime9	-1.0
-HoldTime10	-1.0
-HoldTime11	-1.0
-HoldTime12	-1.0
+InitSpeed	50.00
+EventMode	0
+CodePairMode	-1
+CodePairNum	-1
+DisplayMode	-1
+EventFrequency	0
 PracTime	60
 ExperTime	60
 PracTimes	1
-ExperTimes	1
+ExperTimes	2
 JoyMoveDirection	0
-SubTaskInterval	2
-
-[Task1(任务1-目标跟踪能力测试)]
-TaskName	任务1-目标跟踪能力测试
-PracMode	0
-ExperMode	1
-Background	0
-Track	0
+PlanePos	15
 Direction	0
-MoveMode	0
 SpeedMode	0
-Pause	0
-PauseNum	-1
-Speed	5.00
-InitSpeed	-1.00
-SpeedMin	-1.00
-SpeedMax	-1.00
-AccelerationMin	-1.00
-AccelerationMax	-1.00
-AngleSpeedMin	-1.00
-AngleSpeedMax	-1.00
-RotateAngleMin	-1.00
-RotateAngleMax	-1.00
-PracTime	60
-ExperTime	60
-PracTimes	1
-ExperTimes	1
-JoyMoveDirection	0
+Speed	100.000000
+SpeedMin	50.000000
+SpeedMax	150.000000
+AccelerationMin	2.000000
+AccelerationMax	5.000000
+Track	0
+Plane	1
+Helicopter	1
+PresentTime	2
+IntervalMin	4
+IntervalMax	8
+ReactTime	2
 
