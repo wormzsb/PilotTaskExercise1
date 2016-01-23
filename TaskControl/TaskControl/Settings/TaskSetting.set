@@ -1,74 +1,33 @@
 [TaskOrder]
-Task3
-Task3
+Task7
 
-[Task3(任务3-双任务模式突发事件反应时测试)]
-TaskName	0-任务3-双任务模式突发事件反应时测试
+[Task7(任务7-速度知觉能力测试)]
+TaskName	0-任务7-速度知觉能力测试
 PracMode	1
 ExperMode	0
-MainTask	1
-SubTask	1
-MainTaskMode	0
-Background	0
-InitSpeed	50.00
-EventMode	0
-CodePairMode	-1
-CodePairNum	-1
-DisplayMode	-1
-EventFrequency	0
-PracTime	60
-ExperTime	60
-PracTimes	1
-ExperTimes	1
-JoyMoveDirection	0
-PlanePos	15
-Direction	0
 SpeedMode	0
-Speed	100.000000
-SpeedMin	50.000000
-SpeedMax	150.000000
-AccelerationMin	2.000000
-AccelerationMax	5.000000
-Track	0
-Plane	1
-Helicopter	1
-PresentTime	2
-IntervalMin	4
-IntervalMax	8
-ReactTime	2
-
-[Task3(任务3-双任务模式突发事件反应时测试)]
-TaskName	1-任务3-双任务模式突发事件反应时测试
-PracMode	1
-ExperMode	0
-MainTask	1
-SubTask	1
-MainTaskMode	0
-Background	0
-InitSpeed	50.00
-EventMode	1
-CodePairMode	-1
-CodePairNum	-1
-DisplayMode	-1
-EventFrequency	0
-PracTime	60
-ExperTime	60
-PracTimes	1
-ExperTimes	1
-JoyMoveDirection	0
-PlanePos	15
-Direction	0
-SpeedMode	0
-Speed	100.000000
-SpeedMin	50.000000
-SpeedMax	150.000000
-AccelerationMin	2.000000
-AccelerationMax	5.000000
-Track	0
-Plane	1
-Helicopter	1
-PresentTime	2
-IntervalMin	4
-IntervalMax	8
-ReactTime	2
-
+BallColorR	255
+BallColorG	0
+BallColorB	0
+BallStartPos	12
+PosTop	0
+PosBottom	1
+PosLeft	0
+PosRight	1
+BallCenterDis	15400192
+BallSpeed1	0
+BallSpeed2	0
+BallSpeed3	0
+BallSpeedAcc	0
+BallSpeedMax	1073741824
+BallRadius	0
+BckGrndColorR	1845513984
+BckGrndColorG	1140876544
+BckGrndColorB	1761636864
+ObstacleColorR	1694529024
+ObstacleColorG	1325400064
+ObstacleColorB	1694526976
+ObstacleRadius	1912620032
+PracTimes	1979738368
+ExpTimes	25856
+IntervalTime	6144

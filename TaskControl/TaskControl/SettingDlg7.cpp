@@ -65,9 +65,9 @@ void CSettingDlg7::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_BALL_CLR_G, m_iObstacleColorG);
 	DDX_Text(pDX, IDC_BALL_CLR_B, m_iObstacleColorB);
 	//DDX_Radio(pDX, IDC_SPEED_CONSTANT, m_iSpeedMode);
-	DDX_Radio(pDX,IDC_SPEED1, m_iSpeed1);
-	DDX_Radio(pDX, IDC_SPEED2, m_iSpeed2);
-	DDX_Radio(pDX, IDC_SPEED3, m_iSpeed3);
+	DDX_Text(pDX,IDC_SPEED1, m_iSpeed1);
+	DDX_Text(pDX, IDC_SPEED2, m_iSpeed2);
+	DDX_Text(pDX, IDC_SPEED3, m_iSpeed3);
 	//DDX_Text(pDX, IDC_BALL_ACC, m_iSmallBallAcc);
 
 	DDX_Text(pDX, IDC_BALL_RADIUS, m_iObstacleRadius);
@@ -141,42 +141,37 @@ void CSettingDlg7::Save()
 	pDoc->m_Setting7[m_DlgIdx].m_iIntervalTime = m_iInterval;
 	printf(m_iBallCenterDis+"");
 
-	int i = 0;
 
-	if (m_bStartPosTop == true) {
+	if (m_bStartPosTop == TRUE) {
 		pDoc->m_Setting7[m_DlgIdx].m_iTop = 1;
-		i++;
 	}
 	else {
 		pDoc->m_Setting7[m_DlgIdx].m_iTop = 0;
 	}
 
-	if (m_bStartPosBottom == true) {
+	if (m_bStartPosBottom == TRUE) {
 		pDoc->m_Setting7[m_DlgIdx].m_iBottom = 1;
-		i++;
 	}
 	else {
 		pDoc->m_Setting7[m_DlgIdx].m_iBottom = 0;
 	}
 
-	if (m_bStartPosLeft == true) {
+	if (m_bStartPosLeft == TRUE) {
 		pDoc->m_Setting7[m_DlgIdx].m_iLeft = 1;
-		i++;
 	}
 	else {
 		pDoc->m_Setting7[m_DlgIdx].m_iLeft = 0;
 	}
 
-	if (m_bStartPosRight == true) {
+	if (m_bStartPosRight == TRUE) {
 		pDoc->m_Setting7[m_DlgIdx].m_iRight = 1;
-		i++;
 	}
 	else {
 		pDoc->m_Setting7[m_DlgIdx].m_iRight = 0;
 	}
 	
-	pDoc->m_Setting7[m_DlgIdx].m_iPracTimes = m_iPracTimes * i * 3;
-	pDoc->m_Setting7[m_DlgIdx].m_iExpTimes = m_iPracTimes * i * 3;
+	pDoc->m_Setting7[m_DlgIdx].m_iPracTimes = m_iPracTimes;
+	pDoc->m_Setting7[m_DlgIdx].m_iExpTimes = m_iPracTimes;
 
 	// ³õÊ¼Î»ÖÃ
 	setStartPos();
@@ -221,7 +216,6 @@ BOOL CSettingDlg7::OnInitDialog()
 	CMainFrame*   pMain   =(CMainFrame*)AfxGetMainWnd();
     CTaskControlDoc* pDoc = (CTaskControlDoc*)pMain->GetActiveDocument();
 
-	((CButton *)GetDlgItem(IDC_BALL_SPEED1))->SetCheck(TRUE);
 	m_TaskName = pDoc->m_Setting7[m_DlgIdx].m_TaskName;
 
 	
@@ -243,47 +237,41 @@ BOOL CSettingDlg7::OnInitDialog()
 	m_iSpeed3 = pDoc->m_Setting7[m_DlgIdx].m_iBallSpeed3;
 	//m_iSmallBallAcc = pDoc->m_Setting7[m_DlgIdx].m_iBallSpeedAcc;
 	m_iStartPos = pDoc->m_Setting7[m_DlgIdx].m_iBallStartPos;
-	int i = 0;
 	if (pDoc->m_Setting7[m_DlgIdx].m_iTop == 1) {
-		m_bStartPosTop = true;
-		i++;
+		m_bStartPosTop = TRUE;
 	}
 	else {
-		m_bStartPosTop = false;
+		m_bStartPosTop = FALSE;
 	}
 
-	if (pDoc->m_Setting7[m_DlgIdx].m_iTop == 1) {
-		m_bStartPosTop = true;
-		i++;
+	if (pDoc->m_Setting7[m_DlgIdx].m_iBottom == 1) {
+		m_bStartPosBottom = TRUE;
 	}
 	else {
-		m_bStartPosTop = false;
+		m_bStartPosBottom = FALSE;
 	}
 
-	if (pDoc->m_Setting7[m_DlgIdx].m_iTop == 1) {
-		m_bStartPosTop = true;
-		i++;
+	if (pDoc->m_Setting7[m_DlgIdx].m_iLeft == 1) {
+		m_bStartPosLeft = TRUE;
 	}
 	else {
-		m_bStartPosTop = false;
+		m_bStartPosLeft = FALSE;
 	}
 
-	if (pDoc->m_Setting7[m_DlgIdx].m_iTop == 1) {
-		m_bStartPosTop = true;
-		i++;
+	if (pDoc->m_Setting7[m_DlgIdx].m_iRight == 1) {
+		m_bStartPosRight = TRUE;
 	}
 	else {
-		m_bStartPosTop = false;
+		m_bStartPosRight = FALSE;
 	}
 	
 	m_iObstacleRadius = pDoc->m_Setting7[m_DlgIdx].m_iObstacleRadius;
 	m_iSmallBallRadius = pDoc->m_Setting7[m_DlgIdx].m_iBallRadius;
 	m_iBallCenterDis = pDoc->m_Setting7[m_DlgIdx].m_iBallCenterDis;
-	m_iPracTimes = 	pDoc->m_Setting7[m_DlgIdx].m_iPracTimes/(i*3);
+	m_iPracTimes = pDoc->m_Setting7[m_DlgIdx].m_iPracTimes;
 	m_iExpTimes = m_iPracTimes;
 	m_iInterval = pDoc->m_Setting7[m_DlgIdx].m_iIntervalTime;
 
-	((CEdit*)GetDlgItem(IDC_BALL_ACC))->SetReadOnly(!m_iSpeedMode);
 	UpdateData(FALSE);
 	return TRUE;  // return TRUE unless you set the focus to a control
 

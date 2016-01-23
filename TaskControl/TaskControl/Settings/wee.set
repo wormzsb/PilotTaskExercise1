@@ -14,10 +14,12 @@ PosTop	0
 PosBottom	1
 PosLeft	1
 PosRight	0
-BallCenterDis	350
-BallSpeed	150
+BallCenterDis	550
+BallSpeed1	1111
+BallSpeed2	111
+BallSpeed3	150
 BallSpeedAcc	10
-BallSpeedMax	0
+BallSpeedMax	-1
 BallRadius	15
 BckGrndColorR	0
 BckGrndColorG	0
@@ -26,6 +28,6 @@ ObstacleColorR	80
 ObstacleColorG	80
 ObstacleColorB	80
 ObstacleRadius	200
-PracTimes	12
-ExpTimes	12
+PracTimes	4
+ExpTimes	4
 IntervalTime	2
