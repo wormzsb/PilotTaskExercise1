@@ -4,3 +4,7 @@ FileName	ID	Name	Sex	Session	PracMode	ExperMode	MainTask	SubTask	MainTaskMode	Ba
 T2-hold-任务2-操作力保持及时间知觉能力测试3-001-张本庆-4-20090323160317	001	张本庆	男	4	1	1	1	1	0	0	200.00	1	-1	-1	-1	30	30	270	1	1	65	2	63	4	747.60	181.93
 FileName	ID	Name	Sex	Session	PracMode	ExperMode	MainTask	SubTask	MainTaskMode	Background	InitSpeed	EventMode	CodePairMode	CodePairNum	DisplayMode	EventFrequency	PracTime	ExperTime	PracTimes	ExperTimes	HIT	MISS	CR	FA	m_RTTotalAvg	m_RTTotalSqr
 	001	张本庆	男	4	1	1	0	1	-1	0	-1.00	1	-1	-1	-1	20	30	180	1	1	29	1	28	2	656.53	125.19
+FileName	ID	Name	Sex	Session	PracMode	ExperMode	MainTask	SubTask	MainTaskMode	Background	InitSpeed	EventMode	CodePairMode	CodePairNum	DisplayMode	EventFrequency	PracTime	ExperTime	PracTimes	ExperTimes	HIT	MISS	CR	FA	m_RTTotalAvg	m_RTTotalSqr
+	001	胡石	男	2	1	0	1	1	0	0	50.00	1	-1	-1	-1	0	60	60	1	1	0	0	0	0	-nan(ind)	0.00
+FileName	ID	Name	Sex	Session	PracMode	ExperMode	MainTask	SubTask	MainTaskMode	Background	InitSpeed	EventMode	CodePairMode	CodePairNum	DisplayMode	EventFrequency	PracTime	ExperTime	PracTimes	ExperTimes	HIT	MISS	CR	FA	m_RTTotalAvg	m_RTTotalSqr
+	001	胡石	男	2	1	0	1	1	0	0	50.00	1	-1	-1	-1	0	60	60	1	1	0	0	0	0	-nan(ind)	0.00
