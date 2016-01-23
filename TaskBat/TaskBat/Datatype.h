@@ -217,7 +217,13 @@ struct TaskSetting7
 	int		m_iBallColorG;
 	int		m_iBallColorB;
 	int		m_iBallStartPos;
-	int		m_iBallSpeed;
+	int		m_iBallSpeed1;
+	int		m_iBallSpeed2;
+	int		m_iBallSpeed3;
+	int		m_iTop;
+	int		m_iBottom;
+	int		m_iLeft;
+	int		m_iRight;
 	int		m_iBallSpeedAcc;
 	int		m_iBallSpeedMax;
 	int		m_iBallRadius;

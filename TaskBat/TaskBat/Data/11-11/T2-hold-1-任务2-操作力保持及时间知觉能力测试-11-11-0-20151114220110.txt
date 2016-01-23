@@ -1,6 +1,0 @@
-ID	Name	Sex	Session	DistanceError	PracMode	ExperMode	MainTask	SubTask	Background	Direction	InitSpeed	HoldTimeNum	HoldTime1	HoldTime2	HoldTime3	HoldTime4	HoldTime5	HoldTime6	HoldTime7	HoldTime8	HoldTime9	HoldTime10	HoldTime11	HoldTime12	PracTime	ExperTime	PracTimes	ExperTimes	Pra_Test	HoldNum	HoldTime	StartTime	SureTime	Test_RT	HoldError	Error_Ratio
-11	11	ÄÐ	0	10.00	1	0	1	1	0	0	50.00	5	0.0	0.0	0.0	0.0	0.0	-1.0	-1.0	-1.0	-1.0	-1.0	-1.0	-1.0	60	60	1	1	0	1	0	0	400	400	400	1.#J
-11	11	ÄÐ	0	10.00	1	0	1	1	0	0	50.00	5	0.0	0.0	0.0	0.0	0.0	-1.0	-1.0	-1.0	-1.0	-1.0	-1.0	-1.0	60	60	1	1	0	2	0	0	360	360	360	1.#J
-11	11	ÄÐ	0	10.00	1	0	1	1	0	0	50.00	5	0.0	0.0	0.0	0.0	0.0	-1.0	-1.0	-1.0	-1.0	-1.0	-1.0	-1.0	60	60	1	1	0	3	0	0	280	280	280	1.#J
-11	11	ÄÐ	0	10.00	1	0	1	1	0	0	50.00	5	0.0	0.0	0.0	0.0	0.0	-1.0	-1.0	-1.0	-1.0	-1.0	-1.0	-1.0	60	60	1	1	0	4	0	0	240	240	240	1.#J
-11	11	ÄÐ	0	10.00	1	0	1	1	0	0	50.00	5	0.0	0.0	0.0	0.0	0.0	-1.0	-1.0	-1.0	-1.0	-1.0	-1.0	-1.0	60	60	1	1	0	5	0	0	240	240	240	1.#J

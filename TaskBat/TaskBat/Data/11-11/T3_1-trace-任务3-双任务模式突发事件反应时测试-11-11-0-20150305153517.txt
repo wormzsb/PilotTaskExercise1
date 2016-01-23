@@ -1,1 +1,0 @@
-ID	Name	Sex	Session	DistanceError	PracMode	ExperMode	MainTask	SubTask	MainTaskMode	Background	InitSpeed	EventMode	CodePairMode	CodePairNum	DisplayMode	EventFrequency	PracTime	ExperTime	PracTimes	ExperTimes	Pra_Test	PointNum	PointTime	ObjPointX	ObjPointY	PostPointX	PostPointY	Distance	Hit	ObjSpeedX	ObjSpeedY	PostSpeedX	PostSpeedY

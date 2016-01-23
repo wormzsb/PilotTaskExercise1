@@ -1,5 +1,0 @@
-ID	Name	Sex	Session	PracMode	ExperMode	MainTask	SubTask	MainTaskMode	Background	InitSpeed	EventMode	CodePairMode	CodePairNum	DisplayMode	EventFrequency	PracTime	ExperTime	PracTimes	ExperTimes	Pra_Test	EventNum	EventType	StartTime	SureTime	Event_RT	ButtonNo	Event_Acc
-11	11	ÄÐ	0	1	0	1	1	0	0	50.00	0	-1	-1	-1	0	60	60	1	1	0	1	2	0	18053268	18053268	0	0
-11	11	ÄÐ	0	1	0	1	1	0	0	50.00	0	-1	-1	-1	0	60	60	1	1	0	2	2	0	18053548	18053548	0	0
-11	11	ÄÐ	0	1	0	1	1	0	0	50.00	0	-1	-1	-1	0	60	60	1	1	0	3	2	0	18053836	18053836	0	0
-11	11	ÄÐ	0	1	0	1	1	0	0	50.00	0	-1	-1	-1	0	60	60	1	1	0	4	-12851	18053878	3452816845	3434762967	-12851	0

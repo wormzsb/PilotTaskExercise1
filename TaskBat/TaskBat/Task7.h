@@ -47,7 +47,7 @@ namespace t7
 	extern struct Point stPntSmallBall;
 	//Ð¡Çò³õÊ¼×ø±ê
 	extern struct Point stPntSmallBallOrg;
-	extern const double dOrgDistance;
+	extern double dOrgDistance;
 
 	extern BOOL bShowSmallBall;
 	extern int iReactTime;

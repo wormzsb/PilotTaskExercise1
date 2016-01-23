@@ -26,7 +26,7 @@ BOOL t7::bBtnDown = TRUE;
 struct t7::Point t7::stPntSmallBall;
 //小球初始坐标
 struct t7::Point t7::stPntSmallBallOrg;
-const double t7::dOrgDistance = 350;
+double t7::dOrgDistance = 350;
 
 BOOL t7::bShowSmallBall = TRUE;
 int t7::iReactTime = 0;
@@ -42,7 +42,7 @@ struct PartInfo   t7::m_PartInfo;           //被试者信息
   
 short t7::m_TrialType;						//测试类型
 int t7::m_TrialTime;						//测试时间
-int t7::m_TrialTimes;						//测试次数
+int t7::m_TrialTimes = 1;						//测试次数
 int t7::iTskCnt = 0;						//实验中或者练习的次数统计
 int t7::iTotalTskCnt = 0;					//实验总试次
 
@@ -192,7 +192,17 @@ BOOL t7::ReadSetting()
 			fscanf(fp,"BallColorG\t%d\n",&m_Setting.m_iBallColorG);
 			fscanf(fp,"BallColorB\t%d\n",&m_Setting.m_iBallColorB);
 			fscanf(fp,"BallStartPos\t%d\n",&m_Setting.m_iBallStartPos);
-			fscanf(fp,"BallSpeed\t%d\n",&m_Setting.m_iBallSpeed);
+			fscanf(fp, "BallStartPos\t%d\n", &m_Setting.m_iBallStartPos);
+			fscanf(fp, "PosTop\t%d\n", &m_Setting.m_iTop);
+			fscanf(fp, "PosBottom\t%d\n", &m_Setting.m_iBottom);
+			fscanf(fp, "PosLeft\t%d\n", &m_Setting.m_iLeft);
+			fscanf(fp, "PosRight\t%d\n", &m_Setting.m_iRight);
+			fscanf(fp, "BallCenterDis\t%d\n", &m_Setting.m_iBallCenterDis);
+			//修改球距
+			dOrgDistance = (double)m_Setting.m_iBallCenterDis;
+			fscanf(fp,"BallSpeed1\t%d\n",&m_Setting.m_iBallSpeed1);
+			fscanf(fp, "BallSpeed2\t%d\n", &m_Setting.m_iBallSpeed2);
+			fscanf(fp, "BallSpeed3\t%d\n", &m_Setting.m_iBallSpeed3);
 			fscanf(fp,"BallSpeedAcc\t%d\n",&m_Setting.m_iBallSpeedAcc);
 			fscanf(fp,"BallSpeedMax\t%d\n",&m_Setting.m_iBallSpeedMax);
 
@@ -264,7 +274,7 @@ VOID t7::SaveName()
 	
 	fprintf(fp,"速度知觉测试\n");
 	fprintf(fp,"小球颜色R:%d G:%d B:%d\t",m_Setting.m_iBallColorR,m_Setting.m_iBallColorG,m_Setting.m_iBallColorB);
-	fprintf(fp,"半径:%d像素\t%s%d\t",m_Setting.m_iBallRadius,szSpeedMode[BALL_SPEED_CONSTANT],m_Setting.m_iBallSpeed);
+	fprintf(fp,"半径:%d像素\t%s%d\t",m_Setting.m_iBallRadius,szSpeedMode[BALL_SPEED_CONSTANT],m_Setting.m_iBallSpeed1);
 
 	if (BALL_SPEED_ACC == m_Setting.m_iSpeedMode)
 		fprintf(fp,"加速度:%f\t速度上限:%f\t",m_Setting.m_iBallSpeedAcc,m_Setting.m_iBallSpeedMax);
@@ -312,7 +322,7 @@ HRESULT t7::InitD3D( HWND hWnd )
 	if(m_Setting.m_PracMode == 1)
 	{
 		m_TrialType = TRIAL_PRACTICE;
-		m_TrialTimes =  m_Setting.m_iPracTimes;
+		m_TrialTimes = m_Setting.m_iPracTimes;
 		
 	}
 	else
@@ -626,7 +636,7 @@ VOID t7::TestInit()
 	
 	dfTotalMove = 0;
 	
-	dBallSpeed = (double)m_Setting.m_iBallSpeed;
+	dBallSpeed = (double)m_Setting.m_iBallSpeed1;
 	
 }
 
@@ -797,22 +807,33 @@ void t7::setSmallBallOriPos(struct t7::Point &stPntSmallBallOrg, int &curStartPo
 	int ind = rand() % vec.size();
 	curStartPos = vec[ind];
 
+
+	//设置随机速度
+	std::vector<int> speeds;
+	speeds.push_back(m_Setting.m_iBallSpeed1);
+	speeds.push_back(m_Setting.m_iBallSpeed2);
+	speeds.push_back(m_Setting.m_iBallSpeed3);
+
+	srand((unsigned)time(NULL));
+	int ind2 = rand() % speeds.size();
+	dBallSpeed = speeds[ind2];
+
 	switch (/*iBallStartPos*/curStartPos)
 	{
 	case TOP:
 		stPntSmallBallOrg.dX = x_resolution / 2;
-		stPntSmallBallOrg.dY = y_resolution / 2 - 350;//两者相据350pixles
+		stPntSmallBallOrg.dY = y_resolution / 2 - dOrgDistance;//两者相据350pixles
 		break;
 	case RIGHT:
-		stPntSmallBallOrg.dX = x_resolution / 2 + 350;
+		stPntSmallBallOrg.dX = x_resolution / 2 + dOrgDistance;
 		stPntSmallBallOrg.dY = y_resolution / 2;
 		break;
 	case BOTTOM:
 		stPntSmallBallOrg.dX = x_resolution / 2;
-		stPntSmallBallOrg.dY = y_resolution / 2 + 350;//两者相据350pixles
+		stPntSmallBallOrg.dY = y_resolution / 2 + dOrgDistance;//两者相据350pixles
 		break;
 	case LEFT:
-		stPntSmallBallOrg.dX = x_resolution / 2 - 350;
+		stPntSmallBallOrg.dX = x_resolution / 2 - dOrgDistance;
 		stPntSmallBallOrg.dY = y_resolution / 2;
 		break;
 
@@ -887,81 +908,83 @@ VOID t7::UpdateState()
 		break;
 	//测试任务执行
     case STATE_MOVINGOBJ:
-		
-			//间隔50ms采样一次
-			do
+	{
+		//间隔50ms采样一次
+		do
+		{
+			Sleep(1);
+			QueryPerformanceCounter(&litmp);
+			QPart2 = litmp.QuadPart;         //获得中止值
+			dfMinus = (double)(QPart2 - QPart1);
+		} while (dfMinus < m_SampleInt);//dfTim);//			
+		dfTim = dfMinus / dfFreq;  // 获得对应的时间值，单位为秒
+		QPart1 = QPart2;           // 获得初始值
+
+
+
+		if (iShowState != BALL_INTERVAL)
+		{
+			// 设置小球的运动方向
+			//setSmallBallDirection();
+			switch (/*iBallStartPos*/curStartPos)
 			{
-				Sleep(1);
-				QueryPerformanceCounter(&litmp);
-				QPart2 = litmp.QuadPart;         //获得中止值
-				dfMinus = (double)(QPart2-QPart1);
-			}while(dfMinus<m_SampleInt);//dfTim);//			
-			dfTim = dfMinus / dfFreq;  // 获得对应的时间值，单位为秒
-			QPart1 = QPart2;           // 获得初始值
-			
-		
-		
-			if (iShowState != BALL_INTERVAL)
-			{
-				// 设置小球的运动方向
-				//setSmallBallDirection();
-				switch (/*iBallStartPos*/curStartPos)
-				{
-				case TOP:
-					stPntSmallBall.dY += dBallSpeed*dfTim;
-					break;
-				case BOTTOM:
-					stPntSmallBall.dY -= dBallSpeed*dfTim;
-					break;	
-				case RIGHT:
-					stPntSmallBall.dX -= dBallSpeed*dfTim;
-					break;
-				case LEFT:
-					stPntSmallBall.dX  += dBallSpeed*dfTim;
-					break;
-
-				}
-
-				if (BALL_SPEED_ACC == m_Setting.m_iSpeedMode)
-					dBallSpeed += 1.0*m_Setting.m_iBallSpeedAcc*dfTim;
-			}
-		
-
-
-			switch (iShowState)
-			{
-				case BALL_INTERVAL:
-					dfInterval += dfTim;
-					
-					if (dfInterval > m_Setting.m_iIntervalTime)
-					{
-						dfInterval = 0;
-						iShowState = BALL_SHOW;
-					}
-					
-					break;
-
-				case BALL_SHOW:
-
-					//这里注意 stPntSmallBall只是图片的坐标
-					dfTotalMove = dfTotalMove + dfTim;
-
-					if (dfTotalMove >= 15)
-					{
-						bTimeOut = TRUE;
-						dfTotalMove = 0;
-						TaskOver();
-					}
-
-					
-					break;
-
+			case TOP:
+				stPntSmallBall.dY += dBallSpeed*dfTim;
+				break;
+			case BOTTOM:
+				stPntSmallBall.dY -= dBallSpeed*dfTim;
+				break;
+			case RIGHT:
+				stPntSmallBall.dX -= dBallSpeed*dfTim;
+				break;
+			case LEFT:
+				stPntSmallBall.dX += dBallSpeed*dfTim;
+				break;
 
 			}
+
+		//	if (BALL_SPEED_ACC == m_Setting.m_iSpeedMode)
+		//		dBallSpeed += 1.0*m_Setting.m_iBallSpeedAcc*dfTim;
+		}
+
+
+
+		switch (iShowState)
+		{
+		case BALL_INTERVAL:
+			dfInterval += dfTim;
+
+			if (dfInterval > m_Setting.m_iIntervalTime)
+			{
+				dfInterval = 0;
+				iShowState = BALL_SHOW;
+			}
+
+			break;
+
+		case BALL_SHOW:
+
+			//这里注意 stPntSmallBall只是图片的坐标
+			dfTotalMove = dfTotalMove + dfTim;
+
+			//超时设置
+
+			if (abs(stPntSmallBall.dX - stPntSmallBallOrg.dX + stPntSmallBall.dY - stPntSmallBallOrg.dY) > dOrgDistance +m_Setting.m_iObstacleRadius)
+			{
+				bTimeOut = TRUE;
+				dfTotalMove = 0;
+				TaskOver();
+			}
+
+
+			break;
+
+
+		}
 
 
 		break;
-
+	}
 	case STATE_DISPLAYFEEDBACK:     
 		QueryPerformanceCounter(&litmp);
 		QPart2 = litmp.QuadPart;         //获得中止值
@@ -974,7 +997,7 @@ VOID t7::UpdateState()
 		{	
 			dfTotalMove = 0;
 
-			if (iTskCnt ==   m_Setting.m_iPracTimes)
+			if (iTskCnt ==   m_Setting.m_iPracTimes*(m_Setting.m_iTop + m_Setting.m_iBottom + m_Setting.m_iLeft + m_Setting.m_iRight) * 3)
 			{
 				//呈现正式测试选项
 				/*m_TrialType = TRIAL_EXPERMENT;
@@ -1115,10 +1138,13 @@ DWORD WINAPI t7::InputThreadProcedure(LPVOID lpStartupParam)
 								
 							if (IsButtonDown(KEY_YES) && BALL_INTERVAL != iShowState)
 							{
-								preKeyPress = KEY_YES;
-								iReactTime = dfTotalMove;
-								bBtnDown = TRUE;
-								TaskOver();
+								if (abs(stPntSmallBall.dX - stPntSmallBallOrg.dX + stPntSmallBall.dY - stPntSmallBallOrg.dY) > abs(dOrgDistance - m_Setting.m_iObstacleRadius)) {
+									preKeyPress = KEY_YES;
+									iReactTime = dfTotalMove;
+									bBtnDown = TRUE;
+									TaskOver();
+								}
+		
 							}
 							
 
@@ -1323,6 +1349,7 @@ int APIENTRY t7::_tWinMain(HINSTANCE &hInstance, HINSTANCE &hPrevInstance, LPTST
 		ZeroMemory( &msg, sizeof(msg) );
 		while( msg.message!=WM_QUIT )
 		{
+
 			if( PeekMessage( &msg, NULL, 0U, 0U, PM_REMOVE ) )
 			{
 				//处理外部消息
