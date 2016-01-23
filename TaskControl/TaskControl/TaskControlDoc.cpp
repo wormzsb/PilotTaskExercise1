@@ -1334,7 +1334,8 @@ BOOL CTaskControlDoc::ReadT3Code()
 			m_ExperStart1 = m_ExperStart1+1;
 			m_CodeNo = i;
 			fclose(fp);
-			if(m_ExperStart1>=m_CodeNo-1)
+			if (m_ExperStart1 > m_CodeNo)
+				//if(m_ExperStart1>=m_CodeNo-1)
 			{
 				return FALSE;
 			}
@@ -1471,7 +1472,8 @@ BOOL CTaskControlDoc::ReadT3Event()
 			m_ExperStart2 = m_ExperStart2+1;
 			m_RecordNo = i;
 			fclose(fp);
-			if(m_ExperStart2>=m_RecordNo-1)
+			if (m_ExperStart2 > m_RecordNo)
+				//if(m_ExperStart2>=m_RecordNo-1)
 			{
 				return FALSE;
 			}
@@ -2707,7 +2709,7 @@ void CTaskControlDoc::getTask2HoldError()
 }
 
 // 数据分析函数
-// 所有的task的分析都在这里
+// 前人的所有的task的分析都在这里TT
 void CTaskControlDoc::DataAnalysis()
 {
 	int i,j;
@@ -2959,6 +2961,7 @@ void CTaskControlDoc::DataAnalysis()
 			}
 		}
 		break;
+	// 任务3
 	case 3:
 		if(m_bOpenFile1)
 		{

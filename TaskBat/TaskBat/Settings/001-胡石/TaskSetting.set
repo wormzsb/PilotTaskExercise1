@@ -1,34 +1,28 @@
 [TaskOrder]
-Task2
+Task3
+Task3
 
-[Task2(任务2-操作力保持及时间知觉能力测试)]
-TaskName	0-任务2-操作力保持及时间知觉能力测试
+[Task3(任务3-双任务模式突发事件反应时测试)]
+TaskName	0-任务3-双任务模式突发事件反应时测试
 PracMode	1
 ExperMode	0
 MainTask	1
 SubTask	1
+MainTaskMode	0
 Background	0
-Direction	0
 InitSpeed	50.00
-HoldTimeNum	4
-HoldTime1	3.0
-HoldTime2	6.0
-HoldTime3	12.0
-HoldTime4	12.0
-HoldTime5	-1.0
-HoldTime6	-1.0
-HoldTime7	-1.0
-HoldTime8	-1.0
-HoldTime9	-1.0
-HoldTime10	-1.0
-HoldTime11	-1.0
-HoldTime12	-1.0
+EventMode	0
+CodePairMode	-1
+CodePairNum	-1
+DisplayMode	-1
+EventFrequency	0
 PracTime	60
 ExperTime	60
 PracTimes	1
 ExperTimes	1
 JoyMoveDirection	0
-SubTaskInterval	2
+PlanePos	15
+Direction	0
 SpeedMode	0
 Speed	100.000000
 SpeedMin	50.000000
@@ -36,4 +30,45 @@ SpeedMax	150.000000
 AccelerationMin	2.000000
 AccelerationMax	5.000000
 Track	0
+Plane	1
+Helicopter	1
+PresentTime	2
+IntervalMin	4
+IntervalMax	8
+ReactTime	2
+
+[Task3(任务3-双任务模式突发事件反应时测试)]
+TaskName	1-任务3-双任务模式突发事件反应时测试
+PracMode	1
+ExperMode	0
+MainTask	1
+SubTask	1
+MainTaskMode	0
+Background	0
+InitSpeed	50.00
+EventMode	1
+CodePairMode	-1
+CodePairNum	-1
+DisplayMode	-1
+EventFrequency	0
+PracTime	60
+ExperTime	60
+PracTimes	1
+ExperTimes	1
+JoyMoveDirection	0
+PlanePos	15
+Direction	0
+SpeedMode	0
+Speed	100.000000
+SpeedMin	50.000000
+SpeedMax	150.000000
+AccelerationMin	2.000000
+AccelerationMax	5.000000
+Track	0
+Plane	1
+Helicopter	1
+PresentTime	2
+IntervalMin	4
+IntervalMax	8
+ReactTime	2
 
