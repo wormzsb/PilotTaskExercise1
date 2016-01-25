@@ -14,6 +14,7 @@
 #include "Task6_1.h"
 #include "Task6_2.h"
 #include "Task7.h"
+#include "Task8.h"
 
 #define MAX_LOADSTRING 100
 

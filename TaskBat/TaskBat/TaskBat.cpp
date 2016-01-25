@@ -27,8 +27,8 @@ HWND myhWnd;
 //	UINT    m_Session;
 //};
 const char* szTaskName[]={"[Task1(任务1-目标跟踪能力测试)]\n","[Task2(任务2-操作力保持及时间知觉能力测试)]\n","[Task3(任务3-双任务模式突发事件反应时测试)]\n",
-"[Task6(任务6-双任务模式三维图形记忆判别能力测试)]\n","[Task7(任务7-速度知觉能力测试)]\n"};
-const int iTaskIdx[]={1,2,3,6,7};
+"[Task6(任务6-双任务模式三维图形记忆判别能力测试)]\n","[Task7(任务7-速度知觉能力测试)]\n","[Task8(任务8-三维心理旋转测试)]\n" };
+const int iTaskIdx[]={1,2,3,6,7,8};
 
 int findRight(const char* szTaskName)
 {
@@ -472,6 +472,19 @@ void exeTasks(HWND &hWnd, HINSTANCE &hInstance,
 			lastWinClassName = std::to_string(nCmdShow).c_str();
 			lastWinName = std::to_string(nCmdShow).c_str();
 			b_IsExit = t7::m_TestState;
+			if (b_IsExit == STATE_EXIT)
+				break;
+		}
+		else if(task == "Task8")
+		{
+			HINSTANCE hPrevInstance = NULL;
+			LPTSTR    lpCmdLine = cmdPara;
+			int nCmdShow = i;
+			t8::_tWinMain(hInstance, hPrevInstance,
+				lpCmdLine, nCmdShow, hWnd, lastWinClassName, lastWinName);
+			lastWinClassName = std::to_string(nCmdShow).c_str();
+			lastWinName = std::to_string(nCmdShow).c_str();
+			b_IsExit = t8::m_TestState;
 			if (b_IsExit == STATE_EXIT)
 				break;
 		}

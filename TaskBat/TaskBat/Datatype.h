@@ -243,6 +243,13 @@ struct TaskSetting7
 	
 };
 
+//task8
+struct TaskSetting8 {
+	int m_iPointTime;//注视时间
+	int m_iViewTime;//呈现时间
+	int m_iLastTime;//倒数时间
+};
+
 //硬件设置
 struct HardSetting
 {

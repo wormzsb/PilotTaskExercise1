@@ -1,33 +1,8 @@
 [TaskOrder]
-Task7
+Task8
 
-[Task7(任务7-速度知觉能力测试)]
-TaskName	0-任务7-速度知觉能力测试
-PracMode	1
-ExperMode	0
-SpeedMode	0
-BallColorR	255
-BallColorG	0
-BallColorB	0
-BallStartPos	9
-PosTop	0
-PosBottom	1
-PosLeft	1
-PosRight	0
-BallCenterDis	450
-BallSpeed1	50
-BallSpeed2	250
-BallSpeed3	600
-BallSpeedAcc	10
-BallSpeedMax	-1
-BallRadius	15
-BckGrndColorR	0
-BckGrndColorG	0
-BckGrndColorB	0
-ObstacleColorR	80
-ObstacleColorG	80
-ObstacleColorB	80
-ObstacleRadius	200
-PracTimes	1
-ExpTimes	1
-IntervalTime	1
+[Task8(任务8-三维心理旋转测试)]
+TaskName	0-任务8-三维心理旋转测试
+PointTime	2
+ViewTime	5
+LastTime	5
