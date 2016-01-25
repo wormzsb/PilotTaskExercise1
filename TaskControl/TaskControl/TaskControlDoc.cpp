@@ -3048,9 +3048,9 @@ void CTaskControlDoc::DataAnalysis()
 				//	m_CRCount++;
 				//if (m_EventType[i] == 1 && m_SureButtonNo[i] == 0) //统计虚报数
 				//	m_FalseCount++;
-				if (m_EventType[i] == 0 && m_bEventAcc[i] == 1) //统计靶事件反应时
+				if (m_EventType[i] == 0
+					&& (m_SureButtonNo[i] == 0 || m_SureButtonNo[i] == 1)) //统计靶事件反应时
 					m_RTTotal += m_EventRT[i];
-				
 				//---old code---//
 				/*for(i=m_ExperStart2;i<m_RecordNo;i++)
 				{
@@ -3069,15 +3069,20 @@ void CTaskControlDoc::DataAnalysis()
 					}
 				}*/
 				m_RTAvg = (float)m_RTTotal/(float)m_TrueCount;
-				m_RTTotal = 0;
+				//m_RTTotal = 0;
+				double sumRT = 0.;
 				for(i=m_ExperStart2;i<m_RecordNo;i++)
 				{
 					if(m_bEventAcc[i] == 1)
 					{
-					    m_RTTotal += pow((m_EventRT[i]-m_RTAvg),2);
+						sumRT += pow((m_EventRT[i]-m_RTAvg),2);
 					}
 				}
-				m_RTSqr = pow((double)m_RTTotal/(double)(m_TrueCount-1),0.5);
+				if (m_TrueCount > 1)
+					m_RTSqr = pow((double)sumRT / (double)(m_TrueCount - 1), 0.5);
+				else
+					m_RTSqr = 0.;
+
 			}
 			else //选择模式
 			{
@@ -3098,7 +3103,8 @@ void CTaskControlDoc::DataAnalysis()
 						m_CRCount++;
 					if (m_EventType[i] == 1 && m_SureButtonNo[i] == 0) //统计虚报数
 						m_FalseCount++;
-					if (m_EventType[i] == 0 && m_bEventAcc[i] == 1) //统计靶事件反应时
+					if (m_EventType[i] == 0 
+						&& (m_SureButtonNo[i] == 0 || m_SureButtonNo[i] == 1)) //统计靶事件反应时
 						m_RTTotal += m_EventRT[i];
 
 					//旧代码
@@ -3129,9 +3135,10 @@ void CTaskControlDoc::DataAnalysis()
 ////						m_NoTargetCount++;
 //					}	
 				}
-				m_RTAvg = (float)m_RTTotal/(float)(m_TrueCount+m_CRCount);//靶事件反应时平均值
+				m_RTAvg = (float)m_RTTotal/(float)(m_TrueCount/*+m_CRCount*/);//靶事件反应时平均值
 //				m_NoRTAvg = (float)m_NoRTTotal/(float)(m_CRCount);
 				m_RTTotal = 0;
+				double sumRT = 0.;
 //				m_NoRTTotal = 0;
 				for(i=/*m_ExperStart2*/0;i<m_RecordNo;i++)
 				{
@@ -3139,7 +3146,7 @@ void CTaskControlDoc::DataAnalysis()
 					{
 //						if(m_EventType[i] == 1)
 //						{
-							m_RTTotal += pow((m_EventRT[i]-m_RTAvg),2);
+						sumRT += pow((m_EventRT[i]-m_RTAvg),2);
 //						}
 //						else
 //						{
@@ -3147,8 +3154,12 @@ void CTaskControlDoc::DataAnalysis()
 //						}
 					}
 				}
-				m_RTSqr = pow((double)m_RTTotal/(double)(m_TrueCount+m_CRCount-1),0.5);//靶事件反应时标准差
+				//m_RTSqr = pow((double)m_RTTotal/(double)(m_TrueCount+m_CRCount-1),0.5);//靶事件反应时标准差
 //				m_NoRTSqr = pow((float)m_NoRTTotal/(float)(m_CRCount-1),0.5);
+				if (m_TrueCount > 1)
+					m_RTSqr = pow((double)sumRT / (double)(m_TrueCount - 1), 0.5);
+				else
+					m_RTSqr = 0.;
 			}
 		}
 

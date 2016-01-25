@@ -12,3 +12,19 @@ FileName	ID	Name	Sex	Session	PracMode	ExperMode	MainTask	SubTask	MainTaskMode	Ba
 	001	ºúÊ¯	ÄÐ	2	1	0	1	1	0	0	50.00	1	-1	-1	-1	0	60	60	1	3	2	2	0	0	2146093056.00	0.00
 FileName	ID	Name	Sex	Session	PracMode	ExperMode	MainTask	SubTask	MainTaskMode	Background	InitSpeed	EventMode	CodePairMode	CodePairNum	DisplayMode	EventFrequency	PracTime	ExperTime	PracTimes	ExperTimes	HIT	MISS	CR	FA	m_RTTotalAvg	m_RTTotalSqr
 	001	ºúÊ¯	ÄÐ	2	1	0	1	1	0	0	50.00	1	-1	-1	-1	0	60	60	1	3	2	0	0	0	2146093056.00	0.00
+FileName	ID	Name	Sex	Session	PracMode	ExperMode	MainTask	SubTask	MainTaskMode	Background	InitSpeed	EventMode	CodePairMode	CodePairNum	DisplayMode	EventFrequency	PracTime	ExperTime	PracTimes	ExperTimes	HIT	MISS	CR	FA	m_RTTotalAvg	m_RTTotalSqr
+	001	ºúÊ¯	ÄÐ	2	1	0	1	1	0	0	50.00	1	-1	-1	-1	0	60	60	1	3	2	0	0	0	2146093056.00	0.00
+FileName	ID	Name	Sex	Session	PracMode	ExperMode	MainTask	SubTask	MainTaskMode	Background	InitSpeed	EventMode	CodePairMode	CodePairNum	DisplayMode	EventFrequency	PracTime	ExperTime	PracTimes	ExperTimes	HIT	MISS	CR	FA	m_RTTotalAvg	m_RTTotalSqr
+	001	ºúÊ¯	ÄÐ	2	1	0	1	1	0	0	50.00	1	-1	-1	-1	0	60	60	1	3	2	0	0	0	2146093056.00	0.00
+FileName	ID	Name	Sex	Session	PracMode	ExperMode	MainTask	SubTask	MainTaskMode	Background	InitSpeed	EventMode	CodePairMode	CodePairNum	DisplayMode	EventFrequency	PracTime	ExperTime	PracTimes	ExperTimes	HIT	MISS	CR	FA	m_RTTotalAvg	m_RTTotalSqr
+	001	ºúÊ¯	ÄÐ	2	1	0	1	1	0	0	50.00	1	-1	-1	-1	0	60	60	1	3	2	0	0	0	2146093056.00	0.00
+FileName	ID	Name	Sex	Session	PracMode	ExperMode	MainTask	SubTask	MainTaskMode	Background	InitSpeed	EventMode	CodePairMode	CodePairNum	DisplayMode	EventFrequency	PracTime	ExperTime	PracTimes	ExperTimes	HIT	MISS	CR	FA	m_RTTotalAvg	m_RTTotalSqr
+	001	ºúÊ¯	ÄÐ	2	1	0	1	1	0	0	50.00	1	-1	-1	-1	0	60	60	1	3	2	0	0	0	2146093056.00	0.00
+FileName	ID	Name	Sex	Session	PracMode	ExperMode	MainTask	SubTask	MainTaskMode	Background	InitSpeed	EventMode	CodePairMode	CodePairNum	DisplayMode	EventFrequency	PracTime	ExperTime	PracTimes	ExperTimes	HIT	MISS	CR	FA	m_RTTotalAvg	m_RTTotalSqr
+	001	ºúÊ¯	ÄÐ	2	1	0	1	1	0	0	50.00	1	-1	-1	-1	0	60	60	1	3	2	0	0	0	2146093056.00	3035033088.00
+FileName	ID	Name	Sex	Session	PracMode	ExperMode	MainTask	SubTask	MainTaskMode	Background	InitSpeed	EventMode	CodePairMode	CodePairNum	DisplayMode	EventFrequency	PracTime	ExperTime	PracTimes	ExperTimes	HIT	MISS	CR	FA	m_RTTotalAvg	m_RTTotalSqr
+	001	ºúÊ¯	ÄÐ	2	1	0	1	1	0	0	50.00	1	-1	-1	-1	0	60	60	1	3	2	0	0	0	2146093056.00	3035033088.00
+FileName	ID	Name	Sex	Session	PracMode	ExperMode	MainTask	SubTask	MainTaskMode	Background	InitSpeed	EventMode	CodePairMode	CodePairNum	DisplayMode	EventFrequency	PracTime	ExperTime	PracTimes	ExperTimes	HIT	MISS	CR	FA	m_RTTotalAvg	m_RTTotalSqr
+	001	ºúÊ¯	ÄÐ	2	1	0	1	1	0	0	50.00	1	-1	-1	-1	0	60	60	1	3	2	0	0	0	2146093056.00	3035033088.00
+FileName	ID	Name	Sex	Session	PracMode	ExperMode	MainTask	SubTask	MainTaskMode	Background	InitSpeed	EventMode	CodePairMode	CodePairNum	DisplayMode	EventFrequency	PracTime	ExperTime	PracTimes	ExperTimes	HIT	MISS	CR	FA	m_RTTotalAvg	m_RTTotalSqr
+	001	ºúÊ¯	ÄÐ	2	1	0	1	1	0	0	50.00	1	-1	-1	-1	0	60	60	1	3	2	0	0	0	2146093056.00	3035033088.00
