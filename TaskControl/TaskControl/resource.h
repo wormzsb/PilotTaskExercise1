@@ -29,6 +29,7 @@
 #define IDD_PROCESSDLG                  153
 #define IDD_SETTINGDLG7                 154
 #define IDD_DIALOG2                     155
+#define IDD_SETTINGDLG8                 156
 #define IDC_OPEN                        1000
 #define IDC_LIST1                       1000
 #define IDC_SELECT                      1001
@@ -302,6 +303,9 @@
 #define IDC_BALL_CENTER_DIS             1207
 #define IDC_BALL_SPEED1                 1210
 #define IDC_SPEED1                      1211
+#define IDC_FOCUS_TIME                  1212
+#define IDC_COUNTDOWN_TIME              1213
+#define IDC_PRAC_MODE                   1214
 #define IDC_LEFT                        1282
 #define IDC_LEFT6                       1282
 #define IDC_BOTTOM                      1283
@@ -338,9 +342,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        158
+#define _APS_NEXT_RESOURCE_VALUE        160
 #define _APS_NEXT_COMMAND_VALUE         32795
-#define _APS_NEXT_CONTROL_VALUE         1212
+#define _APS_NEXT_CONTROL_VALUE         1215
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

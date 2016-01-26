@@ -22,7 +22,8 @@ const CString m_TaskItem[] = {_T("任务1-目标跟踪能力测试"),
 							   _T("任务4-触点作业操作能力测试"),
 							   _T("任务5-双任务模式图符记忆判别能力测试"),
 							   _T("任务6-双任务模式三维图形记忆判别能力测试"),
-							   _T("任务7-速度知觉能力测试")};
+							   _T("任务7-速度知觉能力测试"),
+							   _T("任务8-三维心理选择测试")};
 int m_CurItemNo;
 /////////////////////////////////////////////////////////////////////////////
 // CSelectView
@@ -201,7 +202,7 @@ void CSelectView::OnInitialUpdate()
 	// TODO: Add your specialized code here and/or call the base class
 	int i;
 	int idx = 0;
-	for(i=0;i<7;i++)
+	for(i=0;i<8;i++)
 	{
 //		m_TaskSig[i] = 1;
 		if (i != 3 && i != 4)
@@ -224,7 +225,7 @@ void CSelectView::OnSetting()
 	CTaskControlDoc* pDoc = (CTaskControlDoc*)GetDocument();
 	pDoc->m_TaskCount = m_SelectedList.GetCount();
 	int i;
-    for(i=0;i<7;i++)
+    for(i=0;i<8;i++)
 	{
 		pDoc->m_TaskNum[i] = 0;
 	}
@@ -348,6 +349,21 @@ void CSelectView::OnSetting()
 				pDoc->m_Setting7[DocNo] = pDoc->m_DefSetting7;
 			}
 			break;
+		case 7:
+			if (pDoc->m_Setting8 == NULL) {
+				pDoc->m_Setting8 = (struct TaskSetting8*)malloc((DocNo + 1)*sizeof(struct TaskSetting8));
+				pDoc->m_DocNum[pDoc->m_TaskOrder[i]] = DocNo + 1;
+			}
+			else if (DocNo>(pDoc->m_DocNum[pDoc->m_TaskOrder[i]] - 1))
+			{
+				pDoc->m_Setting8 = (struct TaskSetting8*)realloc(pDoc->m_Setting8, (DocNo + 1)*sizeof(struct TaskSetting8));
+				pDoc->m_DocNum[pDoc->m_TaskOrder[i]] = DocNo + 1;
+			}
+			if (!pDoc->m_ItemData[pDoc->m_ItemOrder[i]].bSet)
+			{
+				pDoc->m_Setting8[DocNo] = pDoc->m_DefSetting8;
+			}
+			break;
 		}
 	}  
 	CSettingDlg dlg;
@@ -395,6 +411,9 @@ void CSelectView::OnSetting()
 					break;
 				case 6:
 					itemname = pDoc->m_Setting7[pDoc->m_ItemData[ItemIdx].TaskNo].m_TaskName;
+					break;
+				case 7:
+					itemname = pDoc->m_Setting8[pDoc->m_ItemData[ItemIdx].TaskNo].m_TaskName;
 					break;
 				}
 		        newidx = m_SelectedList.InsertString(i,itemname+"  已设置");
@@ -470,6 +489,7 @@ void CSelectView::OnSaveassetting()
 	SetCurrentDirectory(lpBuffer);
 }
 
+// Save all tasks settings into a .setting file
 void CSelectView::SaveSetting(CString FileName) 
 {
 	SetCurrentDirectory(g_szExePath);
@@ -721,6 +741,15 @@ void CSelectView::SaveSetting(CString FileName)
 				fprintf(fp,"IntervalTime\t%d\n",pDoc->m_Setting7[DocNo].m_iIntervalTime);
 				//fprintf(fp, "\n");
 				break;
+			case 7:
+				fprintf(fp, "[Task8(%s)]\n", pDoc->m_Setting8[DocNo].m_TaskName);
+				fprintf(fp, "TaskName\t%d-%s\n", i, pDoc->m_Setting8[DocNo].m_TaskName);
+				fprintf(fp, "PracMode\t%d\n", pDoc->m_Setting8[DocNo].m_bPracMode);
+				fprintf(fp, "PresentTime\t%d\n", pDoc->m_Setting8[DocNo].m_iPrensentTime);
+				fprintf(fp, "FocusTime\t%d\n", pDoc->m_Setting8[DocNo].m_iFocusTime);
+				fprintf(fp, "CountdownTime\t%d\n", pDoc->m_Setting8[DocNo].m_iCountdownTime);
+				fprintf(fp, "\n");
+				break;
 			}
 		}  
 		fclose(fp);
@@ -734,7 +763,7 @@ void CSelectView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint)
 	
 	m_CurItemNo = 0;
 	int i;
-	for(i=0;i<7;i++)
+	for(i=0;i<MAX_TASK;i++)
 	{
 //		m_TaskSig[i] = 1;
 		m_TaskSet[i] = 0;
@@ -776,7 +805,10 @@ void CSelectView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint)
 			break;	
 		case 6:
 			str.Format("%s  已设置",pDoc->m_Setting7[pDoc->m_ItemData[m_CurItemNo].TaskNo].m_TaskName);
-			break;		
+			break;	
+		case 7:
+			str.Format("%s  已设置", pDoc->m_Setting8[pDoc->m_ItemData[m_CurItemNo].TaskNo].m_TaskName);
+			break;
 
 		}
         int newidx = m_SelectedList.AddString(str);
@@ -791,7 +823,7 @@ void CSelectView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint)
 	m_TaskList.ResetContent();
 
 	int idx = 0;
-	for(i=0;i<7;i++)
+	for(i=0;i<MAX_TASK;i++)
 	{
 		if (i != 3 && i != 4)
 		{
@@ -886,6 +918,10 @@ void CSelectView::OnMakesure()
 		case 6:
 			pDoc->m_TaskName[i] = pDoc->m_Setting7[pDoc->m_ItemData[ItemIdx].TaskNo].m_TaskName;
             pDoc->m_TaskExe[i] = _T("Task7");
+			break;
+		case 7:
+			pDoc->m_TaskName[i] = pDoc->m_Setting8[pDoc->m_ItemData[ItemIdx].TaskNo].m_TaskName;
+			pDoc->m_TaskExe[i] = _T("Task8");
 			break;
 		}
 	}	

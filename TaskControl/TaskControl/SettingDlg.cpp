@@ -109,7 +109,13 @@ void CSettingDlg::AddPages()
 			m_SettingDlg7->m_DlgIdx = pDoc->m_ItemData[pDoc->m_ItemOrder[i]].TaskNo;
 			pPages.Add(m_SettingDlg7);
 			csIds.Add(IDD_SETTINGDLG7);
-			break;	
+			break;
+		case 7:
+			m_SettingDlg8 = new CSettingDlg8();
+			m_SettingDlg8->m_DlgIdx = pDoc->m_ItemData[pDoc->m_ItemOrder[i]].TaskNo;
+			pPages.Add(m_SettingDlg8);
+			csIds.Add(IDD_SETTINGDLG8);
+			break;
 		}
 	}  
 }
@@ -166,7 +172,7 @@ BOOL CSettingDlg::OnInitDialog()
 	TC_ITEM ti;
 
 	int i;
-	for(i=0;i<7;i++)
+	for(i=0;i<8;i++)
 	{
 	    pDoc->m_TaskNum[i] = 0;
 	}
@@ -238,12 +244,22 @@ BOOL CSettingDlg::OnInitDialog()
 				m_TabCtrl.InsertItem(m_TabCtrl.GetItemCount(), &ti);
 				cs.UnlockBuffer();
 				pDoc->m_TaskNum[6]++;
-				break;		
+				break;	
+			case 7:
+				cs = "ÈÎÎñ8";
+				ti.mask = TCIF_TEXT | TCIF_PARAM;
+				ti.pszText = cs.LockBuffer();
+				m_TabCtrl.InsertItem(m_TabCtrl.GetItemCount(), &ti);
+				cs.UnlockBuffer();
+				pDoc->m_TaskNum[7]++;
+				break;
+
 			}
 		}  
 	}
-
+	// Add tab pages
 	AddPages();
+
 	if(pPages.GetSize()>0)
 	{
 		CRect rc;
@@ -276,6 +292,7 @@ BOOL CSettingDlg::OnInitDialog()
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
+// on confirm btn
 void CSettingDlg::OnApplication() 
 {
 	// TODO: Add your control notification handler code here
@@ -314,6 +331,9 @@ void CSettingDlg::OnApplication()
 			m_SettingDlg7=(CSettingDlg7*)GetDialog(t);
 			m_SettingDlg7->Save();
 			break;	
+		case 7:
+			m_SettingDlg8 = (CSettingDlg8*)GetDialog(t);
+			m_SettingDlg8->Save();
 		}
 	}
 }

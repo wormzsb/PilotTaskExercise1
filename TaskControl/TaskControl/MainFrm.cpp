@@ -354,7 +354,10 @@ void CMainFrame::ReadSetting(CString FileName)
 					pDoc->m_Setting7 = new struct TaskSetting7[pDoc->m_TaskNum[6]];
 					pDoc->m_DocNum[i] = pDoc->m_TaskNum[i];
 					break;
-
+				case 7:
+					pDoc->m_Setting8 = new struct TaskSetting8[pDoc->m_TaskNum[7]];
+					pDoc->m_DocNum[i] = pDoc->m_TaskNum[i];
+					break;
 				}
 			}
 		}
@@ -366,6 +369,7 @@ void CMainFrame::ReadSetting(CString FileName)
 		int i5=0;
 		int i6=0;
 		int i7 = 0;
+		int i8 = 0;
 		int idx;
 		while(str.Left(5)==_T("[Task"))
 		{
@@ -590,6 +594,16 @@ void CMainFrame::ReadSetting(CString FileName)
 				fscanf_s(fp,"\n");
 			    i7++;
 				break;
+			case 7:
+				fscanf_s(fp, "TaskName\t%d-%s\n", &idx, &pDoc->m_Setting8[i8].m_TaskName,100);
+				fscanf_s(fp, "PracMode\t%d\n", &pDoc->m_Setting8[i8].m_bPracMode);
+				fscanf_s(fp, "PresentTime\t%d\n", &pDoc->m_Setting8[i8].m_iPrensentTime);
+				fscanf_s(fp, "FocusTime\t%d\n", &pDoc->m_Setting8[i8].m_iFocusTime);
+				fscanf_s(fp, "CountdownTime\t%d\n", &pDoc->m_Setting8[i8].m_iCountdownTime);
+				fscanf_s(fp, "\n");
+				i8++;
+				break;
+
 			}
 			strcpy_s(m_str,100,"");
 			fscanf_s(fp,"%s\n",m_str,100);

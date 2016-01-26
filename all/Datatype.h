@@ -245,6 +245,16 @@ struct TaskSetting7
 	
 };
 
+//任务8设置
+struct TaskSetting8
+{
+	char    m_TaskName[100];
+	BOOL m_bPracMode;				// 0:exercise; 1: formal
+	int m_iPrensentTime;			// defualt: 10s
+	int m_iFocusTime;			// default: 2s
+	int m_iCountdownTime;		// default: 5s
+};
+
 //硬件设置
 struct HardSetting
 {

@@ -14,6 +14,7 @@
 #include "SettingDlg5.h"
 #include "SettingDlg6.h"
 #include "SettingDlg7.h"
+#include "SettingDlg8.h"
 /////////////////////////////////////////////////////////////////////////////
 // CSettingDlg dialog
 class CSettingDlg : public CDialog
@@ -50,7 +51,8 @@ protected:
 	CSettingDlg4 *m_SettingDlg4;
 	CSettingDlg5 *m_SettingDlg5; 
 	CSettingDlg6 *m_SettingDlg6; 
-	CSettingDlg7 *m_SettingDlg7; 
+	CSettingDlg7 *m_SettingDlg7;
+	CSettingDlg8 *m_SettingDlg8;
 	CPtrArray pPages;
 	CWordArray csIds;
 	int iCurIdx;

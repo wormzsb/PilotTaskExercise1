@@ -58,6 +58,6 @@
 //#import <mschrt20.ocx> no_namespace 
 #import "MSCHRT20.OCX" no_namespace 
 
-#define MAX_TASK 7
+#define MAX_TASK 8
 
 extern char g_szExePath[MAX_PATH];

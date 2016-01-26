@@ -212,6 +212,13 @@ CTaskControlDoc::CTaskControlDoc()
 	m_DefSetting7.m_iPracTimes = 3;
 	m_DefSetting7.m_iSpeedMode = 0;
 
+	// Task 8 set default
+	strcpy_s(m_DefSetting8.m_TaskName, 100, "任务8-三维心理选择");
+	m_DefSetting8.m_bPracMode = FALSE;
+	m_DefSetting8.m_iFocusTime = 2;
+	m_DefSetting8.m_iPrensentTime = 10;
+	m_DefSetting8.m_iCountdownTime = 5;
+
 	m_Setting1 = NULL;
 	m_Setting2 = NULL;
 	m_Setting3 = NULL;
@@ -219,6 +226,7 @@ CTaskControlDoc::CTaskControlDoc()
 	m_Setting5 = NULL;
 	m_Setting6 = NULL;
 	m_Setting7 = NULL;
+	m_Setting8 = NULL;
 
 	m_HardSetting.m_JoySpeedMax = 200;
 	m_HardSetting.m_KnobSensitive = 1;
@@ -294,14 +302,14 @@ CTaskControlDoc::CTaskControlDoc()
 
 	m_TaskCount = 0;
 	m_CurTaskCount = 0;
-    for(i=0;i<7;i++)
+    for(i=0;i<MAX_TASK;i++)
 	{
 		for(int j=0;j<50;j++)
 		{
 			m_bUsedIdx[i][j] = FALSE;
 		}
 	}
-	for(i=0;i<7;i++)
+	for(i=0;i<MAX_TASK;i++)
 	{
 		m_DocNum[i] = 0;
 	}
@@ -405,17 +413,22 @@ void CTaskControlDoc::NewSetting()
 		m_Setting7 = NULL;
 	}
 
+	if (m_Setting8 != NULL)
+	{
+		delete[]m_Setting8;
+		m_Setting8 = NULL;
+	}
 
 	m_TaskCount = 0;
 	int i;
-    for(i=0;i<7;i++)
+    for(i=0;i<MAX_TASK;i++)
 	{
 		for(int j=0;j<50;j++)
 		{
 			m_bUsedIdx[i][j] = FALSE;
 		}
 	}
-	for(i=0;i<7;i++)
+	for(i=0;i<MAX_TASK;i++)
 	{
 		m_DocNum[i] = 0;
 	}
@@ -552,6 +565,9 @@ BOOL CTaskControlDoc::ReadDataFile()
             m_bOpenFile1 = ReadT6Trace();
 			m_bOpenFile2 = ReadT6Memory();
 		}
+		break;
+	case 7:
+		// xxx
 		break;
 	}	
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -3756,5 +3772,10 @@ void CTaskControlDoc::DataAnalysis()
 			}
 		}
 		break;
+	case 7:
+		// xxx
+		break;
+
+
 	}		
 }

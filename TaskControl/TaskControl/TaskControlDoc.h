@@ -32,6 +32,7 @@ public:
 	struct TaskSetting5  m_DefSetting5;
 	struct TaskSetting6  m_DefSetting6;
 	struct TaskSetting7  m_DefSetting7;
+	struct TaskSetting8  m_DefSetting8;
     struct TaskSetting1  *m_Setting1;
 	struct TaskSetting2  *m_Setting2;
 	struct TaskSetting3  *m_Setting3;
@@ -39,6 +40,7 @@ public:
 	struct TaskSetting5  *m_Setting5;
 	struct TaskSetting6  *m_Setting6;
 	struct TaskSetting7  *m_Setting7;
+	struct TaskSetting8  *m_Setting8;
 	struct HardSetting   m_HardSetting;
 	struct PartInfo      m_PartInfo;
 	struct PartInfo      m_CurPartInfo;

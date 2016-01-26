@@ -391,7 +391,7 @@ void CAnalysisDlg::DisplayResult()
 		}
 		break;
 
-		//任务7
+		//任务7 xxx
 	case 7:
 		break;
 

@@ -178,7 +178,9 @@ BOOL CResultDlg::OnInitDialog()
 		bLoadMenu = TRUE;
 		SetWindowText("数据分析—双任务模式三维图形记忆判别能力测试");
 		break;
-
+	case 7:
+		// xxx
+		break;
 	}
     if(bLoadMenu)
 	{
@@ -315,6 +317,7 @@ void CResultDlg::DataChart(short PlotNo)
 			break;
 		}
 		break;
+		// xxx
 	}
 	SetCurDlg(1);
 }
