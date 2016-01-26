@@ -216,6 +216,7 @@ public:
 
 	// хннЯ2 
 	vector<double> m_HoldTimeErrAve;
+	vector<double> settingOrderHoldTimeErrRateAve;
 
 // Operations
 public:

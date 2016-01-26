@@ -2723,6 +2723,7 @@ void CTaskControlDoc::initAnalyseResult()
 	m_TargetCount = 0;
 	m_NoTargetCount = 0;
 	m_HoldTimeErrAve.clear();
+	settingOrderHoldTimeErrRateAve.clear();
 }
 
 
@@ -2880,9 +2881,11 @@ void CTaskControlDoc::DataAnalysis()
 	//		pos = pDoc->m_FileName.ReverseFind('\\');
 	//	    pos1 = pDoc->m_FileName.ReverseFind('-');
 
+			// ------------------------------------------------------
 			// pDoc->m_HoldTime[i]: is the real hold time order
 			// pDoc->m_Setting2[0].m_HoldTime[i] is the setting hold time 
 			// which should be the expected order in Analysis dialog 
+			// ------------------------------------------------------
 
 			vector<int> uniqueHoldTimeVec;
 
@@ -2912,6 +2915,15 @@ void CTaskControlDoc::DataAnalysis()
 				for (int j = 0; j < ind.size(); j++) // 写到相同的holdtime的holdTimeError中
 				{
 					m_HoldTimeErrAve[ind[j]] = err;
+				}
+			}
+			// Sort in setting hold time order
+			for (int i = 0; i < m_Setting2[0].m_HoldTimeNum; i++) {
+				for (int j = 0; j < m_Setting2[0].m_HoldTimeNum; j++) {
+					if (m_Setting2[0].m_HoldTime[i]*1000 == m_HoldTime[j]) {
+						settingOrderHoldTimeErrRateAve.push_back(m_HoldTimeErrAve[j]);
+						break;
+					}
 				}
 			}
 		}
@@ -2977,7 +2989,7 @@ void CTaskControlDoc::DataAnalysis()
 					for(i=0;i<m_Setting2[0].m_HoldTimeNum;i++)
 					{	
 						//fprintf(fp, "%.2f\t", (float)m_HoldErrorTotal[i] / (float)m_HoldCountTotal[i]);//错了
-						fprintf(fp,"%.2f\t", m_HoldTimeErrAve[i]);
+						fprintf(fp,"%.2f\t", settingOrderHoldTimeErrRateAve[i]);
 					}
 					for(i=m_Setting2[0].m_HoldTimeNum;i<12;i++)
 					{

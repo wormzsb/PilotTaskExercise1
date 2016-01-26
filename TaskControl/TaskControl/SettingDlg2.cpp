@@ -130,7 +130,7 @@ BOOL CSettingDlg2::OnInitDialog()
 	CMainFrame*   pMain   =(CMainFrame*)AfxGetMainWnd();
     CTaskControlDoc* pDoc = (CTaskControlDoc*)pMain->GetActiveDocument();
 	m_ccbTrack.AddString("Ô²ÐÎ");
-	m_ccbTrack.AddString("8×ÖÐÎ");
+	m_ccbTrack.AddString("ºá8×ÖÐÎ");
 	m_ccbTrack.SetCurSel( pDoc->m_Setting2[m_DlgIdx].m_iTrack);
 	m_TaskName = pDoc->m_Setting2[m_DlgIdx].m_TaskName;
 	m_PracMode = pDoc->m_Setting2[m_DlgIdx].m_PracMode;

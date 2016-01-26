@@ -122,7 +122,7 @@ BOOL CSettingDlg1::OnInitDialog()
 
     m_Track.InsertString(0,"Ô²ÐÎ");
 	m_Track.InsertString(1,"ÍÖÔ²ÐÎ");
-	m_Track.InsertString(2,"°Ë×ÖÐÎ");
+	m_Track.InsertString(2,"ºá8×ÖÐÎ");
 	m_Track.SetCurSel(pDoc->m_Setting1[m_DlgIdx].m_Track);
 
 	m_iJoyMoveDirection = pDoc->m_Setting1[m_DlgIdx].m_iJoyMoveDirection;

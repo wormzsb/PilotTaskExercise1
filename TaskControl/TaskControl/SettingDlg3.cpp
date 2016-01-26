@@ -153,7 +153,7 @@ BOOL CSettingDlg3::OnInitDialog()
 	m_iExpTimes = pDoc->m_Setting3[m_DlgIdx].m_ExperTimes;
 
 	m_ccbTrack.AddString("Ô²ÐÎ");
-	m_ccbTrack.AddString("8×ÖÐÎ");
+	m_ccbTrack.AddString("ºá8×ÖÐÎ");
 	m_ccbTrack.SetCurSel(pDoc->m_Setting3[m_DlgIdx].m_iTrack);
 
 	m_TaskName = pDoc->m_Setting3[m_DlgIdx].m_TaskName;
