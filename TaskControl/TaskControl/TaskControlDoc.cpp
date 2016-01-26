@@ -2879,10 +2879,15 @@ void CTaskControlDoc::DataAnalysis()
 			//}
 	//		pos = pDoc->m_FileName.ReverseFind('\\');
 	//	    pos1 = pDoc->m_FileName.ReverseFind('-');
+
+			// pDoc->m_HoldTime[i]: is the real hold time order
+			// pDoc->m_Setting2[0].m_HoldTime[i] is the setting hold time 
+			// which should be the expected order in Analysis dialog 
+
 			vector<int> uniqueHoldTimeVec;
 
-			for (int i = 0; i < m_Setting2[0].m_HoldTimeNum; i++)//放入误差绝对值
-				m_HoldTimeErrAve.push_back(fabs(m_HoldError[i]));
+			for (int i = 0; i < m_Setting2[0].m_HoldTimeNum; i++)//放入误差率绝对值
+				m_HoldTimeErrAve.push_back(fabs(m_ErrorRatio[i]));
 			for (int i = 0; i < m_Setting2[0].m_HoldTimeNum; i++)//查找不同的holdtime
 			{
 				if (uniqueHoldTimeVec.empty()) uniqueHoldTimeVec.push_back(m_HoldTime[i]);
