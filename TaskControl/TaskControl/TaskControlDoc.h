@@ -6,6 +6,8 @@
 
 #include<vector>
 #include<algorithm>
+#include<fstream>
+#include<sstream>
 using namespace std;
 
 class CTaskControlDoc : public CDocument
@@ -218,6 +220,14 @@ public:
 	vector<double> m_HoldTimeErrAve;
 	vector<double> settingOrderHoldTimeErrRateAve;
 
+	// 任务7记录的数据类型（暂时放在这里，方便修改）
+	struct T7Rec {
+		int no;
+		double buttonDistance;
+		double deviationRate;
+		double smallBallSpeed;
+	};
+	vector<struct T7Rec> t7Recs;
 // Operations
 public:
 	void initAnalyseResult();
@@ -225,6 +235,7 @@ public:
     void NewTester();
     void NewSetting();
 	BOOL ReadDataFile();
+	BOOL ReadT7();
 	BOOL ReadT1();
 	BOOL ReadT2Trace();
 	BOOL ReadT2Hold();

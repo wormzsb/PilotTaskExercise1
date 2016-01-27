@@ -37,6 +37,8 @@ public:
 	BOOL AddHeadT6Trace();
 	BOOL AddHeadT6Judge();
 	BOOL AddHeadT6Memory();
+	BOOL AddHeadT7();
+
 
 	BOOL AddT1Item(int i);
 	BOOL AddT2TraceItem(int i);
@@ -50,6 +52,7 @@ public:
 	BOOL AddT6TraceItem(int i);
 	BOOL AddT6JudgeItem(int i);
 	BOOL AddT6MemoryItem(int i);
+	BOOL AddT7Item(int i);
 
 // Overrides
 	// ClassWizard generated virtual function overrides
@@ -65,6 +68,8 @@ protected:
 	afx_msg void OnSelchangeTab1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	virtual BOOL OnInitDialog();
+	CString getCString(double x);
+	CString getCString(int x);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 public:
