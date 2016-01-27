@@ -1,38 +1,33 @@
 [TaskOrder]
-Task3
+Task7
 
-[Task3(任务3-双任务模式突发事件反应时测试)]
-TaskName	0-任务3-双任务模式突发事件反应时测试
+[Task7(任务7-速度知觉能力测试)]
+TaskName	0-任务7-速度知觉能力测试
 PracMode	1
 ExperMode	0
-MainTask	0
-SubTask	1
-MainTaskMode	-1
-Background	0
-InitSpeed	50.00
-EventMode	0
-CodePairMode	-1
-CodePairNum	-1
-DisplayMode	-1
-EventFrequency	0
-PracTime	60
-ExperTime	60
-PracTimes	1
-ExperTimes	2
-JoyMoveDirection	0
-PlanePos	15
-Direction	0
 SpeedMode	0
-Speed	100.000000
-SpeedMin	50.000000
-SpeedMax	150.000000
-AccelerationMin	2.000000
-AccelerationMax	5.000000
-Track	0
-Plane	1
-Helicopter	1
-PresentTime	2
-IntervalMin	4
-IntervalMax	8
-ReactTime	2
-
+BallColorR	255
+BallColorG	0
+BallColorB	0
+BallStartPos	15
+PosTop	1
+PosBottom	1
+PosLeft	1
+PosRight	1
+BallCenterDis	350
+BallSpeed1	50
+BallSpeed2	100
+BallSpeed3	150
+BallSpeedAcc	10
+BallSpeedMax	-842150451
+BallRadius	15
+BckGrndColorR	0
+BckGrndColorG	0
+BckGrndColorB	0
+ObstacleColorR	80
+ObstacleColorG	80
+ObstacleColorB	80
+ObstacleRadius	200
+PracTimes	3
+ExpTimes	3
+IntervalTime	2

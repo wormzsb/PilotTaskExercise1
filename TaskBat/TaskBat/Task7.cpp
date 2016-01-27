@@ -268,7 +268,7 @@ VOID t7::SaveName()
 	_mkdir(m_DataDir);  
 	sprintf(m_file, "%s\\%s", m_DataDir, m_filename);
 
-	//写入文件
+	//写入文件 old code
 	fp = fopen(m_file,"at");
 
 	
@@ -281,7 +281,7 @@ VOID t7::SaveName()
 
 	fprintf(fp,"遮挡物颜色R:%d G:%d B:%d\t\n",m_Setting.m_iObstacleColorR,m_Setting.m_iObstacleColorG,m_Setting.m_iObstacleColorB);
 
-	fprintf(fp,"测试序号\t按键距离\t偏差率\n");
+	fprintf(fp,"测试序号\t按键距离\t偏差率\t小球速度\n");
 	
 	fclose(fp);
 	
@@ -297,17 +297,21 @@ VOID t7::SaveData()
 {
 	FILE* fp = fopen(m_file,"at");
 	double dNowDistance = sqrt(pow(stPntSmallBall.dX - stPntSmallBallOrg.dX, 2)+pow(stPntSmallBall.dY - stPntSmallBallOrg.dY, 2));
+	
+	// 测试序号
 	fprintf(fp,"%d\t",iTotalTskCnt);
 
+	// 按键距离 偏差率
 	if (!bTimeOut) {
 		fprintf(fp, "%.1lf%\t", (dNowDistance - dOrgDistance));
-		fprintf(fp, "%.4lf%%\n", (dNowDistance - dOrgDistance) / dOrgDistance * 100);
+		fprintf(fp, "%.4lf%%\t", (dNowDistance - dOrgDistance) / dOrgDistance * 100);
 	}
 	else {
 		fprintf(fp, "%.1lf%\t", (dNowDistance - dOrgDistance));
-		fprintf(fp, "%d\n", -1);
+		fprintf(fp, "%d\t", -1);
 	}
-
+	// 小球速度
+	fprintf(fp, "%.4lf%%\n", dBallSpeed);
 	fclose(fp);
 }
 

@@ -91,6 +91,14 @@ void CListDlg::OnSize(UINT nType, int cx, int cy)
 	}	
 }
 
+BOOL CListDlg::AddHeadT7(){
+	m_ResultList.AddColumn(_T("²âÊÔÐòºÅ"), 1, 80, LVCFMT_RIGHT);
+	m_ResultList.AddColumn(_T("°´¼ü¾àÀë"), 1, 80, LVCFMT_RIGHT);
+	m_ResultList.AddColumn(_T("Æ«²îÂÊ"), 1, 80, LVCFMT_RIGHT);
+	m_ResultList.AddColumn(_T("Ð¡ÇòËÙ¶È"), 1, 80, LVCFMT_RIGHT);
+}
+
+
 BOOL CListDlg::AddHeadT1()
 {
     m_ResultList.AddColumn(_T("ID"),1,80,LVCFMT_RIGHT);
@@ -910,6 +918,32 @@ BOOL CListDlg::OnInitDialog()
 	}	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
+}
+
+CString CListDlg::getCString(double x) {
+	stringstream ss;
+	ss << x;
+	CString cstr(ss.str().c_str());
+	return cstr;
+}
+
+CString CListDlg::getCString(int x) {
+	stringstream ss;
+	ss << x;
+	CString cstr(ss.str().c_str());
+	return cstr;
+}
+
+
+BOOL CListDlg::AddT7Item(int i) {
+	CMainFrame*   pMain = (CMainFrame*)AfxGetMainWnd();
+	CTaskControlDoc* pDoc = (CTaskControlDoc*)pMain->GetActiveDocument();
+	
+	m_ResultList.AddItem(i, 0, getCString((pDoc->t7Recs[i]).no), -1);
+	m_ResultList.AddItem(i, 1, getCString((pDoc->t7Recs[i]).buttonDistance), -1);
+	m_ResultList.AddItem(i, 2, getCString((pDoc->t7Recs[i]).deviationRate), -1);
+	m_ResultList.AddItem(i, 3, getCString((pDoc->t7Recs[i]).smallBallSpeed), -1);
+	return TRUE;
 }
 
 BOOL CListDlg::AddT1Item(int i)

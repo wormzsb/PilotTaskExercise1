@@ -574,6 +574,91 @@ BOOL CTaskControlDoc::ReadDataFile()
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
+BOOL CTaskControlDoc::ReadT7() {
+	CMainFrame*   pMain = (CMainFrame*)AfxGetMainWnd();
+	m_TrialType = -1;
+	m_ExperStart1 = -1;
+	bExitItem1 = FALSE;
+	FILE *fp;
+	int j = 0;
+	//	FILE *fp1;
+	CString str;
+	char tmp[1000];
+
+	CString m_SaveName;
+	//	char filestr[50];
+	//	int len;
+	_mkdir("Result");
+	_mkdir("Result\\Task7");
+	m_SaveName = "Result\\Task7\\task7_tracking_result.txt";
+	
+	// 这部分看起来没什么用
+	fopen_s(&fp, m_SaveName, "r");
+	{
+		if (fp != NULL)
+		{
+			fgets(tmp, 1000, fp);
+			while (!feof(fp))
+			{
+				fgets(tmp, 1000, fp);
+				if (strncmp(tmp, m_DataFileName, m_DataFileName.GetLength()) == 0)
+				{
+					if (bBatch)
+					{
+						fclose(fp);
+						return FALSE;
+					}
+					else
+					{
+						bExitItem1 = TRUE;
+					}
+				}
+			}
+			bExist1 = TRUE;
+			fclose(fp);
+		}
+		else
+		{
+			bExist1 = FALSE;
+		}
+	}
+
+	// get list dialog pointer
+	CResultDlg *m_pWSDlg;
+	if (!bBatch)
+	{
+		m_pWSDlg = (CResultDlg *)pMain->m_pWSDlg;
+	}
+
+	// 读取Data数据
+	//fopen_s(&fp, m_FileName, "rt");
+	ifstream fin;
+	fin.open((CT2A(m_FileName)));
+	if (fin.is_open()==0) {
+		AfxMessageBox("文件没有正确打开");
+		return;
+	}
+	
+	char sz[100];
+	// read head(3 rows)
+	fin.getline(sz, 100);
+	fin.getline(sz, 100);
+	fin.getline(sz, 100);
+	int i = 0;
+	struct T7Rec rec;
+	while (!fin.eof()) {
+		// read each line
+		fin >> rec.no >> rec.buttonDistance >> rec.deviationRate >> rec.smallBallSpeed;
+		t7Recs.push_back(rec);
+
+		// add to list dialog
+		m_pWSDlg->m_ListDlg.AddT7Item(i);
+
+		i++;
+	}
+}
+
+
 BOOL CTaskControlDoc::ReadT1()
 {
 	CMainFrame*   pMain   =(CMainFrame*)AfxGetMainWnd();
