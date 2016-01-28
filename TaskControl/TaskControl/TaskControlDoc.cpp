@@ -636,7 +636,7 @@ BOOL CTaskControlDoc::ReadT7() {
 	fin.open((CT2A(m_FileName)));
 	if (fin.is_open()==0) {
 		AfxMessageBox("文件没有正确打开");
-		return;
+		return TRUE;
 	}
 	
 	char sz[100];
@@ -645,17 +645,22 @@ BOOL CTaskControlDoc::ReadT7() {
 	fin.getline(sz, 100);
 	fin.getline(sz, 100);
 	int i = 0;
-	struct T7Rec rec;
 	while (!fin.eof()) {
 		// read each line
-		fin >> rec.no >> rec.buttonDistance >> rec.deviationRate >> rec.smallBallSpeed;
-		t7Recs.push_back(rec);
+		char c;
+		struct T7Rec rec;
 
+		fin >> rec.no >> rec.buttonDistance >> rec.deviationRate >> c >> rec.smallBallSpeed;
+		if (fin.fail()) break;
+		
+		t7Recs.push_back(rec);
+		
 		// add to list dialog
 		m_pWSDlg->m_ListDlg.AddT7Item(i);
 
 		i++;
 	}
+	return TRUE;
 }
 
 

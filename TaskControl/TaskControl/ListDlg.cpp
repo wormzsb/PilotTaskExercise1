@@ -93,9 +93,10 @@ void CListDlg::OnSize(UINT nType, int cx, int cy)
 
 BOOL CListDlg::AddHeadT7(){
 	m_ResultList.AddColumn(_T("测试序号"), 1, 80, LVCFMT_RIGHT);
-	m_ResultList.AddColumn(_T("按键距离"), 1, 80, LVCFMT_RIGHT);
-	m_ResultList.AddColumn(_T("偏差率"), 1, 80, LVCFMT_RIGHT);
+	m_ResultList.AddColumn(_T("按键距离"), 1, 100, LVCFMT_RIGHT);
+	m_ResultList.AddColumn(_T("偏差率"), 1, 120, LVCFMT_RIGHT);
 	m_ResultList.AddColumn(_T("小球速度"), 1, 80, LVCFMT_RIGHT);
+	return TRUE;
 }
 
 
@@ -913,7 +914,28 @@ BOOL CListDlg::OnInitDialog()
 		}
 		break;
 	case 7:
-		// xxx
+		if (m_TabCtrl.GetSafeHwnd())
+		{
+			cs = "速度知觉结果";
+			ti.mask = TCIF_TEXT | TCIF_PARAM;
+			ti.pszText = cs.LockBuffer();
+			//			ti.lParam = (long) pView;
+			m_TabCtrl.InsertItem(m_TabCtrl.GetItemCount(), &ti);
+			cs.UnlockBuffer();
+		}
+
+		m_ResultList.DeleteAllItems();            //删除列表中所有内容(行)
+		while (m_ResultList.DeleteColumn(0));     //删除列表中所有列
+												  //向列表框中添加列
+		if (pDoc->m_Setting7 != NULL)
+		{
+			delete[]pDoc->m_Setting7;
+			pDoc->m_Setting7 = NULL;
+		}
+		pDoc->m_Setting7 = new struct TaskSetting7[1];
+		AddHeadT7();
+		pDoc->MemClear();
+		pDoc->m_bOpenFile1 = pDoc->ReadT7();
 		break;
 	}	
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -941,7 +963,7 @@ BOOL CListDlg::AddT7Item(int i) {
 	
 	m_ResultList.AddItem(i, 0, getCString((pDoc->t7Recs[i]).no), -1);
 	m_ResultList.AddItem(i, 1, getCString((pDoc->t7Recs[i]).buttonDistance), -1);
-	m_ResultList.AddItem(i, 2, getCString((pDoc->t7Recs[i]).deviationRate), -1);
+	m_ResultList.AddItem(i, 2, getCString((pDoc->t7Recs[i]).deviationRate) + CString("%"), -1);
 	m_ResultList.AddItem(i, 3, getCString((pDoc->t7Recs[i]).smallBallSpeed), -1);
 	return TRUE;
 }
