@@ -224,10 +224,19 @@ public:
 	struct T7Rec {
 		int no;
 		double buttonDistance;
-		double deviationRate;
+		double deviationRate; //单位：百分比
 		double smallBallSpeed;
 	};
 	vector<struct T7Rec> t7Recs;
+
+	//任务7的结果数据类型
+	struct T7Res {
+		int taskCount;
+		double avgDeviationRate;
+		double sqtDeviationRate;
+		int unResponceCount;
+	};
+	struct T7Res t7res;
 // Operations
 public:
 	void initAnalyseResult();

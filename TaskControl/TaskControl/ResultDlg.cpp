@@ -179,7 +179,13 @@ BOOL CResultDlg::OnInitDialog()
 		SetWindowText("数据分析—双任务模式三维图形记忆判别能力测试");
 		break;
 	case 7:
-		// xxx
+		if (!addmenu.LoadMenu(IDR_MENU2)) //装入菜单资源。
+		{
+			MessageBox("菜单装入失败!", "错误", MB_OK | MB_ICONERROR);
+			return FALSE;
+		}
+		bLoadMenu = TRUE;
+		SetWindowText("数据分析—速度知觉任务测试");
 		break;
 	}
     if(bLoadMenu)
@@ -317,7 +323,8 @@ void CResultDlg::DataChart(short PlotNo)
 			break;
 		}
 		break;
-		// xxx
+	case 7:
+		break;
 	}
 	SetCurDlg(1);
 }

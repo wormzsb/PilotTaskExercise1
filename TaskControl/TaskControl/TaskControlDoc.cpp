@@ -644,6 +644,8 @@ BOOL CTaskControlDoc::ReadT7() {
 	fin.getline(sz, 100);
 	fin.getline(sz, 100);
 	fin.getline(sz, 100);
+	
+	t7Recs.clear();
 	int i = 0;
 	while (!fin.eof()) {
 		// read each line
@@ -2814,6 +2816,7 @@ void CTaskControlDoc::initAnalyseResult()
 	m_NoTargetCount = 0;
 	m_HoldTimeErrAve.clear();
 	settingOrderHoldTimeErrRateAve.clear();
+	t7res = {0, 0., 0., 0};
 }
 
 
@@ -3879,10 +3882,31 @@ void CTaskControlDoc::DataAnalysis()
 			}
 		}
 		break;
-	case 7:
-		// xxx
+	case 7:// Undebugged!
+		// Save result
+		t7res.taskCount = t7Recs.size();
+		double sumOfDeviationRate = 0.;
+		for (int i = 0; i <  t7Recs.size(); i++) {
+			if (t7Recs[i].deviationRate != -1.) {
+				sumOfDeviationRate += fabs(t7Recs[i].deviationRate);
+			}
+			else
+				t7res.unResponceCount++;
+		}
+		t7res.avgDeviationRate = sumOfDeviationRate / (t7res.taskCount-t7res.unResponceCount);
+		for (int i = 0; i < t7Recs.size(); i++)
+		{
+			if (t7Recs[i].deviationRate -= -1.) {
+				t7res.sqtDeviationRate += 
+					pow(fabs(t7Recs[i].deviationRate) - t7res.avgDeviationRate, 2.);
+			}
+		}
+		t7res.sqtDeviationRate = sqrtf(t7res.sqtDeviationRate
+			/ (t7res.taskCount - t7res.unResponceCount - 1));
 		break;
 
 
 	}		
 }
+
+
