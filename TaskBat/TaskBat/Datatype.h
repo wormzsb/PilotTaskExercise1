@@ -374,7 +374,11 @@ enum STATE_TYPE
     STATE_DISPLAYOPTION,            //出现选项框
 	STATE_OVER,                     //结束
 	STATE_EXIT,                      //程序退出
-	STATE_NEXT                      //下一个任务
+	STATE_NEXT,                      //下一个任务
+	
+	// 任务8
+	STATE_EXERCISE,
+	STATE_FORMAL
 };
 
 //上述变量和文字的对应关系

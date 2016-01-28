@@ -108,6 +108,7 @@
     <ClCompile Include="Task6_1.cpp" />
     <ClCompile Include="Task6_2.cpp" />
     <ClCompile Include="Task7.cpp" />
+    <ClCompile Include="Task8.cpp" />
     <ClCompile Include="TaskBat.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -122,6 +123,7 @@
     <ClInclude Include="Task6_1.h" />
     <ClInclude Include="Task6_2.h" />
     <ClInclude Include="Task7.h" />
+    <ClInclude Include="Task8.h" />
     <ClInclude Include="TaskBat.h" />
   </ItemGroup>
   <ItemGroup>
