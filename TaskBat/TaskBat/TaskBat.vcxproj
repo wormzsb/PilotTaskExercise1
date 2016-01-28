@@ -108,7 +108,6 @@
     <ClCompile Include="Task6_1.cpp" />
     <ClCompile Include="Task6_2.cpp" />
     <ClCompile Include="Task7.cpp" />
-    <ClCompile Include="Task8.cpp" />
     <ClCompile Include="TaskBat.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -123,7 +122,6 @@
     <ClInclude Include="Task6_1.h" />
     <ClInclude Include="Task6_2.h" />
     <ClInclude Include="Task7.h" />
-    <ClInclude Include="Task8.h" />
     <ClInclude Include="TaskBat.h" />
   </ItemGroup>
   <ItemGroup>
@@ -135,6 +133,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
