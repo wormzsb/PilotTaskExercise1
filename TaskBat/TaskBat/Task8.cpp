@@ -4,6 +4,10 @@
 #include "stdafx.h"
 #include "Task8.h"
 
+int g_imgDisplayInd = -1;
+int g_imgLastInd = -2;
+bool isPressBtn = false;
+bool isCoBtn = false;
 vector <string> LImgs, RImgs;
 
 struct tagREC {
@@ -13,7 +17,7 @@ struct tagREC {
 	bool unCoincidence; // 0:重合 1：不能重合
 	int btn;			//0：重合 1：不重合 -1：超时
 	bool isRight;		// 0: 错误 1：正确
-	int responseTime;	// 单位毫秒
+	double responseTime;	// 单位毫秒
 };
 typedef tagREC Rec;
 
@@ -25,6 +29,9 @@ LARGE_INTEGER endTime;
 
 bool bTimerExist = false;
 thread timerThread;
+
+string picDir = "./Pics/TaskR/";
+
 int t8::rtn;
 HINSTANCE t8::gHinstance;
 float t8::acce;//加速度
@@ -706,7 +713,7 @@ VOID t8::TestInit()
 unsigned addTex(LPDIRECT3DDEVICE9 & dev, string fileName, LPDIRECT3DTEXTURE9 &tex) {
 	if (FAILED(D3DXCreateTextureFromFile(dev, fileName.c_str(), &tex)))
 	{
-		MessageBox(NULL, "文件不存在", "添加纹理", MB_OK);
+		MessageBox(NULL, "文件不存在", "添加纹理？？？", MB_OK);
 		return E_FAIL;
 	}
 }
@@ -1016,7 +1023,7 @@ BOOL t8::drawText( string str, int tx, int ty, LPD3DXFONT &g_pFont) {
 }
 
 //在指定位置和缩放系数画纹理
-BOOL drawTex(double tx, double ty, LPD3DXSPRITE &g_pSprite, 
+BOOL t8::drawTex(double tx, double ty, LPD3DXSPRITE &g_pSprite, LPDIRECT3DTEXTURE9 &tex,
 	double scale, int x_resolution, int y_resolution, int h, int w) {
 	D3DXMATRIX mx;
 	if (SUCCEEDED(g_pSprite->Begin(D3DXSPRITE_ALPHABLEND))) {
@@ -1032,7 +1039,7 @@ BOOL drawTex(double tx, double ty, LPD3DXSPRITE &g_pSprite,
 			);
 		g_pSprite->SetTransform(&mx);
 		g_pSprite->Draw(
-			texLeft,
+			tex,
 			NULL,							// 纹理源的ROI 
 			&D3DXVECTOR3(0, 0, 0),			// 精灵中心 
 			&D3DXVECTOR3(0, 0, 0),			// 精灵位置
@@ -1045,7 +1052,8 @@ BOOL drawTex(double tx, double ty, LPD3DXSPRITE &g_pSprite,
 }
 
 // 按照模式画纹理
-BOOL drawTex(string mode, LPD3DXSPRITE &g_pSprite,
+BOOL t8::drawTex(string mode, LPD3DXSPRITE &g_pSprite, 
+	LPDIRECT3DTEXTURE9 &ltex, LPDIRECT3DTEXTURE9 &rtex,
 	double scale, int x_resolution, int y_resolution, int h, int w) {
 	
 	D3DXMATRIX mx;
@@ -1054,18 +1062,18 @@ BOOL drawTex(string mode, LPD3DXSPRITE &g_pSprite,
 		double tx, ty;
 		tx = x_resolution / 2 - scale*w;
 		ty = (y_resolution - scale*h) / 2;
-		if (!drawTex(tx, ty, g_pSprite, scale, x_resolution, y_resolution, h, w))
+		if (!drawTex(tx, ty, g_pSprite, ltex, scale, x_resolution, y_resolution, h, w))
 			return FALSE;
 		tx = x_resolution / 2;
 		ty = (y_resolution - scale*h) / 2;
-		if (!drawTex(tx, ty, g_pSprite, scale, x_resolution, y_resolution, h, w))
+		if (!drawTex(tx, ty, g_pSprite, rtex, scale, x_resolution, y_resolution, h, w))
 			return FALSE;
 	}
 	//中间大图
 	else if (mode == "focus") {
 		double tx = x_resolution / 2 - scale*w / 2;
 		double ty = (y_resolution - scale*h) / 2;
-		if (!drawTex(tx, ty, g_pSprite, scale, x_resolution, y_resolution, h, w))
+		if (!drawTex(tx, ty, g_pSprite, ltex, scale, x_resolution, y_resolution, h, w))
 			return FALSE;
 	}
 	return TRUE;
@@ -1232,7 +1240,7 @@ VOID t8::Render()
 			double scale = getScale(x_resolution, y_resolution, w);
 
 			// 绘制图片
-			if (!drawTex("focus", g_pSprite, scale, x_resolution, y_resolution, h, w))
+			if (!drawTex("focus", g_pSprite, texLeft, texLeft, scale, x_resolution, y_resolution, h, w))
 				break;
 			
 			break;
@@ -1240,15 +1248,25 @@ VOID t8::Render()
 		case STATE_EXERCISE: {
 			// 绘制图片
 			int w, h;
+			double scale;
+			// 加载纹理
+			if (g_imgDisplayInd < 0 && g_imgDisplayInd >= LImgs.size()) break;
+			if (g_imgLastInd != g_imgDisplayInd) {
+				string lImg = picDir + LImgs[g_imgDisplayInd];
+				string rImg = picDir + RImgs[g_imgDisplayInd];
+				addTex(g_pd3dDevice, lImg.c_str(), texLeft);
+				addTex(g_pd3dDevice, rImg.c_str(), texRight);
+				g_imgLastInd = g_imgDisplayInd;
+			}
 			getTexSize(texLeft, w, h);
-			double scale = getScale(x_resolution, y_resolution, w);
-			if (!drawTex("LR", g_pSprite, scale, x_resolution, y_resolution, h, w))
+			scale = getScale(x_resolution, y_resolution, w);
+			if (!drawTex("LR", g_pSprite, texLeft, texRight, scale, x_resolution, y_resolution, h, w))
 				break;
 			// 绘制文字
 			int tx = x_resolution / 2 - 100;
 			int ty = y_resolution - 50;
 			stringstream ss;
-			ss << "还剩" << countdown << "秒";
+			ss << "还剩" << countdown << "秒" << g_imgDisplayInd;
 			if (bShowTime) {
 				if (!drawText(ss.str(), tx, ty, g_pFont))
 					break;
@@ -1367,7 +1385,12 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		case 'S': {
 				// 结束计时
 				QueryPerformanceCounter(&endTime);
-				
+				isPressBtn = true;
+				if (wParam == 'f' || wParam == 'F')
+					isCoBtn = true;
+				else if (wParam == 's' || wParam == 'S')
+					isCoBtn = false;
+
 				break;
 			}
 		}
@@ -1397,6 +1420,7 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 //************************************************
 VOID t8::UpdateState()
 {
+	return;
 	switch (m_TestState)
 	{
 	case STATE_FOCUS_EXERCISE: {
@@ -1717,6 +1741,13 @@ int APIENTRY t8::_tWinMain(HINSTANCE &hInstance,
 	int       &nCmdShow, HWND &_hWnd,
 	std::string winClassName, std::string winName)
 {
+	srand((unsigned)time(NULL)); //初始化随机种子 
+
+	// 测试
+	getFormalList(64);
+	saveImgList(LImgs, RImgs, "formal");
+	getExerciseList(LImgs, RImgs, 2);
+	saveImgList(LImgs, RImgs, "exrcise");
 	timerThread = thread(timer, ref(m_TestState), 5, 2, 2, ref(bShowTime));
 	QueryPerformanceFrequency(&freq);
 	// 初始化句柄和状态
@@ -1761,11 +1792,11 @@ int APIENTRY t8::_tWinMain(HINSTANCE &hInstance,
 	}
 
 	//读取任务设置
-	if (!ReadSetting())
+	/*if (!ReadSetting())
 	{
 		MessageBox(hWnd, "任务设置文件格式错误！", "测试任务", MB_OK);
 		return 0;
-	}
+	}*/
 
 	m_bLoadSign = FALSE;
 	//注册窗口类
@@ -1797,7 +1828,6 @@ int APIENTRY t8::_tWinMain(HINSTANCE &hInstance,
 		ActivateKeyboardLayout(hkl, KLF_SETFORPROCESS);
 	}*/
 
-	srand((unsigned)time(NULL)); //初始化随机种子 
 								 //初始化Direct3D
 	if (SUCCEEDED(InitD3D(hWnd)))
 	{
@@ -1858,6 +1888,7 @@ void t8::hideLastWindow(bool &bUnClosedLastWin, std::string &winClassName, std::
 // 定时器
 void t8::timer(short & state, int presentTime, int countdownTime, int foucusTime, bool &bShowTime) {
 	while (true) {
+		
 		// 注视点
 		if (state == STATE_FOCUS_EXERCISE || state == STATE_FOCUS_FORMAL) {
 			this_thread::sleep_for(std::chrono::seconds(foucusTime));
@@ -1866,75 +1897,110 @@ void t8::timer(short & state, int presentTime, int countdownTime, int foucusTime
 			if (state == STATE_FOCUS_FORMAL)
 				state = STATE_FORMAL;
 		}
-
-		// 任务计时开始
+		// 执行任务
 		if (state == STATE_EXERCISE || state == STATE_FORMAL) {
+			isPressBtn = false;
+			// 开始展示图片
+			if (g_imgDisplayInd < 0) g_imgDisplayInd = 0;
+			
+			// 计时开始
 			QueryPerformanceCounter(&begTime);
-		}
-
-		// 任务倒数处理
-		if (state == STATE_EXERCISE || state == STATE_FORMAL) {
+			// 不显示倒计时一段时间
 			this_thread::sleep_for(std::chrono::seconds(presentTime - countdownTime));
-			// 倒计时开始
+			// 倒计时开始显示
 			bShowTime = true;
 			for (int i = countdownTime; i >= 0; i--) {
 				countdown = i;
 				this_thread::sleep_for(std::chrono::seconds(1));
 			}
+
+			// 倒计时结束，超时 
+			if (isPressBtn) QueryPerformanceCounter(&endTime);
+			// 统计
+			addRec();
+			
 			bShowTime = false;
-			if (state == STATE_EXERCISE)
-				state = STATE_FOCUS_FORMAL;
+			g_imgDisplayInd++;
+			// 显示图片结束，状态转移
+			if ((state == STATE_EXERCISE || state == STATE_FORMAL) && g_imgDisplayInd >= LImgs.size()) {
+				g_imgDisplayInd = -1;
+				if (state == STATE_EXERCISE) m_TestState = STATE_FOCUS_FORMAL;	// 应该先转到反馈
+				if (state == STATE_FORMAL) m_TestState = STATE_FOCUS_FORMAL;	// 应该转到结束或下一个
+			}
+			
 		}
+		
 	}
 	
 }
 
+void t8::addRec() {
+	Rec rec;
+	double responseTime = (double)(endTime.QuadPart - begTime.QuadPart) / (double)freq.QuadPart * 1000.;
+	rec.no = g_imgDisplayInd + 1;
+	rec.leftImg = LImgs[g_imgDisplayInd];
+	rec.rightImg = RImgs[g_imgDisplayInd];
+	if (rec.leftImg[rec.leftImg.size() - 5] == rec.rightImg[rec.rightImg.size() - 5]) 
+		rec.unCoincidence = 0;
+	else
+		rec.unCoincidence = 1;
+	rec.btn = isCoBtn;
+	
+	if (isPressBtn) {
+		if (rec.unCoincidence == rec.btn)
+			rec.isRight = true;
+		else
+			rec.isRight = false;
+		rec.responseTime = responseTime;
+	}
+	else	{
+		rec.isRight = false;
+		rec.responseTime = -1.;
+	}
+}
 
 void t8::shuffleVector(vector<string> &v) {
-	std::srand(unsigned(std::time(0)));
+	//std::srand(unsigned(std::time(0)));
 	random_shuffle(v.begin(), v.end());
 }
 
 void t8::shuffleVector(vector<int> &v) {
-	std::srand(unsigned(std::time(0)));
+	//std::srand(unsigned(std::time(0)));
 	random_shuffle(v.begin(), v.end());
+}
+int t8::getRandom(int end) {
+	//std::srand(unsigned(std::time(0)));
+	return rand() % end;
 }
 
 // mode 0:重合 1:不重合
-void t8::getExerciseList(int mode, vector<string> &LImg, vector<string> &RImg,
-	vector<string> axis, vector<string> ab, vector<vector<string> > angle) {
+void t8::getExerciseList(int mode, int n, vector<string> &LImg, vector<string> &RImg,
+	vector<string> axis, vector<string> ab, vector<string> ang) {
 	// 选绕x轴还是z轴		 1/2
 	// 选a类还是b类			*1/2
 	// 选什么角度			*1/3
 
-	int n = angle.size();
-
-	// 左边
-	shuffleVector(axis);
-	shuffleVector(ab);
-
-	// 右边
-	for (int i = 0; i < n; i++) {
-		shuffleVector(angle[i]);
-	}
-
-	// 生成测试任务序列
+	//std::srand(unsigned(std::time(0)));
 	for (int i = 0; i < n; i++)
 	{
+		// 选左边
+		int indAxis = getRandom(axis.size());
+		int indAb = getRandom(ab.size());
+		int indAng = getRandom(ang.size());
 		stringstream ss;
-		// 左边
-		ss << "1_" << axis[i] << "_15_" << ab[i] << ".jpg";
+		ss << "1_" << axis[indAxis] << "_15_" << ab[indAb] << ".jpg";
 		LImg.push_back(ss.str());
-		// 右边
+		Sleep(getRandom(100));
+		// 选右边
+		string newab = ab[indAb];
+		if (mode == 1)  newab = ab[(indAb + 1) % ab.size()];
 		ss.str("");
-		string aorb = ab[i];
-		if (mode == 1) { // 这里硬写了= = 有时间再改
-			if (ab[i] == "a") aorb = "b";
-			if (ab[i] == "b") aorb = "a";
-		}
-		ss << "1_" << axis[i] << "_" << angle[i][0] << "_" << aorb << ".jpg";
+		ss << "1_" << axis[indAxis] << "_"<< ang[indAng] <<"_" << newab << ".jpg";
 		RImg.push_back(ss.str());
+		Sleep(getRandom(100));
+
 	}
+
 }
 
 void t8::getExerciseList(vector<string> &LImgs, vector<string> &RImgs, int n) {
@@ -1943,88 +2009,81 @@ void t8::getExerciseList(vector<string> &LImgs, vector<string> &RImgs, int n) {
 	RImgs.clear();
 	
 	// 初始化
-	vector<string> axis = { "x","x","z","z" };
-	vector<string> ab = { "a","a","b","b" };
+	vector<string> axis = { "x","z"};
+	vector<string> ab = { "a","b" };
 	vector<string> ang = { "75","135","195" };
-	vector<vector<string> > angle;
 	
-	for (int i = 0; i < n / 2; i++) {
-		angle.push_back(ang);
-	}
-	getExerciseList(0, LImgs, RImgs, axis, ab, angle);
-	getExerciseList(1, LImgs, RImgs, axis, ab, angle);
+	getExerciseList(0, n, LImgs, RImgs, axis, ab, ang);
+	getExerciseList(1, n, LImgs, RImgs, axis, ab, ang);
 }
 
-void t8::append89(vector<string> &LImgs, vector<string> &RImgs, vector<vector<int> > &ind, int n) {
-	std::srand(unsigned(std::time(0)));
-	ind.resize(2);
-	int random = rand() % 2;
-	string a = "9", b = "8";
-	if (random) {
-		a = "8";
-		b = "9";
-	}
 
-	for (int i = 0; i < n; i++)
+void t8::append(vector<string> &LImgs, vector<string> &RImgs, 
+	vector<int> ind, vector<string> lstr, vector<string> rstr, vector<string> mode) {
+	string a = lstr[0];
+	string b = rstr[0];
+	//std::srand(unsigned(std::time(0)));
+	if (mode[0] == "89")
 	{
-		if (i % 2) {
-			LImgs.push_back(a);
-			ind[0].push_back(i);
+		vector<int> indOdd, indEven;
+		vector<string> str2 = {a,b};
+		shuffleVector(str2);
+		for (int i = 0; i < ind.size(); i++)
+		{
+			if (i % 2) {
+				LImgs.push_back(str2[0]);
+				RImgs.push_back("");
+				indOdd.push_back(i);
+			}
+			else {
+				LImgs.push_back(str2[1]);
+				RImgs.push_back("");
+				indEven.push_back(i);
+			}
 		}
-		else {
-			LImgs.push_back(b);
-			ind[1].push_back(i);
-		}
+		lstr.erase(lstr.begin());
+		rstr.erase(rstr.begin());
+		mode.erase(mode.begin());
+		append(LImgs, RImgs, indOdd, lstr, rstr, mode);
+		append(LImgs, RImgs, indEven, lstr, rstr, mode);
 	}
-
-	for (int i = 0; i < ind.size(); i++)
-		appendHalfXZ(LImgs, RImgs, ind[i]);
-
-}
-
-void t8::appendHalfXZ(vector<string> &LImgs, vector<string> &RImgs, vector<int> inInd) {
-	shuffleVector(inInd);
-	vector<vector<int> > outInd(2);
-	for (int i = 0; i < inInd.size(); i++)
+	else if (mode[0] == "half") {
+		shuffleVector(ind);
+		for (int i = 0; i < ind.size(); i++) {
+			if (i < ind.size() / 2) 
+				LImgs[ind[i]] += lstr[0];
+			else
+				LImgs[ind[i]] += rstr[0];
+		}
+		vector<int> ind1(ind.begin(), ind.begin() + ind.size() / 2);
+		vector<int> ind2(ind.begin() + ind.size() / 2, ind.end());
+		lstr.erase(lstr.begin());
+		rstr.erase(rstr.begin());
+		mode.erase(mode.begin());
+		if (mode[0] != "right") {
+			append(LImgs, RImgs, ind1, lstr, rstr, mode);
+			append(LImgs, RImgs, ind2, lstr, rstr, mode);
+		}
+		else
+			append(LImgs, RImgs, ind, lstr, rstr, mode);
+	}
+	else if (mode[0] == "right")
 	{
-		if (i < inInd.size() / 2) {
-			LImgs[inInd[i]] += "_x_15_";
-			outInd[0].push_back(inInd[i]);
+		for (int i = 0; i < ind.size(); i++){
+			RImgs[ind[i]] = LImgs[ind[0]].substr(0, 3);
 		}
-		else {
-			LImgs[inInd[i]] += "_z_15_";
-			outInd[1].push_back(inInd[i]);
-		}
-	}
-	for (int i = 0; i < outInd.size(); i++)
-	{
-		appendHalfab(LImgs, outInd[i]);
-	}
-}
-
-void t8::appendHalfab(vector<string> &LImgs, vector<string> &RImgs, vector<int> inInd) {
-	shuffleVector(inInd);
-	vector<vector<int> > outInd(2);
-	for (int i = 0; i < inInd.size(); i++)
-	{
-		if (i < inInd.size() / 2) {
-			LImgs[inInd[i]] += "a.jpg";
-			outInd[0].push_back(inInd[i]);
-		}
-		else {
-			LImgs[inInd[i]] += "b.jpg";
-			outInd[1].push_back(inInd[i]);
+		vector<string> ang = {	"_15", "_75", "_135", "_195",
+								"_15", "_75", "_135", "_195"};
+		vector<string> ab = {	"_a.jpg", "_a.jpg", "_a.jpg", "_a.jpg" ,
+								"_b.jpg", "_b.jpg", "_b.jpg", "_b.jpg" };
+		shuffleVector(ang);
+		shuffleVector(ab);
+		for (int i = 0; i < ang.size(); i++) {
+			RImgs[ind[i]] += ang[i];
+			RImgs[ind[i]] += ab[i];
 		}
 	}
 
-	vector<string> ang = {  "15", "75", "135", "195", 
-							"15", "75", "135", "195" };
-	vector<string> ab = {	"a", "b",
-							"a", "b",
-							"a", "b",
-							"a", "b" };
-	shuffleVector(ang);
-	shuffleVector(ab);
 }
 
 void t8::getFormalList(int n) {
@@ -2032,10 +2091,28 @@ void t8::getFormalList(int n) {
 	LImgs.clear();
 	RImgs.clear();
 
-	// 左边
-	vector<vector<int> > ind;
+	vector<string> lstr = { "8", "_x", "_15", "_a.jpg" , "right"};
+	vector<string> rstr = { "9", "_z", "_15", "_b.jpg" , "right" };
+	vector<string> mode = { "89", "half", "half", "half", "right"};
+	vector<int> ind(n);
+	for (int i = 0; i < n; i++)
+	{
+		ind[i] = i;
+	}
 	// 一层一层的添加字符串(8 or 9 -> x or z -> a or b), 然后生成右边的随机序列
 	// 函数名起得不好
-	append89(LImgs, RImgs, ind, n); 
+	append(LImgs, RImgs, ind, lstr, rstr, mode); 
+}
 
+void t8::saveImgList(vector<string> &LImgs, vector<string> &RImgs, string fileName) {
+	ofstream out;
+	out.open(string("./")+fileName+".csv");
+	if (!out.is_open()) {
+		MessageBox(hWnd, "没打开formalimglist.csv", "没打开formalimglist.csv", NULL);
+		exit(0);
+	}
+	for (int i = 0; i < LImgs.size(); i++)
+	{
+		out << LImgs[i] << "," << RImgs[i] << endl;
+	}
 }

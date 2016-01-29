@@ -23,6 +23,7 @@
 #include <vector>
 #include <thread>         // std::thread, std::this_thread::sleep_for
 #include <chrono>         // std::chrono::seconds
+#include <queue>          // std::queue
 using namespace std;
 
 #define WM_THREADSTOP (WM_USER+1)
@@ -168,16 +169,20 @@ namespace t8
 	int APIENTRY _tWinMain(HINSTANCE &hInstance, HINSTANCE &hPrevInstance, LPTSTR &lpCmdLine, int &nCmdShow, HWND &_hWnd, std::string winClassName, std::string winName);
 	void hideLastWindow(bool &bUnClosedLastWin, std::string &winClassName, std::string &winName, HINSTANCE &hInstance);
 	void timer(short &state, int presentTime, int countdownTime, int foucusTime, bool &bShowTime);
+	void addRec();
 	void shuffleVector(vector<string> &v);
 	void shuffleVector(vector<int> &v);
+	int getRandom(int end);
 	void getExerciseList(int mode, vector<string> &LImg, vector<string> &RImg, vector<string> axis, vector<string> ab, vector<vector<string> > angle);
 	void getExerciseList(vector<string> &LImgs, vector<string> &RImgs, int n);
-	void append89(vector<string> &LImgs, vector<string> &RImgs, vector<vector<int> > &ind, int n);
-	void appendHalfXZ(vector<string> &LImgs, vector<string> &RImgs, vector<int> inInd);
-	void appendHalfab(vector<string> &LImgs, vector<string> &RImgs, vector<int> inInd);
+	void getExerciseList(int mode, int n, vector<string> &LImg, vector<string> &RImg, vector<string> axis, vector<string> ab, vector<string> ang);
+	void append(vector<string> &LImgs, vector<string> &RImgs, vector<int> ind, vector<string> lstr, vector<string> rstr, vector<string> mode);
 	void getFormalList(int n);
+	void saveImgList(vector<string> &LImgs, vector<string> &RImgs, string fileName);
 	void getTexSize(LPDIRECT3DTEXTURE9 texture, int &w, int &h);
 	BOOL drawText(string str, int tx, int ty, LPD3DXFONT &g_pFont);
 
+	BOOL drawTex(double tx, double ty, LPD3DXSPRITE &g_pSprite, LPDIRECT3DTEXTURE9 &tex, double scale, int x_resolution, int y_resolution, int h, int w);
+	BOOL drawTex(string mode, LPD3DXSPRITE &g_pSprite, LPDIRECT3DTEXTURE9 &ltex, LPDIRECT3DTEXTURE9 &rtex, double scale, int x_resolution, int y_resolution, int h, int w);
 }
 
