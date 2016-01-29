@@ -982,6 +982,20 @@ double getScale(int x_resolution, int y_resolution, int w) {
 	return scale;
 }
 
+//在指定位置写文字
+BOOL drawText( string str, int tx, int ty, LPD3DXFONT &g_pFont,
+	double scale, int x_resolution, int y_resolution, int h, int w) {
+	
+	RECT rect;
+	rect.top = rect.left = 512;
+	rect.bottom = rect.right = 100;
+
+	g_pFont->DrawText(NULL, str.c_str(), -1, &rect,
+		DT_WORDBREAK | DT_NOCLIP | DT_CENTER | DT_VCENTER, D3DCOLOR_XRGB(255, 255, 255));
+		
+	return TRUE;
+}
+
 //在指定位置和缩放系数画纹理
 BOOL drawTex(double tx, double ty, LPD3DXSPRITE &g_pSprite, 
 	double scale, int x_resolution, int y_resolution, int h, int w) {
@@ -1800,9 +1814,7 @@ void t8::hideLastWindow(bool &bUnClosedLastWin, std::string &winClassName, std::
 	}
 }
 
-void drawTime() {
 
-}
 
 // 定时器
 void timer(short & state, int presentTime, int countdownTime, int foucusTime, bool &bTimerExist) {
@@ -1815,7 +1827,7 @@ void timer(short & state, int presentTime, int countdownTime, int foucusTime, bo
 			this_thread::sleep_for(std::chrono::seconds(presentTime - countdownTime));
 			// 倒计时
 			for (int i = 0; i < countdownTime; i++)	{
-				drawTime();
+				//drawText();
 				this_thread::sleep_for(std::chrono::seconds(1));
 			}
 
