@@ -4,6 +4,24 @@
 #include "stdafx.h"
 #include "Task8.h"
 
+vector <string> LImgs, RImgs;
+
+struct tagREC {
+	int no;
+	string leftImg;
+	string rightImg;
+	bool unCoincidence; // 0:重合 1：不能重合
+	int btn;			//0：重合 1：不重合 -1：超时
+	bool isRight;		// 0: 错误 1：正确
+	int responseTime;	// 单位毫秒
+};
+typedef tagREC Rec;
+
+vector<Rec>  recs;
+
+LARGE_INTEGER freq;
+LARGE_INTEGER begTime;
+LARGE_INTEGER endTime;
 
 bool bTimerExist = false;
 thread timerThread;
@@ -1345,11 +1363,13 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			break;
 		case 'f':
 		case 'F':
-
-			break;
 		case 's':
-		case 'S':
-			break;
+		case 'S': {
+				// 结束计时
+				QueryPerformanceCounter(&endTime);
+				
+				break;
+			}
 		}
 		return 0;
 	case WM_KEYDOWN:
@@ -1698,7 +1718,7 @@ int APIENTRY t8::_tWinMain(HINSTANCE &hInstance,
 	std::string winClassName, std::string winName)
 {
 	timerThread = thread(timer, ref(m_TestState), 5, 2, 2, ref(bShowTime));
-
+	QueryPerformanceFrequency(&freq);
 	// 初始化句柄和状态
 	bool bUnClosedLastWin = true;
 	hWnd = _hWnd;
@@ -1846,8 +1866,14 @@ void t8::timer(short & state, int presentTime, int countdownTime, int foucusTime
 			if (state == STATE_FOCUS_FORMAL)
 				state = STATE_FORMAL;
 		}
-		// 练习任务
-		if (state == STATE_EXERCISE) {
+
+		// 任务计时开始
+		if (state == STATE_EXERCISE || state == STATE_FORMAL) {
+			QueryPerformanceCounter(&begTime);
+		}
+
+		// 任务倒数处理
+		if (state == STATE_EXERCISE || state == STATE_FORMAL) {
 			this_thread::sleep_for(std::chrono::seconds(presentTime - countdownTime));
 			// 倒计时开始
 			bShowTime = true;
@@ -1856,12 +1882,160 @@ void t8::timer(short & state, int presentTime, int countdownTime, int foucusTime
 				this_thread::sleep_for(std::chrono::seconds(1));
 			}
 			bShowTime = false;
-			state = STATE_FOCUS_FORMAL;
-		}
-		// 正式任务
-		if (state == STATE_FORMAL) {
-				
+			if (state == STATE_EXERCISE)
+				state = STATE_FOCUS_FORMAL;
 		}
 	}
 	
+}
+
+
+void t8::shuffleVector(vector<string> &v) {
+	std::srand(unsigned(std::time(0)));
+	random_shuffle(v.begin(), v.end());
+}
+
+void t8::shuffleVector(vector<int> &v) {
+	std::srand(unsigned(std::time(0)));
+	random_shuffle(v.begin(), v.end());
+}
+
+// mode 0:重合 1:不重合
+void t8::getExerciseList(int mode, vector<string> &LImg, vector<string> &RImg,
+	vector<string> axis, vector<string> ab, vector<vector<string> > angle) {
+	// 选绕x轴还是z轴		 1/2
+	// 选a类还是b类			*1/2
+	// 选什么角度			*1/3
+
+	int n = angle.size();
+
+	// 左边
+	shuffleVector(axis);
+	shuffleVector(ab);
+
+	// 右边
+	for (int i = 0; i < n; i++) {
+		shuffleVector(angle[i]);
+	}
+
+	// 生成测试任务序列
+	for (int i = 0; i < n; i++)
+	{
+		stringstream ss;
+		// 左边
+		ss << "1_" << axis[i] << "_15_" << ab[i] << ".jpg";
+		LImg.push_back(ss.str());
+		// 右边
+		ss.str("");
+		string aorb = ab[i];
+		if (mode == 1) { // 这里硬写了= = 有时间再改
+			if (ab[i] == "a") aorb = "b";
+			if (ab[i] == "b") aorb = "a";
+		}
+		ss << "1_" << axis[i] << "_" << angle[i][0] << "_" << aorb << ".jpg";
+		RImg.push_back(ss.str());
+	}
+}
+
+void t8::getExerciseList(vector<string> &LImgs, vector<string> &RImgs, int n) {
+	
+	LImgs.clear();
+	RImgs.clear();
+	
+	// 初始化
+	vector<string> axis = { "x","x","z","z" };
+	vector<string> ab = { "a","a","b","b" };
+	vector<string> ang = { "75","135","195" };
+	vector<vector<string> > angle;
+	
+	for (int i = 0; i < n / 2; i++) {
+		angle.push_back(ang);
+	}
+	getExerciseList(0, LImgs, RImgs, axis, ab, angle);
+	getExerciseList(1, LImgs, RImgs, axis, ab, angle);
+}
+
+void t8::append89(vector<string> &LImgs, vector<string> &RImgs, vector<vector<int> > &ind, int n) {
+	std::srand(unsigned(std::time(0)));
+	ind.resize(2);
+	int random = rand() % 2;
+	string a = "9", b = "8";
+	if (random) {
+		a = "8";
+		b = "9";
+	}
+
+	for (int i = 0; i < n; i++)
+	{
+		if (i % 2) {
+			LImgs.push_back(a);
+			ind[0].push_back(i);
+		}
+		else {
+			LImgs.push_back(b);
+			ind[1].push_back(i);
+		}
+	}
+
+	for (int i = 0; i < ind.size(); i++)
+		appendHalfXZ(LImgs, RImgs, ind[i]);
+
+}
+
+void t8::appendHalfXZ(vector<string> &LImgs, vector<string> &RImgs, vector<int> inInd) {
+	shuffleVector(inInd);
+	vector<vector<int> > outInd(2);
+	for (int i = 0; i < inInd.size(); i++)
+	{
+		if (i < inInd.size() / 2) {
+			LImgs[inInd[i]] += "_x_15_";
+			outInd[0].push_back(inInd[i]);
+		}
+		else {
+			LImgs[inInd[i]] += "_z_15_";
+			outInd[1].push_back(inInd[i]);
+		}
+	}
+	for (int i = 0; i < outInd.size(); i++)
+	{
+		appendHalfab(LImgs, outInd[i]);
+	}
+}
+
+void t8::appendHalfab(vector<string> &LImgs, vector<string> &RImgs, vector<int> inInd) {
+	shuffleVector(inInd);
+	vector<vector<int> > outInd(2);
+	for (int i = 0; i < inInd.size(); i++)
+	{
+		if (i < inInd.size() / 2) {
+			LImgs[inInd[i]] += "a.jpg";
+			outInd[0].push_back(inInd[i]);
+		}
+		else {
+			LImgs[inInd[i]] += "b.jpg";
+			outInd[1].push_back(inInd[i]);
+		}
+	}
+
+	vector<string> ang = {  "15", "75", "135", "195", 
+							"15", "75", "135", "195" };
+	vector<string> ab = {	"a", "b",
+							"a", "b",
+							"a", "b",
+							"a", "b" };
+	shuffleVector(ang);
+	shuffleVector(ab);
+}
+
+void t8::getFormalList(int n) {
+	
+	LImgs.clear();
+	RImgs.clear();
+
+	// 左边
+	vector<vector<int> > ind;
+	// 一层一层的添加字符串(8 or 9 -> x or z -> a or b), 然后生成右边的随机序列
+	// 函数名起得不好
+	append89(LImgs, RImgs, ind, n); 
+
 }

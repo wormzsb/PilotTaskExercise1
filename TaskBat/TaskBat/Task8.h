@@ -1,7 +1,9 @@
 #pragma once
 
 #pragma once
-
+#include <algorithm>    // std::random_shuffle
+#include <cstdlib>      // std::rand, std::srand
+#include <ctime>        // std::time
 #include "resource.h"
 #include "Datatype.h"
 #include <direct.h>
@@ -166,6 +168,14 @@ namespace t8
 	int APIENTRY _tWinMain(HINSTANCE &hInstance, HINSTANCE &hPrevInstance, LPTSTR &lpCmdLine, int &nCmdShow, HWND &_hWnd, std::string winClassName, std::string winName);
 	void hideLastWindow(bool &bUnClosedLastWin, std::string &winClassName, std::string &winName, HINSTANCE &hInstance);
 	void timer(short &state, int presentTime, int countdownTime, int foucusTime, bool &bShowTime);
+	void shuffleVector(vector<string> &v);
+	void shuffleVector(vector<int> &v);
+	void getExerciseList(int mode, vector<string> &LImg, vector<string> &RImg, vector<string> axis, vector<string> ab, vector<vector<string> > angle);
+	void getExerciseList(vector<string> &LImgs, vector<string> &RImgs, int n);
+	void append89(vector<string> &LImgs, vector<string> &RImgs, vector<vector<int> > &ind, int n);
+	void appendHalfXZ(vector<string> &LImgs, vector<string> &RImgs, vector<int> inInd);
+	void appendHalfab(vector<string> &LImgs, vector<string> &RImgs, vector<int> inInd);
+	void getFormalList(int n);
 	void getTexSize(LPDIRECT3DTEXTURE9 texture, int &w, int &h);
 	BOOL drawText(string str, int tx, int ty, LPD3DXFONT &g_pFont);
 
