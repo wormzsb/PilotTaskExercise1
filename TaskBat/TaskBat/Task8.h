@@ -19,6 +19,8 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <thread>         // std::thread, std::this_thread::sleep_for
+#include <chrono>         // std::chrono::seconds
 using namespace std;
 
 #define WM_THREADSTOP (WM_USER+1)

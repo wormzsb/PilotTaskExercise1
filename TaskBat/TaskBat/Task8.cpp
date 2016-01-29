@@ -5,7 +5,8 @@
 #include "Task8.h"
 
 
-
+bool bTimerExist = false;
+thread timerThread;
 int t8::rtn;
 HINSTANCE t8::gHinstance;
 float t8::acce;//加速度
@@ -125,6 +126,7 @@ LONGLONG t8::QPart1, t8::QPart2, t8::QPart3, t8::QPart4;
 double t8::dfMinus, t8::dfFreq, t8::dfTim, t8::dfTotalPause, t8::dfTotalMove, t8::dfTotalSign;
 
 void getTexSize(LPDIRECT3DTEXTURE9 texture, int &w, int &h);
+void timer(short &state, int presentTime, int countdownTime, int foucusTime, bool &bTimerExist);
 
 //************************************************
 //*计算目标和瞄准器当前的运动状态
@@ -683,6 +685,14 @@ VOID t8::TestInit()
 	}
 }
 
+unsigned addTex(LPDIRECT3DDEVICE9 & dev, string fileName, LPDIRECT3DTEXTURE9 &tex) {
+	if (FAILED(D3DXCreateTextureFromFile(dev, fileName.c_str(), &tex)))
+	{
+		MessageBox(NULL, "文件不存在", "添加纹理", MB_OK);
+		return E_FAIL;
+	}
+}
+
 //************************************************
 //*初始化DirectX 3D
 //************************************************
@@ -966,6 +976,68 @@ VOID t8::Cleanup()
 	}
 }
 
+double getScale(int x_resolution, int y_resolution, int w) {
+	double resolution = min(x_resolution / 2, y_resolution);
+	double scale = resolution / w;
+	return scale;
+}
+
+//在指定位置和缩放系数画纹理
+BOOL drawTex(double tx, double ty, LPD3DXSPRITE &g_pSprite, 
+	double scale, int x_resolution, int y_resolution, int h, int w) {
+	D3DXMATRIX mx;
+	if (SUCCEEDED(g_pSprite->Begin(D3DXSPRITE_ALPHABLEND))) {
+		// 左边
+		D3DXMatrixTransformation2D(
+			&mx,
+			NULL,							// 缩放中心向量
+			0.0,							// 缩放旋转角度
+			&D3DXVECTOR2(scale, scale),			// 缩放向量
+			&D3DXVECTOR2(0, 0),				// 旋转向量
+			NULL,							// 旋转角度
+			&D3DXVECTOR2(tx, ty)	// 平移向量
+			);
+		g_pSprite->SetTransform(&mx);
+		g_pSprite->Draw(
+			texLeft,
+			NULL,							// 纹理源的ROI 
+			&D3DXVECTOR3(0, 0, 0),			// 精灵中心 
+			&D3DXVECTOR3(0, 0, 0),			// 精灵位置
+			0xffffffff						// 修改颜色
+			);
+		g_pSprite->End();
+		return TRUE;
+	}
+	return FALSE;
+}
+
+// 按照模式画纹理
+BOOL drawTex(string mode, LPD3DXSPRITE &g_pSprite,
+	double scale, int x_resolution, int y_resolution, int h, int w) {
+	
+	D3DXMATRIX mx;
+	// 左右并列
+	if (mode == "LR") {
+		double tx, ty;
+		tx = x_resolution / 2 - scale*w;
+		ty = (y_resolution - scale*h) / 2;
+		if (!drawTex(tx, ty, g_pSprite, scale, x_resolution, y_resolution, h, w))
+			return FALSE;
+		tx = x_resolution / 2;
+		ty = (y_resolution - scale*h) / 2;
+		if (!drawTex(tx, ty, g_pSprite, scale, x_resolution, y_resolution, h, w))
+			return FALSE;
+	}
+	//中间大图
+	else if (mode == "focus") {
+		double tx = x_resolution / 2 - scale*w / 2;
+		double ty = (y_resolution - scale*h) / 2;
+		if (!drawTex(tx, ty, g_pSprite, scale, x_resolution, y_resolution, h, w))
+			return FALSE;
+	}
+	return TRUE;
+}
+
 //************************************************
 //*渲染
 //************************************************
@@ -984,6 +1056,8 @@ VOID t8::Render()
 	case STATE_DISPLAYFEEDBACK:
 	case STATE_FORMAL:
 	case STATE_EXERCISE:
+	case STATE_FOCUS_EXERCISE:
+	case STATE_FOCUS_FORMAL:
 		switch (m_Setting.m_Background)
 		{
 		case BACKGROUND_GRAY:
@@ -1117,55 +1191,24 @@ VOID t8::Render()
 			g_pFont1->DrawText(NULL, Insturction3, -1, &erect,
 				DT_WORDBREAK | DT_NOCLIP | DT_CENTER | DT_VCENTER, D3DCOLOR_XRGB(255, 255, 255));
 			break;
-		case STATE_EXERCISE:
+		case STATE_FOCUS_EXERCISE:
+		case STATE_FOCUS_FORMAL: {
 			int w, h;
-			double scale;
-			double resolution;
-
+			addTex(g_pd3dDevice, "./Pics/TaskR/cross.jpg", texLeft);
 			getTexSize(texLeft, w, h);
-			resolution = min(x_resolution / 2, y_resolution);
-			scale = resolution / w;
-
-			if (SUCCEEDED(g_pSprite->Begin(D3DXSPRITE_ALPHABLEND))) {
-				// 左边
-				D3DXMatrixTransformation2D(
-					&mx,
-					NULL,							// 缩放中心向量
-					0.0,							// 缩放旋转角度
-					&D3DXVECTOR2(scale, scale),			// 缩放向量
-					&D3DXVECTOR2(0, 0),				// 旋转向量
-					NULL,							// 旋转角度
-					&D3DXVECTOR2(x_resolution/2-scale*w, (y_resolution-scale*h)/2)	// 平移向量
-				);
-				g_pSprite->SetTransform(&mx);
-				g_pSprite->Draw(
-					texLeft,
-					NULL,							// 纹理源的ROI 
-					&D3DXVECTOR3(0, 0, 0),			// 精灵中心 
-					&D3DXVECTOR3(0, 0, 0),			// 精灵位置
-					0xffffffff						// 修改颜色
-				);
-				// 右边
-				D3DXMatrixTransformation2D(
-					&mx,
-					NULL,							// 缩放中心向量
-					0.0,							// 缩放旋转角度
-					&D3DXVECTOR2(scale, scale),			// 缩放向量
-					&D3DXVECTOR2(0, 0),				// 旋转向量
-					NULL,							// 旋转角度
-					&D3DXVECTOR2(x_resolution / 2, (y_resolution - scale*h) / 2) // 平移向量
-				);	
-				g_pSprite->SetTransform(&mx);
-				g_pSprite->Draw(
-					texLeft,
-					NULL,							// 纹理源的ROI 
-					&D3DXVECTOR3(0, 0, 0),			// 精灵中心 
-					&D3DXVECTOR3(0, 0, 0),			// 精灵位置
-					0xffffffff						// 修改颜色
-				);
-				g_pSprite->End();
-			}
+			double scale = getScale(x_resolution, y_resolution, w);
+			if (!drawTex("focus", g_pSprite, scale, x_resolution, y_resolution, h, w))
+				break;
 			break;
+		}
+		case STATE_EXERCISE: {
+			int w, h;
+			getTexSize(texLeft, w, h);
+			double scale = getScale(x_resolution, y_resolution, w);
+			if (!drawTex("LR", g_pSprite, scale, x_resolution, y_resolution, h, w))
+				break;
+			break;
+		}
 		case STATE_FORMAL :
 			break;
 		}
@@ -1270,7 +1313,8 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				break;
 			}
 		case VK_SPACE:
-			m_TestState = STATE_EXERCISE;
+			//m_TestState = STATE_EXERCISE;
+			m_TestState = STATE_FOCUS_EXERCISE;
 			break;
 
 		}
@@ -1302,6 +1346,12 @@ VOID t8::UpdateState()
 {
 	switch (m_TestState)
 	{
+	case STATE_FOCUS_EXERCISE: {
+		if (!bTimerExist) {
+			
+		}
+		break;
+	}
 		//呈现指导语
 	case STATE_DISPLAYINSTURCTION:
 		break;
@@ -1614,6 +1664,8 @@ int APIENTRY t8::_tWinMain(HINSTANCE &hInstance,
 	int       &nCmdShow, HWND &_hWnd,
 	std::string winClassName, std::string winName)
 {
+	timerThread = thread(timer, ref(m_TestState), 5, 2, 2, ref(bTimerExist));
+
 	// 初始化句柄和状态
 	bool bUnClosedLastWin = true;
 	hWnd = _hWnd;
@@ -1746,4 +1798,28 @@ void t8::hideLastWindow(bool &bUnClosedLastWin, std::string &winClassName, std::
 			UnregisterClass(winClassName.c_str(), hInstance);
 		}
 	}
+}
+
+void drawTime() {
+
+}
+
+// 定时器
+void timer(short & state, int presentTime, int countdownTime, int foucusTime, bool &bTimerExist) {
+	while (true) {
+		if (state == STATE_FOCUS_EXERCISE) {
+			this_thread::sleep_for(std::chrono::seconds(foucusTime));
+			state = STATE_EXERCISE;
+		}
+		if (state == STATE_EXERCISE) {
+			this_thread::sleep_for(std::chrono::seconds(presentTime - countdownTime));
+			// 倒计时
+			for (int i = 0; i < countdownTime; i++)	{
+				drawTime();
+				this_thread::sleep_for(std::chrono::seconds(1));
+			}
+
+		}
+	}
+	
 }
