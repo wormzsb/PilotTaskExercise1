@@ -146,7 +146,8 @@ namespace t8
 	extern LARGE_INTEGER litmp;
 	extern LONGLONG QPart1, QPart2, QPart3, QPart4;
 	extern double dfMinus, dfFreq, dfTim, dfTotalPause, dfTotalMove, dfTotalSign;
-
+	extern bool bShowTime;
+	extern int countdown;
 	VOID MoveTrace();
 
 	BOOL ReadSetting();
@@ -164,6 +165,9 @@ namespace t8
 	VOID UpdateState();
 	int APIENTRY _tWinMain(HINSTANCE &hInstance, HINSTANCE &hPrevInstance, LPTSTR &lpCmdLine, int &nCmdShow, HWND &_hWnd, std::string winClassName, std::string winName);
 	void hideLastWindow(bool &bUnClosedLastWin, std::string &winClassName, std::string &winName, HINSTANCE &hInstance);
-}
+	void timer(short &state, int presentTime, int countdownTime, int foucusTime, bool &bShowTime);
+	void getTexSize(LPDIRECT3DTEXTURE9 texture, int &w, int &h);
+	BOOL drawText(string str, int tx, int ty, LPD3DXFONT &g_pFont);
 
+}
 

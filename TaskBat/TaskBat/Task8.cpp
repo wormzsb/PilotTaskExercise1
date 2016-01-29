@@ -125,8 +125,8 @@ LARGE_INTEGER t8::litmp;
 LONGLONG t8::QPart1, t8::QPart2, t8::QPart3, t8::QPart4;
 double t8::dfMinus, t8::dfFreq, t8::dfTim, t8::dfTotalPause, t8::dfTotalMove, t8::dfTotalSign;
 
-void getTexSize(LPDIRECT3DTEXTURE9 texture, int &w, int &h);
-void timer(short &state, int presentTime, int countdownTime, int foucusTime, bool &bTimerExist);
+bool t8::bShowTime = false;
+int t8::countdown;
 
 //************************************************
 //*计算目标和瞄准器当前的运动状态
@@ -983,12 +983,13 @@ double getScale(int x_resolution, int y_resolution, int w) {
 }
 
 //在指定位置写文字
-BOOL drawText( string str, int tx, int ty, LPD3DXFONT &g_pFont,
-	double scale, int x_resolution, int y_resolution, int h, int w) {
+BOOL t8::drawText( string str, int tx, int ty, LPD3DXFONT &g_pFont) {
 	
 	RECT rect;
-	rect.top = rect.left = 512;
-	rect.bottom = rect.right = 100;
+	rect.left = tx;
+	rect.top = ty;
+	rect.right = tx + 200;
+	rect.bottom = ty + 50;
 
 	g_pFont->DrawText(NULL, str.c_str(), -1, &rect,
 		DT_WORDBREAK | DT_NOCLIP | DT_CENTER | DT_VCENTER, D3DCOLOR_XRGB(255, 255, 255));
@@ -1057,7 +1058,7 @@ BOOL drawTex(string mode, LPD3DXSPRITE &g_pSprite,
 //************************************************
 VOID t8::Render()
 {
-	// 绘制背景
+	// 清空画面并绘制背景
 	switch (m_TestState)
 	{
 		//呈现指导语，绘制背景
@@ -1211,16 +1212,29 @@ VOID t8::Render()
 			addTex(g_pd3dDevice, "./Pics/TaskR/cross.jpg", texLeft);
 			getTexSize(texLeft, w, h);
 			double scale = getScale(x_resolution, y_resolution, w);
+
+			// 绘制图片
 			if (!drawTex("focus", g_pSprite, scale, x_resolution, y_resolution, h, w))
 				break;
+			
 			break;
 		}
 		case STATE_EXERCISE: {
+			// 绘制图片
 			int w, h;
 			getTexSize(texLeft, w, h);
 			double scale = getScale(x_resolution, y_resolution, w);
 			if (!drawTex("LR", g_pSprite, scale, x_resolution, y_resolution, h, w))
 				break;
+			// 绘制文字
+			int tx = x_resolution / 2 - 100;
+			int ty = y_resolution - 50;
+			stringstream ss;
+			ss << "还剩" << countdown << "秒";
+			if (bShowTime) {
+				if (!drawText(ss.str(), tx, ty, g_pFont))
+					break;
+			}
 			break;
 		}
 		case STATE_FORMAL :
@@ -1232,7 +1246,7 @@ VOID t8::Render()
 	g_pd3dDevice->Present(NULL, NULL, NULL, NULL);
 }
 
-void getTexSize(LPDIRECT3DTEXTURE9 texture, int &w, int &h) {
+void t8::getTexSize(LPDIRECT3DTEXTURE9 texture, int &w, int &h) {
 	D3DSURFACE_DESC surfaceDesc;
 	int level = 0; //The level to get the width/height of (probably 0 if unsure)
 	texture->GetLevelDesc(level, &surfaceDesc);
@@ -1275,7 +1289,7 @@ BOOL CALLBACK t8::PauseMsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 
 //************************************************
-//*外部消息处理
+//*外部消息处理 主要是键盘按键处理
 //************************************************
 LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -1327,10 +1341,15 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				break;
 			}
 		case VK_SPACE:
-			//m_TestState = STATE_EXERCISE;
 			m_TestState = STATE_FOCUS_EXERCISE;
 			break;
+		case 'f':
+		case 'F':
 
+			break;
+		case 's':
+		case 'S':
+			break;
 		}
 		return 0;
 	case WM_KEYDOWN:
@@ -1678,7 +1697,7 @@ int APIENTRY t8::_tWinMain(HINSTANCE &hInstance,
 	int       &nCmdShow, HWND &_hWnd,
 	std::string winClassName, std::string winName)
 {
-	timerThread = thread(timer, ref(m_TestState), 5, 2, 2, ref(bTimerExist));
+	timerThread = thread(timer, ref(m_TestState), 5, 2, 2, ref(bShowTime));
 
 	// 初始化句柄和状态
 	bool bUnClosedLastWin = true;
@@ -1817,20 +1836,31 @@ void t8::hideLastWindow(bool &bUnClosedLastWin, std::string &winClassName, std::
 
 
 // 定时器
-void timer(short & state, int presentTime, int countdownTime, int foucusTime, bool &bTimerExist) {
+void t8::timer(short & state, int presentTime, int countdownTime, int foucusTime, bool &bShowTime) {
 	while (true) {
-		if (state == STATE_FOCUS_EXERCISE) {
+		// 注视点
+		if (state == STATE_FOCUS_EXERCISE || state == STATE_FOCUS_FORMAL) {
 			this_thread::sleep_for(std::chrono::seconds(foucusTime));
-			state = STATE_EXERCISE;
+			if (state == STATE_FOCUS_EXERCISE) 
+				state = STATE_EXERCISE;
+			if (state == STATE_FOCUS_FORMAL)
+				state = STATE_FORMAL;
 		}
+		// 练习任务
 		if (state == STATE_EXERCISE) {
 			this_thread::sleep_for(std::chrono::seconds(presentTime - countdownTime));
-			// 倒计时
-			for (int i = 0; i < countdownTime; i++)	{
-				//drawText();
+			// 倒计时开始
+			bShowTime = true;
+			for (int i = countdownTime; i >= 0; i--) {
+				countdown = i;
 				this_thread::sleep_for(std::chrono::seconds(1));
 			}
-
+			bShowTime = false;
+			state = STATE_FOCUS_FORMAL;
+		}
+		// 正式任务
+		if (state == STATE_FORMAL) {
+				
 		}
 	}
 	
