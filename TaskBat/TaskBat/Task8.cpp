@@ -1131,7 +1131,7 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		case VK_ESCAPE:
 			// User wants to leave fullscreen mode
 			//ShowCursor(TRUE);
-			int originalSate = m_TestState;
+			//int originalSate = m_TestState;
 			m_TestState = STATE_PAUSE;
 			ShowCursor(TRUE);
 			rtn = DialogBox(gHinstance, MAKEINTRESOURCE(IDD_PAUSE), hWnd, PauseMsgProc);
