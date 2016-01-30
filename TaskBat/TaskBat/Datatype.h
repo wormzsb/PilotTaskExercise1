@@ -245,9 +245,10 @@ struct TaskSetting7
 
 //task8
 struct TaskSetting8 {
-	int m_iPointTime;//注视时间
-	int m_iViewTime;//呈现时间
-	int m_iLastTime;//倒数时间
+	bool m_bPracMode;
+	int m_iFocusTime;//注视时间
+	int m_iPresentTime;//呈现时间
+	int m_iCountdownTime;//倒数时间
 };
 
 //硬件设置

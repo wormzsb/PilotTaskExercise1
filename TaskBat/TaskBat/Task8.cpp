@@ -5,7 +5,7 @@
 #include "Task8.h"
 
 
-
+int m_taskIndex;
 int g_imgDisplayInd = -1;
 int g_imgLastInd = -2;
 bool isPressBtn = false;
@@ -13,6 +13,7 @@ bool isCoBtn = false;
 vector <string> LImgs, RImgs;
 
 struct tagREC {
+	bool mode; // 0: exercise; 1: formal
 	int no;
 	string leftImg;
 	string rightImg;
@@ -46,7 +47,7 @@ BOOL t8::m_bAcc;                                     //三维图形记忆正确性标志
 double t8::alpha, t8::omiga, t8::v, t8::a, t8::b, t8::r, t8::Rx, t8::Ry, t8::fai, t8::AngleSpeed, t8::inc_v;
 double t8::m_PostPointX, t8::m_PostPointY;                //当前瞄准器坐标
 int t8::JoyX, t8::JoyY;                                   //当前操纵杆输入值  
-struct TaskSetting6   t8::m_Setting;                 //任务6设置参数
+struct TaskSetting8   t8::m_Setting;                 //任务6设置参数
 struct HardSetting   t8::m_HardSetting;              //硬件设置参数
 struct PartInfo   t8::m_PartInfo;                    //被试者信息
 short t8::m_TrialType;                               //测试类型
@@ -145,7 +146,7 @@ D3DRECT t8::SignRect;
 
 short t8::m_TestState;
 char t8::m_file1[220];
-char t8::m_file2[220];
+char t8::szDataFile[220];
 HWND t8::hWnd;
 char t8::m_TesterName[40];
 char t8::m_DataName[60];
@@ -236,34 +237,10 @@ BOOL t8::ReadSetting()
 			//Task6
 			//		fscanf(fp,"[Task6]\n");
 			//fscanf(fp,"TaskName\t%s\n",m_Setting.m_TaskName);
-			fscanf(fp, "PracMode\t%d\n", &m_Setting.m_PracMode);
-			fscanf(fp, "ExperMode\t%d\n", &m_Setting.m_ExperMode);
-			fscanf(fp, "MainTask\t%d\n", &m_Setting.m_MainTask);
-			fscanf(fp, "SubTask\t%d\n", &m_Setting.m_SubTask);
-			fscanf(fp, "Background\t%d\n", &m_Setting.m_Background);
-			fscanf(fp, "InitSpeed\t%f\n", &m_Setting.m_InitSpeed);
-			fscanf(fp, "CubeNum1\t%d\n", &m_Setting.m_CubeNum1);
-			fscanf(fp, "CubeNum2\t%d\n", &m_Setting.m_CubeNum2);
-			fscanf(fp, "CubeNum3\t%d\n", &m_Setting.m_CubeNum3);
-			fscanf(fp, "CubeNum4\t%d\n", &m_Setting.m_CubeNum4);
-			fscanf(fp, "Prototype\t%d\n", &m_Setting.m_Prototype);
-			fscanf(fp, "RefAxis\t%d\n", &m_Setting.m_RefAxis);
-			fscanf(fp, "MemTaskMode\t%d\n", &m_Setting.m_MemTaskMode);
-			fscanf(fp, "PracTime\t%d\n", &m_Setting.m_PracTime);
-			fscanf(fp, "ExperTime\t%d\n", &m_Setting.m_ExperTime);
-			fscanf(fp, "PracTimes\t%d\n", &m_Setting.m_PracTimes);
-			fscanf(fp, "ExperTimes\t%d\n", &m_Setting.m_ExperTimes);
-			fscanf(fp, "JoyMoveDirection\t%d\n", &m_Setting.m_iJoyMoveDirection);
-			fscanf(fp, "SubTaskInterval\t%d\n", &m_Setting.m_iSubTaskInterval);
+			fscanf(fp, "PracMode\t%d\n", &m_Setting.m_bPracMode);
 			fscanf(fp, "PresentTime\t%d\n", &m_Setting.m_iPresentTime);
-			fscanf(fp, "ReactTime\t%d\n", &m_Setting.m_iReactTime);
-			fscanf(fp, "Speed\t%f\n", &m_Setting.m_Speed);
-			fscanf(fp, "SpeedMin\t%f\n", &m_Setting.m_SpeedMin);
-			fscanf(fp, "SpeedMax\t%f\n", &m_Setting.m_SpeedMax);
-			fscanf(fp, "AccelerationMin\t%f\n", &m_Setting.m_AccelerationMin);
-			fscanf(fp, "AccelerationMax\t%f\n", &m_Setting.m_AccelerationMax);
-			fscanf(fp, "SpeedMode\t%d\n", &m_Setting.m_SpeedMode);
-			fscanf(fp, "Direction\t%d\n", &m_Setting.m_Direction);
+			fscanf(fp, "FocusTime\t%d\n", &m_Setting.m_iFocusTime);
+			fscanf(fp, "CountdownTime\t%d\n", &m_Setting.m_iCountdownTime);
 			fscanf(fp, "\n");
 			fclose(fp);
 		}
@@ -289,18 +266,34 @@ VOID t8::SaveName()
 	char m_DataDir[60];
 	char m_filename1[160];
 	char m_filename2[160];
+	char szTime[160];
 
 	SYSTEMTIME CurTime;
 	GetLocalTime(&CurTime);
+	sprintf(szTime, "%d%02d%02d%02d%02d%02d",
+		CurTime.wYear, CurTime.wMonth, CurTime.wDay, 
+		CurTime.wHour, CurTime.wMinute, CurTime.wSecond);
+	stringstream ss;
 	if (strlen(m_DataName) == 0)
 	{
-		sprintf(m_filename1, "t8-trace-%d%02d%02d%02d%02d%02d.txt", CurTime.wYear, CurTime.wMonth, CurTime.wDay, CurTime.wHour, CurTime.wMinute, CurTime.wSecond);
-		sprintf(m_filename2, "t8-memory-%d%02d%02d%02d%02d%02d.txt", CurTime.wYear, CurTime.wMonth, CurTime.wDay, CurTime.wHour, CurTime.wMinute, CurTime.wSecond);
+		//sprintf(m_filename1, "t8-trace-%d%02d%02d%02d%02d%02d.txt", CurTime.wYear, CurTime.wMonth, CurTime.wDay, CurTime.wHour, CurTime.wMinute, CurTime.wSecond);
+		//sprintf(m_filename2, "任务8-%d%02d%02d%02d%02d%02d.txt", CurTime.wYear, CurTime.wMonth, CurTime.wDay, CurTime.wHour, CurTime.wMinute, CurTime.wSecond);
 	}
 	else
 	{
-		sprintf(m_filename1, "t8-trace-%s-%s-%d%02d%02d%02d%02d%02d.txt", m_TaskNumStr, m_DataName, CurTime.wYear, CurTime.wMonth, CurTime.wDay, CurTime.wHour, CurTime.wMinute, CurTime.wSecond);
-		sprintf(m_filename2, "t8-memory-%s-%s-%d%02d%02d%02d%02d%02d.txt", m_TaskNumStr, m_DataName, CurTime.wYear, CurTime.wMonth, CurTime.wDay, CurTime.wHour, CurTime.wMinute, CurTime.wSecond);
+		ss << "T8-"
+			<< m_taskIndex
+			<< "-任务8-三维心理旋转测试-"
+			<< m_PartInfo.m_TesterNo
+			<< "-"
+			<< m_PartInfo.m_TesterName
+			<< "-"
+			<< m_PartInfo.m_Session
+			<< "-"
+			<< szTime
+			<< ".txt";
+			//sprintf(m_filename1, "t8-trace-%s-%s-%d%02d%02d%02d%02d%02d.txt", m_TaskNumStr, m_DataName, CurTime.wYear, CurTime.wMonth, CurTime.wDay, CurTime.wHour, CurTime.wMinute, CurTime.wSecond);
+		//sprintf(m_filename2, "任务8-%s-%s-%d%02d%02d%02d%02d%02d.txt", m_TaskNumStr, m_DataName, CurTime.wYear, CurTime.wMonth, CurTime.wDay, CurTime.wHour, CurTime.wMinute, CurTime.wSecond);
 	}
 	if (strlen(m_TesterName) == 0)
 	{
@@ -311,28 +304,26 @@ VOID t8::SaveName()
 		sprintf(m_DataDir, "Data\\%s", m_TesterName);
 	}
 	_mkdir(m_DataDir);
-	sprintf(m_file1, "%s\\%s", m_DataDir, m_filename1);
-	sprintf(m_file2, "%s\\%s", m_DataDir, m_filename2);
+	//sprintf(m_file1, "%s\\%s", m_DataDir, m_filename1);
+	sprintf(szDataFile, "%s\\%s", m_DataDir, ss.str());
 
-	if (m_Setting.m_MainTask == 1)
-	{
-		fp = fopen(m_file1, "at");
-		fprintf(fp, "ID\tName\tSex\tSession\t"
-			"DistanceError\tPracMode\tExperMode\tMainTask\tSubTask\t"
-			"Background\tInitSpeed\tCubeNum1\tCubeNum2\tCubeNum3\tCubeNum4\tPrototype\tRefAxis\tMemTaskMode\tPracTime\tExperTime\tPracTimes\tExperTimes\t"
-			"Pra_Test\tPointNum\tPointTime\tObjPointX\tObjPointY\tPostPointX\tPostPointY\tDistance\tHit\t"
-			"ObjSpeedX\tObjSpeedY\tPostSpeedX\tPostSpeedY\n");
-		fclose(fp);
-	}
-	if (m_Setting.m_SubTask == 1)
-	{
-		fp = fopen(m_file2, "at");
-		fprintf(fp, "ID\tName\tSex\tSession\t"
-			"DistanceError\tPracMode\tExperMode\tMainTask\tSubTask\t"
-			"Background\tInitSpeed\tCubeNum1\tCubeNum2\tCubeNum3\tCubeNum4\tPrototype\tRefAxis\tMemTaskMode\tPracTime\tExperTime\tPracTimes\tExperTimes\t"
-			"Pra_Test\tGroupNo\tMemNo\tMemCubeNum\tLMemName\tRMemName\tLMemAngle\tRMemAngle\tMemAngleDiff\tSame\tStartTime\tSureTime\tSureButton\tMem_RT\tMem_Acc\n");
-		fclose(fp);
-	}
+	//if (/*m_Setting.m_MainTask == */1)
+	//{
+	//	fp = fopen(m_file1, "at");
+	//	fprintf(fp, "ID\tName\tSex\tSession\t"
+	//		"DistanceError\tPracMode\tExperMode\tMainTask\tSubTask\t"
+	//		"Background\tInitSpeed\tCubeNum1\tCubeNum2\tCubeNum3\tCubeNum4\tPrototype\tRefAxis\tMemTaskMode\tPracTime\tExperTime\tPracTimes\tExperTimes\t"
+	//		"Pra_Test\tPointNum\tPointTime\tObjPointX\tObjPointY\tPostPointX\tPostPointY\tDistance\tHit\t"
+	//		"ObjSpeedX\tObjSpeedY\tPostSpeedX\tPostSpeedY\n");
+	//	fclose(fp);
+	//}
+	
+	// 保存文件头
+	ofstream out(szDataFile);
+	if (!out.is_open()) 
+		MessageBox(hWnd, "数据文件不能创建或打开", "错误", NULL);
+	out << "序号\t左侧图片\t右侧图片\t能否重合\t按键情况\t是否正确\t反应时\n";
+	out.close();
 }
 
 
@@ -345,109 +336,109 @@ VOID t8::SaveName()
 //************************************************
 HRESULT t8::LoadSignFile()
 {
-	int l1, l2;
-	char axis[3][2] = { "X","Y","Z" };
-	int i, j;
-	for (i = 0; i<12; i++)
-	{
-		if (g_pTexture3[i] != NULL)
-		{
-			g_pTexture3[i]->Release();
-			g_pTexture3[i] = NULL;
-		}
-	}
-	if (g_pTexture4 != NULL)
-	{
-		g_pTexture4->Release();
-		g_pTexture4 = NULL;
-	}
+	//int l1, l2;
+	//char axis[3][2] = { "X","Y","Z" };
+	//int i, j;
+	//for (i = 0; i<12; i++)
+	//{
+	//	if (g_pTexture3[i] != NULL)
+	//	{
+	//		g_pTexture3[i]->Release();
+	//		g_pTexture3[i] = NULL;
+	//	}
+	//}
+	//if (g_pTexture4 != NULL)
+	//{
+	//	g_pTexture4->Release();
+	//	g_pTexture4 = NULL;
+	//}
 
-	RandValue(0, 2, l1);
-	RandValue(0, 12, l2);
+	//RandValue(0, 2, l1);
+	//RandValue(0, 12, l2);
 
-	char m_SignName[50];
-	if (l1 == 0)
-	{
-		sprintf(m_LMemName, "M%d_%d_%s%04d", m_CubeNum, m_Setting.m_Prototype + 1, axis[m_Setting.m_RefAxis], l2 * 5);
-		sprintf(m_SignName, "Pics\\Task6\\三维图形\\%s.jpg", m_LMemName);
-	}
-	else
-	{
-		sprintf(m_LMemName, "M%d_%d_mir_%s%04d", m_CubeNum, m_Setting.m_Prototype + 1, axis[m_Setting.m_RefAxis], l2 * 5);
-		sprintf(m_SignName, "Pics\\Task6\\三维图形\\%s.jpg", m_LMemName);
-	}
-	if (FAILED(D3DXCreateTextureFromFile(g_pd3dDevice, m_SignName, &g_pTexture4)))
-	{
-		MessageBox(NULL, m_SignName, "Textures.exe", MB_OK);
-		return E_FAIL;
-	}
-	m_LMemAngle = l2 * 30;
-	if (m_Setting.m_MainTask == 1)
-	{
-		if (JoystickUpdate())
-		{
-			JoyX = GetXAxis();//GetYAxis();//
-			JoyY = GetYAxis();//-GetZAxis();//
-		}
-	}
-	//		RandOrder1(50+25+25, m_Setting.m_SignMemNum+5, m_SignSelect);
+	//char m_SignName[50];
+	//if (l1 == 0)
+	//{
+	//	sprintf(m_LMemName, "M%d_%d_%s%04d", m_CubeNum, m_Setting.m_Prototype + 1, axis[m_Setting.m_RefAxis], l2 * 5);
+	//	sprintf(m_SignName, "Pics\\Task6\\三维图形\\%s.jpg", m_LMemName);
+	//}
+	//else
+	//{
+	//	sprintf(m_LMemName, "M%d_%d_mir_%s%04d", m_CubeNum, m_Setting.m_Prototype + 1, axis[m_Setting.m_RefAxis], l2 * 5);
+	//	sprintf(m_SignName, "Pics\\Task6\\三维图形\\%s.jpg", m_LMemName);
+	//}
+	//if (FAILED(D3DXCreateTextureFromFile(g_pd3dDevice, m_SignName, &g_pTexture4)))
+	//{
+	//	MessageBox(NULL, m_SignName, "Textures.exe", MB_OK);
+	//	return E_FAIL;
+	//}
+	//m_LMemAngle = l2 * 30;
+	//if (m_Setting.m_MainTask == 1)
+	//{
+	//	if (JoystickUpdate())
+	//	{
+	//		JoyX = GetXAxis();//GetYAxis();//
+	//		JoyY = GetYAxis();//-GetZAxis();//
+	//	}
+	//}
+	////		RandOrder1(50+25+25, m_Setting.m_SignMemNum+5, m_SignSelect);
 
-	RandOrder(m_SignCount, m_SignType);
-	//	RandOrder1(12,m_SignCount,m_SignType);
-	RandOrder1(6, m_SignCount / 2, m_SignOrder1);
-	RandOrder1(6, m_SignCount / 2, m_SignOrder2);
-	//	RandOrder1(6,m_SignCount/2,m_SignOrder2);
-	m_SignOrderNo1 = 0;
-	m_SignOrderNo2 = 0;
-	for (i = 0; i<m_SignCount; i++)
-	{
-		if (m_SignType[i]<m_SignCount / 2)
-		{
-			sprintf(m_RMemName[i], "M%d_%d_%s%04d", m_CubeNum, m_Setting.m_Prototype + 1, axis[m_Setting.m_RefAxis], (l2 + m_SignOrder1[m_SignOrderNo1]) % 12 * 5);
-			sprintf(m_SignName, "Pics\\Task6\\三维图形\\%s.jpg", m_RMemName[i]);
-			m_RMemAngle[i] = (l2 + m_SignOrder1[m_SignOrderNo1]) % 12 * 30;
-			m_MemAngleDiff[i] = m_SignOrder1[m_SignOrderNo1] * 30;
-			m_SignOrderNo1++;
-			if (l1 == 0)
-			{
-				m_NoSame[i] = 0;
-			}
-			else
-			{
-				m_NoSame[i] = 1;
-			}
-		}
-		else
-		{
-			sprintf(m_RMemName[i], "M%d_%d_mir_%s%04d", m_CubeNum, m_Setting.m_Prototype + 1, axis[m_Setting.m_RefAxis], (l2 + m_SignOrder2[m_SignOrderNo2]) % 12 * 5);
-			sprintf(m_SignName, "Pics\\Task6\\三维图形\\%s.jpg", m_RMemName[i]);
-			m_RMemAngle[i] = (l2 + m_SignOrder2[m_SignOrderNo2]) % 12 * 30;
-			m_MemAngleDiff[i] = m_SignOrder2[m_SignOrderNo2] * 30;
-			m_SignOrderNo2++;
-			if (l1 == 0)
-			{
-				m_NoSame[i] = 1;
-			}
-			else
-			{
-				m_NoSame[i] = 0;
-			}
-		}
-		if (FAILED(D3DXCreateTextureFromFile(g_pd3dDevice, m_SignName, &g_pTexture3[i])))
-		{
-			MessageBox(NULL, m_SignName, "Textures.exe", MB_OK);
-			return E_FAIL;
-		}
+	//RandOrder(m_SignCount, m_SignType);
+	////	RandOrder1(12,m_SignCount,m_SignType);
+	//RandOrder1(6, m_SignCount / 2, m_SignOrder1);
+	//RandOrder1(6, m_SignCount / 2, m_SignOrder2);
+	////	RandOrder1(6,m_SignCount/2,m_SignOrder2);
+	//m_SignOrderNo1 = 0;
+	//m_SignOrderNo2 = 0;
+	//for (i = 0; i<m_SignCount; i++)
+	//{
+	//	if (m_SignType[i]<m_SignCount / 2)
+	//	{
+	//		sprintf(m_RMemName[i], "M%d_%d_%s%04d", m_CubeNum, m_Setting.m_Prototype + 1, axis[m_Setting.m_RefAxis], (l2 + m_SignOrder1[m_SignOrderNo1]) % 12 * 5);
+	//		sprintf(m_SignName, "Pics\\Task6\\三维图形\\%s.jpg", m_RMemName[i]);
+	//		m_RMemAngle[i] = (l2 + m_SignOrder1[m_SignOrderNo1]) % 12 * 30;
+	//		m_MemAngleDiff[i] = m_SignOrder1[m_SignOrderNo1] * 30;
+	//		m_SignOrderNo1++;
+	//		if (l1 == 0)
+	//		{
+	//			m_NoSame[i] = 0;
+	//		}
+	//		else
+	//		{
+	//			m_NoSame[i] = 1;
+	//		}
+	//	}
+	//	else
+	//	{
+	//		sprintf(m_RMemName[i], "M%d_%d_mir_%s%04d", m_CubeNum, m_Setting.m_Prototype + 1, axis[m_Setting.m_RefAxis], (l2 + m_SignOrder2[m_SignOrderNo2]) % 12 * 5);
+	//		sprintf(m_SignName, "Pics\\Task6\\三维图形\\%s.jpg", m_RMemName[i]);
+	//		m_RMemAngle[i] = (l2 + m_SignOrder2[m_SignOrderNo2]) % 12 * 30;
+	//		m_MemAngleDiff[i] = m_SignOrder2[m_SignOrderNo2] * 30;
+	//		m_SignOrderNo2++;
+	//		if (l1 == 0)
+	//		{
+	//			m_NoSame[i] = 1;
+	//		}
+	//		else
+	//		{
+	//			m_NoSame[i] = 0;
+	//		}
+	//	}
+	//	if (FAILED(D3DXCreateTextureFromFile(g_pd3dDevice, m_SignName, &g_pTexture3[i])))
+	//	{
+	//		MessageBox(NULL, m_SignName, "Textures.exe", MB_OK);
+	//		return E_FAIL;
+	//	}
 
-		if (m_Setting.m_MainTask == 1)
-		{
-			if (JoystickUpdate())
-			{
-				JoyX = GetXAxis();//GetYAxis();//
-				JoyY = GetYAxis();//-GetZAxis();//
-			}
-		}
-	}
+	//	if (m_Setting.m_MainTask == 1)
+	//	{
+	//		if (JoystickUpdate())
+	//		{
+	//			JoyX = GetXAxis();//GetYAxis();//
+	//			JoyY = GetYAxis();//-GetZAxis();//
+	//		}
+	//	}
+	//}
 	return TRUE;
 }
 
@@ -458,99 +449,99 @@ VOID t8::TestInit()
 {
 
 
-	if (m_Setting.m_Direction == 0)
-		iDirection = 1;
-	else
-		iDirection = -1;
+	//if (m_Setting.m_Direction == 0)
+	//	iDirection = 1;
+	//else
+	//	iDirection = -1;
 
-	if (m_Setting.m_SpeedMode == 0)
-		v = m_Setting.m_Speed;
-	else
-	{
-		v = m_Setting.m_InitSpeed;
+	//if (m_Setting.m_SpeedMode == 0)
+	//	v = m_Setting.m_Speed;
+	//else
+	//{
+	//	v = m_Setting.m_InitSpeed;
 
-		if (v>m_Setting.m_SpeedMax)
-		{
-			RandValueFloat(m_Setting.m_AccelerationMin, m_Setting.m_AccelerationMax, acce);
-			acce = -acce;
-			v = v + acce * dfTim;
-		}
-		else if (v <= m_Setting.m_SpeedMin)
-		{
-			RandValueFloat(m_Setting.m_AccelerationMin, m_Setting.m_AccelerationMax, acce);
-			v = v + acce * dfTim;
-		}
-		else
-			RandValueFloat(m_Setting.m_AccelerationMin, m_Setting.m_AccelerationMax, acce);
-	}
+	//	if (v>m_Setting.m_SpeedMax)
+	//	{
+	//		RandValueFloat(m_Setting.m_AccelerationMin, m_Setting.m_AccelerationMax, acce);
+	//		acce = -acce;
+	//		v = v + acce * dfTim;
+	//	}
+	//	else if (v <= m_Setting.m_SpeedMin)
+	//	{
+	//		RandValueFloat(m_Setting.m_AccelerationMin, m_Setting.m_AccelerationMax, acce);
+	//		v = v + acce * dfTim;
+	//	}
+	//	else
+	//		RandValueFloat(m_Setting.m_AccelerationMin, m_Setting.m_AccelerationMax, acce);
+	//}
 
 
 
-	if (m_Setting.m_MainTask == 1)
-	{
-		if (m_TrialType == TRIAL_PRACTICE)
-		{
-			m_TrialTime = m_Setting.m_PracTime;
-		}
-		else
-		{
-			m_TrialTime = m_Setting.m_ExperTime;
-		}
-		a = x_resolution / 2;
-		b = y_resolution / 2;
-		r = 300;
-		Rx = 400;
-		Ry = 200;
-		//v = m_Setting.m_InitSpeed;
-		fai = 0.0;
-		omiga = v / r;
-		m_PointNum = 0;
-		m_MemNum = 1000;
-		m_ObjPoint = (SPOINT*)malloc(m_MemNum*sizeof(POINT));
-		m_PostPoint = (SPOINT*)malloc(m_MemNum*sizeof(POINT));
-		m_Distance = (float*)malloc(m_MemNum*sizeof(float));
-		m_PointTime = (unsigned long*)malloc(m_MemNum*sizeof(LONGLONG));
-		m_bHit = (BOOL*)malloc(m_MemNum*sizeof(BOOL));
-		m_ObjSpeedX = (float*)malloc(m_MemNum*sizeof(float));
-		m_ObjSpeedY = (float*)malloc(m_MemNum*sizeof(float));
-		m_PostSpeedX = (float*)malloc(m_MemNum*sizeof(float));
-		m_PostSpeedY = (float*)malloc(m_MemNum*sizeof(float));
-		m_PostPointX = x_resolution / 2;
-		m_PostPointY = y_resolution / 2;
-		m_PostPoint[m_PointNum].x = m_PostPointX;
-		m_PostPoint[m_PointNum].y = m_PostPointY;
-		alpha = 0;
-		m_ObjPoint[m_PointNum].x = a + r * cos(alpha);
-		m_ObjPoint[m_PointNum].y = b - r * sin(alpha);
-		m_Distance[m_PointNum] = pow(pow((m_ObjPoint[m_PointNum].y - m_PostPoint[m_PointNum].y), 2.0) + pow((m_ObjPoint[m_PointNum].x - m_PostPoint[m_PointNum].x), 2.0), 0.5);
-		m_bHit[m_PointNum] = FALSE;
-		m_ObjSpeedX[m_PointNum] = -v * sin(alpha);
-		m_ObjSpeedY[m_PointNum] = -v * cos(alpha);
-		JoyX = 0;
-		JoyY = 0;
-	}
-	if (m_Setting.m_SubTask == 1)
-	{
+	//if (m_Setting.m_MainTask == 1)
+	//{
+	//	if (m_TrialType == TRIAL_PRACTICE)
+	//	{
+	//		m_TrialTime = m_Setting.m_PracTime;
+	//	}
+	//	else
+	//	{
+	//		m_TrialTime = m_Setting.m_ExperTime;
+	//	}
+	//	a = x_resolution / 2;
+	//	b = y_resolution / 2;
+	//	r = 300;
+	//	Rx = 400;
+	//	Ry = 200;
+	//	//v = m_Setting.m_InitSpeed;
+	//	fai = 0.0;
+	//	omiga = v / r;
+	//	m_PointNum = 0;
+	//	m_MemNum = 1000;
+	//	m_ObjPoint = (SPOINT*)malloc(m_MemNum*sizeof(POINT));
+	//	m_PostPoint = (SPOINT*)malloc(m_MemNum*sizeof(POINT));
+	//	m_Distance = (float*)malloc(m_MemNum*sizeof(float));
+	//	m_PointTime = (unsigned long*)malloc(m_MemNum*sizeof(LONGLONG));
+	//	m_bHit = (BOOL*)malloc(m_MemNum*sizeof(BOOL));
+	//	m_ObjSpeedX = (float*)malloc(m_MemNum*sizeof(float));
+	//	m_ObjSpeedY = (float*)malloc(m_MemNum*sizeof(float));
+	//	m_PostSpeedX = (float*)malloc(m_MemNum*sizeof(float));
+	//	m_PostSpeedY = (float*)malloc(m_MemNum*sizeof(float));
+	//	m_PostPointX = x_resolution / 2;
+	//	m_PostPointY = y_resolution / 2;
+	//	m_PostPoint[m_PointNum].x = m_PostPointX;
+	//	m_PostPoint[m_PointNum].y = m_PostPointY;
+	//	alpha = 0;
+	//	m_ObjPoint[m_PointNum].x = a + r * cos(alpha);
+	//	m_ObjPoint[m_PointNum].y = b - r * sin(alpha);
+	//	m_Distance[m_PointNum] = pow(pow((m_ObjPoint[m_PointNum].y - m_PostPoint[m_PointNum].y), 2.0) + pow((m_ObjPoint[m_PointNum].x - m_PostPoint[m_PointNum].x), 2.0), 0.5);
+	//	m_bHit[m_PointNum] = FALSE;
+	//	m_ObjSpeedX[m_PointNum] = -v * sin(alpha);
+	//	m_ObjSpeedY[m_PointNum] = -v * cos(alpha);
+	//	JoyX = 0;
+	//	JoyY = 0;
+	//}
+	//if (m_Setting.m_SubTask == 1)
+	//{
 
-		m_TrialTimes = m_Setting.m_ExperTimes;
-		m_SignCount = 12;
-		m_bCubeNum[0] = m_Setting.m_CubeNum1;
-		m_bCubeNum[1] = m_Setting.m_CubeNum2;
-		m_bCubeNum[2] = m_Setting.m_CubeNum3;
-		m_bCubeNum[3] = m_Setting.m_CubeNum4;
+	//	m_TrialTimes = m_Setting.m_ExperTimes;
+	//	m_SignCount = 12;
+	//	m_bCubeNum[0] = m_Setting.m_CubeNum1;
+	//	m_bCubeNum[1] = m_Setting.m_CubeNum2;
+	//	m_bCubeNum[2] = m_Setting.m_CubeNum3;
+	//	m_bCubeNum[3] = m_Setting.m_CubeNum4;
 
-		m_SignNo = 0;
-		m_bRememStart = FALSE;
-		m_bShowMem = FALSE;
-		m_bSignStart = FALSE;
-		//		RandOrder(10,m_SignOrder);
-		//	RandPoint(x_resolution/2-128, y_resolution/2-128, 12, m_EventPoint);
-		if (m_Setting.m_MainTask == 0)
-		{
-			JoyX = 100;
-			JoyY = 100;
-		}
-	}
+	//	m_SignNo = 0;
+	//	m_bRememStart = FALSE;
+	//	m_bShowMem = FALSE;
+	//	m_bSignStart = FALSE;
+	//	//		RandOrder(10,m_SignOrder);
+	//	//	RandPoint(x_resolution/2-128, y_resolution/2-128, 12, m_EventPoint);
+	//	if (m_Setting.m_MainTask == 0)
+	//	{
+	//		JoyX = 100;
+	//		JoyY = 100;
+	//	}
+	//}
 }
 
 unsigned t8::addTex(LPDIRECT3DDEVICE9 & dev, string fileName, LPDIRECT3DTEXTURE9 &tex) {
@@ -571,7 +562,7 @@ HRESULT t8::InitD3D(HWND hWnd)
 	m_SignGroupNo = -1;
 	m_SureDownNum = 0;
 	m_CubeNum = 9;
-	if (m_Setting.m_PracMode == 1)
+	/*if (m_Setting.m_PracMode == 1)
 	{
 		m_TrialType = TRIAL_PRACTICE;
 	}
@@ -584,7 +575,7 @@ HRESULT t8::InitD3D(HWND hWnd)
 		iJoyMoveDirection = 1;
 	else
 		iJoyMoveDirection = -1;
-
+*/
 
 	//材质大小
 	//	SetRect( &rct, 0, 0, 128, 128 );
@@ -874,9 +865,9 @@ double getScale(int x_resolution, int y_resolution, int w) {
 BOOL t8::drawText( string str, int tx, int ty, LPD3DXFONT &g_pFont) {
 	
 	RECT rect;
-	rect.left = tx;
+	rect.left = tx - 300;
 	rect.top = ty;
-	rect.right = tx + 200;
+	rect.right = tx + 300;
 	rect.bottom = ty + 50;
 
 	g_pFont->DrawText(NULL, str.c_str(), -1, &rect,
@@ -965,7 +956,7 @@ BOOL t8::drawTex(string mode, LPD3DXSPRITE &g_pSprite,
 VOID t8::Render()
 {
 	// 清空画面并绘制背景
-	switch (m_Setting.m_Background)
+	switch (/*m_Setting.m_Background*/0)
 	{
 	case BACKGROUND_GRAY:
 		g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(48, 48, 48), 0.0f, 0);
@@ -1003,15 +994,22 @@ VOID t8::Render()
 			g_pFont1->DrawText(NULL, Insturction3, -1, &erect,
 				DT_WORDBREAK | DT_NOCLIP | DT_CENTER | DT_VCENTER, D3DCOLOR_XRGB(255, 255, 255));
 			break;
-		case STATE_FOCUS_EXERCISE:
-		case STATE_FOCUS_FORMAL: {
-			//int w, h;
+		case STATE_FOCUS_EXERCISE: {
 			addTex(g_pd3dDevice, "./Pics/TaskR/cross.jpg", texLeft);
 
 			// 绘制图片
 			if (!drawTex("focus", g_pSprite, texLeft, texLeft, x_resolution, y_resolution))
 				break;
-			
+			break;
+		}
+		case STATE_FOCUS_FORMAL: {
+			// 绘制文字
+			int tx = x_resolution / 2;
+			int ty = y_resolution/2 - 50;
+			stringstream ss;
+			ss << "正式即将任务开始" ;
+			if (!drawText(ss.str(), tx, ty, g_pFont))
+				break;
 			break;
 		}
 		case STATE_DISPLAYFEEDBACK: {
@@ -1060,10 +1058,10 @@ VOID t8::Render()
 			if (!drawTex("LR", g_pSprite, texLeft, texRight, x_resolution, y_resolution))
 				break;
 			// 绘制文字
-			int tx = x_resolution / 2 - 100;
+			int tx = x_resolution / 2;
 			int ty = y_resolution - 50;
 			stringstream ss;
-			ss << "还剩" << countdown << "秒" << g_imgDisplayInd;
+			ss << "还剩" << countdown << "秒"/* << g_imgDisplayInd*/;
 			if (bShowTime) {
 				if (!drawText(ss.str(), tx, ty, g_pFont))
 					break;
@@ -1182,9 +1180,9 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				QueryPerformanceCounter(&endTime);
 				isPressBtn = true;
 				if (wParam == 'f' || wParam == 'F')
-					isCoBtn = true;
+					isCoBtn = 0;
 				else if (wParam == 'j' || wParam == 'J')
-					isCoBtn = false;
+					isCoBtn = 1;
 
 				break;
 			}
@@ -1240,12 +1238,12 @@ VOID t8::UpdateState()
 			QPart1 = litmp.QuadPart;           // 获得初始值
 			dfTotalSign = 0;
 			dfTotalMove = 0;
-			if (m_Setting.m_MainTask == 1)
+			/*if (m_Setting.m_MainTask == 1)
 			{
 				m_PointTime[m_PointNum] = QPart1 / dfFreq * 1000;
 				m_PostSpeedX[m_PointNum] = 0;
 				m_PostSpeedY[m_PointNum] = 0;
-			}
+			}*/
 			if (!m_bLoadSign)
 			{
 				if (LoadSignFile())
@@ -1303,13 +1301,13 @@ int APIENTRY t8::_tWinMain(HINSTANCE &hInstance,
 	//saveImgList(LImgs, RImgs, "formal");
 	//getExerciseList(LImgs, RImgs, 2);
 	//saveImgList(LImgs, RImgs, "exrcise");
-	timerThread = thread(timer, ref(m_TestState), 1, 1, 1, ref(bShowTime));
-	QueryPerformanceFrequency(&freq);
+	
 	// 初始化句柄和状态
 	bool bUnClosedLastWin = true;
 	hWnd = _hWnd;
 	gHinstance = hInstance;
 	g_nThreadExitCount = 0;
+	m_taskIndex = nCmdShow;
 	//ShowCursor(FALSE);
 
 	//获得传递的命令行参数，得到被试着名字和任务编号
@@ -1347,12 +1345,20 @@ int APIENTRY t8::_tWinMain(HINSTANCE &hInstance,
 	}
 
 	//读取任务设置
-	/*if (!ReadSetting())
+	if (!ReadSetting())
 	{
 		MessageBox(hWnd, "任务设置文件格式错误！", "测试任务", MB_OK);
 		return 0;
-	}*/
-
+	}
+	timerThread = thread(timer, ref(m_TestState),
+		m_Setting.m_iPresentTime, m_Setting.m_iCountdownTime, m_Setting.m_iFocusTime, ref(bShowTime));
+	QueryPerformanceFrequency(&freq);
+	
+	// debug
+	//m_TestState = STATE_OVER;
+	//timerThread.join();
+	//return 0;
+	
 	m_bLoadSign = FALSE;
 	//注册窗口类
 	WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0L, 0L,
@@ -1376,12 +1382,12 @@ int APIENTRY t8::_tWinMain(HINSTANCE &hInstance,
 	ShowCursor(FALSE);
 
 	//关闭输入法
-	/*HKL hkl;
+	HKL hkl;
 	hkl = LoadKeyboardLayout("00000804", KLF_ACTIVATE);
 	if (hkl != NULL)
 	{
 		ActivateKeyboardLayout(hkl, KLF_SETFORPROCESS);
-	}*/
+	}
 
 								 //初始化Direct3D
 	if (SUCCEEDED(InitD3D(hWnd)))
@@ -1401,7 +1407,7 @@ int APIENTRY t8::_tWinMain(HINSTANCE &hInstance,
 			else
 			{
 				//执行测试过程
-				UpdateState();
+				//UpdateState();
 				if (m_bDisplayReady)
 				{
 					//渲染图形
@@ -1415,11 +1421,13 @@ int APIENTRY t8::_tWinMain(HINSTANCE &hInstance,
 			if (m_TestState == STATE_NEXT
 				|| m_TestState == STATE_EXIT)
 			{
+				saveRecs();
 				break;
 			}
 		}
 	}
 	ShowCursor(TRUE);
+	timerThread.join();
 	return rtn;
 }
 
@@ -1446,7 +1454,8 @@ void t8::test() {
 void t8::timer(short & state, int presentTime, int countdownTime, int foucusTime, bool &bShowTime) {
 	
 	while (true) {
-		
+		if (state == STATE_NEXT || state == STATE_OVER)
+			return;
 		// 注视点
 		if (state == STATE_FOCUS_EXERCISE || state == STATE_FOCUS_FORMAL) {
 			this_thread::sleep_for(std::chrono::seconds(foucusTime));
@@ -1458,12 +1467,11 @@ void t8::timer(short & state, int presentTime, int countdownTime, int foucusTime
 		// 执行任务
 		if (state == STATE_EXERCISE || state == STATE_FORMAL) {
 			// 产生随机图片组合
-			//// 测试
-			if (state == STATE_EXERCISE) {
+			if (state == STATE_EXERCISE && LImgs.empty()) {
 				getExerciseList(LImgs, RImgs, 2);
 				//saveImgList(LImgs, RImgs, "exercise"); // 测试
 			}
-			if (state == STATE_FORMAL) {
+			if (state == STATE_FORMAL && LImgs.empty()) {
 				getFormalList(64);
 				//saveImgList(LImgs, RImgs, "formal"); // 测试
 			}
@@ -1478,18 +1486,19 @@ void t8::timer(short & state, int presentTime, int countdownTime, int foucusTime
 			
 			// 倒计时开始显示
 			bShowTime = true;
-			for (int i = countdownTime; i >= 0; i--) {
+			for (int i = countdownTime; i > 0; i--) {
 				countdown = i;
 				this_thread::sleep_for(std::chrono::seconds(1));
 			}
+			countdown = 0;
 			bShowTime = false;
 
 			// 倒计时结束， 
-			if (isPressBtn) 
+			if (!isPressBtn) 
 				QueryPerformanceCounter(&endTime);
 			
 			// 统计
-			addRec();
+			addAndSaveRec(m_TestState);
 
 			// 练习任务显示反馈
 			if (state == STATE_EXERCISE && g_imgDisplayInd < LImgs.size()) {
@@ -1499,11 +1508,13 @@ void t8::timer(short & state, int presentTime, int countdownTime, int foucusTime
 			}
 
 			g_imgDisplayInd++;
-			// 显示图片结束，状态转移
+			// 任务结束，状态转移
 			if ((state == STATE_EXERCISE || state == STATE_FORMAL) && g_imgDisplayInd >= LImgs.size()) {
+				LImgs.clear();
+				RImgs.clear();
 				g_imgDisplayInd = -1;
 				if (state == STATE_EXERCISE) m_TestState = STATE_FOCUS_FORMAL;	// 
-				if (state == STATE_FORMAL) m_TestState = STATE_FOCUS_FORMAL;	// 应该转到结束或下一个
+				if (state == STATE_FORMAL) m_TestState = STATE_EXIT;	// 应该转到结束或下一个
 			}
 			
 		}
@@ -1512,7 +1523,7 @@ void t8::timer(short & state, int presentTime, int countdownTime, int foucusTime
 	
 }
 
-void t8::addRec() {
+void t8::addAndSaveRec(int state) {
 	Rec rec;
 	double responseTime = (double)(endTime.QuadPart - begTime.QuadPart) / (double)freq.QuadPart * 1000.;
 	rec.no = g_imgDisplayInd + 1;
@@ -1537,7 +1548,12 @@ void t8::addRec() {
 		rec.isRight = false;
 		rec.responseTime = -1.;
 	}
+	if (state = STATE_EXERCISE) 
+		rec.mode = 0;
+	else 
+		rec.mode = 1;
 	recs.push_back(rec);
+	
 }
 
 void t8::shuffleVector(vector<string> &v) {
@@ -1695,5 +1711,22 @@ void t8::saveImgList(vector<string> &LImgs, vector<string> &RImgs, string fileNa
 	for (int i = 0; i < LImgs.size(); i++)
 	{
 		out << LImgs[i] << "," << RImgs[i] << endl;
+	}
+}
+
+void t8::saveRecs() {
+	ofstream out;
+	out.open(szDataFile, ios::app);
+	if (!out.is_open())
+		MessageBox(hWnd, "数据文件不能创建或打开", "错误", NULL);
+	for (int i = 0; i < recs.size(); i++)
+	{
+		out << recs[i].no << "\t"
+			<< recs[i].leftImg << "\t"
+			<< recs[i].rightImg << "\t"
+			<< recs[i].unCoincidence << "\t"
+			<< recs[i].btn << "\t"
+			<< recs[i].isRight << "\t"
+			<< recs[i].responseTime << "\n";
 	}
 }

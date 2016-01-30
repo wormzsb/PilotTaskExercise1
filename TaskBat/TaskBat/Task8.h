@@ -49,7 +49,7 @@ namespace t8
 	extern double alpha, omiga, v, a, b, r, Rx, Ry, fai, AngleSpeed, inc_v;
 	extern double m_PostPointX, m_PostPointY;                //当前瞄准器坐标
 	extern int JoyX, JoyY;                                   //当前操纵杆输入值  
-	extern struct TaskSetting6   m_Setting;                 //任务6设置参数
+	extern struct TaskSetting8   m_Setting;                 //任务8设置参数
 	extern struct HardSetting   m_HardSetting;              //硬件设置参数
 	extern struct PartInfo   m_PartInfo;                    //被试者信息
 	extern short m_TrialType;                               //测试类型
@@ -139,7 +139,7 @@ namespace t8
 
 	extern short m_TestState;
 	extern char m_file1[220];
-	extern char m_file2[220];
+	extern char szDataFile[220];
 	extern HWND hWnd;
 	extern char m_TesterName[40];
 	extern char m_DataName[60];
@@ -171,16 +171,18 @@ namespace t8
 	void hideLastWindow(bool &bUnClosedLastWin, std::string &winClassName, std::string &winName, HINSTANCE &hInstance);
 	void test();
 	void timer(short &state, int presentTime, int countdownTime, int foucusTime, bool &bShowTime);
-	void addRec();
+	//void addRec();
+	void addAndSaveRec(int state);
 	void shuffleVector(vector<string> &v);
 	void shuffleVector(vector<int> &v);
 	int getRandom(int end);
-	void getExerciseList(int mode, vector<string> &LImg, vector<string> &RImg, vector<string> axis, vector<string> ab, vector<vector<string> > angle);
+	//void getExerciseList(int mode, vector<string> &LImg, vector<string> &RImg, vector<string> axis, vector<string> ab, vector<vector<string> > angle);
 	void getExerciseList(vector<string> &LImgs, vector<string> &RImgs, int n);
 	void getExerciseList(int mode, int n, vector<string> &LImg, vector<string> &RImg, vector<string> axis, vector<string> ab, vector<string> ang);
 	void append(vector<string> &LImgs, vector<string> &RImgs, vector<int> ind, vector<string> lstr, vector<string> rstr, vector<string> mode);
 	void getFormalList(int n);
 	void saveImgList(vector<string> &LImgs, vector<string> &RImgs, string fileName);
+	void saveRecs();
 	void getTexSize(LPDIRECT3DTEXTURE9 texture, int &w, int &h);
 	BOOL drawText(string str, int tx, int ty, LPD3DXFONT &g_pFont);
 
