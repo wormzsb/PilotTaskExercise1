@@ -151,14 +151,15 @@ namespace t8
 	extern double dfMinus, dfFreq, dfTim, dfTotalPause, dfTotalMove, dfTotalSign;
 	extern bool bShowTime;
 	extern int countdown;
-	VOID MoveTrace();
+	//VOID MoveTrace();
 
 	BOOL ReadSetting();
 	VOID SaveName();
-	VOID SaveTraceData();
-	VOID SaveMemoryData();
+	//VOID SaveTraceData();
+	//VOID SaveMemoryData();
 	HRESULT LoadSignFile();
 	VOID TestInit();
+	unsigned addTex(LPDIRECT3DDEVICE9 & dev, string fileName, LPDIRECT3DTEXTURE9 &tex);
 	HRESULT InitD3D(HWND hWnd);
 	VOID CleanupMem();
 	VOID Cleanup();
@@ -168,6 +169,7 @@ namespace t8
 	VOID UpdateState();
 	int APIENTRY _tWinMain(HINSTANCE &hInstance, HINSTANCE &hPrevInstance, LPTSTR &lpCmdLine, int &nCmdShow, HWND &_hWnd, std::string winClassName, std::string winName);
 	void hideLastWindow(bool &bUnClosedLastWin, std::string &winClassName, std::string &winName, HINSTANCE &hInstance);
+	void test();
 	void timer(short &state, int presentTime, int countdownTime, int foucusTime, bool &bShowTime);
 	void addRec();
 	void shuffleVector(vector<string> &v);
@@ -182,7 +184,8 @@ namespace t8
 	void getTexSize(LPDIRECT3DTEXTURE9 texture, int &w, int &h);
 	BOOL drawText(string str, int tx, int ty, LPD3DXFONT &g_pFont);
 
-	BOOL drawTex(double tx, double ty, LPD3DXSPRITE &g_pSprite, LPDIRECT3DTEXTURE9 &tex, double scale, int x_resolution, int y_resolution, int h, int w);
-	BOOL drawTex(string mode, LPD3DXSPRITE &g_pSprite, LPDIRECT3DTEXTURE9 &ltex, LPDIRECT3DTEXTURE9 &rtex, double scale, int x_resolution, int y_resolution, int h, int w);
+	BOOL drawTex(double tx, double ty, LPD3DXSPRITE &g_pSprite, LPDIRECT3DTEXTURE9 &tex, double scale);
+	BOOL drawTex(string mode, LPD3DXSPRITE &g_pSprite, LPDIRECT3DTEXTURE9 &ltex, LPDIRECT3DTEXTURE9 &rtex, int x_resolution, int y_resolution);
+	BOOL drawTex(string mode, LPD3DXSPRITE &g_pSprite, LPDIRECT3DTEXTURE9 &tex, int x_resolution, int y_resolution);
 }
 

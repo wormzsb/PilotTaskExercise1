@@ -1,8 +1,10 @@
 // Task6_2.cpp : Defines the entry point for the application.
-//
+// 是将任务6-2作为模板的修改，改动很大，有的不用的旧代码没有删除
 
 #include "stdafx.h"
 #include "Task8.h"
+
+
 
 int g_imgDisplayInd = -1;
 int g_imgLastInd = -2;
@@ -82,11 +84,15 @@ LPDIRECT3DTEXTURE9      t8::g_pTexture1 = NULL;               //纹理对象
 LPDIRECT3DTEXTURE9      t8::g_pTexture2 = NULL;               //纹理对象
 LPDIRECT3DTEXTURE9      t8::g_pTexture3[12] = { NULL };         //纹理对象
 LPDIRECT3DTEXTURE9      t8::g_pTexture4 = NULL;               //纹理对象
+// 反馈时候用到的纹理
+LPDIRECT3DTEXTURE9 texRightF = NULL, texWrongF = NULL, texNoneF = NULL,
+					texRightJ = NULL, texWrongJ = NULL, texNoneJ = NULL;
 LPD3DXSPRITE            t8::g_pSprite = NULL;                 //精灵对象
 LPD3DXFONT              t8::g_pFont = 0;                  //字体对象
 LPD3DXFONT              t8::g_pFont1 = 0;                  //字体对象
 LPD3DXFONT              t8::g_pFont2 = 0;                  //字体对象
 LPDIRECT3DVERTEXBUFFER9      t8::m_pVertexBuffer = NULL;
+
 
 LPDIRECT3DTEXTURE9 texLeft, texRight;
 
@@ -153,125 +159,8 @@ double t8::dfMinus, t8::dfFreq, t8::dfTim, t8::dfTotalPause, t8::dfTotalMove, t8
 bool t8::bShowTime = false;
 int t8::countdown;
 
-//************************************************
-//*计算目标和瞄准器当前的运动状态
-//************************************************
-VOID t8::MoveTrace()
-{
-	m_PointNum++;
-	if (m_PointNum >= m_MemNum)
-	{
-		m_MemNum += 1000;
-		m_ObjPoint = (SPOINT*)realloc(m_ObjPoint, m_MemNum*sizeof(SPOINT));
-		m_PostPoint = (SPOINT*)realloc(m_PostPoint, m_MemNum*sizeof(SPOINT));
-		m_Distance = (float*)realloc(m_Distance, m_MemNum*sizeof(float));
-		m_PointTime = (unsigned long*)realloc(m_PointTime, m_MemNum*sizeof(unsigned long));
-		m_bHit = (BOOL*)realloc(m_bHit, m_MemNum*sizeof(BOOL));
-		m_ObjSpeedX = (float*)realloc(m_ObjSpeedX, m_MemNum*sizeof(float));
-		m_ObjSpeedY = (float*)realloc(m_ObjSpeedY, m_MemNum*sizeof(float));
-		m_PostSpeedX = (float*)realloc(m_PostSpeedX, m_MemNum*sizeof(float));
-		m_PostSpeedY = (float*)realloc(m_PostSpeedY, m_MemNum*sizeof(float));
-	}
-	if (abs(JoyX)> 10)
-		m_PostSpeedX[m_PointNum] = JoyX / abs(JoyX) * m_HardSetting.m_JoySpeedMax;
-	else
-		m_PostSpeedX[m_PointNum] = 0;
-
-	if (abs(JoyY) > 10)
-		m_PostSpeedY[m_PointNum] = JoyY / abs(JoyY) * m_HardSetting.m_JoySpeedMax;
-	else
-		m_PostSpeedY[m_PointNum] = 0;
-	//当前点时间
-	m_PointTime[m_PointNum] = m_PointTime[m_PointNum - 1] + (int)(dfTim * 1000);// QPart2/dfFreq*1000;
 
 
-	if (m_PostPointX<rec_x_begin)
-	{
-		m_PostPointX = rec_x_begin;
-	}
-	else if (m_PostPointX>rec_x_end)
-	{
-		m_PostPointX = rec_x_end;
-	}
-	if (m_PostPointY<rec_y_begin)
-	{
-		m_PostPointY = rec_y_begin;
-	}
-	else if (m_PostPointY>rec_y_end)
-	{
-		m_PostPointY = rec_y_end;
-	}
-
-
-
-	//当前追踪环位置
-	m_PostPointX = m_PostPointX + iJoyMoveDirection * m_PostSpeedX[m_PointNum - 1] * dfTim;
-	m_PostPointY = m_PostPointY + iJoyMoveDirection * m_PostSpeedY[m_PointNum - 1] * dfTim;
-	m_PostPoint[m_PointNum].x = m_PostPointX;
-	m_PostPoint[m_PointNum].y = m_PostPointY;
-	if (m_PostPoint[m_PointNum].x<0)
-	{
-		m_PostPointX = 0;
-		m_PostPoint[m_PointNum].x = 0;
-	}
-	else if (m_PostPoint[m_PointNum].x>x_resolution)
-	{
-		m_PostPointX = x_resolution;
-		m_PostPoint[m_PointNum].x = x_resolution;
-	}
-	if (m_PostPoint[m_PointNum].y<0)
-	{
-		m_PostPointY = 0;
-		m_PostPoint[m_PointNum].y = 0;
-	}
-	else if (m_PostPoint[m_PointNum].y>y_resolution)
-	{
-		m_PostPointY = y_resolution;
-		m_PostPoint[m_PointNum].y = y_resolution;
-	}
-
-	//当前目标角度
-	alpha = alpha + (float)iDirection* (omiga * dfTim);
-	omiga = v / r;
-	if (alpha>2 * PI)
-	{
-		alpha = alpha - 2 * PI;
-	}
-	if (m_Setting.m_SpeedMode == 1)
-	{
-		v = v + acce * dfTim;
-		if (v>m_Setting.m_SpeedMax)
-		{
-			RandValueFloat(m_Setting.m_AccelerationMin, m_Setting.m_AccelerationMax, acce);
-			acce = -acce;
-			v = v + acce * dfTim;
-		}
-		else if (v <= m_Setting.m_SpeedMin)
-		{
-			RandValueFloat(m_Setting.m_AccelerationMin, m_Setting.m_AccelerationMax, acce);
-			v = v + acce * dfTim;
-		}
-
-	}
-
-	//当前目标位置
-	m_ObjPoint[m_PointNum].x = a + r * cos(alpha);
-	m_ObjPoint[m_PointNum].y = b - r * sin(alpha);
-
-	m_Distance[m_PointNum] = pow(pow((m_ObjPoint[m_PointNum].y - m_PostPoint[m_PointNum].y), 2.0) + pow((m_ObjPoint[m_PointNum].x - m_PostPoint[m_PointNum].x), 2.0), 0.5);
-	//追踪环和目标接近程度
-	if (m_Distance[m_PointNum]<m_HardSetting.m_DistanceError)
-	{
-		m_bHit[m_PointNum] = TRUE;
-	}
-	else
-	{
-		m_bHit[m_PointNum] = FALSE;
-	}
-	//计算当前目标速度
-	m_ObjSpeedX[m_PointNum] = -v * sin(alpha);
-	m_ObjSpeedY[m_PointNum] = -v * cos(alpha);
-}
 
 //************************************************
 //*读取当前任务设置
@@ -446,56 +335,10 @@ VOID t8::SaveName()
 	}
 }
 
-//************************************************
-//*保存追踪结果数据记录文件
-//************************************************
-VOID t8::SaveTraceData()
-{
-	FILE *fp;
-	int i;
 
-	if (m_Setting.m_MainTask == 1)
-	{
-		fp = fopen(m_file1, "at");
-		for (i = 0; i<m_PointNum; i++)
-		{
-			fprintf(fp, "%s\t%s\t%s\t%d\t"
-				"%.2f\t%d\t%d\t%d\t%d\t"
-				"%d\t%.2f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t"
-				"%d\t%d\t%u\t%d\t%d\t%d\t%d\t%.2f\t%d\t"
-				"%.2f\t%.2f\t%.2f\t%.2f\n",
-				m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session,
-				m_HardSetting.m_DistanceError, m_Setting.m_PracMode, m_Setting.m_ExperMode, m_Setting.m_MainTask, m_Setting.m_SubTask,
-				m_Setting.m_Background, m_Setting.m_InitSpeed, m_Setting.m_CubeNum1, m_Setting.m_CubeNum2, m_Setting.m_CubeNum3, m_Setting.m_CubeNum4, m_Setting.m_Prototype, m_Setting.m_RefAxis, m_Setting.m_MemTaskMode, m_Setting.m_PracTime, m_Setting.m_ExperTime, m_Setting.m_PracTimes, m_Setting.m_ExperTimes,
-				m_TrialType, i + 1, m_PointTime[i], m_ObjPoint[i].x, m_ObjPoint[i].y, m_PostPoint[i].x, m_PostPoint[i].y, m_Distance[i], m_bHit[i],
-				m_ObjSpeedX[i], m_ObjSpeedY[i], m_PostSpeedX[i], m_PostSpeedY[i]);
-		}
-		fclose(fp);
-	}
-}
 
 //************************************************
-//*保存记忆结果数据记录文件
-//************************************************
-VOID t8::SaveMemoryData()
-{
-	FILE *fp;
-	int i;
 
-	fp = fopen(m_file2, "at");
-	for (i = 0; i<m_SignNo; i++)
-	{
-		fprintf(fp, "%s\t%s\t%s\t%d\t"
-			"%.2f\t%d\t%d\t%d\t%d\t"
-			"%d\t%.2f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t"
-			"%d\t%d\t%d\t%d\t%s\t%s\t%d\t%d\t%d\t%d\t%u\t%u\t%d\t%u\t%d\n",
-			m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session,
-			m_HardSetting.m_DistanceError, m_Setting.m_PracMode, m_Setting.m_ExperMode, m_Setting.m_MainTask, m_Setting.m_SubTask,
-			m_Setting.m_Background, m_Setting.m_InitSpeed, m_Setting.m_CubeNum1, m_Setting.m_CubeNum2, m_Setting.m_CubeNum3, m_Setting.m_CubeNum4, m_Setting.m_Prototype, m_Setting.m_RefAxis, m_Setting.m_MemTaskMode, m_Setting.m_PracTime, m_Setting.m_ExperTime, m_Setting.m_PracTimes, m_Setting.m_ExperTimes,
-			m_TrialType, m_SignGroupNo + 1, i + 1, m_CubeNum, m_LMemName, m_RMemName[i], m_LMemAngle, m_RMemAngle[i], m_MemAngleDiff[i], !m_NoSame[i], m_SignStartTime[i], m_SignSureTime[i], m_SureButtonNo[i], m_SignSureTime[i] - m_SignStartTime[i], m_NoSame[i] == m_SureButtonNo[i]);
-	}
-	fclose(fp);
-}
 
 //************************************************
 //*加载三维图形文件
@@ -710,10 +553,10 @@ VOID t8::TestInit()
 	}
 }
 
-unsigned addTex(LPDIRECT3DDEVICE9 & dev, string fileName, LPDIRECT3DTEXTURE9 &tex) {
+unsigned t8::addTex(LPDIRECT3DDEVICE9 & dev, string fileName, LPDIRECT3DTEXTURE9 &tex) {
 	if (FAILED(D3DXCreateTextureFromFile(dev, fileName.c_str(), &tex)))
 	{
-		MessageBox(NULL, "文件不存在", "添加纹理？？？", MB_OK);
+		MessageBox(NULL, (fileName + "文件不存在").c_str(), "添加纹理", MB_OK);
 		return E_FAIL;
 	}
 }
@@ -800,46 +643,20 @@ HRESULT t8::InitD3D(HWND hWnd)
 	}
 
 	//加载纹理图片
-	if (m_Setting.m_MainTask&&m_Setting.m_SubTask)
+	// 指导语
+	if (FAILED(D3DXCreateTextureFromFile(g_pd3dDevice, "Pics\\Inst\\ST_tracking.jpg", &g_pTextureInst)))
 	{
-		if (FAILED(D3DXCreateTextureFromFile(g_pd3dDevice, "Pics\\Inst\\DT_3Dmemo_track.jpg", &g_pTextureInst)))
-		{
-			MessageBox(NULL, "Could not find banana.bmp", "Textures.exe", MB_OK);
-			return E_FAIL;
-		}
+		MessageBox(NULL, "Could not find banana.bmp", "Textures.exe", MB_OK);
+		return E_FAIL;		
 	}
-	else if (m_Setting.m_MainTask)
-	{
-		if (FAILED(D3DXCreateTextureFromFile(g_pd3dDevice, "Pics\\Inst\\ST_tracking.jpg", &g_pTextureInst)))
-		{
-			MessageBox(NULL, "Could not find banana.bmp", "Textures.exe", MB_OK);
-			return E_FAIL;
-		}
-	}
-	else
-	{
-		if (FAILED(D3DXCreateTextureFromFile(g_pd3dDevice, "Pics\\Inst\\ST_3Dmemo.jpg", &g_pTextureInst)))
-		{
-			MessageBox(NULL, "Could not find banana.bmp", "Textures.exe", MB_OK);
-			return E_FAIL;
-		}
-	}
+	
+	addTex(g_pd3dDevice, picDir + "right_f.jpg", texRightF);	// 能重合 反应正确
+	addTex(g_pd3dDevice, picDir + "wrong_f.jpg", texWrongF);	// 能重合 反应错误
+	addTex(g_pd3dDevice, picDir + "none_f.jpg", texNoneF);		// 能重合 反应超时
+	addTex(g_pd3dDevice, picDir + "right_j.jpg", texRightJ);	// 不能重合 反应正确
+	addTex(g_pd3dDevice, picDir + "wrong_j.jpg", texWrongJ);	// 不能重合 反应错误
+	addTex(g_pd3dDevice, picDir + "none_j.jpg", texNoneJ);		// 不能重合 反应超时
 
-	if (FAILED(D3DXCreateTextureFromFile(g_pd3dDevice, "Pics\\TaskR\\1_x_15_a.jpg", &texLeft)))
-	{
-		MessageBox(NULL, "Could not find banana.bmp", "Textures.exe", MB_OK);
-		return E_FAIL;
-	}
-	if (FAILED(D3DXCreateTextureFromFile(g_pd3dDevice, "Pics\\Task6\\post_yellow.bmp", &g_pTexture1)))
-	{
-		MessageBox(NULL, "Could not find banana.bmp", "Textures.exe", MB_OK);
-		return E_FAIL;
-	}
-	if (FAILED(D3DXCreateTextureFromFile(g_pd3dDevice, "Pics\\Task6\\post_red.bmp", &g_pTexture2)))
-	{
-		MessageBox(NULL, "Could not find banana.bmp", "Textures.exe", MB_OK);
-		return E_FAIL;
-	}
 
 	LOGFONT lf;
 	ZeroMemory(&lf, sizeof(LOGFONT));
@@ -973,6 +790,51 @@ VOID t8::Cleanup()
 			g_pTexture3[i] = NULL;
 		}
 	}
+
+	if (texLeft != NULL)
+	{
+		texLeft->Release();
+		texLeft = NULL;
+	}
+	if (texRight != NULL)
+	{
+		texRight->Release();
+		texRight = NULL;
+	}
+
+	if (texNoneF != NULL)
+	{
+		texNoneF->Release();
+		texNoneF = NULL;
+	}
+	if (texNoneJ != NULL)
+	{
+		texNoneJ->Release();
+		texNoneJ = NULL;
+	}
+	if (texRightF != NULL)
+	{
+		texRightF->Release();
+		texRightF = NULL;
+	}
+	if (texRightJ != NULL)
+	{
+		texRightJ->Release();
+		texRightJ = NULL;
+	}
+	if (texWrongF != NULL)
+	{
+		texWrongF->Release();
+		texWrongF = NULL;
+	}
+	if (texWrongJ != NULL)
+	{
+		texWrongJ->Release();
+		texWrongJ = NULL;
+	}
+
+
+	//
 	if (g_pTexture4 != NULL)
 	{
 		g_pTexture4->Release();
@@ -999,6 +861,7 @@ VOID t8::Cleanup()
 		g_pD3D->Release();
 		g_pD3D = NULL;
 	}
+
 }
 
 double getScale(int x_resolution, int y_resolution, int w) {
@@ -1024,7 +887,7 @@ BOOL t8::drawText( string str, int tx, int ty, LPD3DXFONT &g_pFont) {
 
 //在指定位置和缩放系数画纹理
 BOOL t8::drawTex(double tx, double ty, LPD3DXSPRITE &g_pSprite, LPDIRECT3DTEXTURE9 &tex,
-	double scale, int x_resolution, int y_resolution, int h, int w) {
+	double scale) {
 	D3DXMATRIX mx;
 	if (SUCCEEDED(g_pSprite->Begin(D3DXSPRITE_ALPHABLEND))) {
 		// 左边
@@ -1051,29 +914,46 @@ BOOL t8::drawTex(double tx, double ty, LPD3DXSPRITE &g_pSprite, LPDIRECT3DTEXTUR
 	return FALSE;
 }
 
+BOOL t8::drawTex(string mode, LPD3DXSPRITE &g_pSprite,
+	LPDIRECT3DTEXTURE9 &tex,
+	int x_resolution, int y_resolution) {
+	/*int w, h;
+	getTexSize(tex, w, h);
+	double scale = getScale(x_resolution, y_resolution, w);
+	double tx = x_resolution / 2 - scale*w / 2;
+	double ty = (y_resolution - scale*h) / 2;
+	if (!drawTex(tx, ty, g_pSprite, tex, scale))
+		return FALSE;*/
+	return drawTex(mode, g_pSprite, tex, tex, x_resolution, y_resolution);
+	
+}
 // 按照模式画纹理
 BOOL t8::drawTex(string mode, LPD3DXSPRITE &g_pSprite, 
 	LPDIRECT3DTEXTURE9 &ltex, LPDIRECT3DTEXTURE9 &rtex,
-	double scale, int x_resolution, int y_resolution, int h, int w) {
+	int x_resolution, int y_resolution) {
 	
+	int w, h;
+	getTexSize(ltex, w, h);
+	double scale = getScale(x_resolution, y_resolution, w);
+
 	D3DXMATRIX mx;
 	// 左右并列
 	if (mode == "LR") {
 		double tx, ty;
 		tx = x_resolution / 2 - scale*w;
 		ty = (y_resolution - scale*h) / 2;
-		if (!drawTex(tx, ty, g_pSprite, ltex, scale, x_resolution, y_resolution, h, w))
+		if (!drawTex(tx, ty, g_pSprite, ltex, scale))
 			return FALSE;
 		tx = x_resolution / 2;
 		ty = (y_resolution - scale*h) / 2;
-		if (!drawTex(tx, ty, g_pSprite, rtex, scale, x_resolution, y_resolution, h, w))
+		if (!drawTex(tx, ty, g_pSprite, rtex, scale))
 			return FALSE;
 	}
 	//中间大图
 	else if (mode == "focus") {
 		double tx = x_resolution / 2 - scale*w / 2;
 		double ty = (y_resolution - scale*h) / 2;
-		if (!drawTex(tx, ty, g_pSprite, ltex, scale, x_resolution, y_resolution, h, w))
+		if (!drawTex(tx, ty, g_pSprite, ltex, scale))
 			return FALSE;
 	}
 	return TRUE;
@@ -1085,53 +965,16 @@ BOOL t8::drawTex(string mode, LPD3DXSPRITE &g_pSprite,
 VOID t8::Render()
 {
 	// 清空画面并绘制背景
-	switch (m_TestState)
+	switch (m_Setting.m_Background)
 	{
-		//呈现指导语，绘制背景
-	case STATE_DISPLAYINSTURCTION:
-		//		g_pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(255,255,255), 0.0f, 0 );
-		//		break;
-		//任务执行过程，绘制背景
-	case STATE_DISPLAYOBJ:
-	case STATE_MOVINGOBJ:
-	case STATE_DISPLAYFEEDBACK:
-	case STATE_FORMAL:
-	case STATE_EXERCISE:
-	case STATE_FOCUS_EXERCISE:
-	case STATE_FOCUS_FORMAL:
-		switch (m_Setting.m_Background)
-		{
-		case BACKGROUND_GRAY:
-			g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(48, 48, 48), 0.0f, 0);
-			break;
-		case BACKGROUND_BLACK:
-			g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(20, 20, 70), 0.0f, 0);
-			break;
-		case BACKGROUND_STAR:
-			g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 255), 0.0f, 0);
-			break;
-		}
-		if (m_Setting.m_SubTask)
-		{
-			//g_pd3dDevice->Clear( 1, &SignRect, D3DCLEAR_TARGET, D3DCOLOR_XRGB(255,255,255), 0.0f, 0 );
-		}
+	case BACKGROUND_GRAY:
+		g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(48, 48, 48), 0.0f, 0);
 		break;
-
-	case STATE_DISPLAYNEXT:
-	case STATE_DISPLAYOPTION:
-	case STATE_OVER:
-		switch (m_Setting.m_Background)
-		{
-		case BACKGROUND_GRAY:
-			g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(48, 48, 48), 0.0f, 0);
-			break;
-		case BACKGROUND_BLACK:
-			g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(20, 20, 70), 0.0f, 0);
-			break;
-		case BACKGROUND_STAR:
-			g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 255), 0.0f, 0);
-			break;
-		}
+	case BACKGROUND_BLACK:
+		g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(20, 20, 70), 0.0f, 0);
+		break;
+	case BACKGROUND_STAR:
+		g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 255), 0.0f, 0);
 		break;
 	}
 
@@ -1152,81 +995,9 @@ VOID t8::Render()
 				D3DXMatrixTransformation2D(&mx, NULL, 0.0, &D3DXVECTOR2((float)1024 / (float)1024, (float)768 / (float)1024), &D3DXVECTOR2(0, 0), NULL, &D3DXVECTOR2(x_resolution / 2, y_resolution / 2));
 				g_pSprite->SetTransform(&mx);
 				g_pSprite->Draw(g_pTextureInst, NULL, &D3DXVECTOR3(512, 512, 0), &D3DXVECTOR3(0, 0, 0), 0xffffffff);
-				//			g_pFont->DrawText(NULL, Insturction11, -1, &erect,
-				//			    DT_WORDBREAK|DT_NOCLIP|DT_VCENTER, D3DCOLOR_XRGB(255,0,0));
 			}
 			g_pSprite->End();
 			break;
-		case STATE_DISPLAYOBJ:
-		case STATE_MOVINGOBJ:
-		case STATE_DISPLAYNEXT:
-		case STATE_DISPLAYFEEDBACK:
-			if (SUCCEEDED(g_pSprite->Begin(D3DXSPRITE_ALPHABLEND)))
-			{
-				if (m_TestState == STATE_DISPLAYFEEDBACK)
-					g_pFont1->DrawText(NULL, FeedBack[m_bAcc], -1, &erect,
-						DT_WORDBREAK | DT_NOCLIP | DT_CENTER | DT_VCENTER, D3DCOLOR_XRGB(255, 0, 0));
-				else
-				{
-					//呈现三维图形
-					if (m_Setting.m_SubTask == 1)
-					{
-						if (m_bSignStart && !m_bHideSign)
-						{
-							D3DXMatrixTransformation2D(&mx, NULL, 0.0, &D3DXVECTOR2((float)256 / (float)256, (float)256 / (float)256), &D3DXVECTOR2(0, 0), 0, &D3DXVECTOR2(x_resolution / 2, y_resolution / 2));
-							g_pSprite->SetTransform(&mx);
-							g_pSprite->Draw(g_pTexture3[m_SignNo], NULL, &D3DXVECTOR3(128, 128, 0), &D3DXVECTOR3(0, 0, 0), 0xffffffff);
-						}
-						if (m_bShowMem)
-						{
-							D3DXMatrixTransformation2D(&mx, NULL, 0.0, &D3DXVECTOR2((float)256 / (float)256, (float)256 / (float)256), &D3DXVECTOR2(0, 0), 0, &D3DXVECTOR2(x_resolution / 2, y_resolution / 2));
-							g_pSprite->SetTransform(&mx);
-							g_pSprite->Draw(g_pTexture4, NULL, &D3DXVECTOR3(128, 128, 0), &D3DXVECTOR3(0, 0, 0), 0xffffffff);
-						}
-					}
-
-				}
-
-				//显示追踪目标和瞄准器
-				if (m_Setting.m_MainTask == 1)
-				{
-					D3DXMatrixTransformation2D(&mx, NULL, 0.0, &D3DXVECTOR2((float)128 / (float)128, (float)32 / (float)32), &D3DXVECTOR2(0, 0), 0, &D3DXVECTOR2(m_PostPoint[m_PointNum].x, m_PostPoint[m_PointNum].y));
-					g_pSprite->SetTransform(&mx);
-					if (m_bHit[m_PointNum])
-					{
-						g_pSprite->Draw(g_pTexture2, NULL, &D3DXVECTOR3(64, 20, 0), &D3DXVECTOR3(0, 0, 0), 0xffffffff);
-
-					}
-					else
-					{
-						g_pSprite->Draw(g_pTexture1, NULL, &D3DXVECTOR3(64, 20, 0), &D3DXVECTOR3(0, 0, 0), 0xffffffff);
-					}
-					D3DXMatrixTransformation2D(&mx, NULL, 0.0, &D3DXVECTOR2((float)64 / (float)64, (float)16 / (float)16), &D3DXVECTOR2(0, 0), 0, &D3DXVECTOR2(m_ObjPoint[m_PointNum].x, m_ObjPoint[m_PointNum].y));
-					g_pSprite->SetTransform(&mx);
-					g_pSprite->Draw(g_pTexture0, NULL, &D3DXVECTOR3(32, 12, 0), &D3DXVECTOR3(0, 0, 0), 0xffffffff);
-				}
-			}
-			g_pSprite->End();
-			//显示指导语
-			if (m_bShowMem)
-			{
-				g_pFont2->DrawText(NULL, Insturction13, -1, &strurect,
-					DT_WORDBREAK | DT_NOCLIP | DT_CENTER | DT_VCENTER, D3DCOLOR_XRGB(255, 255, 255));
-			}
-			break;
-			//呈现反馈
-			//case STATE_DISPLAYFEEDBACK:
-			//	g_pFont1->DrawText(NULL, FeedBack[m_bAcc], -1, &erect,
-			//		DT_WORDBREAK|DT_NOCLIP|DT_CENTER|DT_VCENTER, D3DCOLOR_XRGB(255,0,0));
-			//	break;
-			//测试选项
-		case STATE_DISPLAYOPTION:
-			//          	if(m_bLoadSign)
-		{
-			g_pFont->DrawText(NULL, Insturction2, -1, &erect,
-				DT_WORDBREAK | DT_NOCLIP | DT_CENTER | DT_VCENTER, D3DCOLOR_XRGB(255, 255, 255));
-		}
-		break;
 		//测试结束
 		case STATE_OVER:
 			g_pFont1->DrawText(NULL, Insturction3, -1, &erect,
@@ -1234,21 +1005,49 @@ VOID t8::Render()
 			break;
 		case STATE_FOCUS_EXERCISE:
 		case STATE_FOCUS_FORMAL: {
-			int w, h;
+			//int w, h;
 			addTex(g_pd3dDevice, "./Pics/TaskR/cross.jpg", texLeft);
-			getTexSize(texLeft, w, h);
-			double scale = getScale(x_resolution, y_resolution, w);
 
 			// 绘制图片
-			if (!drawTex("focus", g_pSprite, texLeft, texLeft, scale, x_resolution, y_resolution, h, w))
+			if (!drawTex("focus", g_pSprite, texLeft, texLeft, x_resolution, y_resolution))
 				break;
 			
 			break;
 		}
-		case STATE_EXERCISE: {
+		case STATE_DISPLAYFEEDBACK: {
+			if (recs.rbegin()->unCoincidence == 0) {// 能重合
+				if (recs.rbegin()->btn == -1) {		// 超时
+					if (!drawTex("focus", g_pSprite, texNoneF, x_resolution, y_resolution))
+						break;
+				}
+				else if (recs.rbegin()->isRight) {	// 正确
+					if (!drawTex("focus", g_pSprite, texRightF, x_resolution, y_resolution))
+						break;
+				}
+				else {								//错误
+					if (!drawTex("focus", g_pSprite, texWrongF, x_resolution, y_resolution))
+						break;
+				}
+			}
+			else {									// 不能重合
+				if (recs.rbegin()->btn == -1) {		// 超时
+					if (!drawTex("focus", g_pSprite, texNoneJ, x_resolution, y_resolution))
+						break;
+				}
+				else if (recs.rbegin()->isRight) {	// 正确
+					if (!drawTex("focus", g_pSprite, texRightJ, x_resolution, y_resolution))
+						break;
+				}
+				else {								//错误
+					if (!drawTex("focus", g_pSprite, texWrongJ, x_resolution, y_resolution))
+						break;
+				}
+			}
+			break;
+		}
+		case STATE_EXERCISE: 
+		case STATE_FORMAL: {
 			// 绘制图片
-			int w, h;
-			double scale;
 			// 加载纹理
 			if (g_imgDisplayInd < 0 && g_imgDisplayInd >= LImgs.size()) break;
 			if (g_imgLastInd != g_imgDisplayInd) {
@@ -1258,9 +1057,7 @@ VOID t8::Render()
 				addTex(g_pd3dDevice, rImg.c_str(), texRight);
 				g_imgLastInd = g_imgDisplayInd;
 			}
-			getTexSize(texLeft, w, h);
-			scale = getScale(x_resolution, y_resolution, w);
-			if (!drawTex("LR", g_pSprite, texLeft, texRight, scale, x_resolution, y_resolution, h, w))
+			if (!drawTex("LR", g_pSprite, texLeft, texRight, x_resolution, y_resolution))
 				break;
 			// 绘制文字
 			int tx = x_resolution / 2 - 100;
@@ -1273,8 +1070,6 @@ VOID t8::Render()
 			}
 			break;
 		}
-		case STATE_FORMAL :
-			break;
 		}
 		g_pd3dDevice->EndScene();
 	}
@@ -1357,8 +1152,8 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				//若在任务中途退出 则保存当前所有实验数据
 				if (m_TestState == STATE_MOVINGOBJ)
 				{
-					SaveTraceData();
-					SaveMemoryData();
+					//SaveTraceData();
+					//SaveMemoryData();
 				}
 				EndDialog(hWnd, rtn);
 				//PostThreadMessage(dwInputThreadID, WM_THREADSTOP, 0, 0); 	//退出线程
@@ -1368,8 +1163,8 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				//若在任务中途退出 则保存当前所有实验数据
 				if (m_TestState == STATE_MOVINGOBJ)
 				{
-					SaveTraceData();
-					SaveMemoryData();
+					//SaveTraceData();
+					//SaveMemoryData();
 				}
 				EndDialog(hWnd, rtn);
 				//PostThreadMessage(dwInputThreadID, WM_THREADSTOP, 0, 0); 	//退出线程
@@ -1381,14 +1176,14 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			break;
 		case 'f':
 		case 'F':
-		case 's':
-		case 'S': {
+		case 'j':
+		case 'J': {
 				// 结束计时
 				QueryPerformanceCounter(&endTime);
 				isPressBtn = true;
 				if (wParam == 'f' || wParam == 'F')
 					isCoBtn = true;
-				else if (wParam == 's' || wParam == 'S')
+				else if (wParam == 'j' || wParam == 'J')
 					isCoBtn = false;
 
 				break;
@@ -1463,247 +1258,7 @@ VOID t8::UpdateState()
 		break;
 		//测试任务执行
 	case STATE_MOVINGOBJ:
-	case STATE_DISPLAYFEEDBACK:
-		if (m_Setting.m_SubTask == 1)
-		{
-			if (m_SignTrialNo<m_Setting.m_ExperTimes)
-			{
-				if (m_SignNo<1)//m_Setting.m_ExperTimes)
-				{
-					//采样时间40ms
-					do
-					{
-						QueryPerformanceCounter(&litmp);
-						QPart2 = litmp.QuadPart;         //获得中止值
-						dfMinus = (double)(QPart2 - QPart1);
-						dfTim = dfMinus / dfFreq;        // 获得对应的时间值，单位为秒		
-					} while (dfTim<m_MoveInt);
-					QPart1 = QPart2;           // 获得初始值
-					dfTotalSign = dfTotalSign + dfTim;
-					dfTotalMove = dfTotalMove + dfTim;
-					//				dfTotalPause = dfTotalPause + dfTim;
-					//显示比较记忆图形
-					if (!m_bRememStart)
-					{
-						if (dfTotalSign >= 2)
-						{
-							m_bRememStart = TRUE;
-							m_bShowMem = TRUE;
-							dfTotalSign = 0;
-						}
-					}
-					else//if(m_bRememStart)
-					{
-						if (!m_bShowMem)
-						{
-							if (!m_bSignStart)
-							{
-								//间隔
-								if (dfTotalSign >= m_Setting.m_iSubTaskInterval)
-								{
-									m_bSignStart = TRUE;
-									m_SignStartTime[m_SignNo] = QPart2 / dfFreq * 1000;
-									dfTotalSign = 0;
-								}
-							}
-							else
-							{
-								if (!m_bHideSign)
-								{
-									if (dfTotalSign >= m_Setting.m_iPresentTime)
-									{
-										dfTotalSign = 0;
-										m_bHideSign = TRUE;
-
-									}
-								}
-								else
-								{
-									//呈现时间
-									if (dfTotalSign >= 0)
-									{
-										m_SignSureTime[m_SignNo] = 0;
-										m_SureButtonNo[m_SignNo] = -1;
-										m_bSignStart = FALSE;
-										//			m_bShowEvent = TRUE;
-										dfTotalSign = 0;
-										m_bHideSign = FALSE;
-										m_SignNo++;
-									}
-								}
-
-							}
-						}
-					}
-					//计算当前运动状态
-					if (m_Setting.m_MainTask == 1)
-					{
-						MoveTrace();
-					}
-				}
-				else
-				{
-					m_SignTrialNo++;
-					//					if(m_SignTrialNo<m_TrialTimes)
-					{
-						//保存数据
-						SaveMemoryData();
-						m_SignNo = 0;
-						m_bRememStart = FALSE;
-						m_bSignStart = FALSE;
-						m_bShowMem = FALSE;
-						m_bLoadSign = FALSE;
-						//加载图形文件
-						if (!m_bLoadSign)
-						{
-							if (LoadSignFile())
-							{
-								m_bLoadSign = TRUE;
-							}
-						}
-					}
-				}
-			}
-			//如果全部方块数目没有进行完
-			else
-			{
-				//保存数据
-				SaveMemoryData();
-				//进行下一个方块数目
-				m_SignNo = 0;
-				m_SignTrialNo = 0;
-				m_bRememStart = FALSE;
-				m_bShowMem = FALSE;
-				m_bSignStart = FALSE;
-				//				RandOrder(10,m_SignOrder);
-				m_SignGroupNo++;
-				m_CubeNum++;
-				if (m_SignGroupNo<4)
-				{
-					while ((!m_bCubeNum[m_SignGroupNo]) && (m_SignGroupNo<4))
-					{
-						m_SignGroupNo++;
-						m_CubeNum++;
-					}
-				}
-				m_bLoadSign = FALSE;
-				//如果全部方块数目已进行完
-				if (m_SignGroupNo>3)
-				{
-					//保存数据
-					if (m_Setting.m_MainTask == 1)
-					{
-						SaveTraceData();
-					}
-					if ((m_TrialType == TRIAL_PRACTICE) && (m_Setting.m_ExperMode == 1))
-					{
-						//呈现正式测试选项
-						m_SignTrialNo = 0;
-						m_CubeNum = 9;
-						m_SignGroupNo = -1;
-						m_bLoadSign = FALSE;
-						m_TrialType = TRIAL_EXPERMENT;
-						CleanupMem();
-						TestInit();
-						//m_TestState = STATE_DISPLAYOPTION;
-					}
-					else
-					{
-						//测试结束
-						QueryPerformanceCounter(&litmp);
-						QPart1 = litmp.QuadPart;           // 获得初始值
-						TimeInt = 2;
-						//m_TestState = STATE_OVER;
-					}
-				}
-				else
-				{
-					//加载图形文件
-					if (!m_bLoadSign)
-					{
-						if (LoadSignFile())
-						{
-							m_bLoadSign = TRUE;
-						}
-					}
-				}
-			}
-		}
-		else
-		{
-			//仅进行追踪任务
-			if (dfTotalMove<m_TrialTime)
-			{
-				do
-				{
-					QueryPerformanceCounter(&litmp);
-					QPart2 = litmp.QuadPart;         //获得中止值
-					dfMinus = (double)(QPart2 - QPart1);
-					dfTim = dfMinus / dfFreq;        // 获得对应的时间值，单位为秒		
-				} while (dfTim<m_MoveInt);
-				QPart1 = QPart2;           // 获得初始值
-				dfTotalMove = dfTotalMove + dfTim;
-				MoveTrace();
-			}
-			else
-			{
-				//保存数据
-				SaveTraceData();
-				if ((m_TrialType == TRIAL_PRACTICE) && (m_Setting.m_ExperMode == 1))
-				{
-					//呈现正式测试选项
-					//m_TrialType = TRIAL_EXPERMENT;
-					//m_TestState = STATE_DISPLAYOPTION;
-					CleanupMem();
-				}
-				else
-				{
-					//测试结束
-					QueryPerformanceCounter(&litmp);
-					QPart1 = litmp.QuadPart;           // 获得初始值
-					TimeInt = 2;
-					//m_TestState = STATE_OVER;
-				}
-			}
-		}
-
-		if (m_TestState == STATE_DISPLAYFEEDBACK)
-		{
-			QueryPerformanceCounter(&litmp);
-			QPart4 = litmp.QuadPart;         //获得中止值
-			dfMinus = (double)(QPart4 - QPart3);
-			dfTim = dfMinus / dfFreq;        // 获得对应的时间值，单位为秒	
-											 //2000ms
-			if (dfTim >= TimeInt)
-			{
-				m_bSignStart = FALSE;
-				dfTotalSign = 0;
-				//		m_ButtonDownNum++;
-				m_SignNo++;
-				//m_TestState = STATE_MOVINGOBJ;
-			}
-
-		}
-
-
-		break;
-		//呈现反馈
-		/*case STATE_DISPLAYFEEDBACK:
-		QueryPerformanceCounter(&litmp);
-		QPart4 = litmp.QuadPart;         //获得中止值
-		dfMinus = (double)(QPart4-QPart3);
-		dfTim = dfMinus / dfFreq;        // 获得对应的时间值，单位为秒
-		//2000ms
-		if (dfTim >= TimeInt)
-		{
-		m_bSignStart = FALSE;
-		dfTotalSign = 0;
-		//		m_ButtonDownNum++;
-		m_SignNo++;
-		m_TestState = STATE_MOVINGOBJ;
-		}
-		break;*/
-		//出现选项框
+	
 	case STATE_DISPLAYOPTION:
 		break;
 		//测试结束
@@ -1743,12 +1298,12 @@ int APIENTRY t8::_tWinMain(HINSTANCE &hInstance,
 {
 	srand((unsigned)time(NULL)); //初始化随机种子 
 
-	// 测试
-	getFormalList(64);
-	saveImgList(LImgs, RImgs, "formal");
-	getExerciseList(LImgs, RImgs, 2);
-	saveImgList(LImgs, RImgs, "exrcise");
-	timerThread = thread(timer, ref(m_TestState), 5, 2, 2, ref(bShowTime));
+	//// 测试
+	//getFormalList(64);
+	//saveImgList(LImgs, RImgs, "formal");
+	//getExerciseList(LImgs, RImgs, 2);
+	//saveImgList(LImgs, RImgs, "exrcise");
+	timerThread = thread(timer, ref(m_TestState), 1, 1, 1, ref(bShowTime));
 	QueryPerformanceFrequency(&freq);
 	// 初始化句柄和状态
 	bool bUnClosedLastWin = true;
@@ -1883,10 +1438,13 @@ void t8::hideLastWindow(bool &bUnClosedLastWin, std::string &winClassName, std::
 	}
 }
 
-
+void t8::test() {
+	MessageBox(hWnd, "asdas","asdas",NULL);
+}
 
 // 定时器
 void t8::timer(short & state, int presentTime, int countdownTime, int foucusTime, bool &bShowTime) {
+	
 	while (true) {
 		
 		// 注视点
@@ -1899,32 +1457,52 @@ void t8::timer(short & state, int presentTime, int countdownTime, int foucusTime
 		}
 		// 执行任务
 		if (state == STATE_EXERCISE || state == STATE_FORMAL) {
+			// 产生随机图片组合
+			//// 测试
+			if (state == STATE_EXERCISE) {
+				getExerciseList(LImgs, RImgs, 2);
+				//saveImgList(LImgs, RImgs, "exercise"); // 测试
+			}
+			if (state == STATE_FORMAL) {
+				getFormalList(64);
+				//saveImgList(LImgs, RImgs, "formal"); // 测试
+			}
 			isPressBtn = false;
 			// 开始展示图片
 			if (g_imgDisplayInd < 0) g_imgDisplayInd = 0;
 			
 			// 计时开始
 			QueryPerformanceCounter(&begTime);
-			// 不显示倒计时一段时间
+			// 不显示倒计时一段时间（有空了修改成一个独立的倒计时线程）
 			this_thread::sleep_for(std::chrono::seconds(presentTime - countdownTime));
+			
 			// 倒计时开始显示
 			bShowTime = true;
 			for (int i = countdownTime; i >= 0; i--) {
 				countdown = i;
 				this_thread::sleep_for(std::chrono::seconds(1));
 			}
+			bShowTime = false;
 
-			// 倒计时结束，超时 
-			if (isPressBtn) QueryPerformanceCounter(&endTime);
+			// 倒计时结束， 
+			if (isPressBtn) 
+				QueryPerformanceCounter(&endTime);
+			
 			// 统计
 			addRec();
-			
-			bShowTime = false;
+
+			// 练习任务显示反馈
+			if (state == STATE_EXERCISE && g_imgDisplayInd < LImgs.size()) {
+				m_TestState = STATE_DISPLAYFEEDBACK;	// 应该先转到反馈
+				this_thread::sleep_for(std::chrono::seconds(3));
+				m_TestState = STATE_EXERCISE;
+			}
+
 			g_imgDisplayInd++;
 			// 显示图片结束，状态转移
 			if ((state == STATE_EXERCISE || state == STATE_FORMAL) && g_imgDisplayInd >= LImgs.size()) {
 				g_imgDisplayInd = -1;
-				if (state == STATE_EXERCISE) m_TestState = STATE_FOCUS_FORMAL;	// 应该先转到反馈
+				if (state == STATE_EXERCISE) m_TestState = STATE_FOCUS_FORMAL;	// 
 				if (state == STATE_FORMAL) m_TestState = STATE_FOCUS_FORMAL;	// 应该转到结束或下一个
 			}
 			
@@ -1940,12 +1518,14 @@ void t8::addRec() {
 	rec.no = g_imgDisplayInd + 1;
 	rec.leftImg = LImgs[g_imgDisplayInd];
 	rec.rightImg = RImgs[g_imgDisplayInd];
+	// 两张图能否重合
 	if (rec.leftImg[rec.leftImg.size() - 5] == rec.rightImg[rec.rightImg.size() - 5]) 
 		rec.unCoincidence = 0;
 	else
 		rec.unCoincidence = 1;
-	rec.btn = isCoBtn;
-	
+	// 判断是否超时
+	rec.btn = (isPressBtn)? isCoBtn : -1;
+	// 是否按键（不按则超时）
 	if (isPressBtn) {
 		if (rec.unCoincidence == rec.btn)
 			rec.isRight = true;
@@ -1957,6 +1537,7 @@ void t8::addRec() {
 		rec.isRight = false;
 		rec.responseTime = -1.;
 	}
+	recs.push_back(rec);
 }
 
 void t8::shuffleVector(vector<string> &v) {
