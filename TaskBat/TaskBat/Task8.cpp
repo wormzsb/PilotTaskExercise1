@@ -237,7 +237,7 @@ BOOL t8::ReadSetting()
 			//Task6
 			//		fscanf(fp,"[Task6]\n");
 			//fscanf(fp,"TaskName\t%s\n",m_Setting.m_TaskName);
-			fscanf(fp, "PracMode\t%d\n", &m_Setting.m_bPracMode);
+			//fscanf(fp, "PracMode\t%d\n", &m_Setting.m_bPracMode);
 			fscanf(fp, "PresentTime\t%d\n", &m_Setting.m_iPresentTime);
 			fscanf(fp, "FocusTime\t%d\n", &m_Setting.m_iFocusTime);
 			fscanf(fp, "CountdownTime\t%d\n", &m_Setting.m_iCountdownTime);
@@ -276,8 +276,6 @@ VOID t8::SaveName()
 	stringstream ss;
 	if (strlen(m_DataName) == 0)
 	{
-		//sprintf(m_filename1, "t8-trace-%d%02d%02d%02d%02d%02d.txt", CurTime.wYear, CurTime.wMonth, CurTime.wDay, CurTime.wHour, CurTime.wMinute, CurTime.wSecond);
-		//sprintf(m_filename2, "任务8-%d%02d%02d%02d%02d%02d.txt", CurTime.wYear, CurTime.wMonth, CurTime.wDay, CurTime.wHour, CurTime.wMinute, CurTime.wSecond);
 	}
 	else
 	{
@@ -292,8 +290,6 @@ VOID t8::SaveName()
 			<< "-"
 			<< szTime
 			<< ".txt";
-			//sprintf(m_filename1, "t8-trace-%s-%s-%d%02d%02d%02d%02d%02d.txt", m_TaskNumStr, m_DataName, CurTime.wYear, CurTime.wMonth, CurTime.wDay, CurTime.wHour, CurTime.wMinute, CurTime.wSecond);
-		//sprintf(m_filename2, "任务8-%s-%s-%d%02d%02d%02d%02d%02d.txt", m_TaskNumStr, m_DataName, CurTime.wYear, CurTime.wMonth, CurTime.wDay, CurTime.wHour, CurTime.wMinute, CurTime.wSecond);
 	}
 	if (strlen(m_TesterName) == 0)
 	{
@@ -307,17 +303,6 @@ VOID t8::SaveName()
 	//sprintf(m_file1, "%s\\%s", m_DataDir, m_filename1);
 	sprintf(szDataFile, "%s\\%s", m_DataDir, ss.str());
 
-	//if (/*m_Setting.m_MainTask == */1)
-	//{
-	//	fp = fopen(m_file1, "at");
-	//	fprintf(fp, "ID\tName\tSex\tSession\t"
-	//		"DistanceError\tPracMode\tExperMode\tMainTask\tSubTask\t"
-	//		"Background\tInitSpeed\tCubeNum1\tCubeNum2\tCubeNum3\tCubeNum4\tPrototype\tRefAxis\tMemTaskMode\tPracTime\tExperTime\tPracTimes\tExperTimes\t"
-	//		"Pra_Test\tPointNum\tPointTime\tObjPointX\tObjPointY\tPostPointX\tPostPointY\tDistance\tHit\t"
-	//		"ObjSpeedX\tObjSpeedY\tPostSpeedX\tPostSpeedY\n");
-	//	fclose(fp);
-	//}
-	
 	// 保存文件头
 	ofstream out(szDataFile);
 	if (!out.is_open()) 
@@ -336,109 +321,7 @@ VOID t8::SaveName()
 //************************************************
 HRESULT t8::LoadSignFile()
 {
-	//int l1, l2;
-	//char axis[3][2] = { "X","Y","Z" };
-	//int i, j;
-	//for (i = 0; i<12; i++)
-	//{
-	//	if (g_pTexture3[i] != NULL)
-	//	{
-	//		g_pTexture3[i]->Release();
-	//		g_pTexture3[i] = NULL;
-	//	}
-	//}
-	//if (g_pTexture4 != NULL)
-	//{
-	//	g_pTexture4->Release();
-	//	g_pTexture4 = NULL;
-	//}
-
-	//RandValue(0, 2, l1);
-	//RandValue(0, 12, l2);
-
-	//char m_SignName[50];
-	//if (l1 == 0)
-	//{
-	//	sprintf(m_LMemName, "M%d_%d_%s%04d", m_CubeNum, m_Setting.m_Prototype + 1, axis[m_Setting.m_RefAxis], l2 * 5);
-	//	sprintf(m_SignName, "Pics\\Task6\\三维图形\\%s.jpg", m_LMemName);
-	//}
-	//else
-	//{
-	//	sprintf(m_LMemName, "M%d_%d_mir_%s%04d", m_CubeNum, m_Setting.m_Prototype + 1, axis[m_Setting.m_RefAxis], l2 * 5);
-	//	sprintf(m_SignName, "Pics\\Task6\\三维图形\\%s.jpg", m_LMemName);
-	//}
-	//if (FAILED(D3DXCreateTextureFromFile(g_pd3dDevice, m_SignName, &g_pTexture4)))
-	//{
-	//	MessageBox(NULL, m_SignName, "Textures.exe", MB_OK);
-	//	return E_FAIL;
-	//}
-	//m_LMemAngle = l2 * 30;
-	//if (m_Setting.m_MainTask == 1)
-	//{
-	//	if (JoystickUpdate())
-	//	{
-	//		JoyX = GetXAxis();//GetYAxis();//
-	//		JoyY = GetYAxis();//-GetZAxis();//
-	//	}
-	//}
-	////		RandOrder1(50+25+25, m_Setting.m_SignMemNum+5, m_SignSelect);
-
-	//RandOrder(m_SignCount, m_SignType);
-	////	RandOrder1(12,m_SignCount,m_SignType);
-	//RandOrder1(6, m_SignCount / 2, m_SignOrder1);
-	//RandOrder1(6, m_SignCount / 2, m_SignOrder2);
-	////	RandOrder1(6,m_SignCount/2,m_SignOrder2);
-	//m_SignOrderNo1 = 0;
-	//m_SignOrderNo2 = 0;
-	//for (i = 0; i<m_SignCount; i++)
-	//{
-	//	if (m_SignType[i]<m_SignCount / 2)
-	//	{
-	//		sprintf(m_RMemName[i], "M%d_%d_%s%04d", m_CubeNum, m_Setting.m_Prototype + 1, axis[m_Setting.m_RefAxis], (l2 + m_SignOrder1[m_SignOrderNo1]) % 12 * 5);
-	//		sprintf(m_SignName, "Pics\\Task6\\三维图形\\%s.jpg", m_RMemName[i]);
-	//		m_RMemAngle[i] = (l2 + m_SignOrder1[m_SignOrderNo1]) % 12 * 30;
-	//		m_MemAngleDiff[i] = m_SignOrder1[m_SignOrderNo1] * 30;
-	//		m_SignOrderNo1++;
-	//		if (l1 == 0)
-	//		{
-	//			m_NoSame[i] = 0;
-	//		}
-	//		else
-	//		{
-	//			m_NoSame[i] = 1;
-	//		}
-	//	}
-	//	else
-	//	{
-	//		sprintf(m_RMemName[i], "M%d_%d_mir_%s%04d", m_CubeNum, m_Setting.m_Prototype + 1, axis[m_Setting.m_RefAxis], (l2 + m_SignOrder2[m_SignOrderNo2]) % 12 * 5);
-	//		sprintf(m_SignName, "Pics\\Task6\\三维图形\\%s.jpg", m_RMemName[i]);
-	//		m_RMemAngle[i] = (l2 + m_SignOrder2[m_SignOrderNo2]) % 12 * 30;
-	//		m_MemAngleDiff[i] = m_SignOrder2[m_SignOrderNo2] * 30;
-	//		m_SignOrderNo2++;
-	//		if (l1 == 0)
-	//		{
-	//			m_NoSame[i] = 1;
-	//		}
-	//		else
-	//		{
-	//			m_NoSame[i] = 0;
-	//		}
-	//	}
-	//	if (FAILED(D3DXCreateTextureFromFile(g_pd3dDevice, m_SignName, &g_pTexture3[i])))
-	//	{
-	//		MessageBox(NULL, m_SignName, "Textures.exe", MB_OK);
-	//		return E_FAIL;
-	//	}
-
-	//	if (m_Setting.m_MainTask == 1)
-	//	{
-	//		if (JoystickUpdate())
-	//		{
-	//			JoyX = GetXAxis();//GetYAxis();//
-	//			JoyY = GetYAxis();//-GetZAxis();//
-	//		}
-	//	}
-	//}
+	
 	return TRUE;
 }
 
@@ -448,100 +331,6 @@ HRESULT t8::LoadSignFile()
 VOID t8::TestInit()
 {
 
-
-	//if (m_Setting.m_Direction == 0)
-	//	iDirection = 1;
-	//else
-	//	iDirection = -1;
-
-	//if (m_Setting.m_SpeedMode == 0)
-	//	v = m_Setting.m_Speed;
-	//else
-	//{
-	//	v = m_Setting.m_InitSpeed;
-
-	//	if (v>m_Setting.m_SpeedMax)
-	//	{
-	//		RandValueFloat(m_Setting.m_AccelerationMin, m_Setting.m_AccelerationMax, acce);
-	//		acce = -acce;
-	//		v = v + acce * dfTim;
-	//	}
-	//	else if (v <= m_Setting.m_SpeedMin)
-	//	{
-	//		RandValueFloat(m_Setting.m_AccelerationMin, m_Setting.m_AccelerationMax, acce);
-	//		v = v + acce * dfTim;
-	//	}
-	//	else
-	//		RandValueFloat(m_Setting.m_AccelerationMin, m_Setting.m_AccelerationMax, acce);
-	//}
-
-
-
-	//if (m_Setting.m_MainTask == 1)
-	//{
-	//	if (m_TrialType == TRIAL_PRACTICE)
-	//	{
-	//		m_TrialTime = m_Setting.m_PracTime;
-	//	}
-	//	else
-	//	{
-	//		m_TrialTime = m_Setting.m_ExperTime;
-	//	}
-	//	a = x_resolution / 2;
-	//	b = y_resolution / 2;
-	//	r = 300;
-	//	Rx = 400;
-	//	Ry = 200;
-	//	//v = m_Setting.m_InitSpeed;
-	//	fai = 0.0;
-	//	omiga = v / r;
-	//	m_PointNum = 0;
-	//	m_MemNum = 1000;
-	//	m_ObjPoint = (SPOINT*)malloc(m_MemNum*sizeof(POINT));
-	//	m_PostPoint = (SPOINT*)malloc(m_MemNum*sizeof(POINT));
-	//	m_Distance = (float*)malloc(m_MemNum*sizeof(float));
-	//	m_PointTime = (unsigned long*)malloc(m_MemNum*sizeof(LONGLONG));
-	//	m_bHit = (BOOL*)malloc(m_MemNum*sizeof(BOOL));
-	//	m_ObjSpeedX = (float*)malloc(m_MemNum*sizeof(float));
-	//	m_ObjSpeedY = (float*)malloc(m_MemNum*sizeof(float));
-	//	m_PostSpeedX = (float*)malloc(m_MemNum*sizeof(float));
-	//	m_PostSpeedY = (float*)malloc(m_MemNum*sizeof(float));
-	//	m_PostPointX = x_resolution / 2;
-	//	m_PostPointY = y_resolution / 2;
-	//	m_PostPoint[m_PointNum].x = m_PostPointX;
-	//	m_PostPoint[m_PointNum].y = m_PostPointY;
-	//	alpha = 0;
-	//	m_ObjPoint[m_PointNum].x = a + r * cos(alpha);
-	//	m_ObjPoint[m_PointNum].y = b - r * sin(alpha);
-	//	m_Distance[m_PointNum] = pow(pow((m_ObjPoint[m_PointNum].y - m_PostPoint[m_PointNum].y), 2.0) + pow((m_ObjPoint[m_PointNum].x - m_PostPoint[m_PointNum].x), 2.0), 0.5);
-	//	m_bHit[m_PointNum] = FALSE;
-	//	m_ObjSpeedX[m_PointNum] = -v * sin(alpha);
-	//	m_ObjSpeedY[m_PointNum] = -v * cos(alpha);
-	//	JoyX = 0;
-	//	JoyY = 0;
-	//}
-	//if (m_Setting.m_SubTask == 1)
-	//{
-
-	//	m_TrialTimes = m_Setting.m_ExperTimes;
-	//	m_SignCount = 12;
-	//	m_bCubeNum[0] = m_Setting.m_CubeNum1;
-	//	m_bCubeNum[1] = m_Setting.m_CubeNum2;
-	//	m_bCubeNum[2] = m_Setting.m_CubeNum3;
-	//	m_bCubeNum[3] = m_Setting.m_CubeNum4;
-
-	//	m_SignNo = 0;
-	//	m_bRememStart = FALSE;
-	//	m_bShowMem = FALSE;
-	//	m_bSignStart = FALSE;
-	//	//		RandOrder(10,m_SignOrder);
-	//	//	RandPoint(x_resolution/2-128, y_resolution/2-128, 12, m_EventPoint);
-	//	if (m_Setting.m_MainTask == 0)
-	//	{
-	//		JoyX = 100;
-	//		JoyY = 100;
-	//	}
-	//}
 }
 
 unsigned t8::addTex(LPDIRECT3DDEVICE9 & dev, string fileName, LPDIRECT3DTEXTURE9 &tex) {
@@ -562,20 +351,7 @@ HRESULT t8::InitD3D(HWND hWnd)
 	m_SignGroupNo = -1;
 	m_SureDownNum = 0;
 	m_CubeNum = 9;
-	/*if (m_Setting.m_PracMode == 1)
-	{
-		m_TrialType = TRIAL_PRACTICE;
-	}
-	else
-	{
-		m_TrialType = TRIAL_EXPERMENT;
-	}
-
-	if (m_Setting.m_iJoyMoveDirection == 0)
-		iJoyMoveDirection = 1;
-	else
-		iJoyMoveDirection = -1;
-*/
+	
 
 	//材质大小
 	//	SetRect( &rct, 0, 0, 128, 128 );
@@ -635,7 +411,7 @@ HRESULT t8::InitD3D(HWND hWnd)
 
 	//加载纹理图片
 	// 指导语
-	if (FAILED(D3DXCreateTextureFromFile(g_pd3dDevice, "Pics\\Inst\\ST_tracking.jpg", &g_pTextureInst)))
+	if (FAILED(D3DXCreateTextureFromFile(g_pd3dDevice, (picDir+"ST_3D.jpg").c_str(), &g_pTextureInst)))
 	{
 		MessageBox(NULL, "Could not find banana.bmp", "Textures.exe", MB_OK);
 		return E_FAIL;		
@@ -994,7 +770,7 @@ VOID t8::Render()
 			g_pFont1->DrawText(NULL, Insturction3, -1, &erect,
 				DT_WORDBREAK | DT_NOCLIP | DT_CENTER | DT_VCENTER, D3DCOLOR_XRGB(255, 255, 255));
 			break;
-		case STATE_FOCUS_EXERCISE: {
+		case STATE_FOCUS: {
 			addTex(g_pd3dDevice, "./Pics/TaskR/cross.jpg", texLeft);
 
 			// 绘制图片
@@ -1002,7 +778,7 @@ VOID t8::Render()
 				break;
 			break;
 		}
-		case STATE_FOCUS_FORMAL: {
+		case STATE_BETWEEN_EXERCISE_AND_FORMAL: {
 			// 绘制文字
 			int tx = x_resolution / 2;
 			int ty = y_resolution/2 - 50;
@@ -1172,7 +948,7 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				break;
 			}
 		case VK_SPACE:
-			m_TestState = STATE_FOCUS_EXERCISE;
+			m_TestState = STATE_FOCUS;
 			break;
 		case 'f':
 		case 'F':
@@ -1218,7 +994,7 @@ VOID t8::UpdateState()
 	return;
 	switch (m_TestState)
 	{
-	case STATE_FOCUS_EXERCISE: {
+	case STATE_FOCUS: {
 		if (!bTimerExist) {
 			
 		}
@@ -1240,12 +1016,7 @@ VOID t8::UpdateState()
 			QPart1 = litmp.QuadPart;           // 获得初始值
 			dfTotalSign = 0;
 			dfTotalMove = 0;
-			/*if (m_Setting.m_MainTask == 1)
-			{
-				m_PointTime[m_PointNum] = QPart1 / dfFreq * 1000;
-				m_PostSpeedX[m_PointNum] = 0;
-				m_PostSpeedY[m_PointNum] = 0;
-			}*/
+			
 			if (!m_bLoadSign)
 			{
 				if (LoadSignFile())
@@ -1263,16 +1034,7 @@ VOID t8::UpdateState()
 		break;
 		//测试结束
 	case STATE_OVER:
-		/*		QueryPerformanceCounter(&litmp);
-		QPart2 = litmp.QuadPart;         //获得中止值
-		dfMinus = (double)(QPart2-QPart1);
-		dfTim = dfMinus / dfFreq;        // 获得对应的时间值，单位为秒
-		//2000ms
-		if (dfTim >= TimeInt)
-		{
-		PostThreadMessage(dwInputThreadID, WM_THREADSTOP,0,0);
-		m_TestState = STATE_EXIT;
-		}*/
+		
 		break;
 		//程序退出
 	case STATE_EXIT:
@@ -1459,12 +1221,16 @@ void t8::timer(short & state, int presentTime, int countdownTime, int foucusTime
 		if (state == STATE_NEXT || state == STATE_OVER)
 			return;
 		// 注视点
-		if (state == STATE_FOCUS_EXERCISE || state == STATE_FOCUS_FORMAL) {
+		if (state == STATE_FOCUS || state == STATE_FOCUS) {
 			this_thread::sleep_for(std::chrono::seconds(foucusTime));
-			if (state == STATE_FOCUS_EXERCISE) 
+			if (state == STATE_FOCUS)
 				state = STATE_EXERCISE;
-			if (state == STATE_FOCUS_FORMAL)
+			if (state == STATE_FOCUS)
 				state = STATE_FORMAL;
+		}
+		if (state == STATE_BETWEEN_EXERCISE_AND_FORMAL) {
+			this_thread::sleep_for(std::chrono::seconds(1));
+			state = STATE_FOCUS;
 		}
 		// 执行任务
 		if (state == STATE_EXERCISE || state == STATE_FORMAL) {
@@ -1510,13 +1276,18 @@ void t8::timer(short & state, int presentTime, int countdownTime, int foucusTime
 			}
 
 			g_imgDisplayInd++;
-			// 任务结束，状态转移
+			// 练习/正式任务完全结束，状态转移
 			if ((state == STATE_EXERCISE || state == STATE_FORMAL) && g_imgDisplayInd >= LImgs.size()) {
 				LImgs.clear();
 				RImgs.clear();
 				g_imgDisplayInd = -1;
-				if (state == STATE_EXERCISE) m_TestState = STATE_FOCUS_FORMAL;	// 
-				if (state == STATE_FORMAL) m_TestState = STATE_EXIT;	// 应该转到结束或下一个
+				if (state == STATE_EXERCISE) m_TestState = STATE_BETWEEN_EXERCISE_AND_FORMAL;	// 
+				if (state == STATE_FORMAL) m_TestState = STATE_EXIT;	//
+			}
+			// 在单次任务中之间
+			else if ((state == STATE_EXERCISE || state == STATE_FORMAL) 
+				&& (g_imgDisplayInd < LImgs.size() && g_imgDisplayInd >=0)) {
+				state = (state == STATE_EXERCISE) ? STATE_FOCUS : STATE_FOCUS;
 			}
 			
 		}

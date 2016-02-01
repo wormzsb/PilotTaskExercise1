@@ -23,7 +23,7 @@ const CString m_TaskItem[] = {_T("任务1-目标跟踪能力测试"),
 							   _T("任务5-双任务模式图符记忆判别能力测试"),
 							   _T("任务6-双任务模式三维图形记忆判别能力测试"),
 							   _T("任务7-速度知觉能力测试"),
-							   _T("任务8-三维心理选择测试")};
+							   _T("任务8-三维心理旋转测试")};
 int m_CurItemNo;
 /////////////////////////////////////////////////////////////////////////////
 // CSelectView
@@ -744,7 +744,7 @@ void CSelectView::SaveSetting(CString FileName)
 			case 7:
 				fprintf(fp, "[Task8(%s)]\n", pDoc->m_Setting8[DocNo].m_TaskName);
 				fprintf(fp, "TaskName\t%d-%s\n", i, pDoc->m_Setting8[DocNo].m_TaskName);
-				fprintf(fp, "PracMode\t%d\n", pDoc->m_Setting8[DocNo].m_bPracMode);
+				//fprintf(fp, "PracMode\t%d\n", pDoc->m_Setting8[DocNo].m_bPracMode);
 				fprintf(fp, "PresentTime\t%d\n", pDoc->m_Setting8[DocNo].m_iPrensentTime);
 				fprintf(fp, "FocusTime\t%d\n", pDoc->m_Setting8[DocNo].m_iFocusTime);
 				fprintf(fp, "CountdownTime\t%d\n", pDoc->m_Setting8[DocNo].m_iCountdownTime);

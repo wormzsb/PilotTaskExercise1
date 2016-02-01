@@ -1,10 +1,9 @@
 [TaskOrder]
 Task8
 
-[Task8(任务8-三维心理选择)]
-TaskName	1-任务8-三维心理选择
-PracMode	0
-PresentTime	3
+[Task8(任务8-三维心理旋转测试)]
+TaskName	0-任务8-三维心理旋转测试
+PresentTime	2
 FocusTime	1
-CountdownTime	2
+CountdownTime	1
 

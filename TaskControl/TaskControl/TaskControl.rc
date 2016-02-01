@@ -778,7 +778,6 @@ BEGIN
     LTEXT           "s",-1,101,47,21,9
     LTEXT           "s",-1,101,64,21,9
     LTEXT           "s",-1,101,83,21,9
-    CONTROL         "正式任务",IDC_PRACMODE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,31,38,10
 END
 
 

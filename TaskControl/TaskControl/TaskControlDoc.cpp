@@ -213,7 +213,7 @@ CTaskControlDoc::CTaskControlDoc()
 	m_DefSetting7.m_iSpeedMode = 0;
 
 	// Task 8 set default
-	strcpy_s(m_DefSetting8.m_TaskName, 100, "任务8-三维心理选择");
+	strcpy_s(m_DefSetting8.m_TaskName, 100, "任务8-三维心理旋转测试");
 	m_DefSetting8.m_bPracMode = FALSE;
 	m_DefSetting8.m_iFocusTime = 2;
 	m_DefSetting8.m_iPrensentTime = 10;

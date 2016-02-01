@@ -27,7 +27,7 @@ void CSettingDlg8::DoDataExchange(CDataExchange* pDX)
 	
 	CDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_TASKNAME, m_szTaskName);
-	DDX_Check(pDX, IDC_PRACMODE, m_bPracMode);
+	//DDX_Check(pDX, IDC_PRACMODE, m_bPracMode);
 	DDX_Text(pDX, IDC_PRESENT_TIME, m_iPrensentTime);
 	DDX_Text(pDX, IDC_FOCUS_TIME, m_iFocusTime);
 	DDX_Text(pDX, IDC_COUNTDOWN_TIME, m_iCountdownTime);
@@ -55,7 +55,7 @@ BOOL CSettingDlg8::OnInitDialog()
 	
 	// set default parameters
 	m_szTaskName = pDoc->m_Setting8[m_DlgIdx].m_TaskName;
-	m_bPracMode = pDoc->m_Setting8[m_DlgIdx].m_bPracMode;
+	//m_bPracMode = pDoc->m_Setting8[m_DlgIdx].m_bPracMode;
 	m_iFocusTime = pDoc->m_Setting8[m_DlgIdx].m_iFocusTime;
 	m_iPrensentTime = pDoc->m_Setting8[m_DlgIdx].m_iPrensentTime;
 	m_iCountdownTime = pDoc->m_Setting8[m_DlgIdx].m_iCountdownTime;
@@ -74,7 +74,7 @@ void CSettingDlg8::Save() {
 	CTaskControlDoc* pDoc = (CTaskControlDoc*)pMain->GetActiveDocument();
 	
 	// Save para to pDoc
-	pDoc->m_Setting8[m_DlgIdx].m_bPracMode = m_bPracMode;
+	//pDoc->m_Setting8[m_DlgIdx].m_bPracMode = m_bPracMode;
 	pDoc->m_Setting8[m_DlgIdx].m_iCountdownTime = m_iCountdownTime;
 	pDoc->m_Setting8[m_DlgIdx].m_iFocusTime = m_iFocusTime;
 	pDoc->m_Setting8[m_DlgIdx].m_iPrensentTime = m_iPrensentTime;
