@@ -170,7 +170,12 @@ namespace t8
 	int APIENTRY _tWinMain(HINSTANCE &hInstance, HINSTANCE &hPrevInstance, LPTSTR &lpCmdLine, int &nCmdShow, HWND &_hWnd, std::string winClassName, std::string winName);
 	void hideLastWindow(bool &bUnClosedLastWin, std::string &winClassName, std::string &winName, HINSTANCE &hInstance);
 	void test();
-	void timer(short &state, int presentTime, int countdownTime, int foucusTime, bool &bShowTime);
+	void timer(double &totalTime/*倒计时总时间，返回中断后的剩余时间*/, 
+		int interval/*返回显示的间隔*/,
+		int &curTime/*当前时间，倒数显示*/, bool &isRtn/*是否返回*/,
+		bool &isShowTime/*是否显示时间*/, int countdownThreshold/*倒数计时阈值*/);
+	void stateControl(short & state, int presentTime, int countdownTime, int foucusTime, bool &bShowTime);
+	//void timer(short &state, int presentTime, int countdownTime, int foucusTime, bool &bShowTime);
 	//void addRec();
 	void addAndSaveRec(int state);
 	void shuffleVector(vector<string> &v);

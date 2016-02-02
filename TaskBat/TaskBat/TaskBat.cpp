@@ -499,6 +499,9 @@ void exeTasks(HWND &hWnd, HINSTANCE &hInstance,
 			exit(1);
 		}
 
+		if (b_IsExit == STATE_NEXT && i == m_CurTaskCount - 1)
+			b_IsExit = STATE_EXIT;
+
 		if (b_IsExit != STATE_EXIT)
 		{
 			Sleep(500);

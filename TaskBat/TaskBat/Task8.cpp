@@ -1,15 +1,15 @@
-// Task6_2.cpp : Defines the entry point for the application.
-// 是将任务6-2作为模板的修改，改动很大，有的不用的旧代码没有删除
 
 #include "stdafx.h"
 #include "Task8.h"
 
-
-int m_taskIndex;
+// 状态控制
+bool isCountdownStop = false;
 int g_imgDisplayInd = -2;
-int g_imgLastInd = -3;
+int g_imgLastInd = -1000000;
 bool isPressBtn = false;
 bool isCoBtn = false;
+double pauseTime;
+int m_taskIndex;
 vector <string> LImgs, RImgs;
 
 struct tagREC {
@@ -817,14 +817,14 @@ VOID t8::Render()
 					int tx = x_resolution / 2;
 					int ty = y_resolution - 50;
 					stringstream ss;
-					ss << "还剩" << countdown << "秒"/* << g_imgDisplayInd*/;
+					ss << "还剩" << countdown/1000 << "秒"/* << g_imgDisplayInd*/;
 					if (!drawText(ss.str(), tx, ty, g_pFont))
 						break;
 				}
 
 				// 下面是反馈时候显示反馈的图像
 				if (m_TestState == STATE_DISPLAYFEEDBACK) {
-
+					
 					LPDIRECT3DTEXTURE9 texFeedBack = NULL;
 					bool unCo = recs.rbegin()->unCoincidence;
 					int iBtn = recs.rbegin()->btn;
@@ -875,18 +875,16 @@ BOOL CALLBACK t8::PauseMsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		RECT rect;
 		GetWindowRect(hWnd, &rect);
 		SetWindowPos(hWnd, NULL, (x_resolution - rect.right) / 2, (y_resolution - rect.bottom) / 2, rect.right - rect.left, rect.bottom - rect.top, SWP_SHOWWINDOW);
-		//ShowCursor(TRUE); 
 		break;
 
 	case WM_COMMAND:
 		switch (wmId)
 		{
-		case ID_CONTINUE:
-		case ID_NEXT:
-		case ID_CANCEL:
+		case ID_CONTINUE: 
+		case ID_NEXT: 
+		case ID_CANCEL: 
 			EndDialog(hWnd, wmId);
 			break;
-
 		};
 
 		break;
@@ -908,49 +906,55 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 			//退出键
-		case VK_ESCAPE:
+		case VK_ESCAPE: {
 			// User wants to leave fullscreen mode
 			//ShowCursor(TRUE);
-			//int originalSate = m_TestState;
+			
+			// 进入暂停状态
 			m_TestState = STATE_PAUSE;
+
+			//保存当前状态
+			int originalState = m_TestState;
+			isCountdownStop = true;
+			LARGE_INTEGER begContinue, endContinue;
+			QueryPerformanceCounter(&begContinue);
 			ShowCursor(TRUE);
 			rtn = DialogBox(gHinstance, MAKEINTRESOURCE(IDD_PAUSE), hWnd, PauseMsgProc);
 			ShowCursor(FALSE);
 			switch (rtn)
 			{
-			case ID_CONTINUE:
-				//重新设定时间间隔QPart1
-				QueryPerformanceCounter(&litmp);
-				QPart1 = litmp.QuadPart;
-				QPart2 = QPart1;
+			case ID_CONTINUE: {
 				//激活父窗口
+				//g_imgDisplayInd--;
+				
+				//恢复状态
+				QueryPerformanceCounter(&endContinue);
+				isCountdownStop = false;
+				m_TestState = originalState;
+				
+				// 计算暂停时间
+				if (originalState == STATE_DISPLAY_AND_COUNTDOWN_FORMAL 
+					|| originalState == STATE_DISPLAY_AND_COUNTDOWN_EXERCISE)
+					pauseTime += (double)(endContinue.QuadPart - begContinue.QuadPart) 
+						/ (double)freq.QuadPart * 1000.;
+
 				SetForegroundWindow(hWnd);
-				//ShowCursor(FALSE);
 				rtn = 0;
 				break;
+			}
 			case ID_NEXT:
 				//若在任务中途退出 则保存当前所有实验数据
-				if (m_TestState == STATE_MOVINGOBJ)
-				{
-					//SaveTraceData();
-					//SaveMemoryData();
-				}
 				EndDialog(hWnd, rtn);
-				//PostThreadMessage(dwInputThreadID, WM_THREADSTOP, 0, 0); 	//退出线程
 				m_TestState = STATE_NEXT;
 				break;
 			case ID_CANCEL:
 				//若在任务中途退出 则保存当前所有实验数据
-				if (m_TestState == STATE_MOVINGOBJ)
-				{
-					//SaveTraceData();
-					//SaveMemoryData();
-				}
 				EndDialog(hWnd, rtn);
-				//PostThreadMessage(dwInputThreadID, WM_THREADSTOP, 0, 0); 	//退出线程
 				m_TestState = STATE_EXIT;
 				break;
 			}
+			break;
+		}
 		case VK_SPACE:
 			if (m_TestState == STATE_DISPLAYINSTURCTION) 
 				m_TestState = STATE_FOCUS_EXERCISE;
@@ -959,8 +963,12 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		case 'F':
 		case 'j':
 		case 'J': {
-				if (!(m_TestState == STATE_FORMAL || m_TestState == STATE_EXERCISE)) 
+				if (!(m_TestState == STATE_DISPLAY_AND_COUNTDOWN_FORMAL 
+					|| m_TestState == STATE_DISPLAY_AND_COUNTDOWN_EXERCISE))
 					break;
+
+				// 中断倒计时
+				isCountdownStop = true;
 
 				// 结束计时
 				QueryPerformanceCounter(&endTime);
@@ -975,8 +983,17 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				addAndSaveRec(m_TestState); // 添加记录
 
 				// 状态跳转
-				if (m_TestState == STATE_EXERCISE) m_TestState = STATE_DISPLAYFEEDBACK;	// 练习->反馈
-				if (m_TestState == STATE_FORMAL) m_TestState = STATE_FOCUS_FORMAL;		// 正式->注视
+				if (m_TestState == STATE_EXERCISE) {
+					if (g_imgDisplayInd == LImgs.size()-1)
+						m_TestState = STATE_BETWEEN_EXERCISE_AND_FORMAL;// 练习->between
+					else
+						m_TestState = STATE_DISPLAYFEEDBACK;	// 练习->反馈
+					//isCountdownStop = false;
+				}
+				if (m_TestState == STATE_FORMAL) {
+					m_TestState = STATE_FOCUS_FORMAL;		// 正式->注视
+					//isCountdownStop = false;
+				}
 				break;
 			}
 		}
@@ -1041,32 +1058,16 @@ int APIENTRY t8::_tWinMain(HINSTANCE &hInstance,
 	int pos1;
 	pdest = strrchr(lpCmdLine, ' ');
 	pos1 = pdest - lpCmdLine;
-	if (pos1>0)
-	{
-		strncpy(m_TaskNumStr, lpCmdLine, pos1);
-	}
-	else
-	{
-		strcpy(m_TaskNumStr, "");
-	}
+	if (pos1>0) strncpy(m_TaskNumStr, lpCmdLine, pos1);
+	else strcpy(m_TaskNumStr, "");
+	
 	pdest = strrchr(lpCmdLine, '-');
 	result = pdest - lpCmdLine;
-	if (result>0)
-	{
-		strncpy(m_TesterName, lpCmdLine + pos1 + 1, result - pos1 - 1);
-	}
-	else
-	{
-		strcpy(m_TesterName, "");
-	}
-	if (pos1>0)
-	{
-		strcpy(m_DataName, lpCmdLine + pos1 + 1);
-	}
-	else
-	{
-		strcpy(m_DataName, "");
-	}
+	
+	if (result>0) strncpy(m_TesterName, lpCmdLine + pos1 + 1, result - pos1 - 1);
+	else strcpy(m_TesterName, "");
+	if (pos1>0) strcpy(m_DataName, lpCmdLine + pos1 + 1);
+	else strcpy(m_DataName, "");
 
 	//读取任务设置
 	if (!ReadSetting())
@@ -1074,14 +1075,9 @@ int APIENTRY t8::_tWinMain(HINSTANCE &hInstance,
 		MessageBox(hWnd, "任务设置文件格式错误！", "测试任务", MB_OK);
 		return 0;
 	}
-	timerThread = thread(timer, ref(m_TestState),
+	timerThread = thread(stateControl, ref(m_TestState),
 		m_Setting.m_iPresentTime, m_Setting.m_iCountdownTime, m_Setting.m_iFocusTime, ref(bShowTime));
 	QueryPerformanceFrequency(&freq);
-	
-	// debug
-	//m_TestState = STATE_OVER;
-	//timerThread.join();
-	//return 0;
 	
 	m_bLoadSign = FALSE;
 	//注册窗口类
@@ -1131,7 +1127,6 @@ int APIENTRY t8::_tWinMain(HINSTANCE &hInstance,
 			else
 			{
 				//执行测试过程
-				//UpdateState();
 				if (m_bDisplayReady)
 				{
 					//渲染图形
@@ -1174,11 +1169,67 @@ void t8::test() {
 	MessageBox(hWnd, "asdas","asdas",NULL);
 }
 
+// 单位：ms
+void t8::timer(double &totalTime/*倒计时总时间，返回中断后的剩余时间*/, 
+	int interval/*返回显示的间隔*/, 
+	int &curTime/*当前时间，倒数显示*/, bool &isRtn/*是否返回*/, 
+	bool &isShowTime/*是否显示时间*/, int countdownThreshold/*倒数计时阈值*/) {
+	double residualTime = 0.;
 
-
-// 定时器
-void t8::timer(short & state, int presentTime, int countdownTime, int foucusTime, bool &bShowTime) {
+	LARGE_INTEGER begt, endt, totalBegTime, totalEndTime;
 	
+	// 继续启动
+	curTime = ceil(totalTime / 1000) * 1000;
+	residualTime = 1000 - (curTime - totalTime);
+	
+	QueryPerformanceCounter(&begt);
+	totalBegTime = begt;
+	
+	while (true) {
+		// 判断退出
+		if ((curTime <= 0 && residualTime <=0.+ 1e-6) || isRtn) {
+			QueryPerformanceCounter(&totalEndTime);
+			
+			if (curTime <= 0 && residualTime <= 0. + 1e-6)
+				totalTime = 0.;
+			else {
+				totalTime = totalTime -
+					(double)(totalEndTime.QuadPart - totalBegTime.QuadPart)
+					/ (double)freq.QuadPart * 1000.;
+			}
+			return;
+		}
+		// 判断是否显示时间
+		if (curTime + residualTime < countdownThreshold)
+			isShowTime = true;
+		else
+			isShowTime = true;
+
+		QueryPerformanceCounter(&endt);
+		// 判断是否已经耗尽残余时间
+		if (residualTime > 1e-6) {
+			double rsdTime = (double)(endt.QuadPart - totalBegTime.QuadPart)
+				/ (double)freq.QuadPart * 1000.;
+			if (rsdTime >= residualTime)
+				residualTime = 0.;
+		}
+		//残余时间已经耗尽, 倒计时间隔处理
+		else if (residualTime <= 1e-6) {
+			double time1 = (double)(endt.QuadPart - begt.QuadPart)
+				/ (double)freq.QuadPart *1000.;
+			if (time1 >= interval) {
+				QueryPerformanceCounter(&begt); // 新的间隔开始
+				curTime -= interval;			// 当前时间减少
+			}
+		}
+		
+	}
+	totalTime = 0;
+}
+
+// 状态控制器
+void t8::stateControl(short & state, int presentTime, int countdownTime, int foucusTime, bool &bShowTime) {
+	double leftTime;
 	while (true) {
 		switch (state){
 		// 实验结束或下一个task
@@ -1186,25 +1237,66 @@ void t8::timer(short & state, int presentTime, int countdownTime, int foucusTime
 		case STATE_OVER:
 		case STATE_EXIT:
 			return;
+		case STATE_PAUSE:
+			break;
 		// 练习任务注视点
 		case STATE_FOCUS_EXERCISE:
 			if (LImgs.empty()) getExerciseList(LImgs, RImgs, 2);// 产生随机图片组合
-			this_thread::sleep_for(std::chrono::seconds(foucusTime));
+			//this_thread::sleep_for(std::chrono::seconds(foucusTime));
+			leftTime = foucusTime * 1000.;
+			isCountdownStop = false;
+			bShowTime = false;
+			timer(leftTime, 1000, countdown, isCountdownStop,
+				bShowTime, countdownTime * 1000);
+			leftTime = presentTime * 1000.;								// 先准备好要显示的时间
+			isCountdownStop = false;
+			// 开始展示图片
+			if (g_imgDisplayInd == -2) g_imgDisplayInd = -1;
+			g_imgDisplayInd++;
+			isPressBtn = false;
+			// 计时开始
+			pauseTime = 0.;
+			QueryPerformanceCounter(&begTime);
 			state = STATE_DISPLAY_AND_COUNTDOWN_EXERCISE;
 			break;
 		// 正式任务注视点
 		case STATE_FOCUS_FORMAL:
 			if ( LImgs.empty()) getFormalList(64);				// 产生随机图片组合
-			this_thread::sleep_for(std::chrono::seconds(foucusTime));
+			//this_thread::sleep_for(std::chrono::seconds(foucusTime));
+			leftTime = foucusTime * 1000.;
+			isCountdownStop = false;
+			bShowTime = false;
+			timer(leftTime, 1000, countdown, isCountdownStop,
+				bShowTime, countdownTime * 1000);
+			leftTime = presentTime * 1000.;								// 先准备好要显示的时间
+			isCountdownStop = false;
+			// 开始展示图片
+			if (g_imgDisplayInd == -2) g_imgDisplayInd = -1;
+			g_imgDisplayInd++;
+			isPressBtn = false;
+			// 计时开始
+			pauseTime = 0.;
+			QueryPerformanceCounter(&begTime);
 			state = STATE_DISPLAY_AND_COUNTDOWN_FORMAL;
 			break;
 		// 练习任务和正式任务之间
 		case STATE_BETWEEN_EXERCISE_AND_FORMAL:
-			this_thread::sleep_for(std::chrono::seconds(1));
+			//this_thread::sleep_for(std::chrono::seconds(1));
+			leftTime = 1 * 1000.;
+			isCountdownStop = false;
+			bShowTime = false;
+			timer(leftTime, 1000, countdown, isCountdownStop,
+				bShowTime, countdownTime * 1000);
 			state = STATE_FOCUS_FORMAL;
 			break;
 		case STATE_DISPLAYFEEDBACK:
-			this_thread::sleep_for(std::chrono::seconds(1));
+			bShowTime = false;
+			//this_thread::sleep_for(std::chrono::seconds(1));
+			leftTime = 1 * 1000.;
+			isCountdownStop = false;
+			bShowTime = false;
+			timer(leftTime, 1000, countdown, isCountdownStop,
+				bShowTime, countdownTime * 1000);
 			// 显示完最后一张图的反馈以后跳到下一个状态
 			if (g_imgDisplayInd >= LImgs.size() - 1) {
 				g_imgDisplayInd = -2;
@@ -1217,40 +1309,26 @@ void t8::timer(short & state, int presentTime, int countdownTime, int foucusTime
 			state = STATE_FOCUS_EXERCISE;
 			break;
 		case STATE_DISPLAY_AND_COUNTDOWN_FORMAL:
-		case STATE_DISPLAY_AND_COUNTDOWN_EXERCISE:
-
-			g_imgDisplayInd++;
-			isPressBtn = false;
-			// 开始展示图片
-			if (g_imgDisplayInd < 0) g_imgDisplayInd = 0;
-			// 计时开始
-			QueryPerformanceCounter(&begTime);
-			// 不显示倒计时一段时间（有空了修改成一个独立的倒计时线程）
-			this_thread::sleep_for(std::chrono::seconds(presentTime - countdownTime));
-			// 倒计时开始显示
-			bShowTime = true;
-			for (int i = countdownTime; i > 0; i--) {
-				if (!(state == STATE_DISPLAY_AND_COUNTDOWN_FORMAL 
-					|| state == STATE_DISPLAY_AND_COUNTDOWN_EXERCISE))//
-					break;
-				countdown = i;
-				this_thread::sleep_for(std::chrono::seconds(1));
-			}
-			countdown = 0;
-			bShowTime = false;
-			// 倒计时结束， 
-			if (!isPressBtn) {
-				QueryPerformanceCounter(&endTime);
-				// 统计
-				addAndSaveRec(m_TestState);
+		case STATE_DISPLAY_AND_COUNTDOWN_EXERCISE: {
+			
+			timer(leftTime, 1000, countdown, isCountdownStop, 
+				bShowTime, countdownTime*1000);
+			if (isCountdownStop == true) {
+				break;
 			}
 			if (state == STATE_DISPLAY_AND_COUNTDOWN_EXERCISE)
 				state = STATE_EXERCISE;
 			else
 				state = STATE_FORMAL;
 			break;
+		}
 		case STATE_EXERCISE:
-			
+			// 计时结束， 
+			if (!isPressBtn) {
+				QueryPerformanceCounter(&endTime);
+				// 统计
+				addAndSaveRec(m_TestState);
+			}
 			// 练习任务显示反馈
 			if (g_imgDisplayInd <= LImgs.size() - 1) {
 				state = STATE_DISPLAYFEEDBACK;	// 应该先转到反馈
@@ -1264,10 +1342,11 @@ void t8::timer(short & state, int presentTime, int countdownTime, int foucusTime
 			}
 			break;
 		case STATE_FORMAL:
-			
-			if (g_imgDisplayInd < LImgs.size() - 1) {
-				state = STATE_FOCUS_FORMAL;
-				break;
+			// 计时结束， 
+			if (!isPressBtn) {
+				QueryPerformanceCounter(&endTime);
+				// 统计
+				addAndSaveRec(m_TestState);
 			}
 			// 正式任务完全结束，状态转移
 			if (g_imgDisplayInd >= LImgs.size() - 1) {
@@ -1295,7 +1374,8 @@ void t8::timer(short & state, int presentTime, int countdownTime, int foucusTime
 
 void t8::addAndSaveRec(int state) {
 	Rec rec;
-	double responseTime = (double)(endTime.QuadPart - begTime.QuadPart) / (double)freq.QuadPart * 1000.;
+	double responseTime = (double)(endTime.QuadPart - begTime.QuadPart) 
+		/ (double)freq.QuadPart * 1000. - pauseTime;
 	rec.no = g_imgDisplayInd + 1;
 	rec.leftImg = LImgs[g_imgDisplayInd];
 	rec.rightImg = RImgs[g_imgDisplayInd];
