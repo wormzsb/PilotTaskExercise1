@@ -380,9 +380,12 @@ enum STATE_TYPE
 	// 任务8
 	STATE_EXERCISE,						// 练习任务状态
 	STATE_FORMAL,						// 正式任务状态
-	STATE_FOCUS,						// 注视状态
+	STATE_FOCUS_EXERCISE,				// 注视状态 练习
+	STATE_FOCUS_FORMAL,					// 注视状态 正式
 	STATE_PAUSE,						// 暂停状态
-	STATE_BETWEEN_EXERCISE_AND_FORMAL	// 练习和正式任务状态
+	STATE_BETWEEN_EXERCISE_AND_FORMAL,	// 练习和正式任务状态
+	STATE_DISPLAY_AND_COUNTDOWN_FORMAL,			// 显示图片和倒数计时状态
+	STATE_DISPLAY_AND_COUNTDOWN_EXERCISE		// 显示图片和倒数计时状态
 };
 
 //上述变量和文字的对应关系

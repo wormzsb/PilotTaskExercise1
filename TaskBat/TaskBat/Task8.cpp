@@ -6,8 +6,8 @@
 
 
 int m_taskIndex;
-int g_imgDisplayInd = -1;
-int g_imgLastInd = -2;
+int g_imgDisplayInd = -2;
+int g_imgLastInd = -3;
 bool isPressBtn = false;
 bool isCoBtn = false;
 vector <string> LImgs, RImgs;
@@ -86,7 +86,7 @@ LPDIRECT3DTEXTURE9      t8::g_pTexture2 = NULL;               //纹理对象
 LPDIRECT3DTEXTURE9      t8::g_pTexture3[12] = { NULL };         //纹理对象
 LPDIRECT3DTEXTURE9      t8::g_pTexture4 = NULL;               //纹理对象
 // 反馈时候用到的纹理
-LPDIRECT3DTEXTURE9 texRightF = NULL, texWrongF = NULL, texNoneF = NULL,
+LPDIRECT3DTEXTURE9 texCross = NULL, texRightF = NULL, texWrongF = NULL, texNoneF = NULL,
 					texRightJ = NULL, texWrongJ = NULL, texNoneJ = NULL;
 LPD3DXSPRITE            t8::g_pSprite = NULL;                 //精灵对象
 LPD3DXFONT              t8::g_pFont = 0;                  //字体对象
@@ -417,6 +417,8 @@ HRESULT t8::InitD3D(HWND hWnd)
 		return E_FAIL;		
 	}
 	
+	addTex(g_pd3dDevice, "./Pics/TaskR/cross.jpg", texCross);
+
 	addTex(g_pd3dDevice, picDir + "right_f.jpg", texRightF);	// 能重合 反应正确
 	addTex(g_pd3dDevice, picDir + "wrong_f.jpg", texWrongF);	// 能重合 反应错误
 	addTex(g_pd3dDevice, picDir + "none_f.jpg", texNoneF);		// 能重合 反应超时
@@ -744,7 +746,6 @@ VOID t8::Render()
 		g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 255), 0.0f, 0);
 		break;
 	}
-
 	// 绘制前景：
 	D3DXMATRIX mx;
 	//在后台缓冲区绘制图形
@@ -770,14 +771,12 @@ VOID t8::Render()
 			g_pFont1->DrawText(NULL, Insturction3, -1, &erect,
 				DT_WORDBREAK | DT_NOCLIP | DT_CENTER | DT_VCENTER, D3DCOLOR_XRGB(255, 255, 255));
 			break;
-		case STATE_FOCUS: {
-			addTex(g_pd3dDevice, "./Pics/TaskR/cross.jpg", texLeft);
-
+		case STATE_FOCUS_EXERCISE:
+		case STATE_FOCUS_FORMAL: 
 			// 绘制图片
-			if (!drawTex("focus", g_pSprite, texLeft, texLeft, x_resolution, y_resolution))
+			if (!drawTex("focus", g_pSprite, texCross, x_resolution, y_resolution))
 				break;
 			break;
-		}
 		case STATE_BETWEEN_EXERCISE_AND_FORMAL: {
 			// 绘制文字
 			int tx = x_resolution / 2;
@@ -788,62 +787,67 @@ VOID t8::Render()
 				break;
 			break;
 		}
-		case STATE_DISPLAYFEEDBACK: {
-			if (recs.rbegin()->unCoincidence == 0) {// 能重合
-				if (recs.rbegin()->btn == -1) {		// 超时
-					if (!drawTex("focus", g_pSprite, texNoneF, x_resolution, y_resolution))
-						break;
-				}
-				else if (recs.rbegin()->isRight) {	// 正确
-					if (!drawTex("focus", g_pSprite, texRightF, x_resolution, y_resolution))
-						break;
-				}
-				else {								//错误
-					if (!drawTex("focus", g_pSprite, texWrongF, x_resolution, y_resolution))
-						break;
-				}
-			}
-			else {									// 不能重合
-				if (recs.rbegin()->btn == -1) {		// 超时
-					if (!drawTex("focus", g_pSprite, texNoneJ, x_resolution, y_resolution))
-						break;
-				}
-				else if (recs.rbegin()->isRight) {	// 正确
-					if (!drawTex("focus", g_pSprite, texRightJ, x_resolution, y_resolution))
-						break;
-				}
-				else {								//错误
-					if (!drawTex("focus", g_pSprite, texWrongJ, x_resolution, y_resolution))
-						break;
-				}
-			}
-			break;
-		}
-		case STATE_EXERCISE: 
+		case STATE_DISPLAYFEEDBACK: 
+		case STATE_DISPLAY_AND_COUNTDOWN_EXERCISE:
+		case STATE_DISPLAY_AND_COUNTDOWN_FORMAL:
+		case STATE_EXERCISE:
 		case STATE_FORMAL: {
-			// 绘制图片
-			// 加载纹理
-			if (g_imgDisplayInd < 0 && g_imgDisplayInd >= LImgs.size()) break;
-			if (g_imgLastInd != g_imgDisplayInd) {
-				string lImg = picDir + LImgs[g_imgDisplayInd];
-				string rImg = picDir + RImgs[g_imgDisplayInd];
-				addTex(g_pd3dDevice, lImg.c_str(), texLeft);
-				addTex(g_pd3dDevice, rImg.c_str(), texRight);
-				g_imgLastInd = g_imgDisplayInd;
-			}
-			if (!drawTex("LR", g_pSprite, texLeft, texRight, x_resolution, y_resolution))
-				break;
-			// 绘制文字
-			int tx = x_resolution / 2;
-			int ty = y_resolution - 50;
-			stringstream ss;
-			ss << "还剩" << countdown << "秒"/* << g_imgDisplayInd*/;
-			if (bShowTime) {
-				if (!drawText(ss.str(), tx, ty, g_pFont))
+				// 绘制图片
+				// 加载纹理
+				if (LImgs.size() == 0 
+					|| g_imgDisplayInd < 0 
+					|| g_imgDisplayInd >= LImgs.size())
 					break;
+				if (g_imgLastInd != g_imgDisplayInd) {
+					string lImg = picDir + LImgs[g_imgDisplayInd];
+					string rImg = picDir + RImgs[g_imgDisplayInd];
+					if (m_TestState == STATE_DISPLAYFEEDBACK) {
+						lImg = picDir + LImgs[g_imgDisplayInd-1];
+						rImg = picDir + LImgs[g_imgDisplayInd-1];
+					}
+					addTex(g_pd3dDevice, lImg.c_str(), texLeft);
+					addTex(g_pd3dDevice, rImg.c_str(), texRight);
+					g_imgLastInd = g_imgDisplayInd;
+				}
+				if (!drawTex("LR", g_pSprite, texLeft, texRight, x_resolution, y_resolution))
+					break;
+				
+				if (bShowTime) {
+					// 绘制文字
+					int tx = x_resolution / 2;
+					int ty = y_resolution - 50;
+					stringstream ss;
+					ss << "还剩" << countdown << "秒"/* << g_imgDisplayInd*/;
+					if (!drawText(ss.str(), tx, ty, g_pFont))
+						break;
+				}
+
+				// 下面是反馈时候显示反馈的图像
+				if (m_TestState == STATE_DISPLAYFEEDBACK) {
+
+					LPDIRECT3DTEXTURE9 texFeedBack = NULL;
+					bool unCo = recs.rbegin()->unCoincidence;
+					int iBtn = recs.rbegin()->btn;
+					bool isRight = recs.rbegin()->isRight;
+
+					if (!unCo && iBtn == -1)
+						texFeedBack = texNoneF;			// 重合 & 超时
+					if (!unCo  && iBtn != -1 && isRight)
+						texFeedBack = texRightF;		// 重合 & 正确
+					if (!unCo  && iBtn != -1 && !isRight)
+						texFeedBack = texWrongF;		// 重合 & 错误
+					if (unCo  && iBtn == -1)
+						texFeedBack = texNoneJ;			// 不重合 & 超时
+					if (unCo  && iBtn != -1 && isRight)
+						texFeedBack = texRightJ;		// 不重合 & 正确
+					if (unCo  && iBtn != -1 && !isRight)
+						texFeedBack = texWrongJ;		// 不重合 & 错误
+
+					if (!drawTex("focus", g_pSprite, texFeedBack, x_resolution, y_resolution))
+						break;
+				}
+				break;
 			}
-			break;
-		}
 		}
 		g_pd3dDevice->EndScene();
 	}
@@ -948,20 +952,31 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				break;
 			}
 		case VK_SPACE:
-			m_TestState = STATE_FOCUS;
+			if (m_TestState == STATE_DISPLAYINSTURCTION) 
+				m_TestState = STATE_FOCUS_EXERCISE;
 			break;
 		case 'f':
 		case 'F':
 		case 'j':
 		case 'J': {
+				if (!(m_TestState == STATE_FORMAL || m_TestState == STATE_EXERCISE)) 
+					break;
+
 				// 结束计时
 				QueryPerformanceCounter(&endTime);
-				isPressBtn = true;
+				
+				// 按键处理
+				isPressBtn = true; // 已按下
 				if (wParam == 'f' || wParam == 'F')
 					isCoBtn = 0;
 				else if (wParam == 'j' || wParam == 'J')
 					isCoBtn = 1;
 
+				addAndSaveRec(m_TestState); // 添加记录
+
+				// 状态跳转
+				if (m_TestState == STATE_EXERCISE) m_TestState = STATE_DISPLAYFEEDBACK;	// 练习->反馈
+				if (m_TestState == STATE_FORMAL) m_TestState = STATE_FOCUS_FORMAL;		// 正式->注视
 				break;
 			}
 		}
@@ -991,62 +1006,7 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 //************************************************
 VOID t8::UpdateState()
 {
-	return;
-	switch (m_TestState)
-	{
-	case STATE_FOCUS: {
-		if (!bTimerExist) {
-			
-		}
-		break;
-	}
-		//呈现指导语
-	case STATE_DISPLAYINSTURCTION:
-		break;
-		//呈现目标
-	case STATE_DISPLAYOBJ:
-		if (abs(JoyX)>30 || abs(JoyY)>30)
-			//if(m_bRememStart)
-		{
-			if (QueryPerformanceFrequency(&litmp))
-			{
-				dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
-			}
-			QueryPerformanceCounter(&litmp);
-			QPart1 = litmp.QuadPart;           // 获得初始值
-			dfTotalSign = 0;
-			dfTotalMove = 0;
-			
-			if (!m_bLoadSign)
-			{
-				if (LoadSignFile())
-				{
-					m_bLoadSign = TRUE;
-				}
-			}
-			//m_TestState = STATE_MOVINGOBJ;
-		}
-		break;
-		//测试任务执行
-	case STATE_MOVINGOBJ:
 	
-	case STATE_DISPLAYOPTION:
-		break;
-		//测试结束
-	case STATE_OVER:
-		
-		break;
-		//程序退出
-	case STATE_EXIT:
-		if (g_nThreadExitCount == 1)
-		{
-			SendMessage(hWnd, WM_CLOSE, 0, 0); // 关闭窗口
-			SendMessage(hWnd, WM_DESTROY, 0, 0);
-		}
-		break;
-	default:
-		break;
-	}
 }
 
 //************************************************
@@ -1214,84 +1174,121 @@ void t8::test() {
 	MessageBox(hWnd, "asdas","asdas",NULL);
 }
 
+
+
 // 定时器
 void t8::timer(short & state, int presentTime, int countdownTime, int foucusTime, bool &bShowTime) {
 	
 	while (true) {
-		if (state == STATE_NEXT || state == STATE_OVER)
+		switch (state){
+		// 实验结束或下一个task
+		case STATE_NEXT:
+		case STATE_OVER:
+		case STATE_EXIT:
 			return;
-		// 注视点
-		if (state == STATE_FOCUS || state == STATE_FOCUS) {
+		// 练习任务注视点
+		case STATE_FOCUS_EXERCISE:
+			if (LImgs.empty()) getExerciseList(LImgs, RImgs, 2);// 产生随机图片组合
 			this_thread::sleep_for(std::chrono::seconds(foucusTime));
-			if (state == STATE_FOCUS)
-				state = STATE_EXERCISE;
-			if (state == STATE_FOCUS)
-				state = STATE_FORMAL;
-		}
-		if (state == STATE_BETWEEN_EXERCISE_AND_FORMAL) {
+			state = STATE_DISPLAY_AND_COUNTDOWN_EXERCISE;
+			break;
+		// 正式任务注视点
+		case STATE_FOCUS_FORMAL:
+			if ( LImgs.empty()) getFormalList(64);				// 产生随机图片组合
+			this_thread::sleep_for(std::chrono::seconds(foucusTime));
+			state = STATE_DISPLAY_AND_COUNTDOWN_FORMAL;
+			break;
+		// 练习任务和正式任务之间
+		case STATE_BETWEEN_EXERCISE_AND_FORMAL:
 			this_thread::sleep_for(std::chrono::seconds(1));
-			state = STATE_FOCUS;
-		}
-		// 执行任务
-		if (state == STATE_EXERCISE || state == STATE_FORMAL) {
-			// 产生随机图片组合
-			if (state == STATE_EXERCISE && LImgs.empty()) {
-				getExerciseList(LImgs, RImgs, 2);
-				//saveImgList(LImgs, RImgs, "exercise"); // 测试
+			state = STATE_FOCUS_FORMAL;
+			break;
+		case STATE_DISPLAYFEEDBACK:
+			this_thread::sleep_for(std::chrono::seconds(1));
+			// 显示完最后一张图的反馈以后跳到下一个状态
+			if (g_imgDisplayInd >= LImgs.size() - 1) {
+				g_imgDisplayInd = -2;
+				LImgs.clear();
+				RImgs.clear();
+				state = STATE_BETWEEN_EXERCISE_AND_FORMAL;
+				break;
 			}
-			if (state == STATE_FORMAL && LImgs.empty()) {
-				getFormalList(64);
-				//saveImgList(LImgs, RImgs, "formal"); // 测试
-			}
+			// 一般情况跳到下个注视点
+			state = STATE_FOCUS_EXERCISE;
+			break;
+		case STATE_DISPLAY_AND_COUNTDOWN_FORMAL:
+		case STATE_DISPLAY_AND_COUNTDOWN_EXERCISE:
+
+			g_imgDisplayInd++;
 			isPressBtn = false;
 			// 开始展示图片
 			if (g_imgDisplayInd < 0) g_imgDisplayInd = 0;
-			
 			// 计时开始
 			QueryPerformanceCounter(&begTime);
 			// 不显示倒计时一段时间（有空了修改成一个独立的倒计时线程）
 			this_thread::sleep_for(std::chrono::seconds(presentTime - countdownTime));
-			
 			// 倒计时开始显示
 			bShowTime = true;
 			for (int i = countdownTime; i > 0; i--) {
+				if (!(state == STATE_DISPLAY_AND_COUNTDOWN_FORMAL 
+					|| state == STATE_DISPLAY_AND_COUNTDOWN_EXERCISE))//
+					break;
 				countdown = i;
 				this_thread::sleep_for(std::chrono::seconds(1));
 			}
 			countdown = 0;
 			bShowTime = false;
-
 			// 倒计时结束， 
-			if (!isPressBtn) 
+			if (!isPressBtn) {
 				QueryPerformanceCounter(&endTime);
-			
-			// 统计
-			addAndSaveRec(m_TestState);
-
-			// 练习任务显示反馈
-			if (state == STATE_EXERCISE && g_imgDisplayInd < LImgs.size()) {
-				m_TestState = STATE_DISPLAYFEEDBACK;	// 应该先转到反馈
-				this_thread::sleep_for(std::chrono::seconds(3));
-				m_TestState = STATE_EXERCISE;
+				// 统计
+				addAndSaveRec(m_TestState);
 			}
-
-			g_imgDisplayInd++;
-			// 练习/正式任务完全结束，状态转移
-			if ((state == STATE_EXERCISE || state == STATE_FORMAL) && g_imgDisplayInd >= LImgs.size()) {
+			if (state == STATE_DISPLAY_AND_COUNTDOWN_EXERCISE)
+				state = STATE_EXERCISE;
+			else
+				state = STATE_FORMAL;
+			break;
+		case STATE_EXERCISE:
+			
+			// 练习任务显示反馈
+			if (g_imgDisplayInd <= LImgs.size() - 1) {
+				state = STATE_DISPLAYFEEDBACK;	// 应该先转到反馈
+				break;
+			}
+			
+			// 在单次任务中之间
+			else if (g_imgDisplayInd < LImgs.size() - 1 && g_imgDisplayInd >= 0) {
+				state = STATE_FOCUS_EXERCISE;
+				break;
+			}
+			break;
+		case STATE_FORMAL:
+			
+			if (g_imgDisplayInd < LImgs.size() - 1) {
+				state = STATE_FOCUS_FORMAL;
+				break;
+			}
+			// 正式任务完全结束，状态转移
+			if (g_imgDisplayInd >= LImgs.size() - 1) {
+				g_imgDisplayInd = -2;
 				LImgs.clear();
 				RImgs.clear();
-				g_imgDisplayInd = -1;
-				if (state == STATE_EXERCISE) m_TestState = STATE_BETWEEN_EXERCISE_AND_FORMAL;	// 
-				if (state == STATE_FORMAL) m_TestState = STATE_EXIT;	//
+				state = STATE_EXIT;
+				break;
+
 			}
 			// 在单次任务中之间
-			else if ((state == STATE_EXERCISE || state == STATE_FORMAL) 
-				&& (g_imgDisplayInd < LImgs.size() && g_imgDisplayInd >=0)) {
-				state = (state == STATE_EXERCISE) ? STATE_FOCUS : STATE_FOCUS;
+			else if (g_imgDisplayInd < LImgs.size() - 1 && g_imgDisplayInd >= 0) {
+				state =  STATE_FOCUS_FORMAL;
+				break;
 			}
-			
+			break;
+		default:
+			break;
 		}
-		
+
+
 	}
 	
 }
