@@ -98,7 +98,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CStar.cpp" />
+    <ClCompile Include="Helper.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Point2.cpp" />
     <ClCompile Include="RandFcn.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -112,10 +114,13 @@
     <ClCompile Include="Task7.cpp" />
     <ClCompile Include="Task8.cpp" />
     <ClCompile Include="TaskBat.cpp" />
+    <ClCompile Include="TaskRec.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CStar.h" />
+    <ClInclude Include="Helper.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Point2.h" />
     <ClInclude Include="RandFcn.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -127,6 +132,7 @@
     <ClInclude Include="Task7.h" />
     <ClInclude Include="Task8.h" />
     <ClInclude Include="TaskBat.h" />
+    <ClInclude Include="TaskRec.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico" />

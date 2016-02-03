@@ -12,11 +12,15 @@
 #include "Input.h"
 #include "..\..\all\Enum.h"
 #include <vector>
+#include <string>
+#include "Helper.h"
+using namespace  std;
+//#include "TaskRec.h"
 #define WM_THREADSTOP (WM_USER+1)
 
 namespace t7
 {
-
+	extern Helper hp;
 	extern FILE *sfp;
 	extern HINSTANCE gHinstance;//全局句柄
 
@@ -27,11 +31,7 @@ namespace t7
 	};
 	extern int g_nThreadExitCount;             //当前运行的线程数
 	extern DWORD dwInputThreadID;              //瞄准器输入线程ID      
-	extern struct Point
-	{
-		double dX;
-		double dY;
-	};
+	
 
 	extern enum{BALL_INTERVAL, BALL_SHOW,BALL_OUT_SHOW};
 	extern int rtn;
@@ -140,5 +140,5 @@ namespace t7
 	int APIENTRY _tWinMain(HINSTANCE &hInstance, HINSTANCE &hPrevInstance, LPTSTR &lpCmdLine, int &nCmdShow, HWND &_hWnd, std::string winClassName, std::string winName);
 	void hideLastWindow(bool &bUnClosedLastWin, std::string &winClassName, std::string &winName, HINSTANCE &hInstance);
 	BOOL CALLBACK PauseMsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-	void setSmallBallOriPos(struct t7::Point &stPntSmallBallOrg, int &curStartPos, int startPos);
+	void setSmallBallOriPos(struct Point &stPntSmallBallOrg, int &curStartPos, int startPos);
 }

@@ -404,3 +404,8 @@ const char	m_SignMemModeStr[2][10] = {"固定数目","逐步增加"};
 const char	m_SignShowModeStr[2][10] = {"按键确认","固定时长"};
 const char	m_MemTaskModeStr[2][10] = {"判别比较","记忆判别"};
 const char	m_RefAxisStr[3][10] = {"X轴","Y轴","Z轴"};
+
+struct Point{
+	double dX;
+	double dY;
+};
