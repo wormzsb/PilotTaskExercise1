@@ -1422,7 +1422,7 @@ DWORD WINAPI t2::InputThreadProcedure(LPVOID lpStartupParam)
 				{
 				case STATE_DISPLAYINSTURCTION:
 				case STATE_DISPLAYOPTION:
-					//呈现开始选项，等待按任意键开始测试
+					//呈现开始选项，等待按确定键开始测试
 					if(m_SureDownNum == 0)
 					{
 //					if(JoystickUpdate())
@@ -1430,7 +1430,7 @@ DWORD WINAPI t2::InputThreadProcedure(LPVOID lpStartupParam)
 //					{
 						for(i=0;i<8;i++)
 						{
-							if(IsButtonDown(m_StartKey[i]))
+							if(IsButtonDown(KEY_YES))
 							{
 //								m_SureDownNum++;
 								if(m_TrialType == TRIAL_EXPERMENT)

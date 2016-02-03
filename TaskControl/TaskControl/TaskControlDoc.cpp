@@ -2982,9 +2982,9 @@ void CTaskControlDoc::DataAnalysis()
 
 			vector<int> uniqueHoldTimeVec;
 
-			for (int i = 0; i < m_Setting2[0].m_HoldTimeNum; i++)//放入误差率绝对值
+			for (int i = 0; i < m_HoldNo; i++)//放入误差率绝对值
 				m_HoldTimeErrAve.push_back(fabs(m_ErrorRatio[i]));
-			for (int i = 0; i < m_Setting2[0].m_HoldTimeNum; i++)//查找不同的holdtime
+			for (int i = 0; i < m_HoldNo; i++)//查找不同的holdtime
 			{
 				if (uniqueHoldTimeVec.empty()) uniqueHoldTimeVec.push_back(m_HoldTime[i]);
 				else if (find(uniqueHoldTimeVec.begin(), uniqueHoldTimeVec.end(), m_HoldTime[i]) == uniqueHoldTimeVec.end())
@@ -2995,7 +2995,7 @@ void CTaskControlDoc::DataAnalysis()
 				int count = 0;
 				double err = 0.;
 				vector<int> ind;
-				for (int j = 0; j < m_Setting2[0].m_HoldTimeNum; j++)//查找相同的holdtime，用他们的err的绝对值的均值代替
+				for (int j = 0; j < m_HoldNo; j++)//查找相同的holdtime，用他们的err的绝对值的均值代替
 				{
 					if (uniqueHoldTimeVec[i] == m_HoldTime[j])
 					{
@@ -3012,7 +3012,7 @@ void CTaskControlDoc::DataAnalysis()
 			}
 			// Sort in setting hold time order
 			for (int i = 0; i < m_Setting2[0].m_HoldTimeNum; i++) {
-				for (int j = 0; j < m_Setting2[0].m_HoldTimeNum; j++) {
+				for (int j = 0; j < m_HoldNo; j++) {
 					if (m_Setting2[0].m_HoldTime[i]*1000 == m_HoldTime[j]) {
 						settingOrderHoldTimeErrRateAve.push_back(m_HoldTimeErrAve[j]);
 						break;
