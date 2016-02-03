@@ -73,7 +73,7 @@ namespace t8
 
 	extern LPDIRECT3D9             g_pD3D;               //directx3d对象
 	extern LPDIRECT3DDEVICE9       g_pd3dDevice;               //directx设备对象
-	extern LPDIRECT3DTEXTURE9      g_pTextureInst;            //纹理对象
+	extern LPDIRECT3DTEXTURE9      texInst;            //纹理对象
 	extern LPDIRECT3DTEXTURE9      g_pTexture0;               //纹理对象
 	extern LPDIRECT3DTEXTURE9      g_pTexture1;               //纹理对象
 	extern LPDIRECT3DTEXTURE9      g_pTexture2;               //纹理对象
@@ -188,11 +188,12 @@ namespace t8
 	void getFormalList(int n);
 	void saveImgList(vector<string> &LImgs, vector<string> &RImgs, string fileName);
 	void saveRecs();
-	void getTexSize(LPDIRECT3DTEXTURE9 texture, int &w, int &h);
+	void getTexSize(LPDIRECT3DTEXTURE9 texture, double &w, double &h);
+	void getScale(double &sx, double &sy, double w, double h, double tw, double th, int x_resolution, int y_resolution);
+
 	BOOL drawText(string str, int tx, int ty, LPD3DXFONT &g_pFont);
 
-	BOOL drawTex(double tx, double ty, LPD3DXSPRITE &g_pSprite, LPDIRECT3DTEXTURE9 &tex, double scale);
 	BOOL drawTex(string mode, LPD3DXSPRITE &g_pSprite, LPDIRECT3DTEXTURE9 &ltex, LPDIRECT3DTEXTURE9 &rtex, int x_resolution, int y_resolution);
 	BOOL drawTex(string mode, LPD3DXSPRITE &g_pSprite, LPDIRECT3DTEXTURE9 &tex, int x_resolution, int y_resolution);
+	BOOL drawTex(double tx, double ty, LPD3DXSPRITE &g_pSprite, LPDIRECT3DTEXTURE9 &tex, double sx, double sy);
 }
-

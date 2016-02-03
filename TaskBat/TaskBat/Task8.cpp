@@ -2,6 +2,13 @@
 #include "stdafx.h"
 #include "Task8.h"
 
+
+// 反馈时候用到的纹理
+LPDIRECT3DTEXTURE9 texCross = NULL, texRightF = NULL, texWrongF = NULL, texNoneF = NULL,
+texRightJ = NULL, texWrongJ = NULL, texNoneJ = NULL;
+LPDIRECT3DTEXTURE9      t8::texInst = NULL;            //纹理对象
+
+
 // 状态控制
 bool isCountdownStop = false;
 int g_imgDisplayInd = -2;
@@ -10,6 +17,7 @@ bool isPressBtn = false;
 bool isCoBtn = false;
 double pauseTime;
 int m_taskIndex;
+int lastState = -1;
 vector <string> LImgs, RImgs;
 
 struct tagREC {
@@ -79,15 +87,13 @@ const char t8::FeedBack[2][10] = { "错误","正确" };
 
 LPDIRECT3D9             t8::g_pD3D = NULL;               //directx3d对象
 LPDIRECT3DDEVICE9       t8::g_pd3dDevice = NULL;               //directx设备对象
-LPDIRECT3DTEXTURE9      t8::g_pTextureInst = NULL;            //纹理对象
+
 LPDIRECT3DTEXTURE9      t8::g_pTexture0 = NULL;               //纹理对象
 LPDIRECT3DTEXTURE9      t8::g_pTexture1 = NULL;               //纹理对象
 LPDIRECT3DTEXTURE9      t8::g_pTexture2 = NULL;               //纹理对象
 LPDIRECT3DTEXTURE9      t8::g_pTexture3[12] = { NULL };         //纹理对象
 LPDIRECT3DTEXTURE9      t8::g_pTexture4 = NULL;               //纹理对象
-// 反馈时候用到的纹理
-LPDIRECT3DTEXTURE9 texCross = NULL, texRightF = NULL, texWrongF = NULL, texNoneF = NULL,
-					texRightJ = NULL, texWrongJ = NULL, texNoneJ = NULL;
+
 LPD3DXSPRITE            t8::g_pSprite = NULL;                 //精灵对象
 LPD3DXFONT              t8::g_pFont = 0;                  //字体对象
 LPD3DXFONT              t8::g_pFont1 = 0;                  //字体对象
@@ -411,14 +417,13 @@ HRESULT t8::InitD3D(HWND hWnd)
 
 	//加载纹理图片
 	// 指导语
-	if (FAILED(D3DXCreateTextureFromFile(g_pd3dDevice, (picDir+"ST_3D.jpg").c_str(), &g_pTextureInst)))
+	if (FAILED(D3DXCreateTextureFromFile(g_pd3dDevice, (picDir+"ST_3D.jpg").c_str(), &texInst)))
 	{
 		MessageBox(NULL, "Could not find banana.bmp", "Textures.exe", MB_OK);
 		return E_FAIL;		
 	}
 	
 	addTex(g_pd3dDevice, "./Pics/TaskR/cross.jpg", texCross);
-
 	addTex(g_pd3dDevice, picDir + "right_f.jpg", texRightF);	// 能重合 反应正确
 	addTex(g_pd3dDevice, picDir + "wrong_f.jpg", texWrongF);	// 能重合 反应错误
 	addTex(g_pd3dDevice, picDir + "none_f.jpg", texNoneF);		// 能重合 反应超时
@@ -531,10 +536,10 @@ VOID t8::Cleanup()
 		g_pFont2->Release();
 		g_pFont2 = NULL;
 	}
-	if (g_pTextureInst != NULL)
+	if (texInst != NULL)
 	{
-		g_pTextureInst->Release();
-		g_pTextureInst = NULL;
+		texInst->Release();
+		texInst = NULL;
 	}
 	if (g_pTexture0 != NULL)
 	{
@@ -601,8 +606,12 @@ VOID t8::Cleanup()
 		texWrongJ->Release();
 		texWrongJ = NULL;
 	}
-
-
+	
+	if (texCross != NULL)
+	{
+		texCross->Release();
+		texCross = NULL;
+	}
 	//
 	if (g_pTexture4 != NULL)
 	{
@@ -633,10 +642,12 @@ VOID t8::Cleanup()
 
 }
 
-double getScale(int x_resolution, int y_resolution, int w) {
-	double resolution = min(x_resolution / 2, y_resolution);
-	double scale = resolution / w;
-	return scale;
+void t8::getScale(double &sx, double &sy, 
+	double w, double h,
+	double tw, double th,
+	int x_resolution, int y_resolution) {
+	sx = (double)w / (double)tw;
+	sy = (double)h / (double)th;
 }
 
 //在指定位置写文字
@@ -656,7 +667,7 @@ BOOL t8::drawText( string str, int tx, int ty, LPD3DXFONT &g_pFont) {
 
 //在指定位置和缩放系数画纹理
 BOOL t8::drawTex(double tx, double ty, LPD3DXSPRITE &g_pSprite, LPDIRECT3DTEXTURE9 &tex,
-	double scale) {
+	double sx, double sy) {
 	D3DXMATRIX mx;
 	if (SUCCEEDED(g_pSprite->Begin(D3DXSPRITE_ALPHABLEND))) {
 		// 左边
@@ -664,10 +675,10 @@ BOOL t8::drawTex(double tx, double ty, LPD3DXSPRITE &g_pSprite, LPDIRECT3DTEXTUR
 			&mx,
 			NULL,							// 缩放中心向量
 			0.0,							// 缩放旋转角度
-			&D3DXVECTOR2(scale, scale),			// 缩放向量
+			&D3DXVECTOR2(sx, sy),			// 缩放向量
 			&D3DXVECTOR2(0, 0),				// 旋转向量
 			NULL,							// 旋转角度
-			&D3DXVECTOR2(tx, ty)	// 平移向量
+			&D3DXVECTOR2(tx,ty)	// 平移向量
 			);
 		g_pSprite->SetTransform(&mx);
 		g_pSprite->Draw(
@@ -702,29 +713,62 @@ BOOL t8::drawTex(string mode, LPD3DXSPRITE &g_pSprite,
 	int x_resolution, int y_resolution) {
 	
 	int w, h;
-	getTexSize(ltex, w, h);
-	double scale = getScale(x_resolution, y_resolution, w);
+	double tw, th;
+	double tx, ty;
+	double sx, sy;
+	
+	if (mode == "cross") {
+		w = 360; h = 360;
+		getTexSize(ltex,tw, th);
+		getScale(sx, sy, w, h,tw,th, x_resolution, y_resolution);
+		tx = (double)x_resolution / 2 - (double)w / 2;
+		ty = ((double)y_resolution - h) / 2;
+	}
+	if (mode == "inst") {
+		w = 762; h = 630;
+		getTexSize(ltex, tw, th);
+		getScale(sx, sy, w, h, tw, th, x_resolution, y_resolution);
+		tx = (double)x_resolution / 2 - (double)w / 2;
+		ty = ((double)y_resolution - h) / 2;
+	}
+	if (mode == "feedback") {
+		w = 593; h = 82;
+		getTexSize(ltex, tw, th);
+		getScale(sx, sy, w, h, tw, th, x_resolution, y_resolution);
+		tx = (double)x_resolution / 2 - (double)w / 2;
+		ty = (double)y_resolution - (double) h ;
+	}
+	if (mode == "LR") {
+		w = 600; h = 600;
+		getTexSize(ltex, tw, th);
+		getScale(sx, sy, w, h, tw, th, x_resolution, y_resolution);
+	}
+
+	
+	//double scale = 1.;
 
 	D3DXMATRIX mx;
 	// 左右并列
 	if (mode == "LR") {
 		double tx, ty;
-		tx = x_resolution / 2 - scale*w;
-		ty = (y_resolution - scale*h) / 2;
-		if (!drawTex(tx, ty, g_pSprite, ltex, scale))
+		tx = (double)x_resolution / 2 - w;
+		ty = ((double)y_resolution - h) / 2;
+		if (!drawTex(tx, ty, g_pSprite, ltex, sx, sy))
 			return FALSE;
-		tx = x_resolution / 2;
-		ty = (y_resolution - scale*h) / 2;
-		if (!drawTex(tx, ty, g_pSprite, rtex, scale))
+		tx = (double)x_resolution / 2;
+		ty = ((double)y_resolution - h) / 2;
+		if (!drawTex(tx, ty, g_pSprite, rtex, sx, sy))
 			return FALSE;
 	}
 	//中间大图
-	else if (mode == "focus") {
-		double tx = x_resolution / 2 - scale*w / 2;
-		double ty = (y_resolution - scale*h) / 2;
-		if (!drawTex(tx, ty, g_pSprite, ltex, scale))
+	else if (mode == "cross" 
+		|| mode == "feedback" 
+		|| mode == "inst") {
+		
+		if (!drawTex(tx, ty, g_pSprite, ltex, sx, sy))
 			return FALSE;
 	}
+	
 	return TRUE;
 }
 
@@ -733,19 +777,8 @@ BOOL t8::drawTex(string mode, LPD3DXSPRITE &g_pSprite,
 //************************************************
 VOID t8::Render()
 {
-	// 清空画面并绘制背景
-	switch (/*m_Setting.m_Background*/0)
-	{
-	case BACKGROUND_GRAY:
-		g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(48, 48, 48), 0.0f, 0);
-		break;
-	case BACKGROUND_BLACK:
-		g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(20, 20, 70), 0.0f, 0);
-		break;
-	case BACKGROUND_STAR:
-		g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 255), 0.0f, 0);
-		break;
-	}
+	g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET,
+		D3DCOLOR_XRGB(0, 0, 0), 0.0f, 0);
 	// 绘制前景：
 	D3DXMATRIX mx;
 	//在后台缓冲区绘制图形
@@ -758,13 +791,15 @@ VOID t8::Render()
 		{
 			//呈现指导语图片
 		case STATE_DISPLAYINSTURCTION:
-			if (SUCCEEDED(g_pSprite->Begin(D3DXSPRITE_ALPHABLEND)))
-			{
-				D3DXMatrixTransformation2D(&mx, NULL, 0.0, &D3DXVECTOR2((float)1024 / (float)1024, (float)768 / (float)1024), &D3DXVECTOR2(0, 0), NULL, &D3DXVECTOR2(x_resolution / 2, y_resolution / 2));
-				g_pSprite->SetTransform(&mx);
-				g_pSprite->Draw(g_pTextureInst, NULL, &D3DXVECTOR3(512, 512, 0), &D3DXVECTOR3(0, 0, 0), 0xffffffff);
-			}
-			g_pSprite->End();
+			//if (SUCCEEDED(g_pSprite->Begin(D3DXSPRITE_ALPHABLEND)))
+			//{
+				if (!drawTex("inst", g_pSprite, texInst, x_resolution, y_resolution))
+					break;
+				//D3DXMatrixTransformation2D(&mx, NULL, 0.0, &D3DXVECTOR2((float)1024 / (float)1024, (float)768 / (float)1024), &D3DXVECTOR2(0, 0), NULL, &D3DXVECTOR2(x_resolution / 2, y_resolution / 2));
+				//g_pSprite->SetTransform(&mx);
+				//g_pSprite->Draw(g_pTextureInst, NULL, &D3DXVECTOR3(512, 512, 0), &D3DXVECTOR3(0, 0, 0), 0xffffffff);
+			//}
+			//g_pSprite->End();
 			break;
 		//测试结束
 		case STATE_OVER:
@@ -774,7 +809,7 @@ VOID t8::Render()
 		case STATE_FOCUS_EXERCISE:
 		case STATE_FOCUS_FORMAL: 
 			// 绘制图片
-			if (!drawTex("focus", g_pSprite, texCross, x_resolution, y_resolution))
+			if (!drawTex("cross", g_pSprite, texCross, x_resolution, y_resolution))
 				break;
 			break;
 		case STATE_BETWEEN_EXERCISE_AND_FORMAL: {
@@ -782,7 +817,7 @@ VOID t8::Render()
 			int tx = x_resolution / 2;
 			int ty = y_resolution/2 - 50;
 			stringstream ss;
-			ss << "正式即将任务开始" ;
+			ss << "请按空格键进入正式任务" ;
 			if (!drawText(ss.str(), tx, ty, g_pFont))
 				break;
 			break;
@@ -843,7 +878,7 @@ VOID t8::Render()
 					if (unCo  && iBtn != -1 && !isRight)
 						texFeedBack = texWrongJ;		// 不重合 & 错误
 
-					if (!drawTex("focus", g_pSprite, texFeedBack, x_resolution, y_resolution))
+					if (!drawTex("feedback", g_pSprite, texFeedBack, x_resolution, y_resolution))
 						break;
 				}
 				break;
@@ -855,7 +890,7 @@ VOID t8::Render()
 	g_pd3dDevice->Present(NULL, NULL, NULL, NULL);
 }
 
-void t8::getTexSize(LPDIRECT3DTEXTURE9 texture, int &w, int &h) {
+void t8::getTexSize(LPDIRECT3DTEXTURE9 texture, double &w, double &h) {
 	D3DSURFACE_DESC surfaceDesc;
 	int level = 0; //The level to get the width/height of (probably 0 if unsure)
 	texture->GetLevelDesc(level, &surfaceDesc);
@@ -909,13 +944,14 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		case VK_ESCAPE: {
 			// User wants to leave fullscreen mode
 			//ShowCursor(TRUE);
-			
-			// 进入暂停状态
-			m_TestState = STATE_PAUSE;
 
 			//保存当前状态
 			int originalState = m_TestState;
 			isCountdownStop = true;
+
+			// 进入暂停状态
+			m_TestState = STATE_PAUSE;
+			
 			LARGE_INTEGER begContinue, endContinue;
 			QueryPerformanceCounter(&begContinue);
 			ShowCursor(TRUE);
@@ -930,13 +966,18 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				//恢复状态
 				QueryPerformanceCounter(&endContinue);
 				isCountdownStop = false;
-				m_TestState = originalState;
 				
-				// 计算暂停时间
+				// 计算暂停时间（任务开始(注视)x2+反馈）
 				if (originalState == STATE_DISPLAY_AND_COUNTDOWN_FORMAL 
-					|| originalState == STATE_DISPLAY_AND_COUNTDOWN_EXERCISE)
+					|| originalState == STATE_DISPLAY_AND_COUNTDOWN_EXERCISE
+					|| originalState == STATE_DISPLAYFEEDBACK
+					|| originalState == STATE_FOCUS_EXERCISE
+					|| originalState == STATE_FOCUS_FORMAL)
 					pauseTime += (double)(endContinue.QuadPart - begContinue.QuadPart) 
 						/ (double)freq.QuadPart * 1000.;
+				
+				lastState = m_TestState;
+				m_TestState = originalState;
 
 				SetForegroundWindow(hWnd);
 				rtn = 0;
@@ -958,6 +999,8 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		case VK_SPACE:
 			if (m_TestState == STATE_DISPLAYINSTURCTION) 
 				m_TestState = STATE_FOCUS_EXERCISE;
+			if (m_TestState == STATE_BETWEEN_EXERCISE_AND_FORMAL)
+				m_TestState = STATE_FOCUS_FORMAL;
 			break;
 		case 'f':
 		case 'F':
@@ -983,16 +1026,11 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				addAndSaveRec(m_TestState); // 添加记录
 
 				// 状态跳转
-				if (m_TestState == STATE_EXERCISE) {
-					if (g_imgDisplayInd == LImgs.size()-1)
-						m_TestState = STATE_BETWEEN_EXERCISE_AND_FORMAL;// 练习->between
-					else
-						m_TestState = STATE_DISPLAYFEEDBACK;	// 练习->反馈
-					//isCountdownStop = false;
+				if (m_TestState == STATE_DISPLAY_AND_COUNTDOWN_EXERCISE) {
+					m_TestState = STATE_DISPLAYFEEDBACK;	// 练习->反馈
 				}
-				if (m_TestState == STATE_FORMAL) {
+				if (m_TestState == STATE_DISPLAY_AND_COUNTDOWN_FORMAL) {
 					m_TestState = STATE_FOCUS_FORMAL;		// 正式->注视
-					//isCountdownStop = false;
 				}
 				break;
 			}
@@ -1109,7 +1147,7 @@ int APIENTRY t8::_tWinMain(HINSTANCE &hInstance,
 		ActivateKeyboardLayout(hkl, KLF_SETFORPROCESS);
 	}
 
-								 //初始化Direct3D
+	//初始化Direct3D
 	if (SUCCEEDED(InitD3D(hWnd)))
 	{
 
@@ -1187,7 +1225,9 @@ void t8::timer(double &totalTime/*倒计时总时间，返回中断后的剩余时间*/,
 	
 	while (true) {
 		// 判断退出
-		if ((curTime <= 0 && residualTime <=0.+ 1e-6) || isRtn) {
+		if (totalTime <= 0
+			|| (curTime <= 0 && residualTime <=0.+ 1e-6) 
+			|| isRtn) {
 			QueryPerformanceCounter(&totalEndTime);
 			
 			if (curTime <= 0 && residualTime <= 0. + 1e-6)
@@ -1243,11 +1283,20 @@ void t8::stateControl(short & state, int presentTime, int countdownTime, int fou
 		case STATE_FOCUS_EXERCISE:
 			if (LImgs.empty()) getExerciseList(LImgs, RImgs, 2);// 产生随机图片组合
 			//this_thread::sleep_for(std::chrono::seconds(foucusTime));
-			leftTime = foucusTime * 1000.;
+			// 判断是否初始化时间
+			if (lastState == STATE_PAUSE)
+				;
+			else
+				leftTime = foucusTime * 1000.;
+			//leftTime = 1. * 1000.;
 			isCountdownStop = false;
 			bShowTime = false;
 			timer(leftTime, 1000, countdown, isCountdownStop,
-				bShowTime, countdownTime * 1000);
+				bShowTime, 10000 * 1000);
+			// 判断是否立刻退出（暂停状态）
+			if (isCountdownStop == true) {
+				break;
+			}
 			leftTime = presentTime * 1000.;								// 先准备好要显示的时间
 			isCountdownStop = false;
 			// 开始展示图片
@@ -1257,17 +1306,26 @@ void t8::stateControl(short & state, int presentTime, int countdownTime, int fou
 			// 计时开始
 			pauseTime = 0.;
 			QueryPerformanceCounter(&begTime);
+			lastState = STATE_FOCUS_EXERCISE;
 			state = STATE_DISPLAY_AND_COUNTDOWN_EXERCISE;
 			break;
 		// 正式任务注视点
 		case STATE_FOCUS_FORMAL:
 			if ( LImgs.empty()) getFormalList(64);				// 产生随机图片组合
 			//this_thread::sleep_for(std::chrono::seconds(foucusTime));
-			leftTime = foucusTime * 1000.;
+			// 判断是否初始化时间
+			if (lastState == STATE_PAUSE)
+				;
+			else
+				leftTime = foucusTime * 1000.;
 			isCountdownStop = false;
 			bShowTime = false;
 			timer(leftTime, 1000, countdown, isCountdownStop,
 				bShowTime, countdownTime * 1000);
+			// 判断是否立刻退出（暂停状态）
+			if (isCountdownStop == true) {
+				break;
+			}
 			leftTime = presentTime * 1000.;								// 先准备好要显示的时间
 			isCountdownStop = false;
 			// 开始展示图片
@@ -1277,35 +1335,40 @@ void t8::stateControl(short & state, int presentTime, int countdownTime, int fou
 			// 计时开始
 			pauseTime = 0.;
 			QueryPerformanceCounter(&begTime);
+			lastState = STATE_FOCUS_FORMAL;
 			state = STATE_DISPLAY_AND_COUNTDOWN_FORMAL;
 			break;
 		// 练习任务和正式任务之间
 		case STATE_BETWEEN_EXERCISE_AND_FORMAL:
-			//this_thread::sleep_for(std::chrono::seconds(1));
-			leftTime = 1 * 1000.;
-			isCountdownStop = false;
-			bShowTime = false;
-			timer(leftTime, 1000, countdown, isCountdownStop,
-				bShowTime, countdownTime * 1000);
-			state = STATE_FOCUS_FORMAL;
 			break;
+		// 反馈
 		case STATE_DISPLAYFEEDBACK:
 			bShowTime = false;
 			//this_thread::sleep_for(std::chrono::seconds(1));
-			leftTime = 1 * 1000.;
+			// 判断是否初始化时间
+			if (lastState == STATE_PAUSE)
+				;
+			else
+				leftTime = 3 * 1000.;
 			isCountdownStop = false;
 			bShowTime = false;
 			timer(leftTime, 1000, countdown, isCountdownStop,
-				bShowTime, countdownTime * 1000);
+				bShowTime, -1);
+			// 判断是否立刻退出（暂停状态）
+			if (isCountdownStop == true) {
+				break;
+			}
 			// 显示完最后一张图的反馈以后跳到下一个状态
 			if (g_imgDisplayInd >= LImgs.size() - 1) {
 				g_imgDisplayInd = -2;
 				LImgs.clear();
 				RImgs.clear();
+				lastState = STATE_DISPLAYFEEDBACK;
 				state = STATE_BETWEEN_EXERCISE_AND_FORMAL;
 				break;
 			}
 			// 一般情况跳到下个注视点
+			lastState = STATE_DISPLAYFEEDBACK;
 			state = STATE_FOCUS_EXERCISE;
 			break;
 		case STATE_DISPLAY_AND_COUNTDOWN_FORMAL:
