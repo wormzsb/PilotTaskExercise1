@@ -568,6 +568,27 @@ BOOL CTaskControlDoc::ReadDataFile()
 		break;
 	case 7:
 		// xxx
+
+		if (m_Setting7 != NULL)
+		{
+			delete[]m_Setting7;
+			m_Setting7 = NULL;
+		}
+		m_Setting7 = new struct TaskSetting7[1];
+		MemClear();
+		break;
+
+	case 8:
+		// xxx
+
+		if (m_Setting8 != NULL)
+		{
+			delete[]m_Setting8;
+			m_Setting8 = NULL;
+		}
+		m_Setting8 = new struct TaskSetting8[1];
+		MemClear();
+		m_bOpenFile1 = ReadT8();
 		break;
 	}	
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -663,6 +684,12 @@ BOOL CTaskControlDoc::ReadT7() {
 		i++;
 	}
 	return TRUE;
+}
+
+BOOL CTaskControlDoc::ReadT8()
+{
+	
+	return FALSE;
 }
 
 

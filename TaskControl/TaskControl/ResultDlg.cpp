@@ -187,6 +187,16 @@ BOOL CResultDlg::OnInitDialog()
 		bLoadMenu = TRUE;
 		SetWindowText("数据分析—速度知觉任务测试");
 		break;
+
+	case 8:
+		if (!addmenu.LoadMenu(IDR_MENU2)) //装入菜单资源。
+		{
+			MessageBox("菜单装入失败!", "错误", MB_OK | MB_ICONERROR);
+			return FALSE;
+		}
+		bLoadMenu = TRUE;
+		SetWindowText("数据分析—三维心理旋转测试");
+		break;
 	}
     if(bLoadMenu)
 	{
