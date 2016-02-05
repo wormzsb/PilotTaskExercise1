@@ -245,6 +245,7 @@ public:
     void NewSetting();
 	BOOL ReadDataFile();
 	BOOL ReadT7();
+	BOOL ReadT8();
 	BOOL ReadT1();
 	BOOL ReadT2Trace();
 	BOOL ReadT2Hold();
