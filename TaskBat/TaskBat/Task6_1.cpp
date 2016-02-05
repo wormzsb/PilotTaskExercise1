@@ -173,8 +173,10 @@ VOID t6_1::MoveTrace()
 
 
 	//当前追踪环位置
-	m_PostPointX = m_PostPointX + iJoyMoveDirection  * m_PostSpeedX[m_PointNum-1] * dfTim;
-	m_PostPointY = m_PostPointY + iJoyMoveDirection  * m_PostSpeedY[m_PointNum-1] * dfTim;
+	double JoyAlpha = 0;
+	JoyAlpha = atan(fabs((double)(JoyY - m_PostPointY) / (double)(JoyX - m_PostPointX)));//摇杆角度
+	m_PostPointX = m_PostPointX + iJoyMoveDirection * cos(JoyAlpha) * m_PostSpeedX[m_PointNum - 1] * dfTim;
+	m_PostPointY = m_PostPointY + iJoyMoveDirection * sin(JoyAlpha) * m_PostSpeedY[m_PointNum - 1] * dfTim;
 	m_PostPoint[m_PointNum].x = m_PostPointX;
 	m_PostPoint[m_PointNum].y = m_PostPointY;
 	if(m_PostPoint[m_PointNum].x<0)
