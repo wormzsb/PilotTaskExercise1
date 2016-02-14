@@ -1014,7 +1014,7 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				isCountdownStop = true;
 
 				// 结束计时
-				QueryPerformanceCounter(&endTime);
+				//QueryPerformanceCounter(&endTime);
 				
 				// 按键处理
 				isPressBtn = true; // 已按下
@@ -1023,23 +1023,30 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				else if (wParam == 'j' || wParam == 'J')
 					isCoBtn = 1;
 
-				addAndSaveRec(m_TestState); // 添加记录
+				//addAndSaveRec(m_TestState); // 添加记录
 
 				// 状态跳转
 				if (m_TestState == STATE_DISPLAY_AND_COUNTDOWN_EXERCISE) {
-					m_TestState = STATE_DISPLAYFEEDBACK;	// 练习->反馈
+					m_TestState = STATE_EXERCISE;	// 练习->反馈
 				}
 				if (m_TestState == STATE_DISPLAY_AND_COUNTDOWN_FORMAL) {
-					m_TestState = STATE_FOCUS_FORMAL;		// 正式->注视
+					m_TestState = STATE_FORMAL;		//
 				}
 				break;
 			}
 		}
 		return 0;
 	case WM_KEYDOWN:
-		switch (wParam)
+		/*switch (wParam)
 		{
+		case : {
+			break;
 		}
+
+		}*/
+		if (m_TestState == STATE_OVER)
+			m_TestState = STATE_EXIT;
+
 		return 0;
 		//程序结束消息
 	case WM_DESTROY:
@@ -1243,7 +1250,7 @@ void t8::timer(double &totalTime/*倒计时总时间，返回中断后的剩余时间*/,
 		if (curTime + residualTime < countdownThreshold)
 			isShowTime = true;
 		else
-			isShowTime = true;
+			isShowTime = false;
 
 		QueryPerformanceCounter(&endt);
 		// 判断是否已经耗尽残余时间
@@ -1274,9 +1281,9 @@ void t8::stateControl(short & state, int presentTime, int countdownTime, int fou
 		switch (state){
 		// 实验结束或下一个task
 		case STATE_NEXT:
-		case STATE_OVER:
 		case STATE_EXIT:
 			return;
+		case STATE_OVER:
 		case STATE_PAUSE:
 			break;
 		// 练习任务注视点
@@ -1387,11 +1394,10 @@ void t8::stateControl(short & state, int presentTime, int countdownTime, int fou
 		}
 		case STATE_EXERCISE:
 			// 计时结束， 
-			if (!isPressBtn) {
-				QueryPerformanceCounter(&endTime);
-				// 统计
-				addAndSaveRec(m_TestState);
-			}
+			isCountdownStop = true;
+			QueryPerformanceCounter(&endTime);
+			// 统计
+			addAndSaveRec(m_TestState);
 			// 练习任务显示反馈
 			if (g_imgDisplayInd <= LImgs.size() - 1) {
 				state = STATE_DISPLAYFEEDBACK;	// 应该先转到反馈
@@ -1406,17 +1412,16 @@ void t8::stateControl(short & state, int presentTime, int countdownTime, int fou
 			break;
 		case STATE_FORMAL:
 			// 计时结束， 
-			if (!isPressBtn) {
-				QueryPerformanceCounter(&endTime);
-				// 统计
-				addAndSaveRec(m_TestState);
-			}
+			isCountdownStop = true;
+			QueryPerformanceCounter(&endTime);
+			// 统计
+			addAndSaveRec(m_TestState);
 			// 正式任务完全结束，状态转移
 			if (g_imgDisplayInd >= LImgs.size() - 1) {
 				g_imgDisplayInd = -2;
 				LImgs.clear();
 				RImgs.clear();
-				state = STATE_EXIT;
+				state = STATE_OVER;
 				break;
 
 			}
