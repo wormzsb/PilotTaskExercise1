@@ -666,7 +666,7 @@ BOOL CTaskControlDoc::ReadT7() {
 	//TRACE("\nsz = %s\n", sz);
 	
 
-	t7Recs.clear();
+	recs["t7"] = vector<TaskRec>();
 	int i = 0;
 	while (fin.peek() != EOF) {
 		TRACE("\n i = %d \n", i);
@@ -682,7 +682,7 @@ BOOL CTaskControlDoc::ReadT7() {
 		fin >> str; rec.setCo(rec.smallBallBegCo, str);
 		fin >> str; rec.setCo(rec.targetCo, str);
 		fin >> str; rec.setCo(rec.pressSmallBallCo, str);
-		t7Recs.push_back(rec);
+		recs["t7"].push_back(rec);
 		
 		// add to list dialog
 		m_pWSDlg->m_ListDlg.AddT7Item(i);
@@ -694,7 +694,42 @@ BOOL CTaskControlDoc::ReadT7() {
 
 BOOL CTaskControlDoc::ReadT8()
 {
-	
+	CMainFrame*   pMain = (CMainFrame*)AfxGetMainWnd();
+	// get list dialog pointer
+	CResultDlg *m_pWSDlg;
+	if (!bBatch)
+	{
+		m_pWSDlg = (CResultDlg *)pMain->m_pWSDlg;
+	}
+	// 读取Data数据
+	//fopen_s(&fp, m_FileName, "rt");
+	ifstream fin;
+	fin.open((CT2A(m_FileName)));
+	if (fin.is_open() == 0) {
+		AfxMessageBox("文件没有正确打开");
+		return TRUE;
+	}
+	char sz[1000];
+	// read head(1 row)
+	fin.getline(sz, 1000);
+	recs["t8"] = vector<TaskRec>();
+	int i = 0;
+	while (fin.peek() != EOF) {
+		TRACE("\n i = %d \n", i);
+		string str;
+		TaskRec rec;
+		fin >> rec.no;
+		if (fin.fail()) break;
+		fin >> rec.leftImg >> rec.rightImg >> rec.unCoincidence
+			>> rec.btn >> rec.isRight >> rec.responseTime;
+		recs["t8"].push_back(rec);
+
+		// add to list dialog
+		m_pWSDlg->m_ListDlg.AddT8Item(i);
+
+		i++;
+	}
+
 	return FALSE;
 }
 
@@ -3930,29 +3965,29 @@ void CTaskControlDoc::DataAnalysis()
 
 double CTaskControlDoc::getAvgAbsDevRatio() {
 	double avg = 0.0;
-	for (int i = 0; i < t7Recs.size(); i++) {
-		avg += fabs(t7Recs[i].deviationRate);
+	for (int i = 0; i < recs["t7"].size(); i++) {
+		avg += fabs(recs["t7"][i].deviationRate);
 	}
-	return avg / t7Recs.size();
+	return avg / recs["t7"].size();
 }
 
 double CTaskControlDoc::getSDAbsDveRatio() {
 	double absAvg = getAvgAbsDevRatio();
 	double absSum = 0.;
-	for (int i = 0; i < t7Recs.size(); i++) {
-		absSum += pow(fabs(t7Recs[i].deviationRate) - absAvg, 2);
+	for (int i = 0; i < recs["t7"].size(); i++) {
+		absSum += pow(fabs(recs["t7"][i].deviationRate) - absAvg, 2);
 	}
-	if (t7Recs.size() >= 2)
-		return sqrt(absSum / (t7Recs.size() - 1));
+	if (recs["t7"].size() >= 2)
+		return sqrt(absSum / (recs["t7"].size() - 1));
 	else
 		return 0.;
 }
 
 int CTaskControlDoc::getUnRspCnt() {
 	int cnt = 0;
-	for (int i = 0; i < t7Recs.size(); i++) {
-		if (t7Recs[i].deviationRate >= -1 - 1e-6
-			&& t7Recs[i].deviationRate <= -1 + 1e-6) {
+	for (int i = 0; i < recs["t7"].size(); i++) {
+		if (recs["t7"][i].deviationRate >= -1 - 1e-6
+			&& recs["t7"][i].deviationRate <= -1 + 1e-6) {
 			cnt++;
 		}
 	}

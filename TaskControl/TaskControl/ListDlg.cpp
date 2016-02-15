@@ -91,7 +91,7 @@ void CListDlg::OnSize(UINT nType, int cx, int cy)
 	}	
 }
 
-BOOL CListDlg::AddHeadT7(){
+BOOL CListDlg::AddHead() {
 
 	CMainFrame* pMain = (CMainFrame*)AfxGetMainWnd();
 	CView *pView = (CView*)pMain->GetActiveView();
@@ -112,12 +112,11 @@ BOOL CListDlg::AddHeadT7(){
 	}
 
 	for (int i = 0; i < head.size(); i++) {
-		m_ResultList.AddColumn(_T(head[i].c_str()), i+1, 100, LVCFMT_RIGHT);
+		m_ResultList.AddColumn(_T(head[i].c_str()), i + 1, 100, LVCFMT_RIGHT);
 	}
 
 	return TRUE;
 }
-
 
 BOOL CListDlg::AddHeadT1()
 {
@@ -952,13 +951,18 @@ BOOL CListDlg::OnInitDialog()
 			pDoc->m_Setting7 = NULL;
 		}
 		pDoc->m_Setting7 = new struct TaskSetting7[1];
-		AddHeadT7();
+		AddHead();
 		pDoc->MemClear();
 		pDoc->m_bOpenFile1 = pDoc->ReadT7();
 		break;
 	}	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
+}
+
+CString CListDlg::getCString(string x) {
+	CString cstr(x.c_str());
+	return cstr;
 }
 
 CString CListDlg::getCString(double x) {
@@ -986,7 +990,7 @@ BOOL CListDlg::AddT7Item(int i) {
 	string str;
 	CMainFrame*   pMain = (CMainFrame*)AfxGetMainWnd();
 	CTaskControlDoc* pDoc = (CTaskControlDoc*)pMain->GetActiveDocument();
-	TaskRec & rec = pDoc->t7Recs[i];
+	TaskRec & rec = pDoc->recs["t7"][i];
 	m_ResultList.AddItem(i, 0, getCString(rec.no), -1);
 	m_ResultList.AddItem(i, 1, getCString(rec.smallBallSpeed), -1);
 	m_ResultList.AddItem(i, 2, rec.smallBalldir.c_str(), -1);
@@ -1005,6 +1009,23 @@ BOOL CListDlg::AddT7Item(int i) {
 	m_ResultList.AddItem(i, 13, rec.getCo(rec.pressSmallBallCo).c_str(), -1);
 
 	return TRUE;
+}
+
+BOOL CListDlg::AddT8Item(int row) {
+	string str;
+	CMainFrame*   pMain = (CMainFrame*)AfxGetMainWnd();
+	CTaskControlDoc* pDoc = (CTaskControlDoc*)pMain->GetActiveDocument();
+	TaskRec & rec = pDoc->recs["t8"][row];
+	int col = -1;
+	m_ResultList.AddItem(row, col++, getCString(rec.no), -1);
+	m_ResultList.AddItem(row, col++, getCString(rec.leftImg), -1);
+	m_ResultList.AddItem(row, col++, getCString(rec.rightImg), -1);
+	m_ResultList.AddItem(row, col++, getCString(rec.unCoincidence), -1);
+	m_ResultList.AddItem(row, col++, getCString(rec.btn), -1);
+	m_ResultList.AddItem(row, col++, getCString(rec.isRight), -1);
+	m_ResultList.AddItem(row, col++, getCString(rec.responseTime), -1);
+	return TRUE;
+
 }
 
 BOOL CListDlg::AddT1Item(int i)

@@ -37,7 +37,9 @@ public:
 	BOOL AddHeadT6Trace();
 	BOOL AddHeadT6Judge();
 	BOOL AddHeadT6Memory();
-	BOOL AddHeadT7();
+
+	BOOL AddHead();
+
 
 
 	BOOL AddT1Item(int i);
@@ -53,6 +55,8 @@ public:
 	BOOL AddT6JudgeItem(int i);
 	BOOL AddT6MemoryItem(int i);
 	BOOL AddT7Item(int i);
+
+	BOOL AddT8Item(int row);
 
 // Overrides
 	// ClassWizard generated virtual function overrides
@@ -71,6 +75,7 @@ protected:
 	CString getCString(double x);
 	CString getCString(int x);
 	CString getCString(LONGLONG x);
+	CString getCString(string x);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 public:

@@ -224,23 +224,8 @@ public:
 	vector<double> m_HoldTimeErrAve;
 	vector<double> settingOrderHoldTimeErrRateAve;
 
-	// 任务7记录的数据类型（暂时放在这里，方便修改）
-	//struct T7Rec {
-	//	int no;
-	//	double buttonDistance;
-	//	double deviationRate; //单位：百分比
-	//	double smallBallSpeed;
-	//};
-	vector<TaskRec> t7Recs;
-
-	//任务7的结果数据类型
-	/*struct T7Res {
-		int taskCount;
-		double avgDeviationRate;
-		double sqtDeviationRate;
-		int unResponceCount;
-	};
-	struct T7Res t7res;*/
+	map<string, vector<TaskRec>> recs;
+	
 // Operations
 public:
 	void initAnalyseResult();

@@ -2,7 +2,7 @@
 #include "TaskRec.h"
 
 
-TaskRec::TaskRec()
+TaskRec::TaskRec()// 没写初始化列表，有空加上
 {
 }
 
@@ -42,25 +42,7 @@ void TaskRec::setFlag(string s, bool b) {
 	flag[s] = b;
 }
 
-double TaskRec::getPeriod(LONGLONG t1, LONGLONG t2) {
-	return fabs((double)(t1 - t2))
-		/ (double)freq * 1000.;
-}
 
-double TaskRec::getVisiblePeriod() {
-	visiblePeriod = getPeriod(disappearTime, moveBegTime);
-	return visiblePeriod;
-}
-
-double TaskRec::getObstacle2PressPeriod() {
-	obstacle2PressPeriod = getPeriod(pressTime, disappearTime);
-	return obstacle2PressPeriod;
-}
-
-double TaskRec::getTotalPeriod() {
-	totalPeriod = getPeriod(pressTime, moveBegTime);
-	return totalPeriod;
-}
 
 void TaskRec::setCo(Point2 &p, string str) {
 	int indXS = str.find("X=")+2;
