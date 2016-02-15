@@ -392,9 +392,23 @@ void CAnalysisDlg::DisplayResult()
 		break;
 
 		//任务7 xxx
-	case 7:
+	case 7: {
+		int i = -1;
+		m_ResultList.AddItem(i++, 0, "任务次数", -1);
+		m_ResultList.AddItem(i++, 0, "偏差率", -1);
+		m_ResultList.AddItem(i++, 0, "偏差率标准差", -1);
+		m_ResultList.AddItem(i++, 0, "未反应次数", -1);
+		m_ResultList.AddItem(i++, 0, "速度知觉测试开始时间（精确到秒）", -1);
+		m_ResultList.AddItem(i++, 0, "速度知觉测试结束时间（精确到秒）", -1);
+		m_ResultList.AddItem(i++, 0, "速度知觉测试耗时（精确到秒）", -1);
+		if (pDoc->t7Recs.size() == 0) return;
+		i = -1;
+		m_ResultList.AddItem(i++, 1, CString(to_string(pDoc->t7Recs.size()).c_str()), -1);
+		m_ResultList.AddItem(i++, 1, CString(to_string(pDoc->getAvgAbsDevRatio()).c_str()), -1);
+		m_ResultList.AddItem(i++, 1, CString(to_string(pDoc->getSDAbsDveRatio()).c_str()), -1);
+		m_ResultList.AddItem(i++, 1, CString(to_string(pDoc->getUnRspCnt()).c_str()), -1);
 		break;
-
+	}
 	}	
 
 

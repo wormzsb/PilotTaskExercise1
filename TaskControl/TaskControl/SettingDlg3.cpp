@@ -6,8 +6,8 @@
 #include "SettingDlg3.h"
 #include "MainFrm.h"
 #include "TaskControlDoc.h"
-#include "..\..\all\Datatype.h"
-#include "..\..\all\Enum.h"
+//#include "..\..\all\Datatype.h"
+//#include "..\..\all\Enum.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE

@@ -67,10 +67,19 @@ void TaskRec::setCo(Point2 &p, string str) {
 	int indXE = str.find(",");
 	int indYS = str.find("Y=")+2;
 	int indYE = str.find("}");
+	
+	if (indXS < 2 || indYS < 2)
+		return;
 	p.x = atof(str.substr(indXS, indXE - indXS).c_str());
 	p.y = atof(str.substr(indYS, indYE - indYS).c_str());
 }
 
+string TaskRec::getCo(Point2 & p)
+{
+	stringstream ss;
+	ss << "{X=" << p.x << ",Y=" << p.y << "}";
+	return ss.str();
+}
 
 
 

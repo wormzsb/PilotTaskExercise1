@@ -92,10 +92,29 @@ void CListDlg::OnSize(UINT nType, int cx, int cy)
 }
 
 BOOL CListDlg::AddHeadT7(){
-	m_ResultList.AddColumn(_T("测试序号"), 1, 80, LVCFMT_RIGHT);
-	m_ResultList.AddColumn(_T("按键距离"), 1, 100, LVCFMT_RIGHT);
-	m_ResultList.AddColumn(_T("偏差率"), 1, 120, LVCFMT_RIGHT);
-	m_ResultList.AddColumn(_T("小球速度"), 1, 80, LVCFMT_RIGHT);
+
+	CMainFrame* pMain = (CMainFrame*)AfxGetMainWnd();
+	CView *pView = (CView*)pMain->GetActiveView();
+	CTaskControlDoc* pDoc = (CTaskControlDoc*)pView->GetDocument();
+
+	ifstream fin;
+	fin.open((CT2A(pDoc->m_FileName)));
+	if (fin.is_open() == 0) {
+		AfxMessageBox("文件没有正确打开");
+		return TRUE;
+	}
+
+	vector<string> head;
+	while (fin.peek() != '\n') {
+		string str;
+		fin >> str;
+		head.push_back(str);
+	}
+
+	for (int i = 0; i < head.size(); i++) {
+		m_ResultList.AddColumn(_T(head[i].c_str()), i+1, 100, LVCFMT_RIGHT);
+	}
+
 	return TRUE;
 }
 
@@ -956,15 +975,35 @@ CString CListDlg::getCString(int x) {
 	return cstr;
 }
 
+CString CListDlg::getCString(LONGLONG x) {
+	stringstream ss;
+	ss << x;
+	CString cstr(ss.str().c_str());
+	return cstr;
+}
 
 BOOL CListDlg::AddT7Item(int i) {
+	string str;
 	CMainFrame*   pMain = (CMainFrame*)AfxGetMainWnd();
 	CTaskControlDoc* pDoc = (CTaskControlDoc*)pMain->GetActiveDocument();
-	
-	m_ResultList.AddItem(i, 0, getCString((pDoc->t7Recs[i]).no), -1);
-	m_ResultList.AddItem(i, 1, getCString((pDoc->t7Recs[i]).buttonDistance), -1);
-	m_ResultList.AddItem(i, 2, getCString((pDoc->t7Recs[i]).deviationRate) + CString("%"), -1);
-	m_ResultList.AddItem(i, 3, getCString((pDoc->t7Recs[i]).smallBallSpeed), -1);
+	TaskRec & rec = pDoc->t7Recs[i];
+	m_ResultList.AddItem(i, 0, getCString(rec.no), -1);
+	m_ResultList.AddItem(i, 1, getCString(rec.smallBallSpeed), -1);
+	m_ResultList.AddItem(i, 2, rec.smallBalldir.c_str(), -1);
+	m_ResultList.AddItem(i, 3, getCString(rec.moveBegTime), -1);
+	m_ResultList.AddItem(i, 4, getCString(rec.disappearTime), -1);
+	m_ResultList.AddItem(i, 5, getCString(rec.pressTime), -1);
+	m_ResultList.AddItem(i, 6, getCString(rec.visiblePeriod), -1);
+	m_ResultList.AddItem(i, 7, getCString(rec.obstacle2PressPeriod), -1);
+	m_ResultList.AddItem(i, 8, getCString(rec.totalPeriod), -1);
+	m_ResultList.AddItem(i, 9, getCString(rec.evaluateTime), -1);
+	str = (rec.deviationRate > 1e-6) ? "+" : "";
+	str += getCString(rec.deviationRate);
+	m_ResultList.AddItem(i, 10, str.c_str(), -1);
+	m_ResultList.AddItem(i, 11, rec.getCo(rec.smallBallBegCo).c_str(), -1);
+	m_ResultList.AddItem(i, 12, rec.getCo(rec.targetCo).c_str(), -1);
+	m_ResultList.AddItem(i, 13, rec.getCo(rec.pressSmallBallCo).c_str(), -1);
+
 	return TRUE;
 }
 

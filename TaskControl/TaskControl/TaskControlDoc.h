@@ -3,11 +3,13 @@
 
 
 #pragma once
-
 #include<vector>
 #include<algorithm>
 #include<fstream>
 #include<sstream>
+#include<string>
+#include "TaskRec.h"
+#include <afx.h>
 using namespace std;
 
 class CTaskControlDoc : public CDocument
@@ -46,6 +48,8 @@ public:
 	struct HardSetting   m_HardSetting;
 	struct PartInfo      m_PartInfo;
 	struct PartInfo      m_CurPartInfo;
+	
+	map<int, vector<string>> colHeads;		// 列头		
 
 //	int m_ID;
 //	char m_Name[10];
@@ -221,22 +225,22 @@ public:
 	vector<double> settingOrderHoldTimeErrRateAve;
 
 	// 任务7记录的数据类型（暂时放在这里，方便修改）
-	struct T7Rec {
-		int no;
-		double buttonDistance;
-		double deviationRate; //单位：百分比
-		double smallBallSpeed;
-	};
-	vector<struct T7Rec> t7Recs;
+	//struct T7Rec {
+	//	int no;
+	//	double buttonDistance;
+	//	double deviationRate; //单位：百分比
+	//	double smallBallSpeed;
+	//};
+	vector<TaskRec> t7Recs;
 
 	//任务7的结果数据类型
-	struct T7Res {
+	/*struct T7Res {
 		int taskCount;
 		double avgDeviationRate;
 		double sqtDeviationRate;
 		int unResponceCount;
 	};
-	struct T7Res t7res;
+	struct T7Res t7res;*/
 // Operations
 public:
 	void initAnalyseResult();
@@ -260,6 +264,9 @@ public:
 	BOOL ReadT6Memory();
 	void MemClear();
 	void DataAnalysis();
+	double getAvgAbsDevRatio();
+	double getSDAbsDveRatio();
+	int getUnRspCnt();
 // Operations
 public:
 

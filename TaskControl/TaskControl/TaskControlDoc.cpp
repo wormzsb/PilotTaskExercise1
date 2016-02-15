@@ -660,22 +660,28 @@ BOOL CTaskControlDoc::ReadT7() {
 		return TRUE;
 	}
 	
-	char sz[100];
-	// read head(3 rows)
-	fin.getline(sz, 100);
-	fin.getline(sz, 100);
-	fin.getline(sz, 100);
+	char sz[1000];
+	// read head(1 row)
+	fin.getline(sz, 1000);
+	//TRACE("\nsz = %s\n", sz);
 	
+
 	t7Recs.clear();
 	int i = 0;
-	while (!fin.eof()) {
-		// read each line
-		char c;
-		struct T7Rec rec;
-
-		fin >> rec.no >> rec.buttonDistance >> rec.deviationRate >> c >> rec.smallBallSpeed;
+	while (fin.peek() != EOF) {
+		TRACE("\n i = %d \n", i);
+		string str;
+		TaskRec rec;
+		fin >> rec.no;
 		if (fin.fail()) break;
-		
+		fin >> rec.smallBallSpeed >> rec.smallBalldir
+			>> rec.moveBegTime >> rec.disappearTime >> rec.pressTime
+			>> rec.visiblePeriod >> rec.obstacle2PressPeriod 
+			>> rec.totalPeriod >> rec.evaluateTime 
+			>> rec.deviationRate;
+		fin >> str; rec.setCo(rec.smallBallBegCo, str);
+		fin >> str; rec.setCo(rec.targetCo, str);
+		fin >> str; rec.setCo(rec.pressSmallBallCo, str);
 		t7Recs.push_back(rec);
 		
 		// add to list dialog
@@ -2843,7 +2849,7 @@ void CTaskControlDoc::initAnalyseResult()
 	m_NoTargetCount = 0;
 	m_HoldTimeErrAve.clear();
 	settingOrderHoldTimeErrRateAve.clear();
-	t7res = {0, 0., 0., 0};
+	//t7res = {0, 0., 0., 0};
 }
 
 
@@ -3909,31 +3915,48 @@ void CTaskControlDoc::DataAnalysis()
 			}
 		}
 		break;
-	case 7:// Undebugged!
-		// Save result
-		t7res.taskCount = t7Recs.size();
-		double sumOfDeviationRate = 0.;
-		for (int i = 0; i <  t7Recs.size(); i++) {
-			if (t7Recs[i].deviationRate != -1.) {
-				sumOfDeviationRate += fabs(t7Recs[i].deviationRate);
-			}
-			else
-				t7res.unResponceCount++;
-		}
-		t7res.avgDeviationRate = sumOfDeviationRate / (t7res.taskCount-t7res.unResponceCount);
-		for (int i = 0; i < t7Recs.size(); i++)
-		{
-			if (t7Recs[i].deviationRate -= -1.) {
-				t7res.sqtDeviationRate += 
-					pow(fabs(t7Recs[i].deviationRate) - t7res.avgDeviationRate, 2.);
-			}
-		}
-		t7res.sqtDeviationRate = sqrtf(t7res.sqtDeviationRate
-			/ (t7res.taskCount - t7res.unResponceCount - 1));
+	case 7: {
+		//_mkdir("Result");
+		//_mkdir("Result\\Task6");
+		//m_SaveName = "Result\\Task6\\task6_tracking_result.txt";
+		////fopen_s(&fp, m_SaveName, "at");
+		//ofstream fout(m_SaveName, ios::app);
+		//if (!fout.is_open()) break;
 		break;
-
+	}
 
 	}		
+}
+
+double CTaskControlDoc::getAvgAbsDevRatio() {
+	double avg = 0.0;
+	for (int i = 0; i < t7Recs.size(); i++) {
+		avg += fabs(t7Recs[i].deviationRate);
+	}
+	return avg / t7Recs.size();
+}
+
+double CTaskControlDoc::getSDAbsDveRatio() {
+	double absAvg = getAvgAbsDevRatio();
+	double absSum = 0.;
+	for (int i = 0; i < t7Recs.size(); i++) {
+		absSum += pow(fabs(t7Recs[i].deviationRate) - absAvg, 2);
+	}
+	if (t7Recs.size() >= 2)
+		return sqrt(absSum / (t7Recs.size() - 1));
+	else
+		return 0.;
+}
+
+int CTaskControlDoc::getUnRspCnt() {
+	int cnt = 0;
+	for (int i = 0; i < t7Recs.size(); i++) {
+		if (t7Recs[i].deviationRate >= -1 - 1e-6
+			&& t7Recs[i].deviationRate <= -1 + 1e-6) {
+			cnt++;
+		}
+	}
+	return cnt;
 }
 
 

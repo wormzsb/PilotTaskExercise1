@@ -14,6 +14,7 @@
     <ProjectGuid>{260FB878-AE1B-4802-A256-5A55431AABE3}</ProjectGuid>
     <RootNamespace>TaskControl</RootNamespace>
     <Keyword>MFCProj</Keyword>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -25,7 +26,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v140_xp</PlatformToolset>
     <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -62,7 +63,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_TASK_CONTROL;WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -118,6 +119,7 @@
     <ClCompile Include="ListDlg.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="mschart1.cpp" />
+    <ClCompile Include="Point2.cpp" />
     <ClCompile Include="ProcessDlg.cpp" />
     <ClCompile Include="ResultDlg.cpp" />
     <ClCompile Include="SelectView.cpp" />
@@ -137,6 +139,7 @@
     <ClCompile Include="TaskControl.cpp" />
     <ClCompile Include="TaskControlDoc.cpp" />
     <ClCompile Include="TaskControlView.cpp" />
+    <ClCompile Include="TaskRec.cpp" />
     <ClCompile Include="TesterView.cpp" />
     <ClCompile Include="WelcomDlg.cpp" />
   </ItemGroup>
@@ -157,6 +160,7 @@
     <ClInclude Include="ListDlg.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="mschart1.h" />
+    <ClInclude Include="Point2.h" />
     <ClInclude Include="ProcessDlg.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResultDlg.h" />
@@ -174,6 +178,7 @@
     <ClInclude Include="TaskControl.h" />
     <ClInclude Include="TaskControlDoc.h" />
     <ClInclude Include="TaskControlView.h" />
+    <ClInclude Include="TaskRec.h" />
     <ClInclude Include="TesterView.h" />
     <ClInclude Include="WelcomDlg.h" />
   </ItemGroup>

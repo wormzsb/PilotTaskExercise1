@@ -355,7 +355,7 @@ VOID t7::SaveData()
 	// 偏差率
 	if (!bTimeOut) {
 		double ratio;
-		ratio = (dNowDistance - (dOrgDistance - dNowDistance))
+		ratio = (dNowDistance - dOrgDistance)
 			/ (double)m_Setting.m_iObstacleRadius * 100.;
 		if (ratio > 1e-6)
 			fprintf(fp, "+" );
@@ -808,7 +808,7 @@ void t7::GoToFeedBack()
 	double dNowDistance = sqrt(pow(stPntSmallBall.dX - stPntSmallBallOrg.dX, 2)+pow(stPntSmallBall.dY - stPntSmallBallOrg.dY, 2));
 	/*偏差率*/
 	//double rs = (dNowDistance - dOrgDistance)/dOrgDistance * 100;
-	double rs = (dNowDistance - (dOrgDistance - dNowDistance))
+	double rs = (dNowDistance - dOrgDistance)
 		/ (double)m_Setting.m_iObstacleRadius * 100.;
 	//double rs = (dNowDistance - dOrgDistance)/fabs(dNowDistance - dOrgDistance) *  sqrt(pow(stPntSmallBall.dX - x_resolution / 2, 2)+pow(stPntSmallBall.dY - y_resolution / 2, 2))/dOrgDistance * 100;
 
@@ -1089,7 +1089,7 @@ VOID t7::UpdateState()
 		QPart1 = QPart2;
 		dfTotalMove = dfTotalMove + dfTim;
 
-		if (dfTotalMove > 3)// 显示反馈3秒
+		if (dfTotalMove > 1)// 显示反馈3秒
 		{	
 			dfTotalMove = 0;
 

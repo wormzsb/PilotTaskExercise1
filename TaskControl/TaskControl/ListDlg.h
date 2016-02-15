@@ -70,6 +70,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	CString getCString(double x);
 	CString getCString(int x);
+	CString getCString(LONGLONG x);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 public:

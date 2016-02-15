@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "TaskControl.h"
-#include "MainFrm.h"
+//#include "MainFrm.h"
 #include "typeinfo"
 #include "MainFrm.h"
 #include "TaskControlDoc.h"
@@ -14,7 +14,7 @@
 #include "WelcomDlg.h"
 #include "direct.h"
 #include "TesterView.h"
-#include "MainFrm.h"
+//#include "MainFrm.h"
 using namespace std;
 //#include "vld.h"
 #ifdef _DEBUG

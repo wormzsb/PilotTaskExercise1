@@ -1,9 +1,9 @@
 #pragma once
 #include "Point2.h"
-#include <string>
-#include "datatype.h"
 #include <map>
 #include <string>
+#include <sstream>
+#include <vector>
 using namespace std;
 class TaskRec
 {
@@ -37,5 +37,6 @@ public:
 	double getObstacle2PressPeriod();	// 进入遮挡到按键的时间
 	double getTotalPeriod();			// 实际时间
 	void setCo(Point2 &p, string str);
+	string getCo(Point2 &p);
 };
 
