@@ -277,17 +277,33 @@ VOID t7::SaveName()
 	fp = fopen(m_file,"at");
 
 	
-	fprintf(fp,"速度知觉测试\n");
-	fprintf(fp,"小球颜色R:%d G:%d B:%d\t",m_Setting.m_iBallColorR,m_Setting.m_iBallColorG,m_Setting.m_iBallColorB);
-	fprintf(fp,"半径:%d像素\t%s%d\t",m_Setting.m_iBallRadius,szSpeedMode[BALL_SPEED_CONSTANT],m_Setting.m_iBallSpeed1);
+	//fprintf(fp,"速度知觉测试\n");
+	//fprintf(fp,"小球颜色R:%d G:%d B:%d\t",m_Setting.m_iBallColorR,m_Setting.m_iBallColorG,m_Setting.m_iBallColorB);
+	//fprintf(fp,"半径:%d像素\t%s%d\t",m_Setting.m_iBallRadius,szSpeedMode[BALL_SPEED_CONSTANT],m_Setting.m_iBallSpeed1);
 
-	if (BALL_SPEED_ACC == m_Setting.m_iSpeedMode)
-		fprintf(fp,"加速度:%f\t速度上限:%f\t",m_Setting.m_iBallSpeedAcc,m_Setting.m_iBallSpeedMax);
+	//if (BALL_SPEED_ACC == m_Setting.m_iSpeedMode)
+	//	fprintf(fp,"加速度:%f\t速度上限:%f\t",m_Setting.m_iBallSpeedAcc,m_Setting.m_iBallSpeedMax);
 
-	fprintf(fp,"遮挡物颜色R:%d G:%d B:%d\t\n",m_Setting.m_iObstacleColorR,m_Setting.m_iObstacleColorG,m_Setting.m_iObstacleColorB);
+	//fprintf(fp,"遮挡物颜色R:%d G:%d B:%d\t\n",m_Setting.m_iObstacleColorR,m_Setting.m_iObstacleColorG,m_Setting.m_iObstacleColorB);
 
-	fprintf(fp,"测试序号\t按键距离\t偏差率\t小球速度\n");
-	
+	//fprintf(fp,"测试序号\t按键距离\t偏差率\t小球速度\n");
+	stringstream ss;
+	ss
+		<< "测试序号" << "\t"
+		<< "速度" << "\t"
+		<< "运动方向" << "\t"
+		<< "运动开始时间" << "\t"
+		<< "消失时间" << "\t"
+		<< "按键时间" << "\t"
+		<< "可见运动时间" << "\t"
+		<< "进入遮挡到按键时间" << "\t"
+		<< "实际时间(毫秒)" << "\t"
+		<< "估计时间(毫秒)" << "\t"
+		<< "偏差率(%)" << "\t"
+		<< "起始座标" << "\t"
+		<< "目标座标" << "\t"
+		<< "按键座标" << "\n";
+	fprintf(fp,"%s",ss.str().c_str());
 	fclose(fp);
 	
 
@@ -303,33 +319,69 @@ VOID t7::SaveData()
 	FILE* fp = fopen(m_file,"at");
 	double dNowDistance = sqrt(pow(stPntSmallBall.dX - stPntSmallBallOrg.dX, 2)
 		+ pow(stPntSmallBall.dY - stPntSmallBallOrg.dY, 2));/*小球移动距离*/
-	
+	stringstream ss;
+
 	// 测试序号
 	fprintf(fp,"%d\t", rec.no);
 
 	// 小球速度
-	fprintf(fp, "%.0lf\n", rec.smallBallSpeed);
+	fprintf(fp, "%d\t", (int)rec.smallBallSpeed);
 
 	// 当前小球方向
 	fprintf(fp, "%s\t", rec.smallBalldir.c_str());
 
-	// 小球开始运动的时刻 xxx
+	// 小球开始运动的时刻
 	fprintf(fp, "%I64d\t", rec.moveBegTime);
 
+	// 小球消失的时刻
+	fprintf(fp, "%I64d\t", rec.disappearTime);
+	
+	// 按键的时刻
+	fprintf(fp, "%I64d\t", rec.pressTime);
 
-	// 按键距离 
-	fprintf(fp, "%.1lf%\t", (dNowDistance - dOrgDistance));
+	// 可见运动时间
+	fprintf(fp, "%.4lf\t", rec.getVisiblePeriod());
+	
+	// 进入遮挡到按键时间
+	double tmp = rec.getObstacle2PressPeriod();
+	fprintf(fp, "%.4lf\t", tmp);
+
+	// 实际时间
+	fprintf(fp, "%.2lf\t", rec.getTotalPeriod());
+
+	// 估计时间
+	fprintf(fp, "%.2lf\t",  rec.evaluateTime);
 
 	// 偏差率
-	if (!bTimeOut) 
-		fprintf(fp, "%.2lf%%\t", (dNowDistance - dOrgDistance) / dOrgDistance * 100);
+	if (!bTimeOut) {
+		double ratio;
+		ratio = (dNowDistance - (dOrgDistance - dNowDistance))
+			/ (double)m_Setting.m_iObstacleRadius * 100.;
+		if (ratio > 1e-6)
+			fprintf(fp, "+" );
+		fprintf(fp, "%.2lf\t", ratio);
+	}
 	else 
 		fprintf(fp, "%d\t", -1);
 
-	// 运动方向
+	// 起始坐标
+	ss.str("");
+	ss << "{X=" << (int)rec.smallBallBegCo.x
+		<< ",Y=" << (int)rec.smallBallBegCo.y << "}";
+	fprintf(fp, "%s\t", ss.str().c_str());
 
+	// 目标坐标
+	ss.str("");
+	ss << "{X=" << (int)rec.targetCo.x
+		<< ",Y=" << (int)rec.targetCo.y << "}";
+	fprintf(fp, "%s\t", ss.str().c_str());
 
-	
+	// 按键坐标
+	ss.str("");
+	ss << "{X=" << (int)rec.pressSmallBallCo.x
+		<< ",Y=" << (int)rec.pressSmallBallCo.y << "}";
+	fprintf(fp, "%s\n", ss.str().c_str());
+
 	fclose(fp);
 }
 
@@ -755,7 +807,9 @@ void t7::GoToFeedBack()
 	/*小球当前移动的距离*/
 	double dNowDistance = sqrt(pow(stPntSmallBall.dX - stPntSmallBallOrg.dX, 2)+pow(stPntSmallBall.dY - stPntSmallBallOrg.dY, 2));
 	/*偏差率*/
-	double rs = (dNowDistance - dOrgDistance)/dOrgDistance * 100;
+	//double rs = (dNowDistance - dOrgDistance)/dOrgDistance * 100;
+	double rs = (dNowDistance - (dOrgDistance - dNowDistance))
+		/ (double)m_Setting.m_iObstacleRadius * 100.;
 	//double rs = (dNowDistance - dOrgDistance)/fabs(dNowDistance - dOrgDistance) *  sqrt(pow(stPntSmallBall.dX - x_resolution / 2, 2)+pow(stPntSmallBall.dY - y_resolution / 2, 2))/dOrgDistance * 100;
 
 	if (!bTimeOut)
@@ -922,17 +976,22 @@ VOID t7::UpdateState()
 
 		}*/
 		stPntSmallBall = stPntSmallBallOrg;
+		
+		rec.smallBallBegCo = Point2(stPntSmallBallOrg.dX, stPntSmallBallOrg.dY);
+		rec.targetCo = Point2(x_resolution / 2, y_resolution / 2);
+		
 		bShowSmallBall = TRUE;
 		m_TestState = STATE_MOVINGOBJ;
 		iShowState = BALL_INTERVAL;
 		
 		rec.freq = dfFreq;
-		rec.no = iTotalTskCnt;
+		rec.no = iTotalTskCnt + 1;
 		rec.smallBallSpeed = dBallSpeed;
 		rec.setSmallBallDir(curStartPos);
 		rec.moveBegTime = QPart1;
 		rec.evaluateTime = (double)m_Setting.m_iObstacleRadius
 			/ (double)dBallSpeed;
+		rec.flag.clear();
 		break;
 	//测试任务执行（应该是小球运动的过程）
     case STATE_MOVINGOBJ:
@@ -1179,10 +1238,11 @@ DWORD WINAPI t7::InputThreadProcedure(LPVOID lpStartupParam)
 								if (abs(stPntSmallBall.dX - stPntSmallBallOrg.dX + stPntSmallBall.dY - stPntSmallBallOrg.dY)
 										> abs(dOrgDistance - m_Setting.m_iObstacleRadius)) {
 									/*获取按键时刻*/
-									if (rec.isFlagExist("pressTime")) {
+									if (!rec.isFlagExist("pressTime")) {
 										LARGE_INTEGER tmp;
 										QueryPerformanceCounter(&tmp);
 										rec.pressTime = tmp.QuadPart;
+										rec.pressSmallBallCo = Point2(stPntSmallBall.dX, stPntSmallBall.dY);
 										rec.setFlag("pressTime",true);
 									}
 									

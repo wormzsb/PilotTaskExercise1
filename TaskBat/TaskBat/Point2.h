@@ -6,6 +6,7 @@ public:
 	double y;
 public:
 	Point2();
+	Point2(double x, double y);
 	~Point2();
 };
 

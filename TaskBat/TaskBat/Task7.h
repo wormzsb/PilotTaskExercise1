@@ -13,6 +13,7 @@
 #include "..\..\all\Enum.h"
 #include <vector>
 #include <string>
+#include <sstream>
 #include "Helper.h"
 using namespace  std;
 //#include "TaskRec.h"

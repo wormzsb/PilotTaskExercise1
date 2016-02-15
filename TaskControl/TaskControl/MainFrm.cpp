@@ -596,7 +596,7 @@ void CMainFrame::ReadSetting(CString FileName)
 				break;
 			case 7:
 				fscanf_s(fp, "TaskName\t%d-%s\n", &idx, &pDoc->m_Setting8[i8].m_TaskName,100);
-				fscanf_s(fp, "PracMode\t%d\n", &pDoc->m_Setting8[i8].m_bPracMode);
+				//fscanf_s(fp, "PracMode\t%d\n", &pDoc->m_Setting8[i8].m_bPracMode);
 				fscanf_s(fp, "PresentTime\t%d\n", &pDoc->m_Setting8[i8].m_iPrensentTime);
 				fscanf_s(fp, "FocusTime\t%d\n", &pDoc->m_Setting8[i8].m_iFocusTime);
 				fscanf_s(fp, "CountdownTime\t%d\n", &pDoc->m_Setting8[i8].m_iCountdownTime);

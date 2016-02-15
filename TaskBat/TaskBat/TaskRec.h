@@ -27,7 +27,7 @@ public:
 	void setSmallBallDir(int curStartPos);
 	bool isFlagExist(string s);
 	void setFlag(string s, bool b);
-	double getPeriod(LONGLONG t1, LONGLONG t2);
+	double getPeriod(LONGLONG t1, LONGLONG t2); // 单位毫秒
 	double getVisiblePeriod();			// 可见运动时间(毫秒)
 	double getObstacle2PressPeriod();	// 进入遮挡到按键的时间
 	double getTotalPeriod();			// 实际时间
