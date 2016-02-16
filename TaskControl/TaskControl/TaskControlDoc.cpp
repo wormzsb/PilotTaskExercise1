@@ -3964,7 +3964,7 @@ void CTaskControlDoc::DataAnalysis()
 		break;
 	}
 	case 8://task8
-		int CRCount=0;
+		double CRCount=0;
 		double ResTime=0;
 		for (int i = 0; i < recs["t8"].size(); i++)
 		{
