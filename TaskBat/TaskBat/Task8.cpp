@@ -668,9 +668,9 @@ void t8::getScale(double &sx, double &sy,
 BOOL t8::drawText( string str, int tx, int ty, LPD3DXFONT &g_pFont) {
 	
 	RECT rect;
-	rect.left = tx - 300;
+	rect.left = tx - 500;
 	rect.top = ty;
-	rect.right = tx + 300;
+	rect.right = tx + 500;
 	rect.bottom = ty + 50;
 
 	g_pFont->DrawText(NULL, str.c_str(), -1, &rect,
@@ -816,10 +816,24 @@ VOID t8::Render()
 			//g_pSprite->End();
 			break;
 		//测试结束
-		case STATE_OVER:
+		case STATE_OVER: {
+			int sumRight = 0;
+			double sumResTime = 0.;
+			for (int i = 0; i < recs.size(); i++) {
+				sumRight += (int)recs[i].isRight;
+				sumResTime += recs[i].responseTime;
+			}
+			stringstream ss;
+			ss << "本次任务"
+				<< "平均正确率为" << (double)sumRight / recs.size() * 100. << "%, "
+				<< "平均反应时为" << sumResTime / recs.size() << "毫秒";
+			int tx = x_resolution / 2;
+			int ty = y_resolution  - 50;
+			drawText(ss.str(), tx, ty, g_pFont);
 			g_pFont1->DrawText(NULL, Insturction3, -1, &erect,
 				DT_WORDBREAK | DT_NOCLIP | DT_CENTER | DT_VCENTER, D3DCOLOR_XRGB(255, 255, 255));
-			break;
+			break; 
+		}
 		case STATE_FOCUS_EXERCISE:
 		case STATE_FOCUS_FORMAL: 
 			// 绘制图片
