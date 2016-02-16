@@ -1686,7 +1686,7 @@ DWORD WINAPI t3::InputThreadProcedure(LPVOID lpStartupParam)
 							if(m_bEventStart)
 							{
 								//有突发事件时按键确认
-								for(i=0;i<m_EventKeyNum;i++)
+								for(i=0; m_bEventStart;i++)
 								{
 									
 									if(IsButtonDown(m_EventKey[i]))
@@ -1749,7 +1749,7 @@ DWORD WINAPI t3::InputThreadProcedure(LPVOID lpStartupParam)
 							else
 							{
 								//没有突发事件时按键确认
-								for(i=0;i<m_EventKeyNum;i++)
+								for(i=0; !m_bEventStart;i++)
 								{
 									if(IsButtonDown(m_EventKey[i]))
 									{

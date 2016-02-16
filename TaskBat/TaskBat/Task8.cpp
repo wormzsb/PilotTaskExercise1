@@ -320,6 +320,20 @@ VOID t8::SaveName()
 
 
 //************************************************
+//*保存结果数据记录文件
+//************************************************
+VOID t8::SaveData()
+{
+	FILE *fp;
+	int i;
+	fp = fopen(szDataFile, "at");
+	for (i = 0; i < recs.size(); i++)
+	{
+		fprintf(fp, "%d\t%s\t%s\t%d\t%d\t%d\t%.2f\t\n",
+			recs[i].no, recs[i].leftImg, recs[i].rightImg, recs[i].unCoincidence, recs[i].btn, recs[i].isRight, recs[i].responseTime);
+	}
+	fclose(fp);
+}
 
 
 //************************************************

@@ -3164,12 +3164,12 @@ void CTaskControlDoc::DataAnalysis()
 		break;
 	// 任务3
 	case 3:
-		if(m_bOpenFile1)//trace文件
+		if (m_bOpenFile1)//trace文件
 		{
-			if(m_MainTaskMode == 0)//主任务存在；怎么实际意思和这个变量名是相反的？
+			if (m_MainTaskMode == 0)//主任务存在；怎么实际意思和这个变量名是相反的？
 			{
 				m_TrialNum = 1;
-				for(j=0;j<m_TrialNum;j++)
+				for (j = 0; j < m_TrialNum; j++)
 				{
 					//i = 0;
 					//do
@@ -3177,38 +3177,38 @@ void CTaskControlDoc::DataAnalysis()
 					//	i++;
 					//}while((m_PointTime[i]-m_PointTime[m_StartPoint[j]])<=5000);
 					m_ValidStart[j] = m_StartPoint[j] + 125;
-					for(i=m_ValidStart[j];i<m_StartPoint[j+1];i++)
+					for (i = m_ValidStart[j]; i < m_StartPoint[j + 1]; i++)
 					{
 						m_DistanceTotal += m_Distance[i];
-						if(m_bHit[i])
+						if (m_bHit[i])
 						{
 							m_HitCount++;
 						}
 						m_PointTotal++;
 					}
-					m_TimeTotal+=(m_PointTime[m_StartPoint[j+1]-1]-m_PointTime[m_ValidStart[j]]);
+					m_TimeTotal += (m_PointTime[m_StartPoint[j + 1] - 1] - m_PointTime[m_ValidStart[j]]);
 				}
-				m_DistanceAve = m_DistanceTotal/(float)m_PointTotal;
-				m_HitTimeTotal = m_HitCount*40;
-				m_HitTimeRate = (float)m_HitTimeTotal/(float)m_TimeTotal;
+				m_DistanceAve = m_DistanceTotal / (float)m_PointTotal;
+				m_HitTimeTotal = m_HitCount * 40;
+				m_HitTimeRate = (float)m_HitTimeTotal / (float)m_TimeTotal;
 				m_DistanceTotal = 0;
-				for(j=0;j<m_TrialNum;j++)
+				for (j = 0; j < m_TrialNum; j++)
 				{
-					for(i=m_ValidStart[j];i<m_StartPoint[j+1];i++)
+					for (i = m_ValidStart[j]; i < m_StartPoint[j + 1]; i++)
 					{
-						m_DistanceTotal += pow((m_Distance[i]-m_DistanceAve),2);
+						m_DistanceTotal += pow((m_Distance[i] - m_DistanceAve), 2);
 					}
 				}
-				m_DistanceSqt = pow((double)m_DistanceTotal/(double)(m_PointTotal-1),0.5);
+				m_DistanceSqt = pow((double)m_DistanceTotal / (double)(m_PointTotal - 1), 0.5);
 			}
 			else//没有主任务--这部分已经被废弃了，被event部分取代
 			{
 				m_TrueCode = 0;
 				m_FalseCode = 0;
 				m_CodeRTTotal = 0;
-				for(i=m_ExperStart1;i<m_CodeNo;i++)
+				for (i = m_ExperStart1; i < m_CodeNo; i++)
 				{
-					if(m_bCodeAcc[i] == 1)
+					if (m_bCodeAcc[i] == 1)
 					{
 						m_TrueCode++;
 						m_CodeRTTotal += m_CodeRT[i];
@@ -3218,21 +3218,21 @@ void CTaskControlDoc::DataAnalysis()
 						m_FalseCode++;
 					}
 				}
-				m_CodeRTAvg = (float)m_CodeRTTotal/(float)(m_TrueCode);
+				m_CodeRTAvg = (float)m_CodeRTTotal / (float)(m_TrueCode);
 				m_CodeRTTotal = 0;
-				for(i=m_ExperStart1;i<m_CodeNo;i++)
+				for (i = m_ExperStart1; i < m_CodeNo; i++)
 				{
-					if(m_bCodeAcc[i]>0)
+					if (m_bCodeAcc[i] > 0)
 					{
-					    m_CodeRTTotal += pow((m_CodeRT[i]-m_CodeRTAvg),2);
+						m_CodeRTTotal += pow((m_CodeRT[i] - m_CodeRTAvg), 2);
 					}
 				}
-				m_CodeRTSqr = pow((double)m_CodeRTTotal/(double)(m_TrueCode-1),0.5);
+				m_CodeRTSqr = pow((double)m_CodeRTTotal / (double)(m_TrueCode - 1), 0.5);
 			}
 		}
-        if(m_bOpenFile2)//Event
-		{			
-			if(m_Setting3[0].m_EventMode==0)// eventMode==0 简单模式
+		if (m_bOpenFile2)//Event
+		{
+			if (m_Setting3[0].m_EventMode == 0)// eventMode==0 简单模式
 			{
 				if (m_EventType[i] == 0 && m_SureButtonNo[i] == 0) //统计击中数
 					m_TrueCount++;
@@ -3242,34 +3242,36 @@ void CTaskControlDoc::DataAnalysis()
 				//	m_CRCount++;
 				//if (m_EventType[i] == 1 && m_SureButtonNo[i] == 0) //统计虚报数
 				//	m_FalseCount++;
+				if (m_EventType[i] == 2 && m_SureButtonNo[i] == 0) //统计未触发事件时错误按键数
+					m_FailCount++;
 				if (m_EventType[i] == 0
 					&& (m_SureButtonNo[i] == 0 || m_SureButtonNo[i] == 1)) //统计靶事件反应时
 					m_RTTotal += m_EventRT[i];
 				//---old code---//
 				/*for(i=m_ExperStart2;i<m_RecordNo;i++)
 				{
-					if(m_bEventAcc[i] == 1)
-					{
-						m_TrueCount++;
-						m_RTTotal += m_EventRT[i];
-					}
-					else if(m_bEventAcc[i] == 0)
-					{
-						m_FalseCount++;
-					}
-					else
-					{
-						m_MissingCount++;
-					}
+				if(m_bEventAcc[i] == 1)
+				{
+				m_TrueCount++;
+				m_RTTotal += m_EventRT[i];
+				}
+				else if(m_bEventAcc[i] == 0)
+				{
+				m_FalseCount++;
+				}
+				else
+				{
+				m_MissingCount++;
+				}
 				}*/
-				m_RTAvg = (float)m_RTTotal/(float)m_TrueCount;
+				m_RTAvg = (float)m_RTTotal / (float)m_TrueCount;
 				//m_RTTotal = 0;
 				double sumRT = 0.;
-				for(i=m_ExperStart2;i<m_RecordNo;i++)
+				for (i = m_ExperStart2; i < m_RecordNo; i++)
 				{
-					if(m_bEventAcc[i] == 1)
+					if (m_bEventAcc[i] == 1)
 					{
-						sumRT += pow((m_EventRT[i]-m_RTAvg),2);
+						sumRT += pow((m_EventRT[i] - m_RTAvg), 2);
 					}
 				}
 				if (m_TrueCount > 1)
@@ -3287,7 +3289,7 @@ void CTaskControlDoc::DataAnalysis()
 				//m_FalseCount = 0;
 				//m_RTTotal = 0; //靶事件反应总时
 
-				for(i=/*m_ExperStart2*/0;i<m_RecordNo;i++)//遍历所有记录
+				for (i =/*m_ExperStart2*/0; i < m_RecordNo; i++)//遍历所有记录
 				{
 					if (m_EventType[i] == 0 && m_SureButtonNo[i] == 0) //统计击中数
 						m_TrueCount++;
@@ -3297,59 +3299,61 @@ void CTaskControlDoc::DataAnalysis()
 						m_CRCount++;
 					if (m_EventType[i] == 1 && m_SureButtonNo[i] == 0) //统计虚报数
 						m_FalseCount++;
-					if (m_EventType[i] == 0 
+					if (m_EventType[i] == 2 && m_SureButtonNo[i] == 0) //统计未触发事件时错误按键数
+						m_FailCount++;
+					if (m_EventType[i] == 0
 						&& (m_SureButtonNo[i] == 0 || m_SureButtonNo[i] == 1)) //统计靶事件反应时
 						m_RTTotal += m_EventRT[i];
 
 					//旧代码
-//					if(m_EventType[i] == 1)
-//					{
-//						if(m_bEventAcc[i] == 1)
-//						{
-//							m_TrueCount++;
-//							m_RTTotal += m_EventRT[i];
-//						}
-//						else
-//						{
-//							m_MissingCount++;
-//						}
-////						m_TargetCount++;
-//					}
-//					else
-//					{
-//						if(m_bEventAcc[i] == 1)
-//						{
-//							m_CRCount++;
-//							m_RTTotal += m_EventRT[i];
-//						}
-//						else
-//						{
-//							m_FalseCount++;
-//						}
-////						m_NoTargetCount++;
-//					}	
+					//					if(m_EventType[i] == 1)
+					//					{
+					//						if(m_bEventAcc[i] == 1)
+					//						{
+					//							m_TrueCount++;
+					//							m_RTTotal += m_EventRT[i];
+					//						}
+					//						else
+					//						{
+					//							m_MissingCount++;
+					//						}
+					////						m_TargetCount++;
+					//					}
+					//					else
+					//					{
+					//						if(m_bEventAcc[i] == 1)
+					//						{
+					//							m_CRCount++;
+					//							m_RTTotal += m_EventRT[i];
+					//						}
+					//						else
+					//						{
+					//							m_FalseCount++;
+					//						}
+					////						m_NoTargetCount++;
+					//					}	
 				}
-				m_RTAvg = (float)m_RTTotal/(float)(m_TrueCount/*+m_CRCount*/);//靶事件反应时平均值
-//				m_NoRTAvg = (float)m_NoRTTotal/(float)(m_CRCount);
+				m_RTAvg = (float)m_RTTotal / (float)(m_TrueCount/*+m_CRCount*/);//靶事件反应时平均值
+																				//				m_NoRTAvg = (float)m_NoRTTotal/(float)(m_CRCount);
 				m_RTTotal = 0;
 				double sumRT = 0.;
-//				m_NoRTTotal = 0;
-				for(i=/*m_ExperStart2*/0;i<m_RecordNo;i++)
+				//				m_NoRTTotal = 0;
+				for (i =/*m_ExperStart2*/0; i < m_RecordNo; i++)
 				{
-					if(m_bEventAcc[i] == 1)
+					if (m_bEventAcc[i] == 1)
 					{
-//						if(m_EventType[i] == 1)
-//						{
-						sumRT += pow((m_EventRT[i]-m_RTAvg),2);
-//						}
-//						else
-//						{
-//							m_NoRTTotal += pow((m_EventRT[i]-m_NoRTAvg),2);
-//						}
+						//						if(m_EventType[i] == 1)
+						//						{
+						sumRT += pow((m_EventRT[i] - m_RTAvg), 2);
+						//						}
+						//						else
+						//						{
+						//							m_NoRTTotal += pow((m_EventRT[i]-m_NoRTAvg),2);
+						//						}
 					}
 				}
 				//m_RTSqr = pow((double)m_RTTotal/(double)(m_TrueCount+m_CRCount-1),0.5);//靶事件反应时标准差
-//				m_NoRTSqr = pow((float)m_NoRTTotal/(float)(m_CRCount-1),0.5);
+				//				m_NoRTSqr = pow((float)m_NoRTTotal/(float)(m_CRCount-1),0.5);
 				if (m_TrueCount > 1)
 					m_RTSqr = pow((double)sumRT / (double)(m_TrueCount - 1), 0.5);
 				else
@@ -3357,34 +3361,34 @@ void CTaskControlDoc::DataAnalysis()
 			}
 		}
 
-//		pos = pDoc->m_FileName.ReverseFind('\\');
-//		pos1 = pDoc->m_FileName.ReverseFind('-');
-		if(m_bOpenFile1)//记录track部分的统计结果
+		//		pos = pDoc->m_FileName.ReverseFind('\\');
+		//		pos1 = pDoc->m_FileName.ReverseFind('-');
+		if (m_bOpenFile1)//记录track部分的统计结果
 		{
-			if(!bExitItem1)
+			if (!bExitItem1)
 			{
-				if(m_MainTaskMode == 0)
+				if (m_MainTaskMode == 0)
 				{
 					_mkdir("Result");
 					_mkdir("Result\\Task3");
 					m_SaveName = "Result\\Task3\\task3_tracking_result.txt";
-					fopen_s(&fp, m_SaveName,"at");
-					if(fp!=NULL)
+					fopen_s(&fp, m_SaveName, "at");
+					if (fp != NULL)
 					{
-						if(!bExist1)
+						if (!bExist1)
 						{
-							fprintf(fp,"FileName\tID\tName\tSex\tSession\t"
+							fprintf(fp, "FileName\tID\tName\tSex\tSession\t"
 								"DistanceError\tPracMode\tExperMode\tMainTask\tSubTask\t"
 								"MainTaskMode\tBackground\tInitSpeed\tEventMode\tCodePairMode\tCodePairNum\tDisplayMode\tEventFrequency\tPracTime\tExperTime\tPracTimes\tExperTimes\t"
 								"DistanceAve\tDistanceSqt\tHitTimeTotal\tHitTimeRate\n");
 						}
-						fprintf(fp,"%s\t%s\t%s\t%s\t%d\t"
+						fprintf(fp, "%s\t%s\t%s\t%s\t%d\t"
 							"%.2f\t%d\t%d\t%d\t%d\t"
 							"%d\t%d\t%.2f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t"
 							"%.2f\t%.2f\t%.2f\t%.2f\n",
-							m_DataFileName, m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session, 
+							m_DataFileName, m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session,
 							m_HardSetting.m_DistanceError, m_Setting3[0].m_PracMode, m_Setting3[0].m_ExperMode, m_Setting3[0].m_MainTask, m_Setting3[0].m_SubTask,
-							m_Setting3[0].m_MainTaskMode, m_Setting3[0].m_Background, m_Setting3[0].m_InitSpeed, m_Setting3[0].m_EventMode, m_Setting3[0].m_CodePairMode, m_Setting3[0].m_CodePairNum, m_Setting3[0].m_DisplayMode, m_Setting3[0].m_EventFrequency, m_Setting3[0].m_PracTime, m_Setting3[0].m_ExperTime, m_Setting3[0].m_PracTimes, m_Setting3[0].m_ExperTimes, 
+							m_Setting3[0].m_MainTaskMode, m_Setting3[0].m_Background, m_Setting3[0].m_InitSpeed, m_Setting3[0].m_EventMode, m_Setting3[0].m_CodePairMode, m_Setting3[0].m_CodePairNum, m_Setting3[0].m_DisplayMode, m_Setting3[0].m_EventFrequency, m_Setting3[0].m_PracTime, m_Setting3[0].m_ExperTime, m_Setting3[0].m_PracTimes, m_Setting3[0].m_ExperTimes,
 							m_DistanceAve, m_DistanceSqt, m_HitTimeTotal, m_HitTimeRate);
 						fclose(fp);
 					}
@@ -3394,60 +3398,60 @@ void CTaskControlDoc::DataAnalysis()
 					_mkdir("Result");
 					_mkdir("Result\\Task3");
 					m_SaveName = "Result\\Task3\\task3_coding_result.txt";
-					fopen_s(&fp, m_SaveName,"at");
-					if(fp!=NULL)
+					fopen_s(&fp, m_SaveName, "at");
+					if (fp != NULL)
 					{
-						if(!bExist1)
+						if (!bExist1)
 						{
-							fprintf(fp,"FileName\tID\tName\tSex\tSession\t"
+							fprintf(fp, "FileName\tID\tName\tSex\tSession\t"
 								"PracMode\tExperMode\tMainTask\tSubTask\t"
 								"MainTaskMode\tBackground\tInitSpeed\tEventMode\tCodePairMode\tCodePairNum\tDisplayMode\tEventFrequency\tPracTime\tExperTime\tPracTimes\tExperTimes\t"
 								"Shape1\tNumber1\tShape2\tNumber2\tShape3\tNumber3\tShape4\tNumber4\tShape5\tNumber5\tShape6\tNumber6\t"
 								"TrueCode\tFalseCode\tTrueCodeRate\tFalseCodeRate\tCodeRTAvg\tCodeRTSqr\n");
 						}
-						fprintf(fp,"%s\t%s\t%s\t%s\t%d\t"
+						fprintf(fp, "%s\t%s\t%s\t%s\t%d\t"
 							"%d\t%d\t%d\t%d\t"
 							"%d\t%d\t%.2f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t"
 							"%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t"
 							"%d\t%d\t%.2f\t%.2f\t%.2f\t%.2f\n",
-							m_DataFileName, m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session, 
+							m_DataFileName, m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session,
 							m_Setting3[0].m_PracMode, m_Setting3[0].m_ExperMode, m_Setting3[0].m_MainTask, m_Setting3[0].m_SubTask,
-							m_Setting3[0].m_MainTaskMode, m_Setting3[0].m_Background, m_Setting3[0].m_InitSpeed, m_Setting3[0].m_EventMode, m_Setting3[0].m_CodePairMode, m_CodePairNum, m_Setting3[0].m_DisplayMode, m_Setting3[0].m_EventFrequency, m_Setting3[0].m_PracTime, m_Setting3[0].m_ExperTime, m_Setting3[0].m_PracTimes, m_Setting3[0].m_ExperTimes, 
-							m_Shape[0],m_Character[0],m_Shape[1],m_Character[1],m_Shape[2],m_Character[2],m_Shape[3],m_Character[3],m_Shape[4],m_Character[4],m_Shape[5],m_Character[5],
-							m_TrueCode, m_FalseCode, (float)m_TrueCode/(float)(m_TrueCode+m_FalseCode), (float)m_FalseCode/(float)(m_TrueCode+m_FalseCode), m_CodeRTAvg, m_CodeRTSqr);		
+							m_Setting3[0].m_MainTaskMode, m_Setting3[0].m_Background, m_Setting3[0].m_InitSpeed, m_Setting3[0].m_EventMode, m_Setting3[0].m_CodePairMode, m_CodePairNum, m_Setting3[0].m_DisplayMode, m_Setting3[0].m_EventFrequency, m_Setting3[0].m_PracTime, m_Setting3[0].m_ExperTime, m_Setting3[0].m_PracTimes, m_Setting3[0].m_ExperTimes,
+							m_Shape[0], m_Character[0], m_Shape[1], m_Character[1], m_Shape[2], m_Character[2], m_Shape[3], m_Character[3], m_Shape[4], m_Character[4], m_Shape[5], m_Character[5],
+							m_TrueCode, m_FalseCode, (float)m_TrueCode / (float)(m_TrueCode + m_FalseCode), (float)m_FalseCode / (float)(m_TrueCode + m_FalseCode), m_CodeRTAvg, m_CodeRTSqr);
 						fclose(fp);
 					}
 				}
 			}
 		}
 
-		if(m_bOpenFile2)
+		if (m_bOpenFile2)
 		{
-			if(!bExitItem2)
+			if (!bExitItem2)
 			{
-				if(m_Setting3[0].m_EventMode ==0)//简单任务
+				if (m_Setting3[0].m_EventMode == 0)//简单任务
 				{
 					_mkdir("Result");
 					_mkdir("Result\\Task3");
 					m_SaveName = "Result\\Task3\\task3_samrt_result.txt";
-					fopen_s(&fp, m_SaveName,"at");
-					if(fp!=NULL)
+					fopen_s(&fp, m_SaveName, "at");
+					if (fp != NULL)
 					{
-						if(!bExist2)
+						if (!bExist2)
 						{
-							fprintf(fp,"FileName\tID\tName\tSex\tSession\t"
+							fprintf(fp, "FileName\tID\tName\tSex\tSession\t"
 								"PracMode\tExperMode\tMainTask\tSubTask\t"
 								"MainTaskMode\tBackground\tInitSpeed\tEventMode\tCodePairMode\tCodePairNum\tDisplayMode\tEventFrequency\tPracTime\tExperTime\tPracTimes\tExperTimes\t"
-								"HIT\tMISS\tCR\tFA\tRTTimeAvg\tRTTimeSqr\n");
+								"HIT\tMISS\tCR\tFA\tFail\tRTTimeAvg\tRTTimeSqr\n");
 						}
-						fprintf(fp,"%s\t%s\t%s\t%s\t%d\t"
+						fprintf(fp, "%s\t%s\t%s\t%s\t%d\t"
 							"%d\t%d\t%d\t%d\t"
 							"%d\t%d\t%.2f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t"
-							"%d\t%d\t\t%d\t%.2f\t%.2f\n",
-							m_DataFileName, m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session, 
+							"%d\t%d\t%d\t%d\t%.2f\t%.2f\n",
+							m_DataFileName, m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session,
 							m_Setting3[0].m_PracMode, m_Setting3[0].m_ExperMode, m_Setting3[0].m_MainTask, m_Setting3[0].m_SubTask,
-							m_Setting3[0].m_MainTaskMode, m_Setting3[0].m_Background, m_Setting3[0].m_InitSpeed, m_Setting3[0].m_EventMode, m_Setting3[0].m_CodePairMode, m_Setting3[0].m_CodePairNum, m_Setting3[0].m_DisplayMode, m_Setting3[0].m_EventFrequency, m_Setting3[0].m_PracTime, m_Setting3[0].m_ExperTime, m_Setting3[0].m_PracTimes, m_Setting3[0].m_ExperTimes, 
-							m_TrueCount, m_MissingCount, m_FalseCount, m_RTAvg, m_RTSqr);		
+							m_Setting3[0].m_MainTaskMode, m_Setting3[0].m_Background, m_Setting3[0].m_InitSpeed, m_Setting3[0].m_EventMode, m_Setting3[0].m_CodePairMode, m_Setting3[0].m_CodePairNum, m_Setting3[0].m_DisplayMode, m_Setting3[0].m_EventFrequency, m_Setting3[0].m_PracTime, m_Setting3[0].m_ExperTime, m_Setting3[0].m_PracTimes, m_Setting3[0].m_ExperTimes,
+							m_TrueCount, m_MissingCount, m_FalseCount, m_FailCount, m_RTAvg, m_RTSqr);
 						fclose(fp);
 					}
 				}
@@ -3456,24 +3460,24 @@ void CTaskControlDoc::DataAnalysis()
 					_mkdir("Result");
 					_mkdir("Result\\Task3");
 					m_SaveName = "Result\\Task3\\task3_selrt_result.txt";
-					fopen_s(&fp, m_SaveName,"at");
-					if(fp!=NULL)
+					fopen_s(&fp, m_SaveName, "at");
+					if (fp != NULL)
 					{
-						if(!bExist2)
+						if (!bExist2)
 						{
-							fprintf(fp,"FileName\tID\tName\tSex\tSession\t"
+							fprintf(fp, "FileName\tID\tName\tSex\tSession\t"
 								"PracMode\tExperMode\tMainTask\tSubTask\t"
 								"MainTaskMode\tBackground\tInitSpeed\tEventMode\tCodePairMode\tCodePairNum\tDisplayMode\tEventFrequency\tPracTime\tExperTime\tPracTimes\tExperTimes\t"
-								"HIT\tMISS\tCR\tFA\tm_RTTotalAvg\tm_RTTotalSqr\n");
+								"HIT\tMISS\tCR\tFA\tFail\tm_RTTotalAvg\tm_RTTotalSqr\n");
 						}
-						fprintf(fp,"%s\t%s\t%s\t%s\t%d\t"
+						fprintf(fp, "%s\t%s\t%s\t%s\t%d\t"
 							"%d\t%d\t%d\t%d\t"
 							"%d\t%d\t%.2f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t"
-							"%d\t%d\t%d\t%d\t%.2f\t%.2f\n",
-							m_DataFileName, m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session, 
+							"%d\t%d\t%d\t%d\t%d\t%.2f\t%.2f\n",
+							m_DataFileName, m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session,
 							m_Setting3[0].m_PracMode, m_Setting3[0].m_ExperMode, m_Setting3[0].m_MainTask, m_Setting3[0].m_SubTask,
-							m_Setting3[0].m_MainTaskMode, m_Setting3[0].m_Background, m_Setting3[0].m_InitSpeed, m_Setting3[0].m_EventMode, m_Setting3[0].m_CodePairMode, m_Setting3[0].m_CodePairNum, m_Setting3[0].m_DisplayMode, m_Setting3[0].m_EventFrequency, m_Setting3[0].m_PracTime, m_Setting3[0].m_ExperTime, m_Setting3[0].m_PracTimes, m_Setting3[0].m_ExperTimes, 
-							m_TrueCount, m_MissingCount,m_CRCount,m_FalseCount, m_RTAvg, m_RTSqr);		
+							m_Setting3[0].m_MainTaskMode, m_Setting3[0].m_Background, m_Setting3[0].m_InitSpeed, m_Setting3[0].m_EventMode, m_Setting3[0].m_CodePairMode, m_Setting3[0].m_CodePairNum, m_Setting3[0].m_DisplayMode, m_Setting3[0].m_EventFrequency, m_Setting3[0].m_PracTime, m_Setting3[0].m_ExperTime, m_Setting3[0].m_PracTimes, m_Setting3[0].m_ExperTimes,
+							m_TrueCount, m_MissingCount, m_CRCount, m_FalseCount, m_FailCount, m_RTAvg, m_RTSqr);
 						fclose(fp);
 					}
 				}
@@ -3959,7 +3963,33 @@ void CTaskControlDoc::DataAnalysis()
 		//if (!fout.is_open()) break;
 		break;
 	}
-	case 8: 
+	case 8://task8
+		int CRCount;
+		double ResTime;
+		for (int i = 0; i < recs["t8"].size(); i++)
+		{
+			if (recs["t8"][i].isRight == 1) CRCount++;
+			ResTime += recs["t8"][i].responseTime;
+		}
+		t8res.CorrectRate = CRCount / recs["t8"].size();
+		t8res.AvgResTime = ResTime / recs["t8"].size();
+		t8res.TimeRate_Ratio = t8res.AvgResTime / t8res.CorrectRate;
+
+		_mkdir("Result");
+		_mkdir("Result\\Task8");
+		m_SaveName = "Result\\Task8\\task8_result.txt";
+		fopen_s(&fp, m_SaveName, "at");
+		if (fp != NULL)
+		{
+			fprintf(fp, "FileName\tID\tName\tSex\tSession\t"
+				"CorrectRate\tAvgResponseTime\tAvgResponseTime\\CorrectRate\n");
+			fprintf(fp, "%s\t%s\t%s\t%s\t%d\t"
+				"%.2f\t%.2f\t%.2f\t",
+				t8res.CorrectRate, t8res.AvgResTime, t8res.TimeRate_Ratio);
+			fprintf(fp, "\n");
+			fclose(fp);
+
+		}
 		break;
 
 	}		

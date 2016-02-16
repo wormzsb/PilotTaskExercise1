@@ -184,6 +184,7 @@ public:
 	int m_MissingCount;
 	int m_CRCount;
 	int m_FalseCount;
+	int m_FailCount;//事件未发生按键数
 	UINT m_CodeRTTotal;
 	UINT m_RTTotal;
 //	UINT m_NoRTTotal;
@@ -225,6 +226,14 @@ public:
 	vector<double> settingOrderHoldTimeErrRateAve;
 
 	map<string, vector<TaskRec>> recs;
+
+	//任务8的结果数据类型
+	struct T8Res {
+		double CorrectRate;
+		double AvgResTime;
+		double TimeRate_Ratio;
+	};
+	struct T8Res t8res;
 	
 // Operations
 public:
