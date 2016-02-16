@@ -203,7 +203,7 @@ CTaskControlDoc::CTaskControlDoc()
 	m_DefSetting7.m_iBckGrndColorG = 0;
 	m_DefSetting7.m_iBckGrndColorB = 0;
 	m_DefSetting7.m_iExpTimes = 2;
-	m_DefSetting7.m_iIntervalTime = 2;
+	m_DefSetting7.m_iIntervalTime = 1;
 	m_DefSetting7.m_iObstacleColorR = 80;
 	m_DefSetting7.m_iObstacleColorG = 80;
 	m_DefSetting7.m_iObstacleColorB = 80;
@@ -3959,6 +3959,8 @@ void CTaskControlDoc::DataAnalysis()
 		//if (!fout.is_open()) break;
 		break;
 	}
+	case 8: 
+		break;
 
 	}		
 }
@@ -3994,4 +3996,10 @@ int CTaskControlDoc::getUnRspCnt() {
 	return cnt;
 }
 
-
+double CTaskControlDoc::getTotalTaskPeriod() {
+	double sum = 0.;
+	for (int i = 0; i < recs["t7"].size(); i++) {
+		sum += recs["t7"][i].totalPeriod;
+	}
+	return sum;
+}

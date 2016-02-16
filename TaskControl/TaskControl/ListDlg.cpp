@@ -955,6 +955,32 @@ BOOL CListDlg::OnInitDialog()
 		pDoc->MemClear();
 		pDoc->m_bOpenFile1 = pDoc->ReadT7();
 		break;
+	case 8: {
+		if (m_TabCtrl.GetSafeHwnd())
+		{
+			cs = "三维心理旋转测试结果";
+			ti.mask = TCIF_TEXT | TCIF_PARAM;
+			ti.pszText = cs.LockBuffer();
+			//			ti.lParam = (long) pView;
+			m_TabCtrl.InsertItem(m_TabCtrl.GetItemCount(), &ti);
+			cs.UnlockBuffer();
+		}
+
+		m_ResultList.DeleteAllItems();            //删除列表中所有内容(行)
+		while (m_ResultList.DeleteColumn(0));     //删除列表中所有列
+												  //向列表框中添加列
+		if (pDoc->m_Setting8 != NULL)
+		{
+			delete[]pDoc->m_Setting8;
+			pDoc->m_Setting8 = NULL;
+		}
+		pDoc->m_Setting8 = new struct TaskSetting8[1];
+		AddHead();
+		pDoc->MemClear();
+		pDoc->m_bOpenFile1 = pDoc->ReadT8();
+		break;
+	}
+
 	}	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
@@ -1016,7 +1042,7 @@ BOOL CListDlg::AddT8Item(int row) {
 	CMainFrame*   pMain = (CMainFrame*)AfxGetMainWnd();
 	CTaskControlDoc* pDoc = (CTaskControlDoc*)pMain->GetActiveDocument();
 	TaskRec & rec = pDoc->recs["t8"][row];
-	int col = -1;
+	int col = 0;
 	m_ResultList.AddItem(row, col++, getCString(rec.no), -1);
 	m_ResultList.AddItem(row, col++, getCString(rec.leftImg), -1);
 	m_ResultList.AddItem(row, col++, getCString(rec.rightImg), -1);

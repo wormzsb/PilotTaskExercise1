@@ -252,6 +252,7 @@ public:
 	double getAvgAbsDevRatio();
 	double getSDAbsDveRatio();
 	int getUnRspCnt();
+	double getTotalTaskPeriod();
 // Operations
 public:
 
