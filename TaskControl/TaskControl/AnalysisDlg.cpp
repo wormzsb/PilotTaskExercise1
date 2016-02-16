@@ -180,8 +180,9 @@ void CAnalysisDlg::DisplayResult()
 			m_ResultList.AddItem(j+1,0,"漏报数(MISS)",-1);
 			m_ResultList.AddItem(j+2,0,"正确拒斥数(CR)",-1);
 			m_ResultList.AddItem(j+3,0,"虚报数(FA)",-1);
-			m_ResultList.AddItem(j+4,0,"突发事件反应时间平均值(RTAvg)",-1);
-			m_ResultList.AddItem(j+5,0,"突发事件反应时间标准差(RTSqr)",-1);
+			m_ResultList.AddItem(j+4,0,"事件未发生错误按键数(FlA)", -1);
+			m_ResultList.AddItem(j+5,0,"突发事件反应时间平均值(RTAvg)",-1);
+			m_ResultList.AddItem(j+6,0,"突发事件反应时间标准差(RTSqr)",-1);
 		}
 		else//选择任务
 		{
@@ -189,8 +190,9 @@ void CAnalysisDlg::DisplayResult()
 			m_ResultList.AddItem(j+1,0,"漏报数(MISS)",-1);
 			m_ResultList.AddItem(j+2,0,"正确拒斥数(CR)",-1);
 			m_ResultList.AddItem(j+3,0,"虚报数(FA)",-1);
-			m_ResultList.AddItem(j+4,0,"靶事件反应时平均值(m_RTAvg)",-1);
-			m_ResultList.AddItem(j+5,0,"靶事件反应时标准差(m_RTSqr)",-1);
+			m_ResultList.AddItem(j + 4, 0, "事件未发生错误按键数(FlA)", -1);
+			m_ResultList.AddItem(j + 5, 0, "突发事件反应时间平均值(RTAvg)", -1);
+			m_ResultList.AddItem(j + 6, 0, "突发事件反应时间标准差(RTSqr)", -1);
 		}
 
 		if(pDoc->m_bOpenFile1)
@@ -236,10 +238,12 @@ void CAnalysisDlg::DisplayResult()
 				m_ResultList.AddItem(j+2,1,"",-1);
 				//str.Format("%d",pDoc->m_FalseCount);//虚报数FA：留空
 				m_ResultList.AddItem(j+3,1,"",-1);
+				str.Format("%.2f", pDoc->m_FailCount);//事件未发生错误按键数
+				m_ResultList.AddItem(j+4, 1, str, -1);
 				str.Format("%.2f",pDoc->m_RTAvg);//突发事件反映时间平均值RTAvg
-				m_ResultList.AddItem(j+4,1,str,-1);
-				str.Format("%.2f",pDoc->m_RTSqr);//突发事件反映时间标准差RTSqr
 				m_ResultList.AddItem(j+5,1,str,-1);
+				str.Format("%.2f",pDoc->m_RTSqr);//突发事件反映时间标准差RTSqr
+				m_ResultList.AddItem(j+6,1,str,-1);
 			}
 			else//选择任务
 			{
@@ -251,10 +255,12 @@ void CAnalysisDlg::DisplayResult()
 				m_ResultList.AddItem(j+2,1,str,-1);
 				str.Format("%d",pDoc->m_FalseCount);
 				m_ResultList.AddItem(j+3,1,str,-1);
-				str.Format("%.2f",pDoc->m_RTAvg);
-				m_ResultList.AddItem(j+4,1,str,-1);
-				str.Format("%.2f",pDoc->m_RTSqr);
-				m_ResultList.AddItem(j+5,1,str,-1);
+				str.Format("%.2f", pDoc->m_FailCount);//事件未发生错误按键数
+				m_ResultList.AddItem(j + 4, 1, str, -1);
+				str.Format("%.2f", pDoc->m_RTAvg);//突发事件反映时间平均值RTAvg
+				m_ResultList.AddItem(j + 5, 1, str, -1);
+				str.Format("%.2f", pDoc->m_RTSqr);//突发事件反映时间标准差RTSqr
+				m_ResultList.AddItem(j + 6, 1, str, -1);
 			}
 		}
 		break;
@@ -415,6 +421,11 @@ void CAnalysisDlg::DisplayResult()
 		m_ResultList.AddItem(i++, 0, "正确率", -1);
 		m_ResultList.AddItem(i++, 0, "平均反应时", -1);
 		m_ResultList.AddItem(i++, 0, "反应时与正确率比值", -1);
+		if (pDoc->recs["t8"].size() == 0) return;
+		i = 0;
+		m_ResultList.AddItem(i++, 1, CString(to_string(pDoc->t8res.CorrectRate).c_str()), -1);
+		m_ResultList.AddItem(i++, 1, CString(to_string(pDoc->t8res.AvgResTime).c_str()), -1);
+		m_ResultList.AddItem(i++, 1, CString(to_string(pDoc->t8res.TimeRate_Ratio).c_str()), -1);
 
 		break;
 	}

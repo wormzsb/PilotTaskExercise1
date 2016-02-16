@@ -3964,8 +3964,8 @@ void CTaskControlDoc::DataAnalysis()
 		break;
 	}
 	case 8://task8
-		int CRCount;
-		double ResTime;
+		int CRCount=0;
+		double ResTime=0;
 		for (int i = 0; i < recs["t8"].size(); i++)
 		{
 			if (recs["t8"][i].isRight == 1) CRCount++;
@@ -3981,9 +3981,9 @@ void CTaskControlDoc::DataAnalysis()
 		fopen_s(&fp, m_SaveName, "at");
 		if (fp != NULL)
 		{
-			fprintf(fp, "FileName\tID\tName\tSex\tSession\t"
+			fprintf(fp, 
 				"CorrectRate\tAvgResponseTime\tAvgResponseTime\\CorrectRate\n");
-			fprintf(fp, "%s\t%s\t%s\t%s\t%d\t"
+			fprintf(fp, 
 				"%.2f\t%.2f\t%.2f\t",
 				t8res.CorrectRate, t8res.AvgResTime, t8res.TimeRate_Ratio);
 			fprintf(fp, "\n");
