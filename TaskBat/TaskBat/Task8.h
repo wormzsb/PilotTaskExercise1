@@ -155,7 +155,7 @@ namespace t8
 
 	BOOL ReadSetting();
 	VOID SaveName();
-	VOID SaveData()
+	VOID SaveData();
 	//VOID SaveTraceData();
 	//VOID SaveMemoryData();
 	HRESULT LoadSignFile();
