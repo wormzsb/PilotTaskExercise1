@@ -38,7 +38,7 @@ CSettingDlg1::CSettingDlg1(CWnd* pParent /*=NULL*/)
 	m_SpeedMax = _T("");
 	m_PracMode = FALSE;
 	m_ExperMode = FALSE;
-	m_Pause = -1;
+	m_Pause = 0;
 	m_Speed = _T("");
 	m_SpeedMin = _T("");
 	m_RotateAngleMax = _T("");
@@ -231,7 +231,7 @@ void CSettingDlg1::Save()
 	}
 	else
 	{
-        pDoc->m_Setting1[m_DlgIdx].m_PauseNum = -1;
+        pDoc->m_Setting1[m_DlgIdx].m_PauseNum = 0;
 	}
 	if(!pDoc->m_Setting1[m_DlgIdx].m_SpeedMode)
 	{

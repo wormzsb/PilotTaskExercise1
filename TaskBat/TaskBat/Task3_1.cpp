@@ -1699,7 +1699,7 @@ DWORD WINAPI t3::InputThreadProcedure(LPVOID lpStartupParam)
 							if(m_bEventStart)
 							{
 								//有突发事件时按键确认
-								for(i=0; m_bEventStart;i++)
+								for(i=0; i<1 ;i++)
 								{
 									
 									if(IsButtonDown(m_EventKey[i]))
@@ -1754,7 +1754,7 @@ DWORD WINAPI t3::InputThreadProcedure(LPVOID lpStartupParam)
 												m_SureButtonNo = (short*)realloc(m_SureButtonNo,m_MemEvent*sizeof(short));
 											}
 										}
-//										m_SureDownNum++;
+	//									m_SureDownNum++;
 										break;
 									}
 								}
@@ -1762,7 +1762,7 @@ DWORD WINAPI t3::InputThreadProcedure(LPVOID lpStartupParam)
 							else
 							{
 								//没有突发事件时按键确认
-								for(i=0; !m_bEventStart;i++)
+								for(i=0; i<1 ;i++)
 								{
 									if(IsButtonDown(m_EventKey[i]))
 									{
