@@ -863,52 +863,58 @@ VOID t2::Render()
 			}
 			g_pSprite->End();
 			break;
+
 		//任务执行过程
         case STATE_DISPLAYOBJ:  
-		case STATE_MOVINGOBJ:     	
-			if ( SUCCEEDED( g_pSprite->Begin(D3DXSPRITE_ALPHABLEND) ) )
+		case STATE_MOVINGOBJ: {
+			
+			double JoyAlpha = 0;
+			JoyAlpha = atan(fabs((double)(JoyY - m_PostPointY) / (double)(JoyX - m_PostPointX)));//摇杆角度
+			
+			if (SUCCEEDED(g_pSprite->Begin(D3DXSPRITE_ALPHABLEND)))
 			{
-				if(m_Setting.m_MainTask == 1)
+				if (m_Setting.m_MainTask == 1)
 				{
-					D3DXMatrixTransformation2D(&mx, NULL, 0.0, &D3DXVECTOR2((float)128/(float)128,(float)32/(float)32), &D3DXVECTOR2(0,0), 0, &D3DXVECTOR2(m_PostPoint[m_PointNum].x,m_PostPoint[m_PointNum].y));
+					D3DXMatrixTransformation2D(&mx, NULL, 0.0, &D3DXVECTOR2((float)128 / (float)128, (float)32 / (float)32), &D3DXVECTOR2(0, 0), 0, &D3DXVECTOR2(m_PostPoint[m_PointNum].x, m_PostPoint[m_PointNum].y));
 					g_pSprite->SetTransform(&mx);
-					if(m_bHit[m_PointNum])
+					if (m_bHit[m_PointNum])
 					{
-						g_pSprite->Draw(g_pTexture2, NULL, &D3DXVECTOR3(64,20,0), &D3DXVECTOR3(0,0,0), 0xffffffff);
-						
+						g_pSprite->Draw(g_pTexture2, NULL, &D3DXVECTOR3(64, 20, 0), &D3DXVECTOR3(0, 0, 0), 0xffffffff);
+
 					}
 					else
 					{
-						g_pSprite->Draw(g_pTexture1, NULL, &D3DXVECTOR3(64,20,0), &D3DXVECTOR3(0,0,0), 0xffffffff);
+						g_pSprite->Draw(g_pTexture1, NULL, &D3DXVECTOR3(64, 20, 0), &D3DXVECTOR3(0, 0, 0), 0xffffffff);
 					}
 				}
-				D3DXMatrixTransformation2D(&mx, NULL, 0.0, &D3DXVECTOR2((float)64/(float)64,(float)16/(float)16), &D3DXVECTOR2(0,0), 0, &D3DXVECTOR2(m_ObjPoint[m_PointNum].x,m_ObjPoint[m_PointNum].y));
+				D3DXMatrixTransformation2D(&mx, NULL, 0.0, &D3DXVECTOR2((float)64 / (float)64, (float)16 / (float)16), &D3DXVECTOR2(0, 0), 0, &D3DXVECTOR2(m_ObjPoint[m_PointNum].x, m_ObjPoint[m_PointNum].y));
 				g_pSprite->SetTransform(&mx);
-				g_pSprite->Draw(g_pTexture0, NULL, &D3DXVECTOR3(32,12,0), &D3DXVECTOR3(0,0,0), 0xffffffff);				
-				if(m_bShowSign)
+				g_pSprite->Draw(g_pTexture0, NULL, &D3DXVECTOR3(32, 12, 0), &D3DXVECTOR3(0, 0, 0), 0xffffffff);
+				if (m_bShowSign)
 				{
-					D3DXMatrixTransformation2D(&mx, NULL, 0.0, &D3DXVECTOR2((float)32/(float)32,(float)32/(float)32), &D3DXVECTOR2(0,0), 0, &D3DXVECTOR2(m_ObjPoint[m_PointNum].x + 32,m_ObjPoint[m_PointNum].y - 28));
+					D3DXMatrixTransformation2D(&mx, NULL, 0.0, &D3DXVECTOR2((float)32 / (float)32, (float)32 / (float)32), &D3DXVECTOR2(0, 0), 0, &D3DXVECTOR2(m_ObjPoint[m_PointNum].x + 32, m_ObjPoint[m_PointNum].y - 28));
 					g_pSprite->SetTransform(&mx);
-					g_pSprite->Draw(g_pTexture3, NULL, &D3DXVECTOR3(16,16,0), &D3DXVECTOR3(0,0,0), 0xffffffff);
+					g_pSprite->Draw(g_pTexture3, NULL, &D3DXVECTOR3(16, 16, 0), &D3DXVECTOR3(0, 0, 0), 0xffffffff);
 				}
 			}
-		    g_pSprite->End();
-			if(m_Setting.m_SubTask == 1)
+			g_pSprite->End();
+			if (m_Setting.m_SubTask == 1)
 			{
 				if (bShowFeedBack)
-				{		
-					g_pFontEng->DrawText(NULL, FeedBack, -1, &txtrect,
-					DT_WORDBREAK|DT_NOCLIP|DT_CENTER|DT_VCENTER, D3DCOLOR_XRGB(255,255,255));
-				}
-				else if(m_bShowTime)
 				{
-    				g_pFontEng->DrawText(NULL, m_TimeStr, -1, &txtrect,
-						DT_WORDBREAK|DT_NOCLIP|DT_CENTER|DT_VCENTER, D3DCOLOR_XRGB(255,255,255));
+					g_pFontEng->DrawText(NULL, FeedBack, -1, &txtrect,
+						DT_WORDBREAK | DT_NOCLIP | DT_CENTER | DT_VCENTER, D3DCOLOR_XRGB(255, 255, 255));
+				}
+				else if (m_bShowTime)
+				{
+					g_pFontEng->DrawText(NULL, m_TimeStr, -1, &txtrect,
+						DT_WORDBREAK | DT_NOCLIP | DT_CENTER | DT_VCENTER, D3DCOLOR_XRGB(255, 255, 255));
 				}
 			}
 
-			
-		   	break; 
+
+			break;
+		}
 		//呈现反馈
 		case STATE_DISPLAYFEEDBACK:
 			g_pFont1->DrawText(NULL, FeedBack, -1, &erect,

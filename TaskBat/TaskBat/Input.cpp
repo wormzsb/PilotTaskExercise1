@@ -241,7 +241,7 @@ int GetXAxis (void)
 {
 	if(JOY)
 	{
-		printf("\n m_kDeviceData.lX = %d\n", m_kDeviceData.lX);
+		//printf("\n m_kDeviceData.lX = %d\n", m_kDeviceData.lX);
 		return m_kDeviceData.lX;
 	}
     else

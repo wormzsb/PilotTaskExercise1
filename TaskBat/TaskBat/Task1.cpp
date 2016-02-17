@@ -4,6 +4,8 @@
 #include "Task1.h"
 #include "Datatype.h"
 #include <conio.h>
+#include <iostream>
+using namespace std;
 FILE *t1::sfp;
 CSky t1::sky;
 int t1::rtn;//程序返回值
@@ -142,10 +144,26 @@ double t1::dfMinus, t1::dfFreq, t1::dfTim, t1::dfTotalPause, t1::dfTotalMove;
 		m_PointTime[m_PointNum] = m_PointTime[m_PointNum - 1] + (int)(dfTim * 1000);//QPart2/dfFreq*1000;
 
 		//当前追踪环位置
-		double JoyAlpha = 0;
-		JoyAlpha = atan(fabs((double)(JoyY - m_PostPointY) / (double)(JoyX - m_PostPointX)));//摇杆角度
-		m_PostPointX = m_PostPointX + iJoyMoveDirection * cos(JoyAlpha) * m_PostSpeedX[m_PointNum - 1] * dfTim;
-		m_PostPointY = m_PostPointY + iJoyMoveDirection * sin(JoyAlpha) * m_PostSpeedY[m_PointNum - 1] * dfTim;
+		double JoyAlpha = 0;//摇杆角度
+		//JoyAlpha = atan(fabs((double)(JoyY - m_PostPointY) / (double)(JoyX - m_PostPointX)));//摇杆角度
+		if (!(JoyX == 0 && JoyY == 0)) {
+			double rJ = sqrt(JoyX * JoyX + JoyY * JoyY);
+			double cosJ = (double)JoyX / rJ;
+			double sinJ = (double)JoyY / rJ;
+			cout << "JoyX = " << JoyX;
+			cout << ", JoyY = " << JoyY << endl;
+			cout << "cosJ = " << cosJ;
+			cout << ", sinJ = " << sinJ << endl;
+			cout << " m_PostSpeedX[m_PointNum - 1] = " << m_PostSpeedX[m_PointNum - 1]
+				<< ", m_PostSpeedY[m_PointNum - 1] = " << m_PostSpeedY[m_PointNum - 1]
+				<< ", dfTim = " << dfTim << endl;
+			cout << "old co " << m_PostPointX << ", " << m_PostPointY << endl;
+			m_PostPointX = m_PostPointX + /*iJoyMoveDirection **/ cosJ * rJ  * dfTim;
+			m_PostPointY = m_PostPointY + /*iJoyMoveDirection **/ sinJ * rJ  * dfTim;
+			cout << "new co " << m_PostPointX << ", " << m_PostPointY << endl;
+		}
+		
+		
 		m_PostPoint[m_PointNum].x = m_PostPointX;
 		m_PostPoint[m_PointNum].y = m_PostPointY;
 		if (m_PostPoint[m_PointNum].x<0)
@@ -282,6 +300,8 @@ double t1::dfMinus, t1::dfFreq, t1::dfTim, t1::dfTotalPause, t1::dfTotalMove;
 						fai = RotateAngle;
 						RandValueFloat(m_Setting.m_AngleSpeedMin, m_Setting.m_AngleSpeedMax, AngleSpeed);
 						RandValueFloat(m_Setting.m_RotateAngleMin, m_Setting.m_RotateAngleMax, NewRotateAngle);
+						printf("\nNewRotateAngle = %f\n", NewRotateAngle);
+						getchar();
 						RotateAngle = NewRotateAngle;
 					}
 				}
@@ -292,6 +312,8 @@ double t1::dfMinus, t1::dfFreq, t1::dfTim, t1::dfTotalPause, t1::dfTotalMove;
 						fai = RotateAngle;
 						RandValueFloat(m_Setting.m_AngleSpeedMin, m_Setting.m_AngleSpeedMax, AngleSpeed);
 						RandValueFloat(m_Setting.m_RotateAngleMin, m_Setting.m_RotateAngleMax, NewRotateAngle);
+						printf("\nNewRotateAngle = %f\n", NewRotateAngle);
+						getchar();
 						AngleSpeed = -AngleSpeed;
 						RotateAngle = -NewRotateAngle;
 					}
@@ -931,7 +953,7 @@ double t1::dfMinus, t1::dfFreq, t1::dfTim, t1::dfTotalPause, t1::dfTotalMove;
 				break;
 				//呈现目标
 			case STATE_DISPLAYOBJ:
-			case STATE_MOVINGOBJ:
+			case STATE_MOVINGOBJ: {
 				if (m_Setting.m_Background == BACKGROUND_STAR)
 				{
 					sky.NextFrame();
@@ -957,6 +979,7 @@ double t1::dfMinus, t1::dfFreq, t1::dfTim, t1::dfTotalPause, t1::dfTotalMove;
 				}
 				g_pSprite->End();
 				break;
+			}
 				//进行下次测试
 			case STATE_DISPLAYNEXT:
 				g_pFont->DrawText(NULL, Insturction2, -1, &erect,
@@ -1405,12 +1428,30 @@ double t1::dfMinus, t1::dfFreq, t1::dfTim, t1::dfTotalPause, t1::dfTotalMove;
 					//测试过程中获得操纵杆输入
 					if (JoystickUpdate())
 					{
+						for (int i = 0; i < 32; i++) {
+							if (IsButtonDown(i)) {
+								cout << "button " << i << " is pressed\n";
+								getchar();
+							}
+						}
 						JoyX = GetXAxis();//GetYAxis();//
 						JoyY = GetYAxis();//-GetZAxis();//
 						if (m_Setting.m_MoveMode == MODE_MOVEROATE)
 						{
 							JoyZ = GetZAxis();//GetXAxis();//
-							post_fai = (float)(JoyZ - post_fai0)*(3600.0 / 1024.0) / m_HardSetting.m_KnobSensitive;//GetZAxis()*PI/400.0;
+							//post_fai = (float)(JoyZ - post_fai0)*(3600.0) / m_HardSetting.m_KnobSensitive;//GetZAxis()*PI/400.0;
+							
+
+							post_fai = (float)(JoyZ - post_fai0/* - m_HardSetting.m_JoySpeedMax*/) / m_HardSetting.m_JoySpeedMax/2. *(3600.0) / m_HardSetting.m_KnobSensitive;
+							
+							double JoyAlpha = 0;
+							JoyAlpha = atan(fabs((double)(JoyY) / (double)(JoyX)));//摇杆角度
+							//post_fai = JoyAlpha * 180./PI *(10.0) / m_HardSetting.m_KnobSensitive;
+							//cout << "JoyAlpha = " << JoyAlpha*180./PI << endl;
+							//cout << "JoyZ = " << JoyZ << endl;
+							//cout << "post_fai = " << post_fai << endl;
+							//cout << "post_fai0 = " << post_fai0 << endl;
+
 							while (post_fai<-180)
 							{
 								post_fai = post_fai + 360;
@@ -1468,8 +1509,8 @@ double t1::dfMinus, t1::dfFreq, t1::dfTim, t1::dfTotalPause, t1::dfTotalMove;
 		int       &nCmdShow, HWND &_hWnd,
 		std::string winClassName, std::string winName)
 	{
-		
-		
+		if (!AllocConsole()) return 1;
+		freopen("CONOUT$", "w", stdout);
 		// 初始化句柄和状态
 		bool bUnClosedLastWin = true;
 		hWnd = _hWnd;
@@ -1531,7 +1572,7 @@ double t1::dfMinus, t1::dfFreq, t1::dfTim, t1::dfTotalPause, t1::dfTotalMove;
 		rec_y_end = (y_resolution + 768) / 2;
 
 		_hWnd = hWnd = CreateWindow(std::to_string(nCmdShow).c_str(), std::to_string(nCmdShow).c_str(),
-			WS_VISIBLE | WS_POPUP, 0, 0, x_resolution, y_resolution,
+			WS_VISIBLE | WS_POPUP, 0, 0, x_resolution/2, y_resolution/2,
 			NULL, NULL, hInstance, NULL);
 
 		//显示主窗口
