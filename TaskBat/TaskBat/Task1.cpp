@@ -1428,12 +1428,7 @@ double t1::dfMinus, t1::dfFreq, t1::dfTim, t1::dfTotalPause, t1::dfTotalMove;
 					//测试过程中获得操纵杆输入
 					if (JoystickUpdate())
 					{
-						for (int i = 0; i < 32; i++) {
-							if (IsButtonDown(i)) {
-								cout << "button " << i << " is pressed\n";
-								getchar();
-							}
-						}
+						
 						JoyX = GetXAxis();//GetYAxis();//
 						JoyY = GetYAxis();//-GetZAxis();//
 						if (m_Setting.m_MoveMode == MODE_MOVEROATE)
@@ -1442,10 +1437,10 @@ double t1::dfMinus, t1::dfFreq, t1::dfTim, t1::dfTotalPause, t1::dfTotalMove;
 							//post_fai = (float)(JoyZ - post_fai0)*(3600.0) / m_HardSetting.m_KnobSensitive;//GetZAxis()*PI/400.0;
 							
 
-							post_fai = (float)(JoyZ - post_fai0/* - m_HardSetting.m_JoySpeedMax*/) / m_HardSetting.m_JoySpeedMax/2. *(3600.0) / m_HardSetting.m_KnobSensitive;
+							post_fai = (float)(JoyZ - post_fai0/* - m_HardSetting.m_JoySpeedMax*/) / m_HardSetting.m_JoySpeedMax *(180.0) * 10. / m_HardSetting.m_KnobSensitive;
 							
-							double JoyAlpha = 0;
-							JoyAlpha = atan(fabs((double)(JoyY) / (double)(JoyX)));//摇杆角度
+							//double JoyAlpha = 0;
+							//JoyAlpha = atan(fabs((double)(JoyY) / (double)(JoyX)));//摇杆角度
 							//post_fai = JoyAlpha * 180./PI *(10.0) / m_HardSetting.m_KnobSensitive;
 							//cout << "JoyAlpha = " << JoyAlpha*180./PI << endl;
 							//cout << "JoyZ = " << JoyZ << endl;
@@ -1509,8 +1504,10 @@ double t1::dfMinus, t1::dfFreq, t1::dfTim, t1::dfTotalPause, t1::dfTotalMove;
 		int       &nCmdShow, HWND &_hWnd,
 		std::string winClassName, std::string winName)
 	{
-		if (!AllocConsole()) return 1;
-		freopen("CONOUT$", "w", stdout);
+		// 打开控制台
+		//if (!AllocConsole()) return 1;
+		//freopen("CONOUT$", "w", stdout);
+		
 		// 初始化句柄和状态
 		bool bUnClosedLastWin = true;
 		hWnd = _hWnd;
@@ -1572,7 +1569,7 @@ double t1::dfMinus, t1::dfFreq, t1::dfTim, t1::dfTotalPause, t1::dfTotalMove;
 		rec_y_end = (y_resolution + 768) / 2;
 
 		_hWnd = hWnd = CreateWindow(std::to_string(nCmdShow).c_str(), std::to_string(nCmdShow).c_str(),
-			WS_VISIBLE | WS_POPUP, 0, 0, x_resolution/2, y_resolution/2,
+			WS_VISIBLE | WS_POPUP, 0, 0, x_resolution, y_resolution,
 			NULL, NULL, hInstance, NULL);
 
 		//显示主窗口
