@@ -145,22 +145,12 @@ double t1::dfMinus, t1::dfFreq, t1::dfTim, t1::dfTotalPause, t1::dfTotalMove;
 
 		//当前追踪环位置
 		double JoyAlpha = 0;//摇杆角度
-		//JoyAlpha = atan(fabs((double)(JoyY - m_PostPointY) / (double)(JoyX - m_PostPointX)));//摇杆角度
 		if (!(JoyX == 0 && JoyY == 0)) {
 			double rJ = sqrt(JoyX * JoyX + JoyY * JoyY);
 			double cosJ = (double)JoyX / rJ;
 			double sinJ = (double)JoyY / rJ;
-			cout << "JoyX = " << JoyX;
-			cout << ", JoyY = " << JoyY << endl;
-			cout << "cosJ = " << cosJ;
-			cout << ", sinJ = " << sinJ << endl;
-			cout << " m_PostSpeedX[m_PointNum - 1] = " << m_PostSpeedX[m_PointNum - 1]
-				<< ", m_PostSpeedY[m_PointNum - 1] = " << m_PostSpeedY[m_PointNum - 1]
-				<< ", dfTim = " << dfTim << endl;
-			cout << "old co " << m_PostPointX << ", " << m_PostPointY << endl;
-			m_PostPointX = m_PostPointX + /*iJoyMoveDirection **/ cosJ * rJ  * dfTim;
-			m_PostPointY = m_PostPointY + /*iJoyMoveDirection **/ sinJ * rJ  * dfTim;
-			cout << "new co " << m_PostPointX << ", " << m_PostPointY << endl;
+			m_PostPointX = m_PostPointX +  cosJ * rJ  * dfTim;
+			m_PostPointY = m_PostPointY +  sinJ * rJ  * dfTim;
 		}
 		
 		
