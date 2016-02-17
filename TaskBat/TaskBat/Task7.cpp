@@ -4,6 +4,10 @@
 #include "stdafx.h"
 #include "Task7.h"
 #include "TaskRec.h"
+#include <iostream>
+using namespace std;
+
+double rs;
 
 /*记录数据*/
 TaskRec rec;
@@ -808,8 +812,12 @@ void t7::GoToFeedBack()
 	double dNowDistance = sqrt(pow(stPntSmallBall.dX - stPntSmallBallOrg.dX, 2)+pow(stPntSmallBall.dY - stPntSmallBallOrg.dY, 2));
 	/*偏差率*/
 	//double rs = (dNowDistance - dOrgDistance)/dOrgDistance * 100;
-	double rs = (dNowDistance - dOrgDistance)
+	rs = (dNowDistance - dOrgDistance)
 		/ (double)m_Setting.m_iObstacleRadius * 100.;
+	cout << "偏差率是：" << rs << endl;
+	if (rs < -100) {
+		getchar();
+	}
 	//double rs = (dNowDistance - dOrgDistance)/fabs(dNowDistance - dOrgDistance) *  sqrt(pow(stPntSmallBall.dX - x_resolution / 2, 2)+pow(stPntSmallBall.dY - y_resolution / 2, 2))/dOrgDistance * 100;
 
 	if (!bTimeOut)
@@ -925,6 +933,9 @@ void t7::setSmallBallOriPos(struct Point &stPntSmallBallOrg, int &curStartPos, i
 //************************************************
 VOID t7::UpdateState()
 {
+	if (rs<-100){
+		getchar();
+	}
     switch(m_TestState)
 	{
 	//呈现指导语
@@ -980,10 +991,6 @@ VOID t7::UpdateState()
 		rec.smallBallBegCo = Point2(stPntSmallBallOrg.dX, stPntSmallBallOrg.dY);
 		rec.targetCo = Point2(x_resolution / 2, y_resolution / 2);
 		
-		bShowSmallBall = TRUE;
-		m_TestState = STATE_MOVINGOBJ;
-		iShowState = BALL_INTERVAL;
-		
 		rec.freq = dfFreq;
 		rec.no = iTotalTskCnt + 1;
 		rec.smallBallSpeed = dBallSpeed;
@@ -992,6 +999,11 @@ VOID t7::UpdateState()
 		rec.evaluateTime = (double)m_Setting.m_iObstacleRadius
 			/ (double)dBallSpeed;
 		rec.flag.clear();
+
+		bShowSmallBall = TRUE;
+		m_TestState = STATE_MOVINGOBJ;
+		iShowState = BALL_INTERVAL;
+
 		break;
 	//测试任务执行（应该是小球运动的过程）
     case STATE_MOVINGOBJ:
@@ -1069,6 +1081,7 @@ VOID t7::UpdateState()
 			{
 				bTimeOut = TRUE;
 				dfTotalMove = 0;
+				cout << "taskover in updateState\n";
 				TaskOver();
 			}
 
@@ -1229,6 +1242,7 @@ DWORD WINAPI t7::InputThreadProcedure(LPVOID lpStartupParam)
 						
 							break;	
 						case STATE_DISPLAYOBJ:
+							break;
 						case STATE_MOVINGOBJ:
 							
 								
@@ -1249,6 +1263,7 @@ DWORD WINAPI t7::InputThreadProcedure(LPVOID lpStartupParam)
 									preKeyPress = KEY_YES;
 									iReactTime = dfTotalMove;
 									bBtnDown = TRUE;
+									cout << "taskover in inputThread\n";
 									TaskOver();
 								}
 		
@@ -1291,7 +1306,7 @@ DWORD WINAPI t7::InputThreadProcedure(LPVOID lpStartupParam)
 
 
 		}
-		Sleep(1);
+		//Sleep(1);
 	}
     g_nThreadExitCount++;
 	return 0;
@@ -1302,6 +1317,10 @@ DWORD WINAPI t7::InputThreadProcedure(LPVOID lpStartupParam)
 //************************************************
 int APIENTRY t7::_tWinMain(HINSTANCE &hInstance, HINSTANCE &hPrevInstance, LPTSTR &lpCmdLine, int &nCmdShow, HWND &_hWnd, std::string winClassName, std::string winName)
 {
+	// 打开控制台
+	//if (!AllocConsole()) return 1;
+	//freopen("CONOUT$", "w", stdout);
+
  	// TODO: Place code here.
 	//获得传递的命令行参数，得到被试着名字和任务编号
 	//任务7-速度知觉 1-1-0
