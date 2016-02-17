@@ -112,7 +112,7 @@ char t7::m_DataName[60];
 char t7::m_TaskNumStr[100];
 
 //Timer
-LARGE_INTEGER t7::litmp; 
+LARGE_INTEGER t7::litmp, taskBeginTime; 
 LONGLONG t7::QPart1,t7::QPart2,t7::QPart3;
 double t7::dfMinus, t7::dfMinus1, t7::dfFreq, t7::dfTim, 
 	t7::dfdetTim, t7::dfInterval, t7::dfTotalMove/*小球运动时间记录*/; 
@@ -335,13 +335,16 @@ VOID t7::SaveData()
 	fprintf(fp, "%s\t", rec.smallBalldir.c_str());
 
 	// 小球开始运动的时刻
-	fprintf(fp, "%I64d\t", rec.moveBegTime);
+	//fprintf(fp, "%I64d\t", rec.moveBegTime);
+	fprintf(fp, "%.4lf\t", rec.getPeriod(taskBeginTime.QuadPart, rec.moveBegTime));
 
 	// 小球消失的时刻
-	fprintf(fp, "%I64d\t", rec.disappearTime);
-	
+	//fprintf(fp, "%I64d\t", rec.disappearTime);
+	fprintf(fp, "%.4lf\t", rec.getPeriod(taskBeginTime.QuadPart, rec.disappearTime));
+
 	// 按键的时刻
-	fprintf(fp, "%I64d\t", rec.pressTime);
+	//fprintf(fp, "%I64d\t", rec.pressTime);
+	fprintf(fp, "%.4lf\t", rec.getPeriod(taskBeginTime.QuadPart, rec.pressTime));
 
 	// 可见运动时间
 	fprintf(fp, "%.4lf\t", rec.getVisiblePeriod());
@@ -776,7 +779,7 @@ LRESULT WINAPI t7::MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 				case ID_NEXT:
 					//若在任务中途退出 则保存当前所有实验数据
 					if (m_TestState == STATE_MOVINGOBJ)
-						SaveData();
+						//SaveData();
 					EndDialog(hWnd, rtn);
 					PostThreadMessage(dwInputThreadID, WM_THREADSTOP, 0, 0); 	//退出线程
 					Sleep(10);
@@ -785,7 +788,7 @@ LRESULT WINAPI t7::MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 				case ID_CANCEL:
 					//若在任务中途退出 则保存当前所有实验数据
 					if (m_TestState == STATE_MOVINGOBJ)
-						SaveData();
+						//SaveData();
 					EndDialog(hWnd, rtn);
 					PostThreadMessage(dwInputThreadID, WM_THREADSTOP, 0, 0); 	//退出线程
 					m_TestState = STATE_EXIT;
@@ -997,7 +1000,7 @@ VOID t7::UpdateState()
 		rec.setSmallBallDir(curStartPos);
 		rec.moveBegTime = QPart1;
 		rec.evaluateTime = (double)m_Setting.m_iObstacleRadius
-			/ (double)dBallSpeed;
+			/ (double)dBallSpeed * 1000.;
 		rec.flag.clear();
 
 		bShowSmallBall = TRUE;
@@ -1324,6 +1327,7 @@ int APIENTRY t7::_tWinMain(HINSTANCE &hInstance, HINSTANCE &hPrevInstance, LPTST
  	// TODO: Place code here.
 	//获得传递的命令行参数，得到被试着名字和任务编号
 	//任务7-速度知觉 1-1-0
+	QueryPerformanceCounter(&taskBeginTime);
 	t7::rtn = 0;
 	t7::preKeyPress = -1; //记录上一次手柄按键
 	t7::bTimeOut = FALSE;
