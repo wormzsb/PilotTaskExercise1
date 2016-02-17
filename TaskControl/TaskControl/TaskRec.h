@@ -13,9 +13,9 @@ public:
 	// t7 
 	double smallBallSpeed;	// 速度
 	string smallBalldir;	// 运动方向
-	LONGLONG moveBegTime;	// 运动开始时刻
-	LONGLONG disappearTime;	// 消失时刻
-	LONGLONG pressTime;		// 按键时刻
+	double moveBegTime;	// 运动开始时刻
+	double disappearTime;	// 消失时刻
+	double pressTime;		// 按键时刻
 	//double biasRate;		// 偏差率(%)
 	Point2 smallBallBegCo;	// 起始座标
 	Point2 targetCo;		// 目标座标

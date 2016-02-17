@@ -1,6 +1,6 @@
 #pragma once
 
-#pragma once
+#include <iomanip>
 #include <algorithm>    // std::random_shuffle
 #include <cstdlib>      // std::rand, std::srand
 #include <ctime>        // std::time

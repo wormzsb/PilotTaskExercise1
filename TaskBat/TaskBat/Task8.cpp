@@ -1,7 +1,8 @@
 
 #include "stdafx.h"
 #include "Task8.h"
-
+#include <iostream>
+using namespace std;
 
 // 反馈时候用到的纹理
 LPDIRECT3DTEXTURE9 texCross = NULL, texRightF = NULL, texWrongF = NULL, texNoneF = NULL,
@@ -824,9 +825,10 @@ VOID t8::Render()
 				sumResTime += recs[i].responseTime;
 			}
 			stringstream ss;
+			ss.setf(ios::fixed);
 			ss << "本次任务"
-				<< "平均正确率为" << (double)sumRight / recs.size() * 100. << "%, "
-				<< "平均反应时为" << sumResTime / recs.size() << "毫秒";
+				<< "平均正确率为" << setprecision(2) << (double)sumRight / recs.size() * 100. << "%, "
+				<< "平均反应时为" << setprecision(0) << sumResTime / recs.size() << "毫秒";
 			int tx = x_resolution / 2;
 			int ty = y_resolution  - 50;
 			drawText(ss.str(), tx, ty, g_pFont);
@@ -1073,7 +1075,7 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 		}*/
 		if (m_TestState == STATE_OVER)
-			m_TestState = STATE_EXIT;
+			m_TestState = STATE_NEXT;
 
 		return 0;
 		//程序结束消息
@@ -1108,6 +1110,10 @@ int APIENTRY t8::_tWinMain(HINSTANCE &hInstance,
 	int       &nCmdShow, HWND &_hWnd,
 	std::string winClassName, std::string winName)
 {
+	// 打开控制台
+	if (!AllocConsole()) return 1;
+	freopen("CONOUT$", "w", stdout);
+
 	srand((unsigned)time(NULL)); //初始化随机种子 
 
 	//// 测试
@@ -1584,6 +1590,11 @@ void t8::append(vector<string> &LImgs, vector<string> &RImgs,
 				indEven.push_back(i);
 			}
 		}
+
+		cout << "89" << endl;
+		for (int i = 0; i < indOdd.size(); i++){
+			cout << "L: " << LImgs[indOdd[i]] << endl;
+		}
 		lstr.erase(lstr.begin());
 		rstr.erase(rstr.begin());
 		mode.erase(mode.begin());
@@ -1598,32 +1609,45 @@ void t8::append(vector<string> &LImgs, vector<string> &RImgs,
 			else
 				LImgs[ind[i]] += rstr[0];
 		}
+		
 		vector<int> ind1(ind.begin(), ind.begin() + ind.size() / 2);
 		vector<int> ind2(ind.begin() + ind.size() / 2, ind.end());
-		lstr.erase(lstr.begin());
-		rstr.erase(rstr.begin());
-		mode.erase(mode.begin());
-		if (mode[0] != "right") {
+
+		cout << "half" << endl;
+		for (int i = 0; i < ind1.size(); i++) {
+			cout << "L: " << LImgs[ind1[i]] << ", R: " << RImgs[ind1[i]] << endl;
+		}
+
+		
+		if (lstr[0] != rstr[0]) {
+			lstr.erase(lstr.begin());
+			rstr.erase(rstr.begin());
+			mode.erase(mode.begin());
 			append(LImgs, RImgs, ind1, lstr, rstr, mode);
 			append(LImgs, RImgs, ind2, lstr, rstr, mode);
 		}
-		else
+		else {
+			lstr.erase(lstr.begin());
+			rstr.erase(rstr.begin());
+			mode.erase(mode.begin());
 			append(LImgs, RImgs, ind, lstr, rstr, mode);
+		}
 	}
 	else if (mode[0] == "right")
 	{
 		for (int i = 0; i < ind.size(); i++){
 			RImgs[ind[i]] = LImgs[ind[0]].substr(0, 3);
 		}
-		vector<string> ang = {	"_15", "_75", "_135", "_195",
-								"_15", "_75", "_135", "_195"};
-		vector<string> ab = {	"_a.jpg", "_a.jpg", "_a.jpg", "_a.jpg" ,
-								"_b.jpg", "_b.jpg", "_b.jpg", "_b.jpg" };
-		shuffleVector(ang);
-		shuffleVector(ab);
-		for (int i = 0; i < ang.size(); i++) {
-			RImgs[ind[i]] += ang[i];
-			RImgs[ind[i]] += ab[i];
+		vector<string> angAb = {	"_15_a.jpg", "_75_a.jpg", "_135_a.jpg", "_195_a.jpg",
+								"_15_b.jpg", "_75_b.jpg", "_135_b.jpg", "_195_b.jpg"};
+		
+		shuffleVector(angAb);
+		for (int i = 0; i < angAb.size(); i++) {
+			RImgs[ind[i]] += angAb[i];
+		}
+		cout << "right" << endl;
+		for (int i = 0; i < ind.size(); i++) {
+			cout << "L: " << LImgs[ind[i]] << ", R: " << RImgs[ind[i]] << endl;
 		}
 	}
 

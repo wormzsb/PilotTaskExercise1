@@ -406,14 +406,24 @@ void CAnalysisDlg::DisplayResult()
 		m_ResultList.AddItem(i++, 0, "未反应次数", -1);
 		//m_ResultList.AddItem(i++, 0, "速度知觉测试开始时间（精确到秒）", -1);
 		//m_ResultList.AddItem(i++, 0, "速度知觉测试结束时间（精确到秒）", -1);
-		m_ResultList.AddItem(i++, 0, "速度知觉测试耗时（秒）", -1);
+		m_ResultList.AddItem(i++, 0, "速度知觉测试开始时间（精确到秒）", -1);
+		m_ResultList.AddItem(i++, 0, "速度知觉测试结束时间（精确到秒）", -1);
+		m_ResultList.AddItem(i++, 0, "速度知觉测试耗时（精确到秒）", -1);
+		
 		if (pDoc->recs["t7"].size() == 0) return;
 		i = 0;
 		m_ResultList.AddItem(i++, 1, CString(to_string(pDoc->recs["t7"].size()).c_str()), -1);
 		m_ResultList.AddItem(i++, 1, CString(to_string(pDoc->getAvgAbsDevRatio()).c_str()), -1);
 		m_ResultList.AddItem(i++, 1, CString(to_string(pDoc->getSDAbsDveRatio()).c_str()), -1);
 		m_ResultList.AddItem(i++, 1, CString(to_string(pDoc->getUnRspCnt()).c_str()), -1);
-		m_ResultList.AddItem(i++, 1, CString(to_string(int(pDoc->getTotalTaskPeriod()/1000.)).c_str()), -1);
+		int taskBegTime = round(pDoc->recs["t7"].begin()->moveBegTime / 1000.);
+		m_ResultList.AddItem(i++, 1, CString(to_string(taskBegTime).c_str()), -1);
+		int taskEndTime = round(pDoc->recs["t7"].rbegin()->pressTime / 1000.);
+		m_ResultList.AddItem(i++, 1, CString(to_string(taskEndTime).c_str()), -1);
+		int timeTmp = round(pDoc->recs["t7"].rbegin()->pressTime / 1000.
+			- pDoc->recs["t7"].begin()->moveBegTime / 1000.);
+		m_ResultList.AddItem(i++, 1, CString(to_string(timeTmp).c_str()), -1);
+		
 		break;
 	}
 	case 8: {
