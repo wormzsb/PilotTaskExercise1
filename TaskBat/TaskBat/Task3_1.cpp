@@ -4,7 +4,9 @@
 #include "stdafx.h"
 #include "Task3_1.h"
 #include <iostream>
+#include <vector>
 using namespace std;
+vector<int> resEventType;
 
 int t3::rtn;
 HINSTANCE t3::gHinstance;
@@ -516,7 +518,7 @@ VOID t3::SaveData()
 		{
 			if(m_Setting.m_EventMode == 0)
 			{
-				if(((m_EventType[i]==0)||(m_EventType[i]==1))&&(m_SureButtonNo[i]==0))
+				if(((/*m_EventType*/resEventType[i]==0)||(/*m_EventType*/resEventType[i]==1))&&(m_SureButtonNo[i]==0))
 				{
 					m_bEventAcc = TRUE;
 				}
@@ -527,7 +529,7 @@ VOID t3::SaveData()
 			}
 			else
 			{
-				m_bEventAcc = (m_EventType[i]==m_SureButtonNo[i]);
+				m_bEventAcc = (/*m_EventType*/resEventType[i]==m_SureButtonNo[i]);
 			}
 			fprintf(fp,"%s\t%s\t%s\t%d\t"
 				"%d\t%d\t%d\t%d\t"
@@ -536,7 +538,7 @@ VOID t3::SaveData()
 				m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session, 
 				m_Setting.m_PracMode, m_Setting.m_ExperMode, m_Setting.m_MainTask, m_Setting.m_SubTask,
 				m_Setting.m_MainTaskMode, m_Setting.m_Background, m_Setting.m_InitSpeed, m_Setting.m_EventMode, m_Setting.m_CodePairMode, m_Setting.m_CodePairNum, m_Setting.m_DisplayMode, m_Setting.m_EventFrequency, m_Setting.m_PracTime, m_Setting.m_ExperTime, m_Setting.m_PracTimes, m_Setting.m_ExperTimes, 
-				m_TrialType, i+1,m_EventType[i], m_EventStartTime[i], m_EventSureTime[i],m_EventSureTime[i]-m_EventStartTime[i],m_SureButtonNo[i],m_bEventAcc);		
+				m_TrialType, i+1,/*m_EventType*/resEventType[i], m_EventStartTime[i], m_EventSureTime[i],m_EventSureTime[i]-m_EventStartTime[i],m_SureButtonNo[i],m_bEventAcc);
 		} 
 		fclose(fp);
 	}
@@ -966,24 +968,27 @@ VOID t3::Render()
  					g_pSprite->SetTransform(&mx);
 					g_pSprite->Draw(g_pTexture0, NULL, &D3DXVECTOR3(32,12,0), &D3DXVECTOR3(0,0,0), 0xffffffff);
 				}
+				//cout << "m_EventNo = " << m_EventNo
+				//	<< ",   m_bEventStart = " << m_bEventStart
+				//	<< ",   m_bEventReactTime = " << m_bEventReactTime
+				//	<< ",   m_EventType = " << m_EventType[/*m_RecordNo*/m_EventNo]
+				//	<<endl;
+
 				//显示突发事件
-				cout << "m_EventNo = " << m_EventNo
-					<< ",   m_bEventStart = " << m_bEventStart
-					<< ",   m_bEventReactTime = " << m_bEventReactTime
-					<< ",   m_EventType = " << m_EventType[/*m_RecordNo*/m_EventNo]
-					<<endl;
-                if(m_Setting.m_SubTask == 1)
+				if (m_Setting.m_SubTask == 1)
 				{
+					// 显示反馈
 					if(m_bShowFeedback)
 					{
 						g_pFont1->DrawText(NULL, szFeedBack, -1, &erect,
 						DT_WORDBREAK|DT_NOCLIP|DT_CENTER|DT_VCENTER, D3DCOLOR_XRGB(255,255,255));
 					}
-					else if(m_bEventStart && !m_bEventReactTime && m_RecordNo < m_Setting.m_ExperTimes)
+					// 显示飞机/直升机
+					else if(m_bEventStart && !m_bEventReactTime && /*m_RecordNo*/m_EventNo < m_Setting.m_ExperTimes)
 					{
 						D3DXMatrixTransformation2D(&mx, NULL, 0.0, &D3DXVECTOR2((float)128/(float)256,(float)128/(float)256), &D3DXVECTOR2(0,0), 0, &D3DXVECTOR2(m_EventPoint[m_EventNo].x,m_EventPoint[m_EventNo].y));
 						g_pSprite->SetTransform(&mx);
-						g_pSprite->Draw(g_pTexture3[m_EventType[m_RecordNo]], NULL, &D3DXVECTOR3(128,128,0), &D3DXVECTOR3(0,0,0), 0xffffffff);
+						g_pSprite->Draw(g_pTexture3[m_EventType[/*m_RecordNo*/m_EventNo]], NULL, &D3DXVECTOR3(128,128,0), &D3DXVECTOR3(0,0,0), 0xffffffff);
 					}
 					
 				}
@@ -1405,6 +1410,7 @@ VOID t3::UpdateState()
 		if(m_EventNo<m_Setting.m_ExperTimes)
         //if(dfTotal<m_TrialTime)
 		{
+			// 时间采样
 			do
 			{
 				QueryPerformanceCounter(&litmp);
@@ -1412,10 +1418,12 @@ VOID t3::UpdateState()
 				dfMinus = (double)(QPart2-QPart1);
 				//dfTim = dfMinus / dfFreq;        // 获得对应的时间值，单位为秒		
 			}while(dfMinus<m_SampleInt);
+			
 			dfTim = dfMinus / dfFreq;  // 获得对应的时间值，单位为秒
 			QPart1 = QPart2;           // 获得初始值
 			dfTotalEvent = dfTotalEvent + dfTim;
 			dfTotal = dfTotal + dfTim;
+			
 			if(m_Setting.m_SubTask == 1 && !m_bShowFeedback)
 			{
 				if(m_EventNo<m_EventCount)
@@ -1423,7 +1431,7 @@ VOID t3::UpdateState()
 					//突发事件开始
 					if(m_bEventStart)
 					{
-
+						// 响应计时开始
 						if (!m_bEventReactTime)
 						{
 							if(dfTotalEvent>=m_Setting.m_iPresentTime)
@@ -1449,7 +1457,7 @@ VOID t3::UpdateState()
 									if(m_RecordNo>=m_MemEvent)
 									{
 										m_MemEvent+=100;
-										m_EventType = (short*)realloc(m_EventType,m_MemEvent*sizeof(short));
+										//m_EventType = (short*)realloc(m_EventType,m_MemEvent*sizeof(short));
 										m_EventStartTime = (unsigned long*)realloc(m_EventStartTime,m_MemEvent*sizeof(unsigned long));
 										m_EventSureTime = (unsigned long*)realloc(m_EventSureTime,m_MemEvent*sizeof(unsigned long));
 										m_SureButtonNo = (short*)realloc(m_SureButtonNo,m_MemEvent*sizeof(short));
@@ -1557,7 +1565,7 @@ VOID t3::UpdateState()
 					if(m_RecordNo>=m_MemEvent)
 					{
 						m_MemEvent+=100;
-						m_EventType = (short*)realloc(m_EventType,m_MemEvent*sizeof(short));
+						//m_EventType = (short*)realloc(m_EventType,m_MemEvent*sizeof(short));
 						m_EventStartTime = (unsigned long*)realloc(m_EventStartTime,m_MemEvent*sizeof(unsigned long));
 						m_EventSureTime = (unsigned long*)realloc(m_EventSureTime,m_MemEvent*sizeof(unsigned long));
 						m_SureButtonNo = (short*)realloc(m_SureButtonNo,m_MemEvent*sizeof(short));
@@ -1604,7 +1612,7 @@ VOID t3::UpdateState()
 			if(m_RecordNo>=m_MemEvent)
 			{
 				m_MemEvent+=100;
-				m_EventType = (short*)realloc(m_EventType,m_MemEvent*sizeof(short));
+				//m_EventType = (short*)realloc(m_EventType,m_MemEvent*sizeof(short));
 				m_EventStartTime = (unsigned long*)realloc(m_EventStartTime,m_MemEvent*sizeof(unsigned long));
 				m_EventSureTime = (unsigned long*)realloc(m_EventSureTime,m_MemEvent*sizeof(unsigned long));
 			    m_SureButtonNo = (short*)realloc(m_SureButtonNo,m_MemEvent*sizeof(short));
@@ -1705,18 +1713,26 @@ DWORD WINAPI t3::InputThreadProcedure(LPVOID lpStartupParam)
 						{
 							if(m_bEventStart)
 							{
+								// debug xxx
+								/*for (int i = 0; i < 128; i++) {
+									if (IsButtonDown(i)) {
+										cout << "key = " << i;
+										cout << endl;
+									}
+								}*/
+
 								//有突发事件时按键确认
-								for(i=0; i<1 ;i++)
+								for(i=0; i<=1 ;i++)
 								{
-									
 									if(IsButtonDown(m_EventKey[i]))
 									{	
 										
 										rangex =  m_Setting.m_iIntervalMin + rand()%(m_Setting.m_iIntervalMax - m_Setting.m_iIntervalMin + 1);
 										m_EventSureTime[m_RecordNo] = QPart2/dfFreq*1000;
 										m_SureButtonNo[m_RecordNo] = m_SureDownType[i];
-										if(m_Setting.m_EventMode == 0)
+										if(m_Setting.m_EventMode == 0)//简单任务
 										{
+											resEventType.push_back(0);
 											if(m_SureButtonNo[m_RecordNo]==0)
 											{
 												m_bEventAcc = TRUE;
@@ -1726,9 +1742,12 @@ DWORD WINAPI t3::InputThreadProcedure(LPVOID lpStartupParam)
 												m_bEventAcc = FALSE;
 											}
 										}
-										else
+										else//选择任务
 										{
-											m_bEventAcc = (m_EventType[m_RecordNo]==m_SureButtonNo[m_RecordNo]);
+											//m_bEventAcc = (m_EventType[m_RecordNo] == m_SureButtonNo[m_RecordNo]);
+											m_bEventAcc = (m_EventType[m_EventNo] == m_SureButtonNo[m_RecordNo]);
+											resEventType.push_back(m_EventType[m_EventNo]);
+
 										}
                                        //确保此函数不被重入，以免修改feedback的值
 										if(m_TrialType == TRIAL_PRACTICE && !m_bShowFeedback)
@@ -1755,7 +1774,7 @@ DWORD WINAPI t3::InputThreadProcedure(LPVOID lpStartupParam)
 											if(m_RecordNo>=m_MemEvent)
 											{
 												m_MemEvent+=100;
-												m_EventType = (short*)realloc(m_EventType,m_MemEvent*sizeof(short));
+												//m_EventType = (short*)realloc(m_EventType,m_MemEvent*sizeof(short));
 												m_EventStartTime = (unsigned long*)realloc(m_EventStartTime,m_MemEvent*sizeof(unsigned long));
 												m_EventSureTime = (unsigned long*)realloc(m_EventSureTime,m_MemEvent*sizeof(unsigned long));
 												m_SureButtonNo = (short*)realloc(m_SureButtonNo,m_MemEvent*sizeof(short));
@@ -1769,11 +1788,12 @@ DWORD WINAPI t3::InputThreadProcedure(LPVOID lpStartupParam)
 							else
 							{
 								//没有突发事件时按键确认
-								for(i=0; i<1 ;i++)
+								for(i=0; i<=1 ;i++)
 								{
 									if(IsButtonDown(m_EventKey[i]))
 									{
-										m_EventType[m_RecordNo] = 2;
+										//m_EventType[m_RecordNo] = 2;
+										resEventType.push_back(2);
 										m_EventStartTime[m_RecordNo]  = 0;
 										m_EventSureTime[m_RecordNo] = QPart2/dfFreq*1000;
 										m_SureButtonNo[m_RecordNo] = m_SureDownType[i];
@@ -1781,7 +1801,7 @@ DWORD WINAPI t3::InputThreadProcedure(LPVOID lpStartupParam)
 										if(m_RecordNo>=m_MemEvent)
 										{
 											m_MemEvent+=100;
-											m_EventType = (short*)realloc(m_EventType,m_MemEvent*sizeof(short));
+											//m_EventType = (short*)realloc(m_EventType,m_MemEvent*sizeof(short));
 											m_EventStartTime = (unsigned long*)realloc(m_EventStartTime,m_MemEvent*sizeof(unsigned long));
 											m_EventSureTime = (unsigned long*)realloc(m_EventSureTime,m_MemEvent*sizeof(unsigned long));
 											m_SureButtonNo = (short*)realloc(m_SureButtonNo,m_MemEvent*sizeof(short));
@@ -1859,6 +1879,9 @@ int APIENTRY t3::_tWinMain(HINSTANCE &hInstance,
 	int       &nCmdShow, HWND &_hWnd,
 	std::string winClassName, std::string winName)
 {
+	if (AllocConsole() == 0) return 1;
+	freopen("CONOUT$", "w", stdout);
+
 	// 初始化句柄和状态
 	bool bUnClosedLastWin = true;
 	hWnd = _hWnd;
@@ -1925,7 +1948,7 @@ int APIENTRY t3::_tWinMain(HINSTANCE &hInstance,
                               NULL, NULL, hInstance, NULL );*/
 
 	_hWnd = hWnd = CreateWindow(std::to_string(nCmdShow).c_str(), std::to_string(nCmdShow).c_str(),
-    WS_VISIBLE|WS_POPUP, 0, 0, x_resolution, y_resolution,
+    WS_VISIBLE|WS_POPUP, 0, 0, x_resolution/2, y_resolution/2,
     NULL, NULL, hInstance, NULL );
   
 	//显示主窗口
