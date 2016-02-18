@@ -1,0 +1,127 @@
+[TaskOrder]
+Task7
+Task6
+Task7
+Task7
+
+[Task7(任务7-速度知觉能力测试)]
+TaskName	0-任务7-速度知觉能力测试
+PracMode	1
+ExperMode	0
+SpeedMode	0
+BallColorR	255
+BallColorG	0
+BallColorB	0
+BallStartPos	15
+PosTop	1
+PosBottom	1
+PosLeft	1
+PosRight	1
+BallCenterDis	350
+BallSpeed1	50
+BallSpeed2	100
+BallSpeed3	150
+BallSpeedAcc	10
+BallSpeedMax	-842150451
+BallRadius	15
+BckGrndColorR	0
+BckGrndColorG	0
+BckGrndColorB	0
+ObstacleColorR	80
+ObstacleColorG	80
+ObstacleColorB	80
+ObstacleRadius	200
+PracTimes	3
+ExpTimes	3
+IntervalTime	2
+[Task6(任务6-双任务模式三维图形记忆判别能力测试)]
+TaskName	1-任务6-双任务模式三维图形记忆判别能力测试
+PracMode	1
+ExperMode	0
+MainTask	1
+SubTask	1
+Background	0
+InitSpeed	50.000000
+CubeNum1	1
+CubeNum2	0
+CubeNum3	0
+CubeNum4	0
+Prototype	0
+RefAxis	0
+MemTaskMode	0
+PracTime	60
+ExperTime	60
+PracTimes	1
+ExperTimes	1
+JoyMoveDirection	0
+SubTaskInterval	4
+PresentTime	4
+ReactTime	2
+Speed	100.000000
+SpeedMin	50.000000
+SpeedMax	150.000000
+AccelerationMin	2.000000
+AccelerationMax	5.000000
+SpeedMode	0
+Direction	0
+
+[Task7(任务7-速度知觉能力测试)]
+TaskName	2-任务7-速度知觉能力测试
+PracMode	1
+ExperMode	0
+SpeedMode	0
+BallColorR	255
+BallColorG	0
+BallColorB	0
+BallStartPos	15
+PosTop	1
+PosBottom	1
+PosLeft	1
+PosRight	1
+BallCenterDis	350
+BallSpeed1	50
+BallSpeed2	100
+BallSpeed3	150
+BallSpeedAcc	10
+BallSpeedMax	-842150451
+BallRadius	15
+BckGrndColorR	0
+BckGrndColorG	0
+BckGrndColorB	0
+ObstacleColorR	80
+ObstacleColorG	80
+ObstacleColorB	80
+ObstacleRadius	200
+PracTimes	3
+ExpTimes	3
+IntervalTime	2
+[Task7(任务7-速度知觉能力测试)]
+TaskName	3-任务7-速度知觉能力测试
+PracMode	1
+ExperMode	0
+SpeedMode	0
+BallColorR	255
+BallColorG	0
+BallColorB	0
+BallStartPos	15
+PosTop	1
+PosBottom	1
+PosLeft	1
+PosRight	1
+BallCenterDis	350
+BallSpeed1	50
+BallSpeed2	100
+BallSpeed3	150
+BallSpeedAcc	10
+BallSpeedMax	-842150451
+BallRadius	15
+BckGrndColorR	0
+BckGrndColorG	0
+BckGrndColorB	0
+ObstacleColorR	80
+ObstacleColorG	80
+ObstacleColorB	80
+ObstacleRadius	200
+PracTimes	3
+ExpTimes	3
+IntervalTime	2

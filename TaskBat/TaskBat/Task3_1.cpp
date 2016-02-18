@@ -3,6 +3,8 @@
 
 #include "stdafx.h"
 #include "Task3_1.h"
+#include <iostream>
+using namespace std;
 
 int t3::rtn;
 HINSTANCE t3::gHinstance;
@@ -965,6 +967,11 @@ VOID t3::Render()
 					g_pSprite->Draw(g_pTexture0, NULL, &D3DXVECTOR3(32,12,0), &D3DXVECTOR3(0,0,0), 0xffffffff);
 				}
 				//显示突发事件
+				cout << "m_EventNo = " << m_EventNo
+					<< ",   m_bEventStart = " << m_bEventStart
+					<< ",   m_bEventReactTime = " << m_bEventReactTime
+					<< ",   m_EventType = " << m_EventType[/*m_RecordNo*/m_EventNo]
+					<<endl;
                 if(m_Setting.m_SubTask == 1)
 				{
 					if(m_bShowFeedback)
@@ -972,11 +979,11 @@ VOID t3::Render()
 						g_pFont1->DrawText(NULL, szFeedBack, -1, &erect,
 						DT_WORDBREAK|DT_NOCLIP|DT_CENTER|DT_VCENTER, D3DCOLOR_XRGB(255,255,255));
 					}
-					else if(m_bEventStart && !m_bEventReactTime && m_RecordNo < m_Setting.m_ExperTimes)
+					else if(/*m_bEventStart*/1 && !m_bEventReactTime && /*m_RecordNo*/m_EventNo < m_Setting.m_ExperTimes)
 					{
 						D3DXMatrixTransformation2D(&mx, NULL, 0.0, &D3DXVECTOR2((float)128/(float)256,(float)128/(float)256), &D3DXVECTOR2(0,0), 0, &D3DXVECTOR2(m_EventPoint[m_EventNo].x,m_EventPoint[m_EventNo].y));
 						g_pSprite->SetTransform(&mx);
-						g_pSprite->Draw(g_pTexture3[m_EventType[m_RecordNo]], NULL, &D3DXVECTOR3(128,128,0), &D3DXVECTOR3(0,0,0), 0xffffffff);
+						g_pSprite->Draw(g_pTexture3[m_EventType[/*m_RecordNo*/m_EventNo]], NULL, &D3DXVECTOR3(128,128,0), &D3DXVECTOR3(0,0,0), 0xffffffff);
 					}
 					
 				}
@@ -1372,6 +1379,7 @@ VOID t3::UpdateState()
 		break;
     //呈现目标
 	case STATE_DISPLAYOBJ:	
+		//m_bEventStart = false;
 		if(abs(JoyX)>30||abs(JoyY)>30)
 		{
 			if(QueryPerformanceFrequency(&litmp))
@@ -1390,6 +1398,8 @@ VOID t3::UpdateState()
 				m_PostSpeedX[m_PointNum] = 0;
 	            m_PostSpeedY[m_PointNum] = 0;
 			}
+			Sleep(500);
+
             m_TestState = STATE_MOVINGOBJ;
 		}
 		break;
@@ -1691,6 +1701,7 @@ DWORD WINAPI t3::InputThreadProcedure(LPVOID lpStartupParam)
 					}
 					break;
 				case STATE_DISPLAYOBJ:
+					break;
 				case STATE_MOVINGOBJ:	
 					if(m_Setting.m_SubTask == 1)
 					{
@@ -1852,6 +1863,10 @@ int APIENTRY t3::_tWinMain(HINSTANCE &hInstance,
 	int       &nCmdShow, HWND &_hWnd,
 	std::string winClassName, std::string winName)
 {
+	// 打开控制台
+	if (!AllocConsole()) return 1;
+	freopen("CONOUT$", "w", stdout);
+
 	// 初始化句柄和状态
 	bool bUnClosedLastWin = true;
 	hWnd = _hWnd;
@@ -1918,7 +1933,7 @@ int APIENTRY t3::_tWinMain(HINSTANCE &hInstance,
                               NULL, NULL, hInstance, NULL );*/
 
 	_hWnd = hWnd = CreateWindow(std::to_string(nCmdShow).c_str(), std::to_string(nCmdShow).c_str(),
-    WS_VISIBLE|WS_POPUP, 0, 0, x_resolution, y_resolution,
+    WS_VISIBLE|WS_POPUP, 0, 0, x_resolution/2, y_resolution/2,
     NULL, NULL, hInstance, NULL );
   
 	//显示主窗口
