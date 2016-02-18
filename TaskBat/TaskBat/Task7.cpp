@@ -304,9 +304,9 @@ VOID t7::SaveName()
 		<< "实际时间(毫秒)" << "\t"
 		<< "估计时间(毫秒)" << "\t"
 		<< "偏差率(%)" << "\t"
-		<< "起始座标" << "\t"
-		<< "目标座标" << "\t"
-		<< "按键座标" << "\n";
+		<< "起始坐标" << "\t"
+		<< "目标坐标" << "\t"
+		<< "按键坐标" << "\n";
 	fprintf(fp,"%s",ss.str().c_str());
 	fclose(fp);
 	
@@ -362,7 +362,7 @@ VOID t7::SaveData()
 	// 偏差率
 	if (!bTimeOut) {
 		double ratio;
-		ratio = (dNowDistance - dOrgDistance)
+		ratio = sqrt(pow(((int)rec.pressSmallBallCo.x - (int)rec.targetCo.x), 2) + pow(((int)rec.pressSmallBallCo.y - (int)rec.targetCo.y), 2))
 			/ (double)m_Setting.m_iObstacleRadius * 100.;
 		if (ratio > 1e-6)
 			fprintf(fp, "+" );

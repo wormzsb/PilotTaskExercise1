@@ -11,10 +11,12 @@
 #include "RandFcn.h" 
 #include "Input.h"
 #include "resource.h"
+#include "Helper.h"
 #define WM_THREADSTOP (WM_USER+1)
 
 namespace t3
 {
+	extern Helper hp;
 	extern int rtn; 
 	extern HINSTANCE gHinstance; 
 	extern char szFeedBack[100]; 

@@ -1,2 +1,0 @@
-CorrectRate	AvgResponseTime	AvgResponseTime\CorrectRate
-0.00	1184.70	inf	

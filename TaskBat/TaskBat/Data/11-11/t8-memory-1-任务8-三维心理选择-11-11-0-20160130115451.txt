@@ -1,0 +1,1 @@
+ID	Name	Sex	Session	DistanceError	PracMode	ExperMode	MainTask	SubTask	Background	InitSpeed	CubeNum1	CubeNum2	CubeNum3	CubeNum4	Prototype	RefAxis	MemTaskMode	PracTime	ExperTime	PracTimes	ExperTimes	Pra_Test	GroupNo	MemNo	MemCubeNum	LMemName	RMemName	LMemAngle	RMemAngle	MemAngleDiff	Same	StartTime	SureTime	SureButton	Mem_RT	Mem_Acc
