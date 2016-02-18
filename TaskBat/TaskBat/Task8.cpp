@@ -1111,8 +1111,8 @@ int APIENTRY t8::_tWinMain(HINSTANCE &hInstance,
 	std::string winClassName, std::string winName)
 {
 	// 打开控制台
-	if (!AllocConsole()) return 1;
-	freopen("CONOUT$", "w", stdout);
+	//if (!AllocConsole()) return 1;
+	//freopen("CONOUT$", "w", stdout);
 
 	srand((unsigned)time(NULL)); //初始化随机种子 
 

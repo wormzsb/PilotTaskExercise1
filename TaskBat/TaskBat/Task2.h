@@ -12,6 +12,7 @@
 #include <time.h>   
 #include "RandFcn.h" 
 #include "Input.h"
+#include "Helper.h"
 
 #define WM_THREADSTOP (WM_USER+1)
 
@@ -19,6 +20,7 @@
 
 namespace t2
 {
+	extern Helper hp;
 	// define a data structure to hold our data ?optional
 	extern struct MYDATA {
 		int nTime;

@@ -5,7 +5,10 @@
 #include "Task3_1.h"
 #include <iostream>
 #include <vector>
+#include "Helper.h"
 using namespace std;
+
+Helper t3::hp;
 vector<int> resEventType;
 
 int t3::rtn;
@@ -168,13 +171,15 @@ VOID t3::MoveTrace()
 	
 	//当前追踪环位置
 	double JoyAlpha = 0;//摇杆角度
-	if (!(JoyX == 0 && JoyY == 0)) {
+	/*if (!(JoyX == 0 && JoyY == 0)) {
 		double rJ = sqrt(JoyX * JoyX + JoyY * JoyY);
 		double cosJ = (double)JoyX / rJ;
 		double sinJ = (double)JoyY / rJ;
 		m_PostPointX = m_PostPointX + cosJ * rJ  * dfTim;
 		m_PostPointY = m_PostPointY + sinJ * rJ  * dfTim;
-	}
+	}*/
+	hp.updateAnalogNewPos(m_PostPointX, m_PostPointY, JoyX, JoyY, dfTim, iJoyMoveDirection);
+
 	m_PostPoint[m_PointNum].x = m_PostPointX;
 	m_PostPoint[m_PointNum].y = m_PostPointY;
 
@@ -1879,8 +1884,8 @@ int APIENTRY t3::_tWinMain(HINSTANCE &hInstance,
 	int       &nCmdShow, HWND &_hWnd,
 	std::string winClassName, std::string winName)
 {
-	if (AllocConsole() == 0) return 1;
-	freopen("CONOUT$", "w", stdout);
+	//if (AllocConsole() == 0) return 1;
+	//freopen("CONOUT$", "w", stdout);
 
 	// 初始化句柄和状态
 	bool bUnClosedLastWin = true;
@@ -1948,7 +1953,7 @@ int APIENTRY t3::_tWinMain(HINSTANCE &hInstance,
                               NULL, NULL, hInstance, NULL );*/
 
 	_hWnd = hWnd = CreateWindow(std::to_string(nCmdShow).c_str(), std::to_string(nCmdShow).c_str(),
-    WS_VISIBLE|WS_POPUP, 0, 0, x_resolution/2, y_resolution/2,
+    WS_VISIBLE|WS_POPUP, 0, 0, x_resolution, y_resolution,
     NULL, NULL, hInstance, NULL );
   
 	//显示主窗口

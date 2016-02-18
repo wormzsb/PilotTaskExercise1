@@ -3,7 +3,8 @@
 
 #include "stdafx.h"
 #include "Task6_1.h"
-
+#include "Helper.h"
+Helper t6_1::hp;
 int t6_1::rtn;
 HINSTANCE t6_1::gHinstance;
 float t6_1::acce = 0; //目标的加速度
@@ -182,13 +183,15 @@ VOID t6_1::MoveTrace()
 
 	//当前追踪环位置
 	double JoyAlpha = 0;//摇杆角度
-	if (!(JoyX == 0 && JoyY == 0)) {
+	/*if (!(JoyX == 0 && JoyY == 0)) {
 		double rJ = sqrt(JoyX * JoyX + JoyY * JoyY);
 		double cosJ = (double)JoyX / rJ;
 		double sinJ = (double)JoyY / rJ;
 		m_PostPointX = m_PostPointX + cosJ * rJ  * dfTim;
 		m_PostPointY = m_PostPointY + sinJ * rJ  * dfTim;
-	}
+	}*/
+	hp.updateAnalogNewPos(m_PostPointX, m_PostPointY, JoyX, JoyY, dfTim, iJoyMoveDirection);
+
 	m_PostPoint[m_PointNum].x = m_PostPointX;
 	m_PostPoint[m_PointNum].y = m_PostPointY;
 
