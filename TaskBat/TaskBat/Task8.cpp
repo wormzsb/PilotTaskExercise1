@@ -820,15 +820,17 @@ VOID t8::Render()
 		case STATE_OVER: {
 			int sumRight = 0;
 			double sumResTime = 0.;
-			for (int i = 0; i < recs.size(); i++) {
+			int cnt = recs.size() - 4;
+			for (int i = 4; i < recs.size(); i++) {
 				sumRight += (int)recs[i].isRight;
 				sumResTime += recs[i].responseTime;
+				
 			}
 			stringstream ss;
 			ss.setf(ios::fixed);
 			ss << "本次任务"
-				<< "平均正确率为" << setprecision(2) << (double)sumRight / recs.size() * 100. << "%, "
-				<< "平均反应时为" << setprecision(0) << sumResTime / recs.size() << "毫秒";
+				<< "平均正确率为" << setprecision(2) << (double)sumRight / cnt * 100. << "%, "
+				<< "平均反应时为" << setprecision(0) << sumResTime / cnt << "毫秒";
 			int tx = x_resolution / 2;
 			int ty = y_resolution  - 50;
 			drawText(ss.str(), tx, ty, g_pFont);
@@ -1111,8 +1113,8 @@ int APIENTRY t8::_tWinMain(HINSTANCE &hInstance,
 	std::string winClassName, std::string winName)
 {
 	// 打开控制台
-	if (!AllocConsole()) return 1;
-	freopen("CONOUT$", "w", stdout);
+	//if (!AllocConsole()) return 1;
+	//freopen("CONOUT$", "w", stdout);
 
 	srand((unsigned)time(NULL)); //初始化随机种子 
 
@@ -1500,10 +1502,7 @@ void t8::addAndSaveRec(int state) {
 		rec.isRight = false;
 		rec.responseTime = -1.;
 	}
-	if (state = STATE_EXERCISE) 
-		rec.mode = 0;
-	else 
-		rec.mode = 1;
+
 	recs.push_back(rec);
 	
 }

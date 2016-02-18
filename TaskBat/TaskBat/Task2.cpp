@@ -2,6 +2,9 @@
 //
 #include "stdafx.h"
 #include "Task2.h"
+#include "Helper.h"
+
+Helper t2::hp;
 
 int t2::iDirection;
 int t2::rtn;//程序返回值
@@ -153,13 +156,15 @@ VOID t2::MoveTrace()
 	
 	//当前追踪环位置
 	double JoyAlpha = 0;//摇杆角度
-	if (!(JoyX == 0 && JoyY == 0)) {
+	/*if (!(JoyX == 0 && JoyY == 0)) {
 		double rJ = sqrt(JoyX * JoyX + JoyY * JoyY);
 		double cosJ = (double)JoyX / rJ;
 		double sinJ = (double)JoyY / rJ;
 		m_PostPointX = m_PostPointX + cosJ * rJ  * dfTim;
 		m_PostPointY = m_PostPointY + sinJ * rJ  * dfTim;
-	}
+	}*/
+	hp.updateAnalogNewPos(m_PostPointX, m_PostPointY, JoyX, JoyY, dfTim, iJoyMoveDirection);
+
 	m_PostPoint[m_PointNum].x = m_PostPointX;
 	m_PostPoint[m_PointNum].y = m_PostPointY;
 	if(m_PostPoint[m_PointNum].x<0)

@@ -11,12 +11,13 @@
 #include "RandFcn.h" 
 #include "Input.h"
 #include "resource.h"
+#include "Helper.h"
 
 #define WM_THREADSTOP (WM_USER+1)
 
 namespace t6_2
 {
-
+	extern Helper hp;
 	// define a data structure to hold our data ?optional
 	extern struct MYDATA {
 	    int nTime;

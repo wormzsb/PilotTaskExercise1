@@ -5,7 +5,9 @@
 #include "Datatype.h"
 #include <conio.h>
 #include <iostream>
+#include "Helper.h"
 using namespace std;
+Helper hp;
 FILE *t1::sfp;
 CSky t1::sky;
 int t1::rtn;//程序返回值
@@ -145,15 +147,16 @@ double t1::dfMinus, t1::dfFreq, t1::dfTim, t1::dfTotalPause, t1::dfTotalMove;
 
 		//当前追踪环位置
 		double JoyAlpha = 0;//摇杆角度
-		if (!(JoyX == 0 && JoyY == 0)) {
+		/*if (!(JoyX == 0 && JoyY == 0)) {
 			double rJ = sqrt(JoyX * JoyX + JoyY * JoyY);
 			double cosJ = (double)JoyX / rJ;
 			double sinJ = (double)JoyY / rJ;
 			m_PostPointX = m_PostPointX +  cosJ * rJ  * dfTim;
 			m_PostPointY = m_PostPointY +  sinJ * rJ  * dfTim;
-		}
+		}*/
 		
-		
+		hp.updateAnalogNewPos(m_PostPointX, m_PostPointY, JoyX, JoyY, dfTim, iJoyMoveDirection);
+
 		m_PostPoint[m_PointNum].x = m_PostPointX;
 		m_PostPoint[m_PointNum].y = m_PostPointY;
 		if (m_PostPoint[m_PointNum].x<0)
