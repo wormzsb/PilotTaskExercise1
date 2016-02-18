@@ -3966,13 +3966,13 @@ void CTaskControlDoc::DataAnalysis()
 	case 8://task8
 		double CRCount=0;
 		double ResTime=0;
-		for (int i = 0; i < recs["t8"].size(); i++)
+		for (int i = 4; i < recs["t8"].size(); i++)
 		{
 			if (recs["t8"][i].isRight == 1) CRCount++;
 			ResTime += recs["t8"][i].responseTime;
 		}
-		t8res.CorrectRate = CRCount / recs["t8"].size();
-		t8res.AvgResTime = ResTime / recs["t8"].size();
+		t8res.CorrectRate = CRCount / recs["t8"].size()-4;
+		t8res.AvgResTime = ResTime / recs["t8"].size()-4;
 		t8res.TimeRate_Ratio = t8res.AvgResTime / t8res.CorrectRate;
 
 		_mkdir("Result");
