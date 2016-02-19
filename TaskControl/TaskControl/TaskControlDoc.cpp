@@ -2263,7 +2263,8 @@ BOOL CTaskControlDoc::ReadT6Trace()
 			{
 				return FALSE;
 			}
-			if(m_ExperStart1>=m_PointNum-1)
+			if(m_ExperStart1>m_PointNum)
+			//if(m_ExperStart1>=m_PointNum-1)
 			{
 				return FALSE;
 			}
@@ -2410,7 +2411,8 @@ BOOL CTaskControlDoc::ReadT6Judge()
 			m_ExperStart2 = m_ExperStart2+1;
 			m_RecordNo = i;
 			fclose(fp);	
-			if(m_ExperStart2>=m_RecordNo-1)
+			if (m_ExperStart2 > m_RecordNo)
+			//if (m_ExperStart2 >= m_RecordNo - 1)
 			{
 				return FALSE;
 			}
@@ -2561,7 +2563,8 @@ BOOL CTaskControlDoc::ReadT6Memory()
 			m_ExperStart2 = m_ExperStart2+1;
 			m_RecordNo = i;
 			fclose(fp);
-			if(m_ExperStart2>=m_RecordNo-1)
+			//if(m_ExperStart2>=m_RecordNo-1)
+			if(m_ExperStart2>m_RecordNo)
 			{
 				return FALSE;
 			}
