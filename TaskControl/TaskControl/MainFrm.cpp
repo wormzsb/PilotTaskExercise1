@@ -64,9 +64,9 @@ CMainFrame::CMainFrame()
 
 	// TODO: add member initialization code here
 	// 打开控制台
-	if (!AllocConsole()) 
+	/*if (!AllocConsole()) 
 		return;
-	freopen("CONOUT$", "w", stdout);
+	freopen("CONOUT$", "w", stdout);*/
 
 }
 
