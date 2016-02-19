@@ -364,8 +364,9 @@ VOID t7::SaveData()
 		double ratio;
 		ratio = sqrt(pow(((int)rec.pressSmallBallCo.x - (int)rec.targetCo.x), 2) + pow(((int)rec.pressSmallBallCo.y - (int)rec.targetCo.y), 2))
 			/ (double)m_Setting.m_iObstacleRadius * 100.;
-		if (ratio > 1e-6)
-			fprintf(fp, "+" );
+		if ((rec.pressSmallBallCo.x - rec.targetCo.x < 0) || (rec.pressSmallBallCo.y - rec.targetCo.y < 0))
+			fprintf(fp, "-" );
+		else fprintf(fp, "+" );
 		fprintf(fp, "%.2lf\t", ratio);
 	}
 	else 

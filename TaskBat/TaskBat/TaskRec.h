@@ -16,9 +16,9 @@ public:
 	LONGLONG disappearTime;	// 消失时刻
 	LONGLONG pressTime;		// 按键时刻
 	//double biasRate;		// 偏差率(%)
-	Point2 smallBallBegCo;	// 起始座标
-	Point2 targetCo;		// 目标座标
-	Point2 pressSmallBallCo;// 按键座标
+	Point2 smallBallBegCo;	// 起始坐标
+	Point2 targetCo;		// 目标坐标
+	Point2 pressSmallBallCo;// 按键坐标
 	map <string, bool> flag;//自定义标志
 	// 以下读取记录时用：
 	double visiblePeriod;			// 可见运动时间(毫秒)
