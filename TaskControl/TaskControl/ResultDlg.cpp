@@ -7,6 +7,8 @@
 #include "MainFrm.h"
 #include "TaskControlDoc.h"
 #include "math.h"
+#include <iostream>
+using namespace std;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -23,16 +25,21 @@ CResultDlg::CResultDlg(CWnd* pParent /*=NULL*/)
 {
 	//{{AFX_DATA_INIT(CResultDlg)
 	//}}AFX_DATA_INIT
+	cout << "on constructor" << endl;
 	m_pMainFrm = NULL;
+	iCurIdx = -1;
 }
 
 CResultDlg::CResultDlg(CFrameWnd* pMainFrm) // modeless constructor
 {
 	m_pMainFrm = pMainFrm;
+	iCurIdx = -1;
 }
 
 BOOL CResultDlg::Create()
 {
+	//m_pMainFrm = (CFrameWnd*)AfxGetMainWnd();
+	cout << "on create" << endl;
 	return CDialog::Create(CResultDlg::IDD);
 }
 
@@ -66,6 +73,7 @@ void CResultDlg::OnSize(UINT nType, int cx, int cy)
 	CDialog::OnSize(nType, cx, cy);
 	
 	// TODO: Add your message handler code here
+	cout << "on size" << endl;
 	RECT wnRect;
 	if(m_ListDlg.GetSafeHwnd()!=NULL)
 	{
@@ -90,6 +98,7 @@ void CResultDlg::OnSize(UINT nType, int cx, int cy)
 void CResultDlg::OnClose() 
 {
 	// TODO: Add your message handler code here and/or call default
+	cout << "on close" << endl;
 	if(m_pMainFrm!=NULL){
 		m_pMainFrm->PostMessage(WM_CLOSEDLG,0);
 	}			
@@ -101,6 +110,7 @@ BOOL CResultDlg::OnInitDialog()
 	CDialog::OnInitDialog();
 	
 	// TODO: Add extra initialization here	
+	cout << "on initdialog" << endl;
 	CString cs;
     int pos,pos1;
 	CMenu *pMenu;
@@ -234,24 +244,32 @@ BOOL CResultDlg::OnInitDialog()
 
 void CResultDlg::AddPages()
 {
-    pPages.Add(&m_ListDlg);
+	cout << "on addpage" << endl;
+	cout << "on m_ListDlg" << endl;
+	pPages.Add(&m_ListDlg);
 	csIds.Add(IDD_LISTDLG);
 	
+	cout << "on m_ChartDlg" << endl;
 	pPages.Add(&m_ChartDlg);
 	csIds.Add(IDD_CHARTDLG);
 
+	cout << "on m_AnalysisDlg" << endl;
 	pPages.Add(&m_AnalysisDlg);
 	csIds.Add(IDD_ANALYSISDLG);
 }
 
 CDialog* CResultDlg::GetDialog(const int id)
 {
+	cout << "on GetDialog" << endl;
+	cout << "page id " << id<< endl;
+	cout << "page size " << pPages.GetSize() << endl;
 	ASSERT(id>=0&&id<pPages.GetSize());
 	return (CDialog *)pPages.GetAt(id);
 }
 
 CResultDlg::~CResultDlg()
 {
+	cout << "on destructor" << endl;
 	ClosePages();
 	pPages.RemoveAll();
 	csIds.RemoveAll();
@@ -259,6 +277,7 @@ CResultDlg::~CResultDlg()
 
 void CResultDlg::ClosePages()
 {
+	cout << "on closepage" << endl;
 	for(int t=0;t<pPages.GetSize();t++)
 	{
 		CDialog *pDlg=GetDialog(t);
@@ -269,6 +288,9 @@ void CResultDlg::ClosePages()
 
 void CResultDlg::SetCurDlg(const int id)
 {
+	cout << "on setcurdlg" << endl;
+	cout << "iCurIdx " << iCurIdx << endl;
+	cout << "id " << id << endl;
 	if(iCurIdx>=0)
 	{
 		CDialog *pDlg1=GetDialog(iCurIdx);
@@ -288,7 +310,8 @@ void CResultDlg::DataChart(short PlotNo)
 //	m_pParent = (CMainFrame*) m_pMainFrm;
 //	m_pParent->m_pChartDlg = new CChartDlg(this);
 
-    CTaskControlDoc* pDoc;
+	cout << "on datachart" << endl;
+	CTaskControlDoc* pDoc;
 	CView *pView;
     pView = (CView*)m_pMainFrm->GetActiveView();	
 	pDoc = (CTaskControlDoc*)pView->GetDocument();	
@@ -343,7 +366,8 @@ void CResultDlg::DataChart(short PlotNo)
 void CResultDlg::OnAnalysis() 
 {
 	// TODO: Add your control notification handler code here
-    CTaskControlDoc* pDoc;
+	cout << "on analysis" << endl;
+	CTaskControlDoc* pDoc;
 	CView *pView;
     pView = (CView*)m_pMainFrm->GetActiveView();	
 	pDoc = (CTaskControlDoc*)pView->GetDocument();	
@@ -357,6 +381,7 @@ void CResultDlg::OnAnalysis()
 void CResultDlg::OnResultList() 
 {
 	// TODO: Add your command handler code here
+	cout << "on reslist" << endl;
 	SetCurDlg(0);
 }
 
@@ -391,6 +416,7 @@ void CResultDlg::OnChartObjanglespeed()
 
 HBRUSH CResultDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
+	cout << "on ctlcolor" << endl;
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 	if (nCtlColor == CTLCOLOR_EDIT){
 		pDC->SetBkColor(RGB(255,255,255));

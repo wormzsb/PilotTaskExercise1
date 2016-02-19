@@ -1686,6 +1686,8 @@ LANGUAGE 4, 2
 #endif //_WIN32
 #include "res\TaskControl.rc2"  // non-Microsoft Visual C++ edited resources
 #include "l.chs\afxres.rc"          // Standard components
+#include "l.chs/afxprint.rc"
+#include "l.chs/afxribbon.rc"
 #endif
 
 /////////////////////////////////////////////////////////////////////////////

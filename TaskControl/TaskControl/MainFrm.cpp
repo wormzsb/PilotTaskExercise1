@@ -10,6 +10,8 @@
 #include "SelectView.h"
 #include "HardView.h"
 #include "SettingDlg.h"
+#include <iostream>
+using namespace std;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -59,7 +61,13 @@ static UINT indicators[] =
 
 CMainFrame::CMainFrame()
 {
+
 	// TODO: add member initialization code here
+	// 打开控制台
+	if (!AllocConsole()) 
+		return;
+	freopen("CONOUT$", "w", stdout);
+
 }
 
 CMainFrame::~CMainFrame()
@@ -253,6 +261,7 @@ void CMainFrame::OnHardSetting()
 void CMainFrame::OnDisplayresult() 
 {
 	// TODO: Add your command handler code here
+	cout << ("OnDisplayresult begin") << endl;
 	int pos;
 	CTaskControlDoc* pDoc = (CTaskControlDoc*)GetActiveDocument();
 	CString m_FileName;
@@ -268,6 +277,7 @@ void CMainFrame::OnDisplayresult()
 	Dlg.m_ofn.lpstrInitialDir="Data";	
 	if(Dlg.DoModal()==IDOK)
 	{
+		cout << "OK" << endl;
 		pDoc->bBatch = FALSE;
 		SetCurrentDirectory(lpBuffer);	
         m_FileName = Dlg.GetPathName();
@@ -279,14 +289,19 @@ void CMainFrame::OnDisplayresult()
 		}
 		pDoc->m_FileName = m_FileName;	
 		m_pWSDlg = new CResultDlg(this);
+		cout << "before create" << endl;
 		m_pWSDlg->Create(); // displays the dialog window
+		cout << "after create" << endl;
 	}
-	SetCurrentDirectory(lpBuffer);		
+	SetCurrentDirectory(lpBuffer);	
+	cout << ("OnDisplayresult end") << endl;
+
 }
 
 LRESULT CMainFrame::OnCloseDlg(WPARAM wParam,LPARAM lParam)
 {
 	m_pWSDlg->DestroyWindow();
+	delete m_pWSDlg;
 	return 0L;
 }
 

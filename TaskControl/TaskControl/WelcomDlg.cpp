@@ -88,7 +88,7 @@ void CWelcomDlg::OnPaint()
 		pDC->StretchBlt(0,0,nWidth,nHeight,&MemDC,0,0,nWidth,nHeight,SRCCOPY); 
 	
 		MemDC.SelectObject(OldBitmap);
-
+		ReleaseDC(pDC);
 
 	}
 

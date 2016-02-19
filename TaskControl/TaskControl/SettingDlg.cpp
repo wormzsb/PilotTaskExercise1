@@ -6,6 +6,8 @@
 #include "SettingDlg.h"
 #include "MainFrm.h"
 #include "TaskControlDoc.h"
+#include <iostream>
+using namespace std;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -52,6 +54,7 @@ END_MESSAGE_MAP()
 void CSettingDlg::OnSelchangeTab1(NMHDR* pNMHDR, LRESULT* pResult) 
 {
 	// TODO: Add your control notification handler code here
+	cout << "on OnSelchangeTab1" << endl;
 	int t = m_TabCtrl.GetCurSel();
     SetCurDlg(t);
 	*pResult = 0;
