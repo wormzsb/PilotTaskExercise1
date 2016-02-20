@@ -992,9 +992,8 @@ CString CListDlg::getCString(string x) {
 }
 
 CString CListDlg::getCString(double x) {
-	stringstream ss;
-	ss << x;
-	CString cstr(ss.str().c_str());
+	CString cstr;
+	cstr.Format("%.1f", x);//T7要求时间保留小数点后一位
 	return cstr;
 }
 
@@ -1028,7 +1027,7 @@ BOOL CListDlg::AddT7Item(int i) {
 	m_ResultList.AddItem(i, 8, getCString(rec.totalPeriod), -1);
 	m_ResultList.AddItem(i, 9, getCString(rec.evaluateTime), -1);
 	str = (rec.deviationRate > 1e-6) ? "+" : "";
-	str += getCString(rec.deviationRate);
+	str += getCString(rec.deviationRate*100)+"%";
 	m_ResultList.AddItem(i, 10, str.c_str(), -1);
 	m_ResultList.AddItem(i, 11, rec.getCo(rec.smallBallBegCo).c_str(), -1);
 	m_ResultList.AddItem(i, 12, rec.getCo(rec.targetCo).c_str(), -1);

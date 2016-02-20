@@ -19,6 +19,7 @@ public:
 	//{{AFX_DATA(CAnalysisDlg)
 	enum { IDD = IDD_ANALYSISDLG };
 	CDataList	m_ResultList;
+	CString getCString(double x);
 	//}}AFX_DATA
     void DisplayResult();
 // Overrides

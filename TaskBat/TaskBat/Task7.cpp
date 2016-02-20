@@ -303,7 +303,7 @@ VOID t7::SaveName()
 		<< "进入遮挡到按键时间" << "\t"
 		<< "实际时间(毫秒)" << "\t"
 		<< "估计时间(毫秒)" << "\t"
-		<< "偏差率(%)" << "\t"
+		<< "偏差率" << "\t"
 		<< "起始坐标" << "\t"
 		<< "目标坐标" << "\t"
 		<< "按键坐标" << "\n";
@@ -336,38 +336,38 @@ VOID t7::SaveData()
 
 	// 小球开始运动的时刻
 	//fprintf(fp, "%I64d\t", rec.moveBegTime);
-	fprintf(fp, "%.4lf\t", rec.getPeriod(taskBeginTime.QuadPart, rec.moveBegTime));
+	fprintf(fp, "%.1lf\t", rec.getPeriod(taskBeginTime.QuadPart, rec.moveBegTime));
 
 	// 小球消失的时刻
 	//fprintf(fp, "%I64d\t", rec.disappearTime);
-	fprintf(fp, "%.4lf\t", rec.getPeriod(taskBeginTime.QuadPart, rec.disappearTime));
+	fprintf(fp, "%.1lf\t", rec.getPeriod(taskBeginTime.QuadPart, rec.disappearTime));
 
 	// 按键的时刻
 	//fprintf(fp, "%I64d\t", rec.pressTime);
-	fprintf(fp, "%.4lf\t", rec.getPeriod(taskBeginTime.QuadPart, rec.pressTime));
+	fprintf(fp, "%.1lf\t", rec.getPeriod(taskBeginTime.QuadPart, rec.pressTime));
 
 	// 可见运动时间
-	fprintf(fp, "%.4lf\t", rec.getVisiblePeriod());
+	fprintf(fp, "%.1lf\t", rec.getVisiblePeriod());
 	
 	// 进入遮挡到按键时间
 	double tmp = rec.getObstacle2PressPeriod();
-	fprintf(fp, "%.4lf\t", tmp);
+	fprintf(fp, "%.1lf\t", tmp);
 
 	// 实际时间
-	fprintf(fp, "%.2lf\t", rec.getTotalPeriod());
+	fprintf(fp, "%.1lf\t", rec.getTotalPeriod());
 
 	// 估计时间
-	fprintf(fp, "%.2lf\t",  rec.evaluateTime);
+	fprintf(fp, "%.1lf\t",  rec.evaluateTime);
 
 	// 偏差率
 	if (!bTimeOut) {
 		double ratio;
-		ratio = sqrt(pow(((int)rec.pressSmallBallCo.x - (int)rec.targetCo.x), 2) + pow(((int)rec.pressSmallBallCo.y - (int)rec.targetCo.y), 2))
-			/ (double)m_Setting.m_iObstacleRadius * 100.;
+		ratio = (double)sqrt(pow(((int)rec.pressSmallBallCo.x - (int)rec.targetCo.x), 2) + pow(((int)rec.pressSmallBallCo.y - (int)rec.targetCo.y), 2))
+			/ (double)m_Setting.m_iObstacleRadius;//目前为根据结果输出的坐标进行计算
 		if ((rec.pressSmallBallCo.x - rec.targetCo.x < 0) || (rec.pressSmallBallCo.y - rec.targetCo.y < 0))
 			fprintf(fp, "-" );
 		else fprintf(fp, "+" );
-		fprintf(fp, "%.2lf\t", ratio);
+		fprintf(fp, "%.3lf\t", ratio);
 	}
 	else 
 		fprintf(fp, "%d\t", -1);

@@ -69,6 +69,12 @@ void CAnalysisDlg::OnSize(UINT nType, int cx, int cy)
 	}
 }
 
+CString CAnalysisDlg::getCString(double x) {
+	CString cstr;
+	cstr.Format("%.3f", x);//T7要求结果保留小数点后三位
+	return cstr;
+}
+
 //显示数据分析的结果
 void CAnalysisDlg::DisplayResult()
 {
@@ -413,8 +419,8 @@ void CAnalysisDlg::DisplayResult()
 		if (pDoc->recs["t7"].size() == 0) return;
 		i = 0;
 		m_ResultList.AddItem(i++, 1, CString(to_string(pDoc->recs["t7"].size()).c_str()), -1);
-		m_ResultList.AddItem(i++, 1, CString(to_string(pDoc->getAvgAbsDevRatio()).c_str()), -1);
-		m_ResultList.AddItem(i++, 1, CString(to_string(pDoc->getSDAbsDveRatio()).c_str()), -1);
+		m_ResultList.AddItem(i++, 1, getCString(pDoc->getAvgAbsDevRatio()), -1);
+		m_ResultList.AddItem(i++, 1, getCString(pDoc->getSDAbsDveRatio()), -1);
 		m_ResultList.AddItem(i++, 1, CString(to_string(pDoc->getUnRspCnt()).c_str()), -1);
 		int taskBegTime = round(pDoc->recs["t7"].begin()->moveBegTime / 1000.);
 		m_ResultList.AddItem(i++, 1, CString(to_string(taskBegTime).c_str()), -1);
