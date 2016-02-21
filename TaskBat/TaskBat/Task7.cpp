@@ -362,11 +362,9 @@ VOID t7::SaveData()
 	// 偏差率
 	if (!bTimeOut) {
 		double ratio;
-		ratio = (double)sqrt(pow(((int)rec.pressSmallBallCo.x - (int)rec.targetCo.x), 2) + pow(((int)rec.pressSmallBallCo.y - (int)rec.targetCo.y), 2))
-			/ (double)m_Setting.m_iObstacleRadius;//目前为根据结果输出的坐标进行计算
-		if ((rec.pressSmallBallCo.x - rec.targetCo.x < 0) || (rec.pressSmallBallCo.y - rec.targetCo.y < 0))
-			fprintf(fp, "-" );
-		else fprintf(fp, "+" );
+		ratio = -(rec.evaluateTime - rec.getObstacle2PressPeriod()) / rec.evaluateTime;
+		if (ratio > 1e-6)
+			fprintf(fp, "+" );
 		fprintf(fp, "%.3lf\t", ratio);
 	}
 	else 
