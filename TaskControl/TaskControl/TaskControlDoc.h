@@ -229,9 +229,12 @@ public:
 
 	//任务8的结果数据类型
 	struct T8Res {
-		double CorrectRate;
-		double AvgResTime;
-		double TimeRate_Ratio;
+		double CorrectRate=0;
+		double AvgResTime=0;
+		double TimeRate_Ratio=0;
+		double SDrestime = 0;
+		SYSTEMTIME sTime, eTime; //开始结束时间
+		int duration; //任务总时间
 	};
 	struct T8Res t8res;
 	

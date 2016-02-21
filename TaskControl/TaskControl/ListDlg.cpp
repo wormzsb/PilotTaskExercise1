@@ -1049,6 +1049,12 @@ BOOL CListDlg::AddT8Item(int row) {
 	m_ResultList.AddItem(row, col++, getCString(rec.btn), -1);
 	m_ResultList.AddItem(row, col++, getCString(rec.isRight), -1);
 	m_ResultList.AddItem(row, col++, getCString(rec.responseTime), -1);
+	if (row == 0)
+	{
+		m_ResultList.AddItem(row, col++, getCString(pDoc->t8res.sTime.wHour) + ":" + getCString(pDoc->t8res.sTime.wMinute) + ":" + getCString(pDoc->t8res.sTime.wSecond), -1);
+		m_ResultList.AddItem(row, col++, getCString(pDoc->t8res.eTime.wHour) + ":" + getCString(pDoc->t8res.eTime.wMinute) + ":" + getCString(pDoc->t8res.eTime.wSecond), -1);
+		m_ResultList.AddItem(row, col++, getCString(pDoc->t8res.duration), -1);
+	}
 	return TRUE;
 
 }

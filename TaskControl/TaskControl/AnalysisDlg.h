@@ -20,6 +20,7 @@ public:
 	enum { IDD = IDD_ANALYSISDLG };
 	CDataList	m_ResultList;
 	CString getCString(double x);
+	CString getCStringInt(int x);
 	//}}AFX_DATA
     void DisplayResult();
 // Overrides

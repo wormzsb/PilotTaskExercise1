@@ -62,6 +62,11 @@ namespace t8
 	extern int rec_y_begin;
 	extern int rec_x_end;
 	extern int rec_y_end;
+	extern time_t now_time;//时间戳
+	//extern tm* start_time;
+	//extern tm* end_time;//实验开始结束时间
+	extern int duration;//实验总时间
+	extern SYSTEMTIME sTime, eTime;
 	extern const float FontScale;             //字体随屏幕分辨率的放缩尺度
 
 	extern const char Insturction11[];
