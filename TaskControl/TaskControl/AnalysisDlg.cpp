@@ -406,9 +406,9 @@ void CAnalysisDlg::DisplayResult()
 		m_ResultList.AddItem(i++, 0, "未反应次数", -1);
 		//m_ResultList.AddItem(i++, 0, "速度知觉测试开始时间（精确到秒）", -1);
 		//m_ResultList.AddItem(i++, 0, "速度知觉测试结束时间（精确到秒）", -1);
-		m_ResultList.AddItem(i++, 0, "速度知觉测试开始时间（精确到秒）", -1);
-		m_ResultList.AddItem(i++, 0, "速度知觉测试结束时间（精确到秒）", -1);
-		m_ResultList.AddItem(i++, 0, "速度知觉测试耗时（精确到秒）", -1);
+		m_ResultList.AddItem(i++, 0, "实验开始时间", -1);
+		m_ResultList.AddItem(i++, 0, "实验结束时间", -1);
+		m_ResultList.AddItem(i++, 0, "实验用时（s）", -1);
 		
 		if (pDoc->recs["t7"].size() == 0) return;
 		i = 0;

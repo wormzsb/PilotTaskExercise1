@@ -1470,8 +1470,28 @@ VOID t3::UpdateState()
 								
 									
 								}
-								else
+								else//从m_Setting.m_PracMode == 0那里copy过来
 								{
+
+									m_bEventStart = FALSE;
+									//dfTotalEvent = 0; //???
+									m_EventSureTime[m_RecordNo] = 0;
+									m_SureButtonNo[m_RecordNo] = -1;
+									m_EventNo++;
+									m_RecordNo++;
+									if (m_RecordNo >= m_MemEvent)
+									{
+										m_MemEvent += 100;
+										//m_EventType = (short*)realloc(m_EventType,m_MemEvent*sizeof(short));
+										m_EventStartTime = (unsigned long*)realloc(m_EventStartTime, m_MemEvent*sizeof(unsigned long));
+										m_EventSureTime = (unsigned long*)realloc(m_EventSureTime, m_MemEvent*sizeof(unsigned long));
+										m_SureButtonNo = (short*)realloc(m_SureButtonNo, m_MemEvent*sizeof(short));
+									}
+
+									if (m_Setting.m_EventMode == 0)
+										resEventType.push_back(0);
+									else
+										resEventType.push_back(m_EventType[m_EventNo]);
 									sprintf(szFeedBack,"反应超时");
 									m_bShowFeedback = TRUE;
 								}

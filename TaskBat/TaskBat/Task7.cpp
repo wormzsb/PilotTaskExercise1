@@ -1084,6 +1084,7 @@ VOID t7::UpdateState()
 			if (abs(stPntSmallBall.dX - stPntSmallBallOrg.dX + stPntSmallBall.dY - stPntSmallBallOrg.dY) > dOrgDistance +m_Setting.m_iObstacleRadius)
 			{
 				bTimeOut = TRUE;
+				rec.pressSmallBallCo = Point2(0, 0);
 				dfTotalMove = 0;
 				cout << "taskover in updateState\n";
 				TaskOver();
