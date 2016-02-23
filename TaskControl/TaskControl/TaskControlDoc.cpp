@@ -271,6 +271,11 @@ CTaskControlDoc::CTaskControlDoc()
 	m_SureButtonNo = NULL;
     m_EventRT = NULL;
 	m_bEventAcc = NULL;
+	m_TrueCount = 0;
+	m_MissingCount = 0;
+	m_CRCount = 0;
+	m_FalseCount = 0;
+	m_FailCount = 0;
 
 	m_CodeType = NULL;
 	m_CodeStartTime = NULL;
@@ -3268,19 +3273,29 @@ void CTaskControlDoc::DataAnalysis()
 		{
 			if (m_Setting3[0].m_EventMode == 0)// eventMode==0 简单模式
 			{
-				if (m_EventType[i] == 0 && m_SureButtonNo[i] == 0) //统计击中数
-					m_TrueCount++;
-				if (m_EventType[i] == 0 && m_SureButtonNo[i] == 1) // 统计漏报数
-					m_MissingCount++;
-				//if (m_EventType[i] == 1 && m_SureButtonNo[i] == 1) //统计正确拒斥数
-				//	m_CRCount++;
-				//if (m_EventType[i] == 1 && m_SureButtonNo[i] == 0) //统计虚报数
-				//	m_FalseCount++;
-				if (m_EventType[i] == 2 && m_SureButtonNo[i] == 0) //统计未触发事件时错误按键数
-					m_FailCount++;
-				if (m_EventType[i] == 0
-					&& (m_SureButtonNo[i] == 0 || m_SureButtonNo[i] == 1)) //统计靶事件反应时
-					m_RTTotal += m_EventRT[i];
+				//初始化统计变量
+				m_TrueCount = 0;
+				m_MissingCount = 0;
+				m_CRCount = 0;
+				m_FalseCount = 0;
+				m_FailCount = 0;
+				m_RTTotal = 0; //靶事件反应总时
+
+				for (i =/*m_ExperStart2*/0; i < m_RecordNo; i++)//遍历所有记录
+				{
+					if (m_EventType[i] == 0 && m_SureButtonNo[i] == 0) //统计击中数
+						m_TrueCount++;
+					if (m_EventType[i] == 0 && m_SureButtonNo[i] == -1) // 统计漏报数
+						m_MissingCount++;
+					//if (m_EventType[i] == 1 && m_SureButtonNo[i] == 1) //统计正确拒斥数
+					//	m_CRCount++;
+					//if (m_EventType[i] == 1 && m_SureButtonNo[i] == 0) //统计虚报数
+					//	m_FalseCount++;
+					if (m_EventType[i] == 2) //统计未触发事件时错误按键数
+						m_FailCount++;
+					if (m_EventType[i] == 0	&& m_SureButtonNo[i] ==0 ) //统计靶事件反应时
+						m_RTTotal += m_EventRT[i];
+				}
 				//---old code---//
 				/*for(i=m_ExperStart2;i<m_RecordNo;i++)
 				{
@@ -3298,10 +3313,10 @@ void CTaskControlDoc::DataAnalysis()
 				m_MissingCount++;
 				}
 				}*/
-				m_RTAvg = (float)m_RTTotal / (float)m_TrueCount;
+				m_RTAvg = (double)m_RTTotal / (double)m_TrueCount;
 				//m_RTTotal = 0;
 				double sumRT = 0.;
-				for (i = m_ExperStart2; i < m_RecordNo; i++)
+				for (i = 0; i < m_RecordNo; i++)
 				{
 					if (m_bEventAcc[i] == 1)
 					{
@@ -3316,12 +3331,13 @@ void CTaskControlDoc::DataAnalysis()
 			}
 			else //选择模式
 			{
-				//// 初始化统计变量
-				//m_TrueCount = 0;
-				//m_MissingCount = 0;
-				//m_CRCount = 0;
-				//m_FalseCount = 0;
-				//m_RTTotal = 0; //靶事件反应总时
+				//初始化统计变量
+				m_TrueCount = 0;
+				m_MissingCount = 0;
+				m_CRCount = 0;
+				m_FalseCount = 0;
+				m_FailCount = 0;
+				m_RTTotal = 0; //靶事件反应总时
 
 				for (i =/*m_ExperStart2*/0; i < m_RecordNo; i++)//遍历所有记录
 				{
@@ -3333,7 +3349,7 @@ void CTaskControlDoc::DataAnalysis()
 						m_CRCount++;
 					if (m_EventType[i] == 1 && m_SureButtonNo[i] == 0) //统计虚报数
 						m_FalseCount++;
-					if (m_EventType[i] == 2 && m_SureButtonNo[i] == 0) //统计未触发事件时错误按键数
+					if (m_EventType[i] == 2) //统计未触发事件时错误按键数
 						m_FailCount++;
 					if (m_EventType[i] == 0
 						&& (m_SureButtonNo[i] == 0 || m_SureButtonNo[i] == 1)) //统计靶事件反应时

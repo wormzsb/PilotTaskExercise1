@@ -1477,8 +1477,8 @@ VOID t3::UpdateState()
 									//dfTotalEvent = 0; //???
 									m_EventSureTime[m_RecordNo] = 0;
 									m_SureButtonNo[m_RecordNo] = -1;
-									m_EventNo++;
-									m_RecordNo++;
+									//m_EventNo++;
+									//m_RecordNo++;
 									if (m_RecordNo >= m_MemEvent)
 									{
 										m_MemEvent += 100;
