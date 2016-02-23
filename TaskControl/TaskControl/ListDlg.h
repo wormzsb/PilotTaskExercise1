@@ -54,7 +54,7 @@ public:
 	BOOL AddT6TraceItem(int i);
 	BOOL AddT6JudgeItem(int i);
 	BOOL AddT6MemoryItem(int i);
-	BOOL AddT7Item(int i);
+	BOOL AddT7Item(int i, int n);
 
 	BOOL AddT8Item(int row);
 

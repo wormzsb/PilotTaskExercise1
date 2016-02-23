@@ -62,7 +62,7 @@ namespace t8
 	extern int rec_y_begin;
 	extern int rec_x_end;
 	extern int rec_y_end;
-	extern time_t now_time;//时间戳
+	extern time_t start_time, end_time;//时间戳
 	//extern tm* start_time;
 	//extern tm* end_time;//实验开始结束时间
 	extern int duration;//实验总时间

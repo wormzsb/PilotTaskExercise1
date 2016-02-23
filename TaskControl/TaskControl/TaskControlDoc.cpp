@@ -660,13 +660,24 @@ BOOL CTaskControlDoc::ReadT7() {
 		return TRUE;
 	}
 	
+	string t;
+	int n=0;
+	while (getline(fin, t)) n++;//计算行数
+	fin.close();
+
+	fin.open((CT2A(m_FileName)));
+	if (fin.is_open() == 0) {
+		AfxMessageBox("文件没有正确打开");
+		return TRUE;
+	}
+
 	char sz[1000];
 	// read head(1 row)
 	fin.getline(sz, 1000);
 	//TRACE("\nsz = %s\n", sz);
 	
-
 	recs["t7"] = vector<TaskRec>();
+
 	int i = 0;
 	while (fin.peek() != EOF) {
 		TRACE("\n i = %d \n", i);
@@ -682,10 +693,17 @@ BOOL CTaskControlDoc::ReadT7() {
 		fin >> str; rec.setCo(rec.smallBallBegCo, str);
 		fin >> str; rec.setCo(rec.targetCo, str);
 		fin >> str; rec.setCo(rec.pressSmallBallCo, str);
+		if (i == n - 2)
+		{
+			char t2;
+			fin >> t7time.sTime.wHour >> t2 >> t7time.sTime.wMinute >> t2 >> t7time.sTime.wSecond
+				>> t7time.eTime.wHour >> t2 >> t7time.eTime.wMinute >> t2 >> t7time.eTime.wSecond
+				>> t7time.duration;
+		}
 		recs["t7"].push_back(rec);
 		
 		// add to list dialog
-		m_pWSDlg->m_ListDlg.AddT7Item(i);
+		m_pWSDlg->m_ListDlg.AddT7Item(i, n);
 
 		i++;
 	}

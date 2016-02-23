@@ -420,7 +420,7 @@ void CAnalysisDlg::DisplayResult()
 		//m_ResultList.AddItem(i++, 0, "速度知觉测试结束时间（精确到秒）", -1);
 		m_ResultList.AddItem(i++, 0, "实验开始时间", -1);
 		m_ResultList.AddItem(i++, 0, "实验结束时间", -1);
-		m_ResultList.AddItem(i++, 0, "实验用时（s）", -1);
+		m_ResultList.AddItem(i++, 0, "实验用时(s)", -1);
 		
 		if (pDoc->recs["t7"].size() == 0) return;
 		i = 0;
@@ -428,13 +428,9 @@ void CAnalysisDlg::DisplayResult()
 		m_ResultList.AddItem(i++, 1, getCString(pDoc->getAvgAbsDevRatio()), -1);
 		m_ResultList.AddItem(i++, 1, getCString(pDoc->getSDAbsDveRatio()), -1);
 		m_ResultList.AddItem(i++, 1, CString(to_string(pDoc->getUnRspCnt()).c_str()), -1);
-		int taskBegTime = round(pDoc->recs["t7"].begin()->moveBegTime / 1000.);
-		m_ResultList.AddItem(i++, 1, CString(to_string(taskBegTime).c_str()), -1);
-		int taskEndTime = round(pDoc->recs["t7"].rbegin()->pressTime / 1000.);
-		m_ResultList.AddItem(i++, 1, CString(to_string(taskEndTime).c_str()), -1);
-		int timeTmp = round(pDoc->recs["t7"].rbegin()->pressTime / 1000.
-			- pDoc->recs["t7"].begin()->moveBegTime / 1000.);
-		m_ResultList.AddItem(i++, 1, CString(to_string(timeTmp).c_str()), -1);
+		m_ResultList.AddItem(i++, 1, getCStringInt(pDoc->t7time.sTime.wHour) + ":" + getCStringInt(pDoc->t7time.sTime.wMinute) + ":" + getCStringInt(pDoc->t7time.sTime.wSecond), -1);
+		m_ResultList.AddItem(i++, 1, getCStringInt(pDoc->t7time.eTime.wHour) + ":" + getCStringInt(pDoc->t7time.eTime.wMinute) + ":" + getCStringInt(pDoc->t7time.eTime.wSecond), -1);
+		m_ResultList.AddItem(i++, 1, getCStringInt(pDoc->t7time.duration), -1);
 		
 		break;
 	}

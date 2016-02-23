@@ -77,6 +77,9 @@ namespace t7
 	extern int rec_y_begin;
 	extern int rec_x_end;
 	extern int rec_y_end;
+	extern time_t start_time, end_time; 
+	extern SYSTEMTIME sTime, eTime; //记录任务时间
+	extern int duration;//实验总时间
 
 	extern const float FontScale;    //字体随屏幕分辨率的放缩尺度
 

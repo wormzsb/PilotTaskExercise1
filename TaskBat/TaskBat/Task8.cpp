@@ -69,9 +69,7 @@ int t8::rec_x_begin;
 int t8::rec_y_begin;
 int t8::rec_x_end;
 int t8::rec_y_end;
-time_t t8::now_time;//时间戳
-//tm* t8::start_time;
-//tm* t8::end_time;//实验开始结束时间
+time_t t8::start_time, t8::end_time;//时间戳
 int t8::duration;//实验总时间
 SYSTEMTIME t8::sTime, t8::eTime;
 const float t8::FontScale = (float)(t8::x_resolution + t8::y_resolution) / 1400.0;             //字体随屏幕分辨率的放缩尺度
@@ -280,6 +278,8 @@ VOID t8::SaveName()
 	char m_filename2[160];
 	char szTime[160];
 
+	start_time = time(NULL);
+	GetLocalTime(&sTime);
 	SYSTEMTIME CurTime;
 	GetLocalTime(&CurTime);
 	sprintf(szTime, "%d%02d%02d%02d%02d%02d",
@@ -815,9 +815,6 @@ VOID t8::Render()
 		case STATE_DISPLAYINSTURCTION:
 			//if (SUCCEEDED(g_pSprite->Begin(D3DXSPRITE_ALPHABLEND)))
 			//{
-				now_time = time(NULL);
-				//start_time = localtime(&now_time);
-				GetLocalTime(&sTime);
 				if (!drawTex("inst", g_pSprite, texInst, x_resolution, y_resolution))
 					break;
 				//D3DXMatrixTransformation2D(&mx, NULL, 0.0, &D3DXVECTOR2((float)1024 / (float)1024, (float)768 / (float)1024), &D3DXVECTOR2(0, 0), NULL, &D3DXVECTOR2(x_resolution / 2, y_resolution / 2));
@@ -1702,10 +1699,8 @@ void t8::saveImgList(vector<string> &LImgs, vector<string> &RImgs, string fileNa
 }
 
 void t8::saveRecs() {
-	time_t t;
-	t = time(NULL);
-	//end_time = localtime(&t);
-	duration = t- now_time;
+	end_time = time(NULL);
+	duration = end_time - start_time;
 	GetLocalTime(&eTime);
 	ofstream out;
 	out.open(szDataFile, ios::app);

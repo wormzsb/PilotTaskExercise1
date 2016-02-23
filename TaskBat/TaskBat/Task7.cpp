@@ -63,6 +63,9 @@ int t7::rec_x_begin = (t7::x_resolution - t7::x_resolution1024)/2;
 int t7::rec_y_begin = (t7::y_resolution - t7::y_resolution768)/2;
 int t7::rec_x_end = (t7::x_resolution + t7::x_resolution1024)/2;
 int t7::rec_y_end = (t7::y_resolution + t7::y_resolution768)/2;
+time_t t7::start_time, t7::end_time;
+SYSTEMTIME t7::sTime, t7::eTime;
+int t7::duration;//实验时间信息
 
 const float t7::FontScale = (float)(t7::x_resolution+t7::y_resolution)/1400.0;    //字体随屏幕分辨率的放缩尺度
 
@@ -254,6 +257,9 @@ VOID t7::SaveName()
 	FILE *fp;
 	char m_DataDir[60];
 	char m_filename[160];
+
+	start_time = time(NULL);
+	GetLocalTime(&sTime);
 	SYSTEMTIME CurTime;
 	GetLocalTime(&CurTime);
     if(strlen(m_DataName)==0)
@@ -306,7 +312,10 @@ VOID t7::SaveName()
 		<< "偏差率" << "\t"
 		<< "起始坐标" << "\t"
 		<< "目标坐标" << "\t"
-		<< "按键坐标" << "\n";
+		<< "按键坐标" << "\t"
+		<< "实验开始时间" << "\t"
+		<< "实验结束时间" << "\t"
+		<< "实验用时(s)" << "\n";
 	fprintf(fp,"%s",ss.str().c_str());
 	fclose(fp);
 	
@@ -386,8 +395,22 @@ VOID t7::SaveData()
 	ss.str("");
 	ss << "{X=" << (int)rec.pressSmallBallCo.x
 		<< ",Y=" << (int)rec.pressSmallBallCo.y << "}";
-	fprintf(fp, "%s\n", ss.str().c_str());
+	fprintf(fp, "%s\t", ss.str().c_str());
 
+	//最后一行保存实验时间信息
+	if (iTskCnt == m_Setting.m_iPracTimes*(m_Setting.m_iTop + m_Setting.m_iBottom + m_Setting.m_iLeft + m_Setting.m_iRight) * 3)
+	{
+		end_time = time(NULL);
+		duration = end_time - start_time;
+		GetLocalTime(&eTime);
+		ss.str("");
+		ss << sTime.wHour << ":" << sTime.wMinute << ":" << sTime.wSecond << "\t"
+			<< eTime.wHour << ":" << eTime.wMinute << ":" << eTime.wSecond << "\t"
+			<< duration ;
+		fprintf(fp, "%s\t", ss.str().c_str());
+	}
+
+	fprintf(fp, "\n");
 	fclose(fp);
 }
 
@@ -1082,7 +1105,9 @@ VOID t7::UpdateState()
 			if (abs(stPntSmallBall.dX - stPntSmallBallOrg.dX + stPntSmallBall.dY - stPntSmallBallOrg.dY) > dOrgDistance +m_Setting.m_iObstacleRadius)
 			{
 				bTimeOut = TRUE;
-				rec.pressSmallBallCo = Point2(0, 0);
+				//rec.pressSmallBallCo = Point2(0, 0);
+				rec.pressSmallBallCo.x = 0;
+				rec.pressSmallBallCo.y = 0;
 				dfTotalMove = 0;
 				cout << "taskover in updateState\n";
 				TaskOver();

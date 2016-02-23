@@ -1011,7 +1011,7 @@ CString CListDlg::getCString(LONGLONG x) {
 	return cstr;
 }
 
-BOOL CListDlg::AddT7Item(int i) {
+BOOL CListDlg::AddT7Item(int i, int n) {
 	string str;
 	CMainFrame*   pMain = (CMainFrame*)AfxGetMainWnd();
 	CTaskControlDoc* pDoc = (CTaskControlDoc*)pMain->GetActiveDocument();
@@ -1032,6 +1032,12 @@ BOOL CListDlg::AddT7Item(int i) {
 	m_ResultList.AddItem(i, 11, rec.getCo(rec.smallBallBegCo).c_str(), -1);
 	m_ResultList.AddItem(i, 12, rec.getCo(rec.targetCo).c_str(), -1);
 	m_ResultList.AddItem(i, 13, rec.getCo(rec.pressSmallBallCo).c_str(), -1);
+	if (i == n - 2)
+	{
+		m_ResultList.AddItem(i, 14, getCString(pDoc->t7time.sTime.wHour) + ":" + getCString(pDoc->t7time.sTime.wMinute) + ":" + getCString(pDoc->t7time.sTime.wSecond), -1);
+		m_ResultList.AddItem(i, 15, getCString(pDoc->t7time.eTime.wHour) + ":" + getCString(pDoc->t7time.eTime.wMinute) + ":" + getCString(pDoc->t7time.eTime.wSecond), -1);
+		m_ResultList.AddItem(i, 16, getCString(pDoc->t7time.duration), -1);
+	}
 
 	return TRUE;
 }

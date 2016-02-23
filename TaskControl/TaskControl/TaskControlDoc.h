@@ -227,6 +227,13 @@ public:
 
 	map<string, vector<TaskRec>> recs;
 
+	//任务7的时间结果数据类型
+	struct T7Time {
+		SYSTEMTIME sTime, eTime; //开始结束时间
+		int duration; //任务总时间
+	};
+	struct T7Time t7time;
+
 	//任务8的结果数据类型
 	struct T8Res {
 		double CorrectRate=0;
