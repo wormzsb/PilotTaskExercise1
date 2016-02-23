@@ -20,7 +20,7 @@ public:
 	// setting var
 	//BOOL m_bPracMode;				// 0:exercise; 1: formal
 	int m_iPrensentTime;			// defualt: 10s
-	int m_iFocusTime;			// default: 2s
+	int m_iFocusTime;			// default: 1s
 	int m_iCountdownTime;		// default: 5s
 
 	// UI var

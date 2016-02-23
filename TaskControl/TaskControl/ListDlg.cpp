@@ -992,9 +992,8 @@ CString CListDlg::getCString(string x) {
 }
 
 CString CListDlg::getCString(double x) {
-	stringstream ss;
-	ss << x;
-	CString cstr(ss.str().c_str());
+	CString cstr;
+	cstr.Format("%.1f", x);//T7要求时间保留小数点后一位
 	return cstr;
 }
 
@@ -1028,7 +1027,7 @@ BOOL CListDlg::AddT7Item(int i) {
 	m_ResultList.AddItem(i, 8, getCString(rec.totalPeriod), -1);
 	m_ResultList.AddItem(i, 9, getCString(rec.evaluateTime), -1);
 	str = (rec.deviationRate > 1e-6) ? "+" : "";
-	str += getCString(rec.deviationRate);
+	str += getCString(rec.deviationRate*100)+"%";
 	m_ResultList.AddItem(i, 10, str.c_str(), -1);
 	m_ResultList.AddItem(i, 11, rec.getCo(rec.smallBallBegCo).c_str(), -1);
 	m_ResultList.AddItem(i, 12, rec.getCo(rec.targetCo).c_str(), -1);
@@ -1050,6 +1049,12 @@ BOOL CListDlg::AddT8Item(int row) {
 	m_ResultList.AddItem(row, col++, getCString(rec.btn), -1);
 	m_ResultList.AddItem(row, col++, getCString(rec.isRight), -1);
 	m_ResultList.AddItem(row, col++, getCString(rec.responseTime), -1);
+	if (row == 0)
+	{
+		m_ResultList.AddItem(row, col++, getCString(pDoc->t8res.sTime.wHour) + ":" + getCString(pDoc->t8res.sTime.wMinute) + ":" + getCString(pDoc->t8res.sTime.wSecond), -1);
+		m_ResultList.AddItem(row, col++, getCString(pDoc->t8res.eTime.wHour) + ":" + getCString(pDoc->t8res.eTime.wMinute) + ":" + getCString(pDoc->t8res.eTime.wSecond), -1);
+		m_ResultList.AddItem(row, col++, getCString(pDoc->t8res.duration), -1);
+	}
 	return TRUE;
 
 }

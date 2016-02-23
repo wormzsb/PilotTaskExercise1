@@ -69,6 +69,18 @@ void CAnalysisDlg::OnSize(UINT nType, int cx, int cy)
 	}
 }
 
+CString CAnalysisDlg::getCString(double x) {
+	CString cstr;
+	cstr.Format("%.3f", x);//T7要求结果保留小数点后三位
+	return cstr;
+}
+
+CString CAnalysisDlg::getCStringInt(int x) {
+	CString cstr;
+	cstr.Format("%d", x);//T7要求结果保留小数点后三位
+	return cstr;
+}
+
 //显示数据分析的结果
 void CAnalysisDlg::DisplayResult()
 {
@@ -413,8 +425,8 @@ void CAnalysisDlg::DisplayResult()
 		if (pDoc->recs["t7"].size() == 0) return;
 		i = 0;
 		m_ResultList.AddItem(i++, 1, CString(to_string(pDoc->recs["t7"].size()).c_str()), -1);
-		m_ResultList.AddItem(i++, 1, CString(to_string(pDoc->getAvgAbsDevRatio()).c_str()), -1);
-		m_ResultList.AddItem(i++, 1, CString(to_string(pDoc->getSDAbsDveRatio()).c_str()), -1);
+		m_ResultList.AddItem(i++, 1, getCString(pDoc->getAvgAbsDevRatio()), -1);
+		m_ResultList.AddItem(i++, 1, getCString(pDoc->getSDAbsDveRatio()), -1);
 		m_ResultList.AddItem(i++, 1, CString(to_string(pDoc->getUnRspCnt()).c_str()), -1);
 		int taskBegTime = round(pDoc->recs["t7"].begin()->moveBegTime / 1000.);
 		m_ResultList.AddItem(i++, 1, CString(to_string(taskBegTime).c_str()), -1);
@@ -429,13 +441,25 @@ void CAnalysisDlg::DisplayResult()
 	case 8: {
 		int i = 0;
 		m_ResultList.AddItem(i++, 0, "正确率", -1);
-		m_ResultList.AddItem(i++, 0, "平均反应时", -1);
+		m_ResultList.AddItem(i++, 0, "平均反应时(ms)", -1);
 		m_ResultList.AddItem(i++, 0, "反应时与正确率比值", -1);
+		m_ResultList.AddItem(i++, 0, "反应时标准差(ms)", -1);
+		m_ResultList.AddItem(i++, 0, "实验开始时间", -1);
+		m_ResultList.AddItem(i++, 0, "实验结束时间", -1);
+		m_ResultList.AddItem(i++, 0, "实验用时(s)", -1);
 		if (pDoc->recs["t8"].size() == 0) return;
 		i = 0;
-		m_ResultList.AddItem(i++, 1, CString(to_string(pDoc->t8res.CorrectRate).c_str()), -1);
-		m_ResultList.AddItem(i++, 1, CString(to_string(pDoc->t8res.AvgResTime).c_str()), -1);
-		m_ResultList.AddItem(i++, 1, CString(to_string(pDoc->t8res.TimeRate_Ratio).c_str()), -1);
+		str.Format("%.3lf", pDoc->t8res.CorrectRate);
+		m_ResultList.AddItem(i++, 1, str, -1);
+		str.Format("%.0lf", pDoc->t8res.AvgResTime);
+		m_ResultList.AddItem(i++, 1, str, -1);
+		str.Format("%.0lf", pDoc->t8res.TimeRate_Ratio);
+		m_ResultList.AddItem(i++, 1, str, -1);
+		str.Format("%.0lf", pDoc->t8res.SDrestime);
+		m_ResultList.AddItem(i++, 1, str, -1);
+		m_ResultList.AddItem(i++, 1, getCStringInt(pDoc->t8res.sTime.wHour) + ":" + getCStringInt(pDoc->t8res.sTime.wMinute) + ":" + getCStringInt(pDoc->t8res.sTime.wSecond), -1);
+		m_ResultList.AddItem(i++, 1, getCStringInt(pDoc->t8res.eTime.wHour) + ":" + getCStringInt(pDoc->t8res.eTime.wMinute) + ":" + getCStringInt(pDoc->t8res.eTime.wSecond), -1);
+		m_ResultList.AddItem(i++, 1, getCStringInt(pDoc->t8res.duration), -1);
 
 		break;
 	}

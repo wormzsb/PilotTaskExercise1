@@ -215,7 +215,7 @@ CTaskControlDoc::CTaskControlDoc()
 	// Task 8 set default
 	strcpy_s(m_DefSetting8.m_TaskName, 100, "任务8-三维心理旋转测试");
 	m_DefSetting8.m_bPracMode = FALSE;
-	m_DefSetting8.m_iFocusTime = 2;
+	m_DefSetting8.m_iFocusTime = 1;
 	m_DefSetting8.m_iPrensentTime = 10;
 	m_DefSetting8.m_iCountdownTime = 5;
 
@@ -718,10 +718,23 @@ BOOL CTaskControlDoc::ReadT8()
 		TRACE("\n i = %d \n", i);
 		string str;
 		TaskRec rec;
-		fin >> rec.no;
-		if (fin.fail()) break;
-		fin >> rec.leftImg >> rec.rightImg >> rec.unCoincidence
-			>> rec.btn >> rec.isRight >> rec.responseTime;
+		char t;
+		if (i == 0)
+		{
+			fin >> rec.no;
+			if (fin.fail()) break;
+			fin >> rec.leftImg >> rec.rightImg >> rec.unCoincidence
+				>> rec.btn >> rec.isRight >> rec.responseTime
+				>> t8res.sTime.wHour >> t >> t8res.sTime.wMinute >> t >> t8res.sTime.wSecond
+				>> t8res.eTime.wHour >> t >> t8res.eTime.wMinute >> t >> t8res.eTime.wSecond >> t8res.duration;
+		}//第一行记录任务用时信息
+		else
+		{
+			fin >> rec.no;
+			if (fin.fail()) break;
+			fin >> rec.leftImg >> rec.rightImg >> rec.unCoincidence
+				>> rec.btn >> rec.isRight >> rec.responseTime;
+		}
 		recs["t8"].push_back(rec);
 
 		// add to list dialog
@@ -3978,6 +3991,20 @@ void CTaskControlDoc::DataAnalysis()
 		t8res.AvgResTime = ResTime / (recs["t8"].size()-4);
 		t8res.TimeRate_Ratio = t8res.AvgResTime / t8res.CorrectRate;
 
+		double avg = 0.0;
+		for (int i = 4; i < recs["t8"].size(); i++) {
+			avg += fabs(recs["t8"][i].responseTime);
+		}
+
+		double absSum = 0.;
+		for (int i = 4; i < recs["t8"].size(); i++) {
+			absSum += pow(fabs(recs["t8"][i].responseTime) - avg, 2);
+		}
+		if (recs["t8"].size() >= 6)
+			t8res.SDrestime = sqrt(absSum / (recs["t8"].size() - 5));
+		else
+			t8res.SDrestime = 0;
+
 		_mkdir("Result");
 		_mkdir("Result\\Task8");
 		m_SaveName = "Result\\Task8\\task8_result.txt";
@@ -3985,10 +4012,10 @@ void CTaskControlDoc::DataAnalysis()
 		if (fp != NULL)
 		{
 			fprintf(fp, 
-				"CorrectRate\tAvgResponseTime\tAvgResponseTime\\CorrectRate\n");
+				"CorrectRate\tAvgResponseTime\tAvgResponseTime\\CorrectRate\SDResponseTime\n");
 			fprintf(fp, 
-				"%.2f\t%.2f\t%.2f\t",
-				t8res.CorrectRate, t8res.AvgResTime, t8res.TimeRate_Ratio);
+				"%.3lf\t%.0lf\t%.0lf\%.0lf\t",
+				t8res.CorrectRate, t8res.AvgResTime, t8res.TimeRate_Ratio, t8res.SDrestime);
 			fprintf(fp, "\n");
 			fclose(fp);
 

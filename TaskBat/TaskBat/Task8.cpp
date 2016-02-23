@@ -56,7 +56,7 @@ BOOL t8::m_bAcc;                                     //三维图形记忆正确性标志
 double t8::alpha, t8::omiga, t8::v, t8::a, t8::b, t8::r, t8::Rx, t8::Ry, t8::fai, t8::AngleSpeed, t8::inc_v;
 double t8::m_PostPointX, t8::m_PostPointY;                //当前瞄准器坐标
 int t8::JoyX, t8::JoyY;                                   //当前操纵杆输入值  
-struct TaskSetting8   t8::m_Setting;                 //任务6设置参数
+struct TaskSetting8   t8::m_Setting;                 //任务8设置参数
 struct HardSetting   t8::m_HardSetting;              //硬件设置参数
 struct PartInfo   t8::m_PartInfo;                    //被试者信息
 short t8::m_TrialType;                               //测试类型
@@ -69,6 +69,11 @@ int t8::rec_x_begin;
 int t8::rec_y_begin;
 int t8::rec_x_end;
 int t8::rec_y_end;
+time_t t8::now_time;//时间戳
+//tm* t8::start_time;
+//tm* t8::end_time;//实验开始结束时间
+int t8::duration;//实验总时间
+SYSTEMTIME t8::sTime, t8::eTime;
 const float t8::FontScale = (float)(t8::x_resolution + t8::y_resolution) / 1400.0;             //字体随屏幕分辨率的放缩尺度
 
 const char t8::Insturction11[] = "    欢迎进入双任务三维\
@@ -314,7 +319,7 @@ VOID t8::SaveName()
 	ofstream out(szDataFile);
 	if (!out.is_open()) 
 		MessageBox(hWnd, "数据文件不能创建或打开", "错误", NULL);
-	out << "序号\t左侧图片\t右侧图片\t能否重合\t按键情况\t是否正确\t反应时\n";
+	out << "序号\t左侧图片\t右侧图片\t能否重合\t按键情况\t是否正确\t反应时\t实验开始时间\t实验结束时间\t实验用时\n";
 	out.close();
 }
 
@@ -323,17 +328,19 @@ VOID t8::SaveName()
 //************************************************
 //*保存结果数据记录文件
 //************************************************
-VOID t8::SaveData()
+VOID t8::SaveData()//已更换为saveRecs
 {
+	/*
 	FILE *fp;
 	int i;
 	fp = fopen(szDataFile, "at");
-	for (i = 0; i < recs.size(); i++)
+	fprintf(fp, "%d\t%s\t%s\t%d\t%d\t%d\t%.2f\t%02d%02d%02d\t%02d%02d%02d\t%d\t\n", recs[0].no, recs[0].leftImg, recs[0].rightImg, recs[0].unCoincidence, recs[0].btn, recs[0].isRight, recs[0].responseTime, start_time.wHour, start_time.w, start_time.wSecond, end_time.wHour, end_time.wMin, end_time.wSecond);
+	for (i = 1; i < recs.size(); i++)
 	{
 		fprintf(fp, "%d\t%s\t%s\t%d\t%d\t%d\t%.2f\t\n",
 			recs[i].no, recs[i].leftImg, recs[i].rightImg, recs[i].unCoincidence, recs[i].btn, recs[i].isRight, recs[i].responseTime);
 	}
-	fclose(fp);
+	fclose(fp);*/
 }
 
 
@@ -808,6 +815,9 @@ VOID t8::Render()
 		case STATE_DISPLAYINSTURCTION:
 			//if (SUCCEEDED(g_pSprite->Begin(D3DXSPRITE_ALPHABLEND)))
 			//{
+				now_time = time(NULL);
+				//start_time = localtime(&now_time);
+				GetLocalTime(&sTime);
 				if (!drawTex("inst", g_pSprite, texInst, x_resolution, y_resolution))
 					break;
 				//D3DXMatrixTransformation2D(&mx, NULL, 0.0, &D3DXVECTOR2((float)1024 / (float)1024, (float)768 / (float)1024), &D3DXVECTOR2(0, 0), NULL, &D3DXVECTOR2(x_resolution / 2, y_resolution / 2));
@@ -832,7 +842,7 @@ VOID t8::Render()
 				<< "平均正确率为" << setprecision(2) << (double)sumRight / cnt * 100. << "%, "
 				<< "平均反应时为" << setprecision(0) << sumResTime / cnt << "毫秒";
 			int tx = x_resolution / 2;
-			int ty = y_resolution  - 50;
+			int ty = y_resolution  - 300;
 			drawText(ss.str(), tx, ty, g_pFont);
 			g_pFont1->DrawText(NULL, Insturction3, -1, &erect,
 				DT_WORDBREAK | DT_NOCLIP | DT_CENTER | DT_VCENTER, D3DCOLOR_XRGB(255, 255, 255));
@@ -882,7 +892,7 @@ VOID t8::Render()
 				if (bShowTime) {
 					// 绘制文字
 					int tx = x_resolution / 2;
-					int ty = y_resolution - 50;
+					int ty = y_resolution - 300;
 					stringstream ss;
 					ss << "还剩" << countdown/1000 << "秒"/* << g_imgDisplayInd*/;
 					if (!drawText(ss.str(), tx, ty, g_pFont))
@@ -910,7 +920,7 @@ VOID t8::Render()
 					if (unCo  && iBtn != -1 && !isRight)
 						texFeedBack = texWrongJ;		// 不重合 & 错误
 
-					if (!drawTex("feedback", g_pSprite, texFeedBack, x_resolution, y_resolution))
+					if (!drawTex("feedback", g_pSprite, texFeedBack, x_resolution, y_resolution-300))
 						break;
 				}
 				break;
@@ -1516,16 +1526,16 @@ void t8::addAndSaveRec(int state) {
 }
 
 void t8::shuffleVector(vector<string> &v) {
-	//std::srand(unsigned(std::time(0)));
+	std::srand(unsigned(std::time(0)));
 	random_shuffle(v.begin(), v.end());
 }
 
 void t8::shuffleVector(vector<int> &v) {
-	//std::srand(unsigned(std::time(0)));
+	std::srand(unsigned(std::time(0)));
 	random_shuffle(v.begin(), v.end());
 }
 int t8::getRandom(int end) {
-	//std::srand(unsigned(std::time(0)));
+	std::srand(unsigned(std::time(0)));
 	return rand() % end;
 }
 
@@ -1536,7 +1546,7 @@ void t8::getExerciseList(int mode, int n, vector<string> &LImg, vector<string> &
 	// 选a类还是b类			*1/2
 	// 选什么角度			*1/3
 
-	//std::srand(unsigned(std::time(0)));
+	std::srand(unsigned(std::time(0)));
 	for (int i = 0; i < n; i++)
 	{
 		// 选左边
@@ -1692,11 +1702,36 @@ void t8::saveImgList(vector<string> &LImgs, vector<string> &RImgs, string fileNa
 }
 
 void t8::saveRecs() {
+	time_t t;
+	t = time(NULL);
+	//end_time = localtime(&t);
+	duration = t- now_time;
+	GetLocalTime(&eTime);
 	ofstream out;
 	out.open(szDataFile, ios::app);
 	if (!out.is_open())
 		MessageBox(hWnd, "数据文件不能创建或打开", "错误", NULL);
-	for (int i = 0; i < recs.size(); i++)
+	out << recs[0].no << "\t"
+		<< recs[0].leftImg << "\t"
+		<< recs[0].rightImg << "\t"
+		<< recs[0].unCoincidence << "\t"
+		<< recs[0].btn << "\t"
+		<< recs[0].isRight << "\t"
+		<< (int)recs[0].responseTime << "\t"
+		/*<< start_time->tm_hour << ":"
+		<< start_time->tm_min << ":"
+		<< start_time->tm_sec << "\t"
+		<< end_time->tm_hour << ":"
+		<< end_time->tm_min << ":"
+		<< end_time->tm_sec << "\t"*/
+		<< sTime.wHour << ":"
+		<< sTime.wMinute << ":"
+		<< sTime.wSecond << "\t"
+		<< eTime.wHour << ":"
+		<< eTime.wMinute << ":"
+		<< eTime.wSecond << "\t"
+		<< duration << "\n";
+	for (int i = 1; i < recs.size(); i++)
 	{
 		out << recs[i].no << "\t"
 			<< recs[i].leftImg << "\t"
@@ -1704,6 +1739,6 @@ void t8::saveRecs() {
 			<< recs[i].unCoincidence << "\t"
 			<< recs[i].btn << "\t"
 			<< recs[i].isRight << "\t"
-			<< recs[i].responseTime << "\n";
+			<< (int)recs[i].responseTime << "\n";
 	}
 }
