@@ -3816,7 +3816,7 @@ void CTaskControlDoc::DataAnalysis()
 				m_SignCR[i] = 0;
 				m_SignFalse[i] = 0;
 			}
-			for(i=m_ExperStart2;i<m_RecordNo;i++)
+			for(i=/*m_ExperStart2*/0;i<m_RecordNo;i++)
 			{
 				if(m_Same[i] == 1)//ÏàÍ¬
 				{
@@ -3862,7 +3862,7 @@ void CTaskControlDoc::DataAnalysis()
 				m_SignRTTotal[i] = 0;
 //				m_SignTrueRate[i] = (float)m_SignTrueTotal[i]/(float)m_SignTotal[i];
 			}
-			for(i=m_ExperStart2;i<m_RecordNo;i++)
+			for(i=/*m_ExperStart2*/0;i<m_RecordNo;i++)
 			{
 				if(m_SignAcc[i]==1)
 				{
@@ -3873,7 +3873,10 @@ void CTaskControlDoc::DataAnalysis()
 			{
 				if(m_SignTrueTotal[i]>0)
 				{
-					m_SignRTSqr[i] = pow((double)m_SignRTTotal[i]/(double)(m_SignTrueTotal[i]-1),0.5);
+					if (m_SignTrueTotal[i] > 1)
+						m_SignRTSqr[i] = pow((double)m_SignRTTotal[i] / (double)(m_SignTrueTotal[i] - 1), 0.5);
+					else
+						m_SignRTSqr[i] = 0.;
 				}
 			}
 		}
