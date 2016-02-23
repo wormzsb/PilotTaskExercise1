@@ -250,7 +250,7 @@ void CAnalysisDlg::DisplayResult()
 				m_ResultList.AddItem(j+2,1,"",-1);
 				//str.Format("%d",pDoc->m_FalseCount);//虚报数FA：留空
 				m_ResultList.AddItem(j+3,1,"",-1);
-				str.Format("%.2f", pDoc->m_FailCount);//事件未发生错误按键数
+				str.Format("%d", pDoc->m_FailCount);//事件未发生错误按键数
 				m_ResultList.AddItem(j+4, 1, str, -1);
 				str.Format("%.2f",pDoc->m_RTAvg);//突发事件反映时间平均值RTAvg
 				m_ResultList.AddItem(j+5,1,str,-1);
@@ -267,7 +267,7 @@ void CAnalysisDlg::DisplayResult()
 				m_ResultList.AddItem(j+2,1,str,-1);
 				str.Format("%d",pDoc->m_FalseCount);
 				m_ResultList.AddItem(j+3,1,str,-1);
-				str.Format("%.2f", pDoc->m_FailCount);//事件未发生错误按键数
+				str.Format("%d", pDoc->m_FailCount);//事件未发生错误按键数
 				m_ResultList.AddItem(j + 4, 1, str, -1);
 				str.Format("%.2f", pDoc->m_RTAvg);//突发事件反映时间平均值RTAvg
 				m_ResultList.AddItem(j + 5, 1, str, -1);
