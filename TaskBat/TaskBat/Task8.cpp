@@ -1312,6 +1312,7 @@ void t8::timer(double &totalTime/*倒计时总时间，返回中断后的剩余时间*/,
 
 // 状态控制器
 void t8::stateControl(short & state, int presentTime, int countdownTime, int foucusTime, bool &bShowTime) {
+	srand((unsigned)time(NULL)); //初始化随机种子 
 	double leftTime;
 	while (true) {
 		switch (state){
@@ -1324,7 +1325,10 @@ void t8::stateControl(short & state, int presentTime, int countdownTime, int fou
 			break;
 		// 练习任务注视点
 		case STATE_FOCUS_EXERCISE:
-			if (LImgs.empty()) getExerciseList(LImgs, RImgs, 2);// 产生随机图片组合
+			if (LImgs.empty()) {
+				getExerciseList(LImgs, RImgs, 2);// 产生随机图片组合
+				saveImgList(LImgs, RImgs, "exrcise");
+			}
 			//this_thread::sleep_for(std::chrono::seconds(foucusTime));
 			// 判断是否初始化时间
 			if (lastState == STATE_PAUSE)
@@ -1354,7 +1358,11 @@ void t8::stateControl(short & state, int presentTime, int countdownTime, int fou
 			break;
 		// 正式任务注视点
 		case STATE_FOCUS_FORMAL:
-			if ( LImgs.empty()) getFormalList(64);				// 产生随机图片组合
+			if (LImgs.empty()) {
+				getFormalList(64);				// 产生随机图片组合
+				saveImgList(LImgs, RImgs, "formal");
+
+			}
 			//this_thread::sleep_for(std::chrono::seconds(foucusTime));
 			// 判断是否初始化时间
 			if (lastState == STATE_PAUSE)
