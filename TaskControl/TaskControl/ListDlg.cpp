@@ -140,11 +140,11 @@ BOOL CListDlg::AddHeadT1()
 	m_ResultList.AddColumn(_T("SpeedMin"),18,80,LVCFMT_RIGHT);
 	m_ResultList.AddColumn(_T("SpeedMax"),19,80,LVCFMT_RIGHT);
 	m_ResultList.AddColumn(_T("AccelerationMin"),20,80,LVCFMT_RIGHT);
-	m_ResultList.AddColumn(_T("AccelerationMax"),21,80,LVCFMT_RIGHT);
-	m_ResultList.AddColumn(_T("AngleSpeedMin"),22,80,LVCFMT_RIGHT);
-	m_ResultList.AddColumn(_T("AngleSpeedMax"),23,80,LVCFMT_RIGHT);
-	m_ResultList.AddColumn(_T("RotateAngleMin"),24,80,LVCFMT_RIGHT);
-	m_ResultList.AddColumn(_T("RotateAngleMax"),25,80,LVCFMT_RIGHT);
+	//m_ResultList.AddColumn(_T("AccelerationMax"),21,80,LVCFMT_RIGHT);
+	//m_ResultList.AddColumn(_T("AngleSpeedMin"),22,80,LVCFMT_RIGHT);
+	//m_ResultList.AddColumn(_T("AngleSpeedMax"),23,80,LVCFMT_RIGHT);
+	//m_ResultList.AddColumn(_T("RotateAngleMin"),24,80,LVCFMT_RIGHT);
+	//m_ResultList.AddColumn(_T("RotateAngleMax"),25,80,LVCFMT_RIGHT);
 	m_ResultList.AddColumn(_T("PracTime"),26,80,LVCFMT_RIGHT);
 	m_ResultList.AddColumn(_T("ExperTime"),27,80,LVCFMT_RIGHT);
 	m_ResultList.AddColumn(_T("PracTimes"),28,80,LVCFMT_RIGHT);
@@ -1160,7 +1160,7 @@ BOOL CListDlg::AddT1Item(int i)
 	{
 	    str.Format("%.2f",pDoc->m_Setting1[0].m_AccelerationMax);
 	}
-	m_ResultList.AddItem(i,20,str,-1);
+	//m_ResultList.AddItem(i,20,str,-1);
 	if(pDoc->m_Setting1[0].m_AngleSpeedMin<0)
 	{
 		str = "Disabled";
@@ -1169,7 +1169,7 @@ BOOL CListDlg::AddT1Item(int i)
 	{
 	    str.Format("%.2f",pDoc->m_Setting1[0].m_AngleSpeedMin);
 	}
-	m_ResultList.AddItem(i,21,str,-1);
+	//m_ResultList.AddItem(i,21,str,-1);
 	if(pDoc->m_Setting1[0].m_AngleSpeedMax<0)
 	{
 		str = "Disabled";
@@ -1178,7 +1178,7 @@ BOOL CListDlg::AddT1Item(int i)
 	{
 		str.Format("%.2f",pDoc->m_Setting1[0].m_AngleSpeedMax);
 	}
-	m_ResultList.AddItem(i,22,str,-1);
+	//m_ResultList.AddItem(i,22,str,-1);
 	if(pDoc->m_Setting1[0].m_RotateAngleMin<0)
 	{
 	    str = "Disabled";
@@ -1187,7 +1187,7 @@ BOOL CListDlg::AddT1Item(int i)
 	{
 		str.Format("%.2f",pDoc->m_Setting1[0].m_RotateAngleMin);
 	}
-	m_ResultList.AddItem(i,23,str,-1);
+	//m_ResultList.AddItem(i,23,str,-1);
 	if(pDoc->m_Setting1[0].m_RotateAngleMax<0)
 	{
 		str = "Disabled";
@@ -1196,7 +1196,7 @@ BOOL CListDlg::AddT1Item(int i)
 	{
 		str.Format("%.2f",pDoc->m_Setting1[0].m_RotateAngleMax);
 	}
-	m_ResultList.AddItem(i,24,str,-1);
+	//m_ResultList.AddItem(i,24,str,-1);
 
 	if(pDoc->m_Setting1[0].m_PracTime<0)
 	{
