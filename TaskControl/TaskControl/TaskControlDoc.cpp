@@ -4021,24 +4021,28 @@ void CTaskControlDoc::DataAnalysis()
 		double ResTime=0;
 		for (int i = 4; i < recs["t8"].size(); i++)
 		{
-			if (recs["t8"][i].isRight == 1) CRCount++;
-			ResTime += recs["t8"][i].responseTime;
+			if (recs["t8"][i].isRight == 1) {
+				CRCount++;
+				ResTime += recs["t8"][i].responseTime;
+			}
 		}
 		t8res.CorrectRate = CRCount / (recs["t8"].size()-4);
-		t8res.AvgResTime = ResTime / (recs["t8"].size()-4);
+		t8res.AvgResTime = ResTime / /*(recs["t8"].size()-4)*/CRCount;
 		t8res.TimeRate_Ratio = t8res.AvgResTime / t8res.CorrectRate;
 
 		double avg = 0.0;
 		for (int i = 4; i < recs["t8"].size(); i++) {
-			avg += fabs(recs["t8"][i].responseTime);
+			if (recs["t8"][i].isRight == 1) 
+				avg += fabs(recs["t8"][i].responseTime);
 		}
-
+		avg /= CRCount;
 		double absSum = 0.;
 		for (int i = 4; i < recs["t8"].size(); i++) {
-			absSum += pow(fabs(recs["t8"][i].responseTime) - avg, 2);
+			if (recs["t8"][i].isRight == 1)
+				absSum += pow(fabs(recs["t8"][i].responseTime) - avg, 2);
 		}
-		if (recs["t8"].size() >= 6)
-			t8res.SDrestime = sqrt(absSum / (recs["t8"].size() - 5));
+		if (CRCount > 2)
+			t8res.SDrestime = sqrt(absSum / (/*recs["t8"].size() - 5*/CRCount-1));
 		else
 			t8res.SDrestime = 0;
 

@@ -14,3 +14,11 @@ CorrectRate	AvgResponseTime	AvgResponseTime\CorrectRate
 0.00	0.00	-nan(ind)	
 CorrectRate	AvgResponseTime	AvgResponseTime\CorrectRate
 0.05	436.98	9322.24	
+CorrectRate	AvgResponseTime	AvgResponseTime\CorrectRateSDResponseTime
+0.556	214	3862419	
+CorrectRate	AvgResponseTime	AvgResponseTime\CorrectRateSDResponseTime
+0.556	386	6952419	
+CorrectRate	AvgResponseTime	AvgResponseTime\CorrectRateSDResponseTime
+0.556	386	6951735	
+CorrectRate	AvgResponseTime	AvgResponseTime\CorrectRateSDResponseTime
+0.556	386	695170	
