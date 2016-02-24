@@ -126,6 +126,14 @@ LARGE_INTEGER t3::litmp;
 LONGLONG t3::QPart0,t3::QPart1,t3::QPart2,t3::QPart3,t3::QPart4;
 double t3::dfMinus, t3::dfFreq, t3::dfTim, t3::dfTotal, t3::dfTotalPause, t3::dfTotalEvent; 
 
+
+void initGlobalTimer() {
+	//Timer
+	t3::litmp = {0,0};
+	t3::QPart0 = 0, t3::QPart1 = 0, t3::QPart2 = 0, t3::QPart3 = 0, t3::QPart4 = 0;
+	t3::dfMinus = 0., t3::dfFreq = 0., t3::dfTim = 0., t3::dfTotal = 0., t3::dfTotalPause = 0., t3::dfTotalEvent = 0.;
+}
+
 //************************************************
 //*计算目标和瞄准器当前的运动状态
 //************************************************
@@ -1906,6 +1914,9 @@ int APIENTRY t3::_tWinMain(HINSTANCE &hInstance,
 {
 	//if (AllocConsole() == 0) return 1;
 	//freopen("CONOUT$", "w", stdout);
+	
+	//initGlobalTimer();
+	strcpy(szFeedBack, "");
 
 	// 初始化句柄和状态
 	bool bUnClosedLastWin = true;
