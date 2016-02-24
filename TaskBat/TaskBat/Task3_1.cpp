@@ -1072,6 +1072,8 @@ void t3::RandPlanePoint(int cnt, POINT* m_EventInterval)
 
 void t3::RandEvent()
 {
+	srand((unsigned)time(NULL)); //初始化随机种子 
+
 	int i;
 
 	for (i = 0; i < m_Setting.m_ExperTimes; i++)
@@ -1113,8 +1115,7 @@ void t3::RandEvent()
 		else
 			m_EventType[i] = 0;
 	}
-		
-
+	
 }
 //************************************************
 //*测试任务初始化
