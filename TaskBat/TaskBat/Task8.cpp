@@ -69,6 +69,9 @@ int t8::rec_x_begin;
 int t8::rec_y_begin;
 int t8::rec_x_end;
 int t8::rec_y_end;
+time_t t8::start_time, t8::end_time;//时间戳
+int t8::duration;//实验总时间
+SYSTEMTIME t8::sTime, t8::eTime;
 const float t8::FontScale = (float)(t8::x_resolution + t8::y_resolution) / 1400.0;             //字体随屏幕分辨率的放缩尺度
 
 const char t8::Insturction11[] = "    欢迎进入双任务三维\
@@ -275,10 +278,12 @@ VOID t8::SaveName()
 	char m_filename2[160];
 	char szTime[160];
 
+	start_time = time(NULL);
+	GetLocalTime(&sTime);
 	SYSTEMTIME CurTime;
 	GetLocalTime(&CurTime);
 	sprintf(szTime, "%d%02d%02d%02d%02d%02d",
-		CurTime.wYear, CurTime.wMonth, CurTime.wDay,
+		CurTime.wYear, CurTime.wMonth, CurTime.wDay, 
 		CurTime.wHour, CurTime.wMinute, CurTime.wSecond);
 	stringstream ss;
 	if (strlen(m_DataName) == 0)
@@ -312,9 +317,9 @@ VOID t8::SaveName()
 
 	// 保存文件头
 	ofstream out(szDataFile);
-	if (!out.is_open())
+	if (!out.is_open()) 
 		MessageBox(hWnd, "数据文件不能创建或打开", "错误", NULL);
-	out << "序号\t左侧图片\t右侧图片\t能否重合\t按键情况\t是否正确\t反应时\n";
+	out << "序号\t左侧图片\t右侧图片\t能否重合\t按键情况\t是否正确\t反应时\t实验开始时间\t实验结束时间\t实验用时\n";
 	out.close();
 }
 
@@ -323,17 +328,19 @@ VOID t8::SaveName()
 //************************************************
 //*保存结果数据记录文件
 //************************************************
-VOID t8::SaveData()
+VOID t8::SaveData()//已更换为saveRecs
 {
+	/*
 	FILE *fp;
 	int i;
 	fp = fopen(szDataFile, "at");
-	for (i = 0; i < recs.size(); i++)
+	fprintf(fp, "%d\t%s\t%s\t%d\t%d\t%d\t%.2f\t%02d%02d%02d\t%02d%02d%02d\t%d\t\n", recs[0].no, recs[0].leftImg, recs[0].rightImg, recs[0].unCoincidence, recs[0].btn, recs[0].isRight, recs[0].responseTime, start_time.wHour, start_time.w, start_time.wSecond, end_time.wHour, end_time.wMin, end_time.wSecond);
+	for (i = 1; i < recs.size(); i++)
 	{
 		fprintf(fp, "%d\t%s\t%s\t%d\t%d\t%d\t%.2f\t\n",
 			recs[i].no, recs[i].leftImg, recs[i].rightImg, recs[i].unCoincidence, recs[i].btn, recs[i].isRight, recs[i].responseTime);
 	}
-	fclose(fp);
+	fclose(fp);*/
 }
 
 
@@ -342,7 +349,7 @@ VOID t8::SaveData()
 //************************************************
 HRESULT t8::LoadSignFile()
 {
-
+	
 	return TRUE;
 }
 
@@ -372,7 +379,7 @@ HRESULT t8::InitD3D(HWND hWnd)
 	m_SignGroupNo = -1;
 	m_SureDownNum = 0;
 	m_CubeNum = 9;
-
+	
 
 	//材质大小
 	//	SetRect( &rct, 0, 0, 128, 128 );
@@ -1692,11 +1699,36 @@ void t8::saveImgList(vector<string> &LImgs, vector<string> &RImgs, string fileNa
 }
 
 void t8::saveRecs() {
+	if (recs.size() == 0)
+		return;
+	end_time = time(NULL);
+	duration = end_time - start_time;
+	GetLocalTime(&eTime);
 	ofstream out;
 	out.open(szDataFile, ios::app);
 	if (!out.is_open())
 		MessageBox(hWnd, "数据文件不能创建或打开", "错误", NULL);
-	for (int i = 0; i < recs.size(); i++)
+	out << recs[0].no << "\t"
+		<< recs[0].leftImg << "\t"
+		<< recs[0].rightImg << "\t"
+		<< recs[0].unCoincidence << "\t"
+		<< recs[0].btn << "\t"
+		<< recs[0].isRight << "\t"
+		<< (int)recs[0].responseTime << "\t"
+		/*<< start_time->tm_hour << ":"
+		<< start_time->tm_min << ":"
+		<< start_time->tm_sec << "\t"
+		<< end_time->tm_hour << ":"
+		<< end_time->tm_min << ":"
+		<< end_time->tm_sec << "\t"*/
+		<< sTime.wHour << ":"
+		<< sTime.wMinute << ":"
+		<< sTime.wSecond << "\t"
+		<< eTime.wHour << ":"
+		<< eTime.wMinute << ":"
+		<< eTime.wSecond << "\t"
+		<< duration << "\n";
+	for (int i = 1; i < recs.size(); i++)
 	{
 		out << recs[i].no << "\t"
 			<< recs[i].leftImg << "\t"
@@ -1704,6 +1736,6 @@ void t8::saveRecs() {
 			<< recs[i].unCoincidence << "\t"
 			<< recs[i].btn << "\t"
 			<< recs[i].isRight << "\t"
-			<< recs[i].responseTime << "\n";
+			<< (int)recs[i].responseTime << "\n";
 	}
 }
