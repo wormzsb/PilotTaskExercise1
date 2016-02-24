@@ -10,7 +10,7 @@ texRightJ = NULL, texWrongJ = NULL, texNoneJ = NULL;
 LPDIRECT3DTEXTURE9      t8::texInst = NULL;            //纹理对象
 
 
-// 状态控制
+													   // 状态控制
 bool isCountdownStop = false;
 int g_imgDisplayInd = -2;
 int g_imgLastInd = -1000000;
@@ -56,7 +56,7 @@ BOOL t8::m_bAcc;                                     //三维图形记忆正确性标志
 double t8::alpha, t8::omiga, t8::v, t8::a, t8::b, t8::r, t8::Rx, t8::Ry, t8::fai, t8::AngleSpeed, t8::inc_v;
 double t8::m_PostPointX, t8::m_PostPointY;                //当前瞄准器坐标
 int t8::JoyX, t8::JoyY;                                   //当前操纵杆输入值  
-struct TaskSetting8   t8::m_Setting;                 //任务8设置参数
+struct TaskSetting8   t8::m_Setting;                 //任务6设置参数
 struct HardSetting   t8::m_HardSetting;              //硬件设置参数
 struct PartInfo   t8::m_PartInfo;                    //被试者信息
 short t8::m_TrialType;                               //测试类型
@@ -69,9 +69,6 @@ int t8::rec_x_begin;
 int t8::rec_y_begin;
 int t8::rec_x_end;
 int t8::rec_y_end;
-time_t t8::start_time, t8::end_time;//时间戳
-int t8::duration;//实验总时间
-SYSTEMTIME t8::sTime, t8::eTime;
 const float t8::FontScale = (float)(t8::x_resolution + t8::y_resolution) / 1400.0;             //字体随屏幕分辨率的放缩尺度
 
 const char t8::Insturction11[] = "    欢迎进入双任务三维\
@@ -278,12 +275,10 @@ VOID t8::SaveName()
 	char m_filename2[160];
 	char szTime[160];
 
-	start_time = time(NULL);
-	GetLocalTime(&sTime);
 	SYSTEMTIME CurTime;
 	GetLocalTime(&CurTime);
 	sprintf(szTime, "%d%02d%02d%02d%02d%02d",
-		CurTime.wYear, CurTime.wMonth, CurTime.wDay, 
+		CurTime.wYear, CurTime.wMonth, CurTime.wDay,
 		CurTime.wHour, CurTime.wMinute, CurTime.wSecond);
 	stringstream ss;
 	if (strlen(m_DataName) == 0)
@@ -317,9 +312,9 @@ VOID t8::SaveName()
 
 	// 保存文件头
 	ofstream out(szDataFile);
-	if (!out.is_open()) 
+	if (!out.is_open())
 		MessageBox(hWnd, "数据文件不能创建或打开", "错误", NULL);
-	out << "序号\t左侧图片\t右侧图片\t能否重合\t按键情况\t是否正确\t反应时\t实验开始时间\t实验结束时间\t实验用时\n";
+	out << "序号\t左侧图片\t右侧图片\t能否重合\t按键情况\t是否正确\t反应时\n";
 	out.close();
 }
 
@@ -328,19 +323,17 @@ VOID t8::SaveName()
 //************************************************
 //*保存结果数据记录文件
 //************************************************
-VOID t8::SaveData()//已更换为saveRecs
+VOID t8::SaveData()
 {
-	/*
 	FILE *fp;
 	int i;
 	fp = fopen(szDataFile, "at");
-	fprintf(fp, "%d\t%s\t%s\t%d\t%d\t%d\t%.2f\t%02d%02d%02d\t%02d%02d%02d\t%d\t\n", recs[0].no, recs[0].leftImg, recs[0].rightImg, recs[0].unCoincidence, recs[0].btn, recs[0].isRight, recs[0].responseTime, start_time.wHour, start_time.w, start_time.wSecond, end_time.wHour, end_time.wMin, end_time.wSecond);
-	for (i = 1; i < recs.size(); i++)
+	for (i = 0; i < recs.size(); i++)
 	{
 		fprintf(fp, "%d\t%s\t%s\t%d\t%d\t%d\t%.2f\t\n",
 			recs[i].no, recs[i].leftImg, recs[i].rightImg, recs[i].unCoincidence, recs[i].btn, recs[i].isRight, recs[i].responseTime);
 	}
-	fclose(fp);*/
+	fclose(fp);
 }
 
 
@@ -349,7 +342,7 @@ VOID t8::SaveData()//已更换为saveRecs
 //************************************************
 HRESULT t8::LoadSignFile()
 {
-	
+
 	return TRUE;
 }
 
@@ -379,7 +372,7 @@ HRESULT t8::InitD3D(HWND hWnd)
 	m_SignGroupNo = -1;
 	m_SureDownNum = 0;
 	m_CubeNum = 9;
-	
+
 
 	//材质大小
 	//	SetRect( &rct, 0, 0, 128, 128 );
@@ -439,12 +432,12 @@ HRESULT t8::InitD3D(HWND hWnd)
 
 	//加载纹理图片
 	// 指导语
-	if (FAILED(D3DXCreateTextureFromFile(g_pd3dDevice, (picDir+"ST_3D.jpg").c_str(), &texInst)))
+	if (FAILED(D3DXCreateTextureFromFile(g_pd3dDevice, (picDir + "ST_3D.jpg").c_str(), &texInst)))
 	{
 		MessageBox(NULL, "Could not find banana.bmp", "Textures.exe", MB_OK);
-		return E_FAIL;		
+		return E_FAIL;
 	}
-	
+
 	addTex(g_pd3dDevice, "./Pics/TaskR/cross.jpg", texCross);
 	addTex(g_pd3dDevice, picDir + "right_f.jpg", texRightF);	// 能重合 反应正确
 	addTex(g_pd3dDevice, picDir + "wrong_f.jpg", texWrongF);	// 能重合 反应错误
@@ -628,7 +621,7 @@ VOID t8::Cleanup()
 		texWrongJ->Release();
 		texWrongJ = NULL;
 	}
-	
+
 	if (texCross != NULL)
 	{
 		texCross->Release();
@@ -664,7 +657,7 @@ VOID t8::Cleanup()
 
 }
 
-void t8::getScale(double &sx, double &sy, 
+void t8::getScale(double &sx, double &sy,
 	double w, double h,
 	double tw, double th,
 	int x_resolution, int y_resolution) {
@@ -673,8 +666,8 @@ void t8::getScale(double &sx, double &sy,
 }
 
 //在指定位置写文字
-BOOL t8::drawText( string str, int tx, int ty, LPD3DXFONT &g_pFont) {
-	
+BOOL t8::drawText(string str, int tx, int ty, LPD3DXFONT &g_pFont) {
+
 	RECT rect;
 	rect.left = tx - 500;
 	rect.top = ty;
@@ -683,7 +676,7 @@ BOOL t8::drawText( string str, int tx, int ty, LPD3DXFONT &g_pFont) {
 
 	g_pFont->DrawText(NULL, str.c_str(), -1, &rect,
 		DT_WORDBREAK | DT_NOCLIP | DT_CENTER | DT_VCENTER, D3DCOLOR_XRGB(255, 255, 255));
-		
+
 	return TRUE;
 }
 
@@ -700,7 +693,7 @@ BOOL t8::drawTex(double tx, double ty, LPD3DXSPRITE &g_pSprite, LPDIRECT3DTEXTUR
 			&D3DXVECTOR2(sx, sy),			// 缩放向量
 			&D3DXVECTOR2(0, 0),				// 旋转向量
 			NULL,							// 旋转角度
-			&D3DXVECTOR2(tx,ty)	// 平移向量
+			&D3DXVECTOR2(tx, ty)	// 平移向量
 			);
 		g_pSprite->SetTransform(&mx);
 		g_pSprite->Draw(
@@ -725,24 +718,24 @@ BOOL t8::drawTex(string mode, LPD3DXSPRITE &g_pSprite,
 	double tx = x_resolution / 2 - scale*w / 2;
 	double ty = (y_resolution - scale*h) / 2;
 	if (!drawTex(tx, ty, g_pSprite, tex, scale))
-		return FALSE;*/
+	return FALSE;*/
 	return drawTex(mode, g_pSprite, tex, tex, x_resolution, y_resolution);
-	
+
 }
 // 按照模式画纹理
-BOOL t8::drawTex(string mode, LPD3DXSPRITE &g_pSprite, 
+BOOL t8::drawTex(string mode, LPD3DXSPRITE &g_pSprite,
 	LPDIRECT3DTEXTURE9 &ltex, LPDIRECT3DTEXTURE9 &rtex,
 	int x_resolution, int y_resolution) {
-	
+
 	int w, h;
 	double tw, th;
 	double tx, ty;
 	double sx, sy;
-	
+
 	if (mode == "cross") {
 		w = 360; h = 360;
-		getTexSize(ltex,tw, th);
-		getScale(sx, sy, w, h,tw,th, x_resolution, y_resolution);
+		getTexSize(ltex, tw, th);
+		getScale(sx, sy, w, h, tw, th, x_resolution, y_resolution);
 		tx = (double)x_resolution / 2 - (double)w / 2;
 		ty = ((double)y_resolution - h) / 2;
 	}
@@ -758,7 +751,7 @@ BOOL t8::drawTex(string mode, LPD3DXSPRITE &g_pSprite,
 		getTexSize(ltex, tw, th);
 		getScale(sx, sy, w, h, tw, th, x_resolution, y_resolution);
 		tx = (double)x_resolution / 2 - (double)w / 2;
-		ty = (double)y_resolution - (double) h ;
+		ty = (double)y_resolution - (double)h;
 	}
 	if (mode == "LR") {
 		w = 600; h = 600;
@@ -766,7 +759,7 @@ BOOL t8::drawTex(string mode, LPD3DXSPRITE &g_pSprite,
 		getScale(sx, sy, w, h, tw, th, x_resolution, y_resolution);
 	}
 
-	
+
 	//double scale = 1.;
 
 	D3DXMATRIX mx;
@@ -783,14 +776,14 @@ BOOL t8::drawTex(string mode, LPD3DXSPRITE &g_pSprite,
 			return FALSE;
 	}
 	//中间大图
-	else if (mode == "cross" 
-		|| mode == "feedback" 
+	else if (mode == "cross"
+		|| mode == "feedback"
 		|| mode == "inst") {
-		
+
 		if (!drawTex(tx, ty, g_pSprite, ltex, sx, sy))
 			return FALSE;
 	}
-	
+
 	return TRUE;
 }
 
@@ -815,15 +808,15 @@ VOID t8::Render()
 		case STATE_DISPLAYINSTURCTION:
 			//if (SUCCEEDED(g_pSprite->Begin(D3DXSPRITE_ALPHABLEND)))
 			//{
-				if (!drawTex("inst", g_pSprite, texInst, x_resolution, y_resolution))
-					break;
-				//D3DXMatrixTransformation2D(&mx, NULL, 0.0, &D3DXVECTOR2((float)1024 / (float)1024, (float)768 / (float)1024), &D3DXVECTOR2(0, 0), NULL, &D3DXVECTOR2(x_resolution / 2, y_resolution / 2));
-				//g_pSprite->SetTransform(&mx);
-				//g_pSprite->Draw(g_pTextureInst, NULL, &D3DXVECTOR3(512, 512, 0), &D3DXVECTOR3(0, 0, 0), 0xffffffff);
+			if (!drawTex("inst", g_pSprite, texInst, x_resolution, y_resolution))
+				break;
+			//D3DXMatrixTransformation2D(&mx, NULL, 0.0, &D3DXVECTOR2((float)1024 / (float)1024, (float)768 / (float)1024), &D3DXVECTOR2(0, 0), NULL, &D3DXVECTOR2(x_resolution / 2, y_resolution / 2));
+			//g_pSprite->SetTransform(&mx);
+			//g_pSprite->Draw(g_pTextureInst, NULL, &D3DXVECTOR3(512, 512, 0), &D3DXVECTOR3(0, 0, 0), 0xffffffff);
 			//}
 			//g_pSprite->End();
 			break;
-		//测试结束
+			//测试结束
 		case STATE_OVER: {
 			int sumRight = 0;
 			double sumResTime = 0.;
@@ -831,7 +824,7 @@ VOID t8::Render()
 			for (int i = 4; i < recs.size(); i++) {
 				sumRight += (int)recs[i].isRight;
 				sumResTime += recs[i].responseTime;
-				
+
 			}
 			stringstream ss;
 			ss.setf(ios::fixed);
@@ -839,14 +832,14 @@ VOID t8::Render()
 				<< "平均正确率为" << setprecision(2) << (double)sumRight / cnt * 100. << "%, "
 				<< "平均反应时为" << setprecision(0) << sumResTime / cnt << "毫秒";
 			int tx = x_resolution / 2;
-			int ty = y_resolution  - 300;
+			int ty = y_resolution - 50;
 			drawText(ss.str(), tx, ty, g_pFont);
 			g_pFont1->DrawText(NULL, Insturction3, -1, &erect,
 				DT_WORDBREAK | DT_NOCLIP | DT_CENTER | DT_VCENTER, D3DCOLOR_XRGB(255, 255, 255));
-			break; 
+			break;
 		}
 		case STATE_FOCUS_EXERCISE:
-		case STATE_FOCUS_FORMAL: 
+		case STATE_FOCUS_FORMAL:
 			// 绘制图片
 			if (!drawTex("cross", g_pSprite, texCross, x_resolution, y_resolution))
 				break;
@@ -854,74 +847,74 @@ VOID t8::Render()
 		case STATE_BETWEEN_EXERCISE_AND_FORMAL: {
 			// 绘制文字
 			int tx = x_resolution / 2;
-			int ty = y_resolution/2 - 50;
+			int ty = y_resolution / 2 - 50;
 			stringstream ss;
-			ss << "请按空格键进入正式任务" ;
+			ss << "请按空格键进入正式任务";
 			if (!drawText(ss.str(), tx, ty, g_pFont))
 				break;
 			break;
 		}
-		case STATE_DISPLAYFEEDBACK: 
+		case STATE_DISPLAYFEEDBACK:
 		case STATE_DISPLAY_AND_COUNTDOWN_EXERCISE:
 		case STATE_DISPLAY_AND_COUNTDOWN_FORMAL:
 		case STATE_EXERCISE:
 		case STATE_FORMAL: {
-				// 绘制图片
-				// 加载纹理
-				if (LImgs.size() == 0 
-					|| g_imgDisplayInd < 0 
-					|| g_imgDisplayInd >= LImgs.size())
-					break;
-				if (g_imgLastInd != g_imgDisplayInd) {
-					string lImg = picDir + LImgs[g_imgDisplayInd];
-					string rImg = picDir + RImgs[g_imgDisplayInd];
-					if (m_TestState == STATE_DISPLAYFEEDBACK) {
-						lImg = picDir + LImgs[g_imgDisplayInd-1];
-						rImg = picDir + LImgs[g_imgDisplayInd-1];
-					}
-					addTex(g_pd3dDevice, lImg.c_str(), texLeft);
-					addTex(g_pd3dDevice, rImg.c_str(), texRight);
-					g_imgLastInd = g_imgDisplayInd;
-				}
-				if (!drawTex("LR", g_pSprite, texLeft, texRight, x_resolution, y_resolution))
-					break;
-				
-				if (bShowTime) {
-					// 绘制文字
-					int tx = x_resolution / 2;
-					int ty = y_resolution - 300;
-					stringstream ss;
-					ss << "还剩" << countdown/1000 << "秒"/* << g_imgDisplayInd*/;
-					if (!drawText(ss.str(), tx, ty, g_pFont))
-						break;
-				}
-
-				// 下面是反馈时候显示反馈的图像
-				if (m_TestState == STATE_DISPLAYFEEDBACK) {
-					
-					LPDIRECT3DTEXTURE9 texFeedBack = NULL;
-					bool unCo = recs.rbegin()->unCoincidence;
-					int iBtn = recs.rbegin()->btn;
-					bool isRight = recs.rbegin()->isRight;
-
-					if (!unCo && iBtn == -1)
-						texFeedBack = texNoneF;			// 重合 & 超时
-					if (!unCo  && iBtn != -1 && isRight)
-						texFeedBack = texRightF;		// 重合 & 正确
-					if (!unCo  && iBtn != -1 && !isRight)
-						texFeedBack = texWrongF;		// 重合 & 错误
-					if (unCo  && iBtn == -1)
-						texFeedBack = texNoneJ;			// 不重合 & 超时
-					if (unCo  && iBtn != -1 && isRight)
-						texFeedBack = texRightJ;		// 不重合 & 正确
-					if (unCo  && iBtn != -1 && !isRight)
-						texFeedBack = texWrongJ;		// 不重合 & 错误
-
-					if (!drawTex("feedback", g_pSprite, texFeedBack, x_resolution, y_resolution-300))
-						break;
-				}
+			// 绘制图片
+			// 加载纹理
+			if (LImgs.size() == 0
+				|| g_imgDisplayInd < 0
+				|| g_imgDisplayInd >= LImgs.size())
 				break;
+			if (g_imgLastInd != g_imgDisplayInd) {
+				string lImg = picDir + LImgs[g_imgDisplayInd];
+				string rImg = picDir + RImgs[g_imgDisplayInd];
+				if (m_TestState == STATE_DISPLAYFEEDBACK) {
+					lImg = picDir + LImgs[g_imgDisplayInd - 1];
+					rImg = picDir + LImgs[g_imgDisplayInd - 1];
+				}
+				addTex(g_pd3dDevice, lImg.c_str(), texLeft);
+				addTex(g_pd3dDevice, rImg.c_str(), texRight);
+				g_imgLastInd = g_imgDisplayInd;
 			}
+			if (!drawTex("LR", g_pSprite, texLeft, texRight, x_resolution, y_resolution))
+				break;
+
+			if (bShowTime) {
+				// 绘制文字
+				int tx = x_resolution / 2;
+				int ty = y_resolution - 50;
+				stringstream ss;
+				ss << "还剩" << countdown / 1000 << "秒"/* << g_imgDisplayInd*/;
+				if (!drawText(ss.str(), tx, ty, g_pFont))
+					break;
+			}
+
+			// 下面是反馈时候显示反馈的图像
+			if (m_TestState == STATE_DISPLAYFEEDBACK) {
+
+				LPDIRECT3DTEXTURE9 texFeedBack = NULL;
+				bool unCo = recs.rbegin()->unCoincidence;
+				int iBtn = recs.rbegin()->btn;
+				bool isRight = recs.rbegin()->isRight;
+
+				if (!unCo && iBtn == -1)
+					texFeedBack = texNoneF;			// 重合 & 超时
+				if (!unCo  && iBtn != -1 && isRight)
+					texFeedBack = texRightF;		// 重合 & 正确
+				if (!unCo  && iBtn != -1 && !isRight)
+					texFeedBack = texWrongF;		// 重合 & 错误
+				if (unCo  && iBtn == -1)
+					texFeedBack = texNoneJ;			// 不重合 & 超时
+				if (unCo  && iBtn != -1 && isRight)
+					texFeedBack = texRightJ;		// 不重合 & 正确
+				if (unCo  && iBtn != -1 && !isRight)
+					texFeedBack = texWrongJ;		// 不重合 & 错误
+
+				if (!drawTex("feedback", g_pSprite, texFeedBack, x_resolution, y_resolution))
+					break;
+			}
+			break;
+		}
 		}
 		g_pd3dDevice->EndScene();
 	}
@@ -954,9 +947,9 @@ BOOL CALLBACK t8::PauseMsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 	case WM_COMMAND:
 		switch (wmId)
 		{
-		case ID_CONTINUE: 
-		case ID_NEXT: 
-		case ID_CANCEL: 
+		case ID_CONTINUE:
+		case ID_NEXT:
+		case ID_CANCEL:
 			EndDialog(hWnd, wmId);
 			break;
 		};
@@ -990,7 +983,7 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 			// 进入暂停状态
 			m_TestState = STATE_PAUSE;
-			
+
 			LARGE_INTEGER begContinue, endContinue;
 			QueryPerformanceCounter(&begContinue);
 			ShowCursor(TRUE);
@@ -1001,20 +994,20 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			case ID_CONTINUE: {
 				//激活父窗口
 				//g_imgDisplayInd--;
-				
+
 				//恢复状态
 				QueryPerformanceCounter(&endContinue);
 				isCountdownStop = false;
-				
+
 				// 计算暂停时间（任务开始(注视)x2+反馈）
-				if (originalState == STATE_DISPLAY_AND_COUNTDOWN_FORMAL 
+				if (originalState == STATE_DISPLAY_AND_COUNTDOWN_FORMAL
 					|| originalState == STATE_DISPLAY_AND_COUNTDOWN_EXERCISE
 					|| originalState == STATE_DISPLAYFEEDBACK
 					|| originalState == STATE_FOCUS_EXERCISE
 					|| originalState == STATE_FOCUS_FORMAL)
-					pauseTime += (double)(endContinue.QuadPart - begContinue.QuadPart) 
-						/ (double)freq.QuadPart * 1000.;
-				
+					pauseTime += (double)(endContinue.QuadPart - begContinue.QuadPart)
+					/ (double)freq.QuadPart * 1000.;
+
 				lastState = m_TestState;
 				m_TestState = originalState;
 
@@ -1036,7 +1029,7 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			break;
 		}
 		case VK_SPACE:
-			if (m_TestState == STATE_DISPLAYINSTURCTION) 
+			if (m_TestState == STATE_DISPLAYINSTURCTION)
 				m_TestState = STATE_FOCUS_EXERCISE;
 			if (m_TestState == STATE_BETWEEN_EXERCISE_AND_FORMAL)
 				m_TestState = STATE_FOCUS_FORMAL;
@@ -1045,41 +1038,41 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		case 'F':
 		case 'j':
 		case 'J': {
-				if (!(m_TestState == STATE_DISPLAY_AND_COUNTDOWN_FORMAL 
-					|| m_TestState == STATE_DISPLAY_AND_COUNTDOWN_EXERCISE))
-					break;
-
-				// 中断倒计时
-				isCountdownStop = true;
-
-				// 结束计时
-				//QueryPerformanceCounter(&endTime);
-				
-				// 按键处理
-				isPressBtn = true; // 已按下
-				if (wParam == 'f' || wParam == 'F')
-					isCoBtn = 0;
-				else if (wParam == 'j' || wParam == 'J')
-					isCoBtn = 1;
-
-				//addAndSaveRec(m_TestState); // 添加记录
-
-				// 状态跳转
-				if (m_TestState == STATE_DISPLAY_AND_COUNTDOWN_EXERCISE) {
-					m_TestState = STATE_EXERCISE;	// 练习->反馈
-				}
-				if (m_TestState == STATE_DISPLAY_AND_COUNTDOWN_FORMAL) {
-					m_TestState = STATE_FORMAL;		//
-				}
+			if (!(m_TestState == STATE_DISPLAY_AND_COUNTDOWN_FORMAL
+				|| m_TestState == STATE_DISPLAY_AND_COUNTDOWN_EXERCISE))
 				break;
+
+			// 中断倒计时
+			isCountdownStop = true;
+
+			// 结束计时
+			//QueryPerformanceCounter(&endTime);
+
+			// 按键处理
+			isPressBtn = true; // 已按下
+			if (wParam == 'f' || wParam == 'F')
+				isCoBtn = 0;
+			else if (wParam == 'j' || wParam == 'J')
+				isCoBtn = 1;
+
+			//addAndSaveRec(m_TestState); // 添加记录
+
+			// 状态跳转
+			if (m_TestState == STATE_DISPLAY_AND_COUNTDOWN_EXERCISE) {
+				m_TestState = STATE_EXERCISE;	// 练习->反馈
 			}
+			if (m_TestState == STATE_DISPLAY_AND_COUNTDOWN_FORMAL) {
+				m_TestState = STATE_FORMAL;		//
+			}
+			break;
+		}
 		}
 		return 0;
 	case WM_KEYDOWN:
 		/*switch (wParam)
 		{
 		case : {
-			break;
+		break;
 		}
 
 		}*/
@@ -1107,7 +1100,7 @@ LRESULT WINAPI t8::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 //************************************************
 VOID t8::UpdateState()
 {
-	
+
 }
 
 //************************************************
@@ -1125,13 +1118,13 @@ int APIENTRY t8::_tWinMain(HINSTANCE &hInstance,
 
 	srand((unsigned)time(NULL)); //初始化随机种子 
 
-	//// 测试
-	//getFormalList(64);
-	//saveImgList(LImgs, RImgs, "formal");
-	//getExerciseList(LImgs, RImgs, 2);
-	//saveImgList(LImgs, RImgs, "exrcise");
-	
-	// 初始化句柄和状态
+								 //// 测试
+								 //getFormalList(64);
+								 //saveImgList(LImgs, RImgs, "formal");
+								 //getExerciseList(LImgs, RImgs, 2);
+								 //saveImgList(LImgs, RImgs, "exrcise");
+
+								 // 初始化句柄和状态
 	bool bUnClosedLastWin = true;
 	hWnd = _hWnd;
 	gHinstance = hInstance;
@@ -1148,10 +1141,10 @@ int APIENTRY t8::_tWinMain(HINSTANCE &hInstance,
 	pos1 = pdest - lpCmdLine;
 	if (pos1>0) strncpy(m_TaskNumStr, lpCmdLine, pos1);
 	else strcpy(m_TaskNumStr, "");
-	
+
 	pdest = strrchr(lpCmdLine, '-');
 	result = pdest - lpCmdLine;
-	
+
 	if (result>0) strncpy(m_TesterName, lpCmdLine + pos1 + 1, result - pos1 - 1);
 	else strcpy(m_TesterName, "");
 	if (pos1>0) strcpy(m_DataName, lpCmdLine + pos1 + 1);
@@ -1166,7 +1159,7 @@ int APIENTRY t8::_tWinMain(HINSTANCE &hInstance,
 	timerThread = thread(stateControl, ref(m_TestState),
 		m_Setting.m_iPresentTime, m_Setting.m_iCountdownTime, m_Setting.m_iFocusTime, ref(bShowTime));
 	QueryPerformanceFrequency(&freq);
-	
+
 	m_bLoadSign = FALSE;
 	//注册窗口类
 	WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0L, 0L,
@@ -1254,32 +1247,32 @@ void t8::hideLastWindow(bool &bUnClosedLastWin, std::string &winClassName, std::
 }
 
 void t8::test() {
-	MessageBox(hWnd, "asdas","asdas",NULL);
+	MessageBox(hWnd, "asdas", "asdas", NULL);
 }
 
 // 单位：ms
-void t8::timer(double &totalTime/*倒计时总时间，返回中断后的剩余时间*/, 
-	int interval/*返回显示的间隔*/, 
-	int &curTime/*当前时间，倒数显示*/, bool &isRtn/*是否返回*/, 
+void t8::timer(double &totalTime/*倒计时总时间，返回中断后的剩余时间*/,
+	int interval/*返回显示的间隔*/,
+	int &curTime/*当前时间，倒数显示*/, bool &isRtn/*是否返回*/,
 	bool &isShowTime/*是否显示时间*/, int countdownThreshold/*倒数计时阈值*/) {
 	double residualTime = 0.;
 
 	LARGE_INTEGER begt, endt, totalBegTime, totalEndTime;
-	
+
 	// 继续启动
 	curTime = ceil(totalTime / 1000) * 1000;
 	residualTime = 1000 - (curTime - totalTime);
-	
+
 	QueryPerformanceCounter(&begt);
 	totalBegTime = begt;
-	
+
 	while (true) {
 		// 判断退出
 		if (totalTime <= 0
-			|| (curTime <= 0 && residualTime <=0.+ 1e-6) 
+			|| (curTime <= 0 && residualTime <= 0. + 1e-6)
 			|| isRtn) {
 			QueryPerformanceCounter(&totalEndTime);
-			
+
 			if (curTime <= 0 && residualTime <= 0. + 1e-6)
 				totalTime = 0.;
 			else {
@@ -1312,12 +1305,11 @@ void t8::timer(double &totalTime/*倒计时总时间，返回中断后的剩余时间*/,
 				curTime -= interval;			// 当前时间减少
 			}
 		}
-		
+
 	}
 	totalTime = 0;
 }
 
-// 状态控制器
 // 状态控制器
 void t8::stateControl(short & state, int presentTime, int countdownTime, int foucusTime, bool &bShowTime) {
 	srand((unsigned)time(NULL)); //初始化随机种子 
@@ -1491,20 +1483,21 @@ void t8::stateControl(short & state, int presentTime, int countdownTime, int fou
 	}
 
 }
+
 void t8::addAndSaveRec(int state) {
 	Rec rec;
-	double responseTime = (double)(endTime.QuadPart - begTime.QuadPart) 
+	double responseTime = (double)(endTime.QuadPart - begTime.QuadPart)
 		/ (double)freq.QuadPart * 1000. - pauseTime;
 	rec.no = g_imgDisplayInd + 1;
 	rec.leftImg = LImgs[g_imgDisplayInd];
 	rec.rightImg = RImgs[g_imgDisplayInd];
 	// 两张图能否重合
-	if (rec.leftImg[rec.leftImg.size() - 5] == rec.rightImg[rec.rightImg.size() - 5]) 
+	if (rec.leftImg[rec.leftImg.size() - 5] == rec.rightImg[rec.rightImg.size() - 5])
 		rec.unCoincidence = 0;
 	else
 		rec.unCoincidence = 1;
 	// 判断是否超时
-	rec.btn = (isPressBtn)? isCoBtn : -1;
+	rec.btn = (isPressBtn) ? isCoBtn : -1;
 	// 是否按键（不按则超时）
 	if (isPressBtn) {
 		if (rec.unCoincidence == rec.btn)
@@ -1513,13 +1506,13 @@ void t8::addAndSaveRec(int state) {
 			rec.isRight = false;
 		rec.responseTime = responseTime;
 	}
-	else	{
+	else {
 		rec.isRight = false;
 		rec.responseTime = -1.;
 	}
 
 	recs.push_back(rec);
-	
+
 }
 
 void t8::shuffleVector(vector<string> &v) {
@@ -1687,7 +1680,7 @@ void t8::getFormalList(int n) {
 
 void t8::saveImgList(vector<string> &LImgs, vector<string> &RImgs, string fileName) {
 	ofstream out;
-	out.open(string("./")+fileName+".csv");
+	out.open(string("./") + fileName + ".csv");
 	if (!out.is_open()) {
 		MessageBox(hWnd, "没打开formalimglist.csv", "没打开formalimglist.csv", NULL);
 		exit(0);
@@ -1699,34 +1692,11 @@ void t8::saveImgList(vector<string> &LImgs, vector<string> &RImgs, string fileNa
 }
 
 void t8::saveRecs() {
-	end_time = time(NULL);
-	duration = end_time - start_time;
-	GetLocalTime(&eTime);
 	ofstream out;
 	out.open(szDataFile, ios::app);
 	if (!out.is_open())
 		MessageBox(hWnd, "数据文件不能创建或打开", "错误", NULL);
-	out << recs[0].no << "\t"
-		<< recs[0].leftImg << "\t"
-		<< recs[0].rightImg << "\t"
-		<< recs[0].unCoincidence << "\t"
-		<< recs[0].btn << "\t"
-		<< recs[0].isRight << "\t"
-		<< (int)recs[0].responseTime << "\t"
-		/*<< start_time->tm_hour << ":"
-		<< start_time->tm_min << ":"
-		<< start_time->tm_sec << "\t"
-		<< end_time->tm_hour << ":"
-		<< end_time->tm_min << ":"
-		<< end_time->tm_sec << "\t"*/
-		<< sTime.wHour << ":"
-		<< sTime.wMinute << ":"
-		<< sTime.wSecond << "\t"
-		<< eTime.wHour << ":"
-		<< eTime.wMinute << ":"
-		<< eTime.wSecond << "\t"
-		<< duration << "\n";
-	for (int i = 1; i < recs.size(); i++)
+	for (int i = 0; i < recs.size(); i++)
 	{
 		out << recs[i].no << "\t"
 			<< recs[i].leftImg << "\t"
@@ -1734,6 +1704,6 @@ void t8::saveRecs() {
 			<< recs[i].unCoincidence << "\t"
 			<< recs[i].btn << "\t"
 			<< recs[i].isRight << "\t"
-			<< (int)recs[i].responseTime << "\n";
+			<< recs[i].responseTime << "\n";
 	}
 }
