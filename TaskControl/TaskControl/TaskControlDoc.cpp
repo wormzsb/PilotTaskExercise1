@@ -1181,10 +1181,10 @@ BOOL CTaskControlDoc::ReadT2Hold()
 	if(fp!=NULL)
 	{
 		m_MemNum = 100;
-		m_HoldStartTime = (unsigned long*)malloc(m_MemNum*sizeof(unsigned long));
-		m_HoldSureTime = (unsigned long*)malloc(m_MemNum*sizeof(unsigned long));
+		m_HoldStartTime = (long*)malloc(m_MemNum*sizeof(long));
+		m_HoldSureTime = (long*)malloc(m_MemNum*sizeof(long));
 		m_HoldTime = (int*)malloc(m_MemNum*sizeof(int));
-		m_TestRT = (unsigned long*)malloc(m_MemNum*sizeof(unsigned long));
+		m_TestRT = (long*)malloc(m_MemNum*sizeof(long));
 		m_HoldError = (int*)malloc(m_MemNum*sizeof(int));
         m_ErrorRatio = (float*)malloc(m_MemNum*sizeof(float));
 
@@ -1201,10 +1201,10 @@ BOOL CTaskControlDoc::ReadT2Hold()
 				if(i>=m_MemNum)
 				{
 					m_MemNum+=100;
-					m_HoldStartTime = (unsigned long*)realloc(m_HoldStartTime,m_MemNum*sizeof(unsigned long));
-					m_HoldSureTime = (unsigned long*)realloc(m_HoldSureTime,m_MemNum*sizeof(unsigned long));
+					m_HoldStartTime = (long*)realloc(m_HoldStartTime,m_MemNum*sizeof(long));
+					m_HoldSureTime = (long*)realloc(m_HoldSureTime,m_MemNum*sizeof(long));
 					m_HoldTime = (int*)realloc(m_HoldTime,m_MemNum*sizeof(int));
-					m_TestRT = (unsigned long*)realloc(m_TestRT,m_MemNum*sizeof(unsigned long));
+					m_TestRT = (long*)realloc(m_TestRT,m_MemNum*sizeof(long));
 					m_HoldError = (int*)realloc(m_HoldError,m_MemNum*sizeof(int));
 					m_ErrorRatio = (float*)realloc(m_ErrorRatio,m_MemNum*sizeof(float));
 				}
@@ -1213,7 +1213,7 @@ BOOL CTaskControlDoc::ReadT2Hold()
 					"%f\t%d\t%d\t%d\t%d\t"
 					"%d\t%d\t%f\t"
 					"%d\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%d\t%d\t%d\t%d\t"
-					"%d\t%d\t%d\t%u\t%u\t%u\t%d\t%f\n",
+					"%d\t%d\t%d\t%d\t%d\t%d\t%d\t%f\n",
 					m_PartInfo.m_TesterNo,20, m_PartInfo.m_TesterName,20, m_PartInfo.m_TesterSex,10, &m_PartInfo.m_Session, 
 					&m_HardSetting.m_DistanceError, &m_Setting2[0].m_PracMode, &m_Setting2[0].m_ExperMode, &m_Setting2[0].m_MainTask, &m_Setting2[0].m_SubTask,
 					&m_Setting2[0].m_Background, &m_Setting2[0].m_Direction, &m_Setting2[0].m_InitSpeed, 
@@ -3090,27 +3090,29 @@ void CTaskControlDoc::DataAnalysis()
 			vector<int> uniqueHoldTimeVec;
 
 			for (int i = 0; i < m_HoldNo; i++)//放入误差率绝对值
-				m_HoldTimeErrAve.push_back(fabs(m_ErrorRatio[i]));
+				if (m_ErrorRatio[i]!=-1) m_HoldTimeErrAve.push_back(fabs(m_ErrorRatio[i]));
 			for (int i = 0; i < m_HoldNo; i++)//查找不同的holdtime
-			{
-				if (uniqueHoldTimeVec.empty()) uniqueHoldTimeVec.push_back(m_HoldTime[i]);
-				else if (find(uniqueHoldTimeVec.begin(), uniqueHoldTimeVec.end(), m_HoldTime[i]) == uniqueHoldTimeVec.end())
-					uniqueHoldTimeVec.push_back(m_HoldTime[i]);
-			}
+			if (m_ErrorRatio[i] != -1)
+				{
+					if (uniqueHoldTimeVec.empty()) uniqueHoldTimeVec.push_back(m_HoldTime[i]);
+					else if (find(uniqueHoldTimeVec.begin(), uniqueHoldTimeVec.end(), m_HoldTime[i]) == uniqueHoldTimeVec.end())
+						uniqueHoldTimeVec.push_back(m_HoldTime[i]);
+				}
 			for (int i = 0; i < uniqueHoldTimeVec.size(); i++)
 			{
 				int count = 0;
 				double err = 0.;
 				vector<int> ind;
 				for (int j = 0; j < m_HoldNo; j++)//查找相同的holdtime，用他们的err的绝对值的均值代替
-				{
-					if (uniqueHoldTimeVec[i] == m_HoldTime[j])
+				if (m_ErrorRatio[i] != -1)
 					{
-						count++;
-						err += fabs(m_HoldTimeErrAve[j]);
-						ind.push_back(j);
+						if (uniqueHoldTimeVec[i] == m_HoldTime[j])
+						{
+							count++;
+							err += fabs(m_HoldTimeErrAve[j]);
+							ind.push_back(j);
+						}
 					}
-				}
 				err /= count;
 				for (int j = 0; j < ind.size(); j++) // 写到相同的holdtime的holdTimeError中
 				{
@@ -3120,7 +3122,7 @@ void CTaskControlDoc::DataAnalysis()
 			// Sort in setting hold time order
 			for (int i = 0; i < m_Setting2[0].m_HoldTimeNum; i++) {
 				for (int j = 0; j < m_HoldNo; j++) {
-					if (m_Setting2[0].m_HoldTime[i]*1000 == m_HoldTime[j]) {
+					if ((m_Setting2[0].m_HoldTime[i]*1000 == m_HoldTime[j])&&(m_ErrorRatio[j] != -1)) {
 						settingOrderHoldTimeErrRateAve.push_back(m_HoldTimeErrAve[j]);
 						break;
 					}

@@ -86,10 +86,10 @@ public:
     BOOL *m_bHit;
 	float *m_ChartTime;
 
-	unsigned long *m_HoldStartTime;
-	unsigned long *m_HoldSureTime;
+	long *m_HoldStartTime;
+	long *m_HoldSureTime;
 	int *m_HoldTime;
-	unsigned long *m_TestRT;
+	long *m_TestRT;
 	int *m_HoldError;
 	float *m_ErrorRatio;
 

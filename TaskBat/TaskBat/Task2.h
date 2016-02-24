@@ -97,8 +97,8 @@ namespace t2
 
 	extern UINT m_PointNum;
 	extern UINT m_MemNum;
-	extern unsigned long *m_HoldStartTime;                   //存放时间保持开始时间的数组
-	extern unsigned long *m_HoldSureTime;                    //存放时间保持确认时间的数组 
+	extern long *m_HoldStartTime;                   //存放时间保持开始时间的数组
+	extern long *m_HoldSureTime;                    //存放时间保持确认时间的数组 
 	extern int *m_HoldTimeOrder;                             //存放时间保持数值的数组
 	extern float *m_HoldTime;                                  //存放保持时间的数组
 	extern BOOL *m_bHit;                                     //存放击中状态的数组

@@ -76,8 +76,8 @@ double t2::m_SampleInt;                                      //采样间隔40ms
 
 UINT t2::m_PointNum;
 UINT t2::m_MemNum;
-unsigned long *t2::m_HoldStartTime = NULL;                   //存放时间保持开始时间的数组
-unsigned long *t2::m_HoldSureTime = NULL;                    //存放时间保持确认时间的数组 
+long *t2::m_HoldStartTime = NULL;                   //存放时间保持开始时间的数组
+long *t2::m_HoldSureTime = NULL;                    //存放时间保持确认时间的数组 
 int *t2::m_HoldTimeOrder = NULL;                             //存放时间保持数值的数组
 float *t2::m_HoldTime = NULL;                                  //存放保持时间的数组
 BOOL *t2::m_bHit = NULL;                                     //存放击中状态的数组
@@ -486,8 +486,9 @@ VOID t2::SaveData()
 	FILE *fp;
 	int i;
 
-    unsigned long m_TestRT;
+    long m_TestRT;
 	int m_HoldError;
+	double m_ErrorRatio;
 	//保存追踪数据
 	if(m_Setting.m_MainTask == 1)
 	{
@@ -515,18 +516,29 @@ VOID t2::SaveData()
 		fp = fopen(m_file2,"at");
 		for(i=0;i<m_HoldNo;i++)
 		{
-			m_TestRT = m_HoldSureTime[i] - m_HoldStartTime[i];
-			m_HoldError = m_TestRT - m_HoldTime[i]*1000;
+			if (m_HoldSureTime[i] == -1)
+			{
+				m_TestRT = -1;
+				m_HoldError = -1;
+				m_ErrorRatio = -1;
+			}
+			else
+			{
+				m_TestRT = m_HoldSureTime[i] - m_HoldStartTime[i];
+				m_HoldError = m_TestRT - m_HoldTime[i]*1000;
+				m_ErrorRatio = (double)(m_HoldError) / (double)(m_HoldTime[i] * 1000.0);
+			}
+			
 			fprintf(fp,"%s\t%s\t%s\t%d\t"
 				"%.2f\t%d\t%d\t%d\t%d\t"
 				"%d\t%d\t%.2f\t"
 				"%d\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%d\t%d\t%d\t%d\t"
-				"%d\t%d\t%d\t%u\t%u\t%u\t%d\t%.2f\n",
+				"%d\t%d\t%d\t%d\t%d\t%d\t%d\t%.2lf\n",
 				m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session, 
 				m_HardSetting.m_DistanceError, m_Setting.m_PracMode, m_Setting.m_ExperMode, m_Setting.m_MainTask, m_Setting.m_SubTask,
 				m_Setting.m_Background, m_Setting.m_Direction, m_Setting.m_InitSpeed, 
 				m_Setting.m_HoldTimeNum, m_Setting.m_HoldTime[0], m_Setting.m_HoldTime[1], m_Setting.m_HoldTime[2], m_Setting.m_HoldTime[3], m_Setting.m_HoldTime[4], m_Setting.m_HoldTime[5], m_Setting.m_HoldTime[6], m_Setting.m_HoldTime[7], m_Setting.m_HoldTime[8], m_Setting.m_HoldTime[9], m_Setting.m_HoldTime[10], m_Setting.m_HoldTime[11], m_Setting.m_PracTime, m_Setting.m_ExperTime, m_Setting.m_PracTimes, m_Setting.m_ExperTimes,
-				m_TrialType, i+1,int(m_HoldTime[i]*1000), m_HoldStartTime[i], m_HoldSureTime[i], m_TestRT, m_HoldError, (float)(m_HoldError)/(float)(m_HoldTime[i]*1000.0));		
+				m_TrialType, i+1,int(m_HoldTime[i]*1000), m_HoldStartTime[i], m_HoldSureTime[i], m_TestRT, m_HoldError, m_ErrorRatio);
 		}
 		fclose(fp);
 	}
@@ -1069,8 +1081,8 @@ VOID t2::TestInit()
 		m_bShowSign = FALSE;
 		m_bShowTime = FALSE;
 		m_TrialCount = m_TrialTimes * m_Setting.m_HoldTimeNum;
-		m_HoldStartTime = (unsigned long*)malloc(m_TrialCount*sizeof(unsigned long));
-		m_HoldSureTime = (unsigned long*)malloc(m_TrialCount*sizeof(unsigned long));
+		m_HoldStartTime = (long*)malloc(m_TrialCount*sizeof(long));
+		m_HoldSureTime = (long*)malloc(m_TrialCount*sizeof(long));
 		m_HoldTimeOrder = (int*)malloc(m_TrialCount*sizeof(int));
 		m_HoldTime = (float*)malloc(m_TrialCount*sizeof(float));
 		RandOrder(m_TrialCount,m_HoldTimeOrder);
@@ -1285,6 +1297,27 @@ VOID t2::UpdateState()
 				if(m_Setting.m_MainTask == 1)
 				{
 				    MoveTrace();
+				}
+
+				//计算超时
+				if (dfTotal >= (2 * m_HoldTime[m_HoldNo] + 5))
+				{
+					m_HoldSureTime[m_HoldNo] = -1;
+					sprintf(FeedBack, "反应超时");
+					if (m_TrialType == TRIAL_PRACTICE)
+					{
+						bShowFeedBack = TRUE;
+						dfTotal = 0;
+					}
+					else
+					{
+						m_bHoldStart = FALSE;
+						m_bShowTime = FALSE;
+						m_bShowSign = FALSE;
+						dfTotal = 0;
+						m_HoldNo++;
+					}
+
 				}
 
 				//显示反馈
