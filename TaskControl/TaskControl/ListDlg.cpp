@@ -1707,11 +1707,11 @@ BOOL CListDlg::AddT2HoldItem(int i)
 	m_ResultList2.AddItem(i,30,str,-1);
 	str.Format("%d",pDoc->m_HoldTime[i]);
 	m_ResultList2.AddItem(i,31,str,-1);
-	str.Format("%u",pDoc->m_HoldStartTime[i]);
+	str.Format("%d",pDoc->m_HoldStartTime[i]);
 	m_ResultList2.AddItem(i,32,str,-1);
-	str.Format("%u",pDoc->m_HoldSureTime[i]);
+	str.Format("%d",pDoc->m_HoldSureTime[i]);
 	m_ResultList2.AddItem(i,33,str,-1);  
-    str.Format("%u",pDoc->m_TestRT[i]);
+    str.Format("%d",pDoc->m_TestRT[i]);
 	m_ResultList2.AddItem(i,34,str,-1);
 	str.Format("%d",pDoc->m_HoldError[i]);
 	m_ResultList2.AddItem(i,35,str,-1);

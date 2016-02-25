@@ -156,7 +156,8 @@ void CAnalysisDlg::DisplayResult()
 			for(i=0;i<pDoc->m_Setting2[0].m_HoldTimeNum;i++)
 			{
 				//str.Format("%.2f", (float)pDoc->m_HoldErrorTotal[i] / (float)pDoc->m_HoldCountTotal[i]);
-				str.Format("%.2f",pDoc->settingOrderHoldTimeErrRateAve[i]);
+				if (pDoc->settingOrderHoldTimeErrRateAve[i] == -1)	str.Format("·´Ó¦³¬Ê±");
+				else str.Format("%.2f", pDoc->settingOrderHoldTimeErrRateAve[i]);
 				m_ResultList.AddItem(i+4,1,str,-1);
 			}
 			for (int i = pDoc->m_Setting2[0].m_HoldTimeNum; i < 12; i++)
