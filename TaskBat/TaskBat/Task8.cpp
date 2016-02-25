@@ -758,7 +758,7 @@ BOOL t8::drawTex(string mode, LPD3DXSPRITE &g_pSprite,
 		getTexSize(ltex, tw, th);
 		getScale(sx, sy, w, h, tw, th, x_resolution, y_resolution);
 		tx = (double)x_resolution / 2 - (double)w / 2;
-		ty = (double)y_resolution - (double)h;
+		ty = (double)y_resolution * 3. / 4./* - (double)h*/;
 	}
 	if (mode == "LR") {
 		w = 600; h = 600;
@@ -839,7 +839,8 @@ VOID t8::Render()
 				<< "平均正确率为" << setprecision(2) << (double)sumRight / cnt * 100. << "%, "
 				<< "平均反应时为" << setprecision(0) << sumResTime / cnt << "毫秒";
 			int tx = x_resolution / 2;
-			int ty = y_resolution - 50;
+			int ty = 3. / 4. * y_resolution;
+			//int ty = y_resolution - 50;
 			drawText(ss.str(), tx, ty, g_pFont);
 			g_pFont1->DrawText(NULL, Insturction3, -1, &erect,
 				DT_WORDBREAK | DT_NOCLIP | DT_CENTER | DT_VCENTER, D3DCOLOR_XRGB(255, 255, 255));
@@ -889,7 +890,8 @@ VOID t8::Render()
 			if (bShowTime) {
 				// 绘制文字
 				int tx = x_resolution / 2;
-				int ty = y_resolution - 50;
+				//int ty = y_resolution - 50;
+				int ty = 3./4.*y_resolution;
 				stringstream ss;
 				ss << "还剩" << countdown / 1000 << "秒"/* << g_imgDisplayInd*/;
 				if (!drawText(ss.str(), tx, ty, g_pFont))
