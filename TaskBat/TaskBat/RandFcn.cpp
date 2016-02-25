@@ -1,6 +1,7 @@
 #include "RandFcn.h"
 #include "stdafx.h"
 #include <cmath>
+#include <time.h>
 VOID RandValue(int min, int max, int &n)
 {
     int range;
@@ -503,6 +504,8 @@ VOID RandPoint3(int num, int r, POINT p1, POINT p2, float cwidth, float cheight,
 
 VOID RandOrder(int num, int *dst)
 {
+	srand((unsigned)time(NULL)); //初始化随机种子 
+	
     int i, *src;
 	src = new int[num];   
     for(i=0; i<num; i++)  
