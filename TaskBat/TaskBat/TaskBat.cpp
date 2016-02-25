@@ -405,7 +405,7 @@ void exeTasks(HWND &hWnd, HINSTANCE &hInstance,
 			t1::_tWinMain(hInstance, hPrevInstance, 
 				lpCmdLine, nCmdShow, hWnd, lastWinClassName, lastWinName);
 			lastWinClassName = std::to_string(nCmdShow).c_str();
-			lastWinName = std::to_string(nCmdShow).c_str();
+			lastWinName = "实验1";
 			b_IsExit = t1::m_TestState;
 			if (b_IsExit == STATE_EXIT)
 				break;
@@ -419,7 +419,7 @@ void exeTasks(HWND &hWnd, HINSTANCE &hInstance,
 			t2::_tWinMain(hInstance, hPrevInstance,
 				lpCmdLine, nCmdShow, hWnd, lastWinClassName, lastWinName);
 			lastWinClassName = std::to_string(nCmdShow).c_str();
-			lastWinName = std::to_string(nCmdShow).c_str();
+			lastWinName = "实验2";
 			b_IsExit = t2::m_TestState;
 			if (b_IsExit == STATE_EXIT)
 				break;
@@ -433,7 +433,7 @@ void exeTasks(HWND &hWnd, HINSTANCE &hInstance,
 			t3::_tWinMain(hInstance, hPrevInstance,
 				lpCmdLine, nCmdShow, hWnd, lastWinClassName, lastWinName);
 			lastWinClassName = std::to_string(nCmdShow).c_str();
-			lastWinName = std::to_string(nCmdShow).c_str();
+			lastWinName = "实验3-1";
 			b_IsExit = t3::m_TestState;
 			if (b_IsExit == STATE_EXIT)
 				break;
@@ -447,7 +447,7 @@ void exeTasks(HWND &hWnd, HINSTANCE &hInstance,
 			t6_1::_tWinMain(hInstance, hPrevInstance,
 				lpCmdLine, nCmdShow, hWnd, lastWinClassName, lastWinName);
 			lastWinClassName = std::to_string(nCmdShow).c_str();
-			lastWinName = std::to_string(nCmdShow).c_str();
+			lastWinName = "实验6-1";
 			b_IsExit = t6_1::m_TestState;
 			if (b_IsExit == STATE_EXIT)
 				break;
@@ -461,7 +461,7 @@ void exeTasks(HWND &hWnd, HINSTANCE &hInstance,
 			t6_2::_tWinMain(hInstance, hPrevInstance,
 				lpCmdLine, nCmdShow, hWnd, lastWinClassName, lastWinName);
 			lastWinClassName = std::to_string(nCmdShow).c_str();
-			lastWinName = std::to_string(nCmdShow).c_str();
+			lastWinName = "实验6-2";
 			b_IsExit = t6_2::m_TestState;
 			if (b_IsExit == STATE_EXIT)
 				break;
@@ -475,7 +475,7 @@ void exeTasks(HWND &hWnd, HINSTANCE &hInstance,
 			t7::_tWinMain(hInstance, hPrevInstance,
 				lpCmdLine, nCmdShow, hWnd, lastWinClassName, lastWinName);
 			lastWinClassName = std::to_string(nCmdShow).c_str();
-			lastWinName = std::to_string(nCmdShow).c_str();
+			lastWinName = "实验7";
 			b_IsExit = t7::m_TestState;
 			if (b_IsExit == STATE_EXIT)
 				break;
@@ -488,7 +488,7 @@ void exeTasks(HWND &hWnd, HINSTANCE &hInstance,
 			t8::_tWinMain(hInstance, hPrevInstance,
 				lpCmdLine, nCmdShow, hWnd, lastWinClassName, lastWinName);
 			lastWinClassName = std::to_string(nCmdShow).c_str();
-			lastWinName = std::to_string(nCmdShow).c_str();
+			lastWinName = "实验8";
 			b_IsExit = t8::m_TestState;
 			if (b_IsExit == STATE_EXIT)
 				break;
