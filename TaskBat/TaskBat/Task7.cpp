@@ -1300,7 +1300,7 @@ DWORD WINAPI t7::InputThreadProcedure(LPVOID lpStartupParam)
 
 							break;
 						case STATE_OVER: 
-						case STATE_NEXT:
+						//case STATE_NEXT:
 							//测试结束，等待按任意键退出
 					
 							for(i=0;i<12;i++)
