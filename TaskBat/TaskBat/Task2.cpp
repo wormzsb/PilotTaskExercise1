@@ -108,6 +108,7 @@ int t2::rec_y_end;
 //Timer
 LARGE_INTEGER t2::litmp;
 LONGLONG t2::QPart1, t2::QPart2;
+vector<SYSTEMTIME> t2::sTimeVec, t2::eTimeVec;
 double t2::dfMinus, t2::dfFreq, t2::dfTim, t2::dfTotal, t2::dfTotalMove;
 
 //************************************************
@@ -529,16 +530,28 @@ VOID t2::SaveData()
 				m_ErrorRatio = (double)(m_HoldError) / (double)(m_HoldTime[i] * 1000.0);
 			}
 			
-			fprintf(fp,"%s\t%s\t%s\t%d\t"
+			fprintf(fp, "%s\t%s\t%s\t%d\t"
 				"%.2f\t%d\t%d\t%d\t%d\t"
 				"%d\t%d\t%.2f\t"
 				"%d\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%d\t%d\t%d\t%d\t"
-				"%d\t%d\t%d\t%d\t%d\t%d\t%d\t%.2lf\n",
-				m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session, 
+				"%d\t%d\t%d\t",
+				m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session,
 				m_HardSetting.m_DistanceError, m_Setting.m_PracMode, m_Setting.m_ExperMode, m_Setting.m_MainTask, m_Setting.m_SubTask,
-				m_Setting.m_Background, m_Setting.m_Direction, m_Setting.m_InitSpeed, 
+				m_Setting.m_Background, m_Setting.m_Direction, m_Setting.m_InitSpeed,
 				m_Setting.m_HoldTimeNum, m_Setting.m_HoldTime[0], m_Setting.m_HoldTime[1], m_Setting.m_HoldTime[2], m_Setting.m_HoldTime[3], m_Setting.m_HoldTime[4], m_Setting.m_HoldTime[5], m_Setting.m_HoldTime[6], m_Setting.m_HoldTime[7], m_Setting.m_HoldTime[8], m_Setting.m_HoldTime[9], m_Setting.m_HoldTime[10], m_Setting.m_HoldTime[11], m_Setting.m_PracTime, m_Setting.m_ExperTime, m_Setting.m_PracTimes, m_Setting.m_ExperTimes,
-				m_TrialType, i+1,int(m_HoldTime[i]*1000), m_HoldStartTime[i], m_HoldSureTime[i], m_TestRT, m_HoldError, m_ErrorRatio);
+				m_TrialType, i + 1, int(m_HoldTime[i] * 1000));
+			fprintf(fp, "%d:%d:%d\t%d:%d:%d",
+				sTimeVec[i].wHour,
+				sTimeVec[i].wMinute,
+				sTimeVec[i].wSecond,
+				eTimeVec[i].wHour,
+				eTimeVec[i].wMinute,
+				eTimeVec[i].wSecond
+				);
+			fprintf(fp, "\t%d\t%d\t%.2lf\n",
+					m_TestRT, 
+					m_HoldError, 
+					m_ErrorRatio);
 		}
 		fclose(fp);
 	}
@@ -1289,6 +1302,9 @@ VOID t2::UpdateState()
 						m_bHoldStart = TRUE;
 						//m_HoldStartTime[m_HoldNo] = QPart2/dfFreq*1000;
 						m_HoldStartTime[m_HoldNo] = 0;
+						SYSTEMTIME sTime;
+						GetLocalTime(&sTime);
+						sTimeVec.push_back(sTime);
 						m_bShowSign = TRUE;
 						dfTotal = 0;
 					}
@@ -1302,6 +1318,9 @@ VOID t2::UpdateState()
 				//计算超时
 				if (dfTotal >= (2 * m_HoldTime[m_HoldNo] + 5))
 				{
+					SYSTEMTIME eTime;
+					GetLocalTime(&eTime);
+					eTimeVec.push_back(eTime);
 					m_HoldSureTime[m_HoldNo] = -1;
 					sprintf(FeedBack, "反应超时");
 					if (m_TrialType == TRIAL_PRACTICE)
@@ -1516,6 +1535,9 @@ DWORD WINAPI t2::InputThreadProcedure(LPVOID lpStartupParam)
 								{
 	//								m_SureDownNum++;
 									//m_HoldSureTime[m_HoldNo] = QPart2/dfFreq*1000;
+									SYSTEMTIME eTime;
+									GetLocalTime(&eTime);
+									eTimeVec.push_back(eTime);
 									m_HoldSureTime[m_HoldNo] = dfTotal*1000;
 									sprintf(FeedBack,"知觉时间%dms",m_HoldSureTime[m_HoldNo] - m_HoldStartTime[m_HoldNo]);
 									if(m_TrialType == TRIAL_PRACTICE)

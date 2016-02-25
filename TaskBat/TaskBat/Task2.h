@@ -13,13 +13,17 @@
 #include "RandFcn.h" 
 #include "Input.h"
 #include "Helper.h"
-
+#include <vector>
+using namespace std;
 #define WM_THREADSTOP (WM_USER+1)
 
 #pragma comment(lib,"User32.lib")
 
 namespace t2
 {
+	extern vector<SYSTEMTIME> sTimeVec, eTimeVec;
+
+
 	extern Helper hp;
 	// define a data structure to hold our data ?optional
 	extern struct MYDATA {
