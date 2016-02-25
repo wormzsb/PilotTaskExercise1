@@ -86,8 +86,8 @@ public:
     BOOL *m_bHit;
 	float *m_ChartTime;
 
-	long *m_HoldStartTime;
-	long *m_HoldSureTime;
+	SYSTEMTIME m_HoldStartTime;
+	SYSTEMTIME m_HoldSureTime;
 	int *m_HoldTime;
 	long *m_TestRT;
 	int *m_HoldError;

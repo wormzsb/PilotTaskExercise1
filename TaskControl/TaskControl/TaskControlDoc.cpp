@@ -258,8 +258,8 @@ CTaskControlDoc::CTaskControlDoc()
     m_bHit = NULL;
     m_ChartTime=NULL;
 
-	m_HoldStartTime = NULL;
-	m_HoldSureTime = NULL;
+	//m_HoldStartTime = NULL;
+	//m_HoldSureTime = NULL;
 	m_HoldTime = NULL;
 	m_TestRT = NULL;
 	m_HoldError = NULL;
@@ -1176,13 +1176,100 @@ BOOL CTaskControlDoc::ReadT2Hold()
 		m_pWSDlg = (CResultDlg *)pMain->m_pWSDlg;
 	}
 
-    fopen_s(&fp, m_FileName2,"rt");
+	ifstream fin;
+	fin.open((CT2A(m_FileName2)));
+	if (fin.is_open() == 0) {
+		AfxMessageBox("文件没有正确打开");
+		return TRUE;
+	}
+
+	m_MemNum = 100;
+//	m_HoldStartTime = (SYSTEMTIME)malloc(m_MemNum*sizeof(SYSTEMTIME));
+//	m_HoldSureTime = (SYSTEMTIME)malloc(m_MemNum*sizeof(SYSTEMTIME));
+	m_HoldTime = (int*)malloc(m_MemNum*sizeof(int));
+	m_TestRT = (long*)malloc(m_MemNum*sizeof(long));
+	m_HoldError = (int*)malloc(m_MemNum*sizeof(int));
+	m_ErrorRatio = (float*)malloc(m_MemNum*sizeof(float));
+
+	i = 0;
+	char sz[1000];
+	// read head(1 row)
+	fin.getline(sz, 1000);
+	while (!fin.eof()) {
+		char t;
+		if (i >= m_MemNum)
+		{
+			m_MemNum += 100;
+//			m_HoldStartTime = (SYSTEMTIME)realloc(m_HoldStartTime, m_MemNum*sizeof(SYSTEMTIME));
+//			m_HoldSureTime = (SYSTEMTIME)realloc(m_HoldSureTime, m_MemNum*sizeof(SYSTEMTIME));
+			m_HoldTime = (int*)realloc(m_HoldTime, m_MemNum*sizeof(int));
+			m_TestRT = (long*)realloc(m_TestRT, m_MemNum*sizeof(long));
+			m_HoldError = (int*)realloc(m_HoldError, m_MemNum*sizeof(int));
+			m_ErrorRatio = (float*)realloc(m_ErrorRatio, m_MemNum*sizeof(float));
+		}
+
+		fin >> m_PartInfo.m_TesterNo;
+		if (fin.fail()) break;
+		fin >> m_PartInfo.m_TesterName
+			>> m_PartInfo.m_TesterSex
+			>> m_PartInfo.m_Session
+			>> m_HardSetting.m_DistanceError
+			>> m_Setting2[0].m_PracMode
+			>> m_Setting2[0].m_ExperMode
+			>> m_Setting2[0].m_MainTask
+			>> m_Setting2[0].m_SubTask
+			>> m_Setting2[0].m_Background
+			>> m_Setting2[0].m_Direction
+			>> m_Setting2[0].m_InitSpeed
+			>> m_Setting2[0].m_HoldTimeNum
+			>> m_Setting2[0].m_HoldTime[0]
+			>> m_Setting2[0].m_HoldTime[1]
+			>> m_Setting2[0].m_HoldTime[2]
+			>> m_Setting2[0].m_HoldTime[3]
+			>> m_Setting2[0].m_HoldTime[4]
+			>> m_Setting2[0].m_HoldTime[5]
+			>> m_Setting2[0].m_HoldTime[6]
+			>> m_Setting2[0].m_HoldTime[7]
+			>> m_Setting2[0].m_HoldTime[8]
+			>> m_Setting2[0].m_HoldTime[9]
+			>> m_Setting2[0].m_HoldTime[10]
+			>> m_Setting2[0].m_HoldTime[11]
+			>> m_Setting2[0].m_PracTime
+			>> m_Setting2[0].m_ExperTime
+			>> m_Setting2[0].m_PracTimes
+			>> m_Setting2[0].m_ExperTimes
+			>> m_TrialType
+			>> m_HoldNo
+			>> m_HoldTime[i]
+			>> m_HoldStartTime.wHour >> t
+			>> m_HoldStartTime.wMinute >> t
+			>> m_HoldStartTime.wSecond
+			>> m_HoldSureTime.wHour >> t
+			>> m_HoldSureTime.wMinute >> t
+			>> m_HoldSureTime.wSecond
+			>> m_TestRT[i]
+			>> m_HoldError[i]
+			>> m_ErrorRatio[i];
+			if (m_TrialType == 0)
+			{
+				m_ExperStart2 = i;
+			}
+			if (!bBatch)
+				if (m_TrialType == 0 || m_TrialType == 1)
+				{
+					m_pWSDlg->m_ListDlg.AddT2HoldItem(i);
+				}
+
+		i++;
+	}
+
+    /*fopen_s(&fp, m_FileName2,"rt");
 	i = 0;
 	if(fp!=NULL)
 	{
 		m_MemNum = 100;
-		m_HoldStartTime = (long*)malloc(m_MemNum*sizeof(long));
-		m_HoldSureTime = (long*)malloc(m_MemNum*sizeof(long));
+		//m_HoldStartTime = (long*)malloc(m_MemNum*sizeof(long));
+		//m_HoldSureTime = (long*)malloc(m_MemNum*sizeof(long));
 		m_HoldTime = (int*)malloc(m_MemNum*sizeof(int));
 		m_TestRT = (long*)malloc(m_MemNum*sizeof(long));
 		m_HoldError = (int*)malloc(m_MemNum*sizeof(int));
@@ -1198,11 +1285,12 @@ BOOL CTaskControlDoc::ReadT2Hold()
 			while(!feof(fp))
 			{
 				fp1 = fp;
+				char t;
 				if(i>=m_MemNum)
 				{
 					m_MemNum+=100;
-					m_HoldStartTime = (long*)realloc(m_HoldStartTime,m_MemNum*sizeof(long));
-					m_HoldSureTime = (long*)realloc(m_HoldSureTime,m_MemNum*sizeof(long));
+					m_HoldStartTime = (char*)realloc(m_HoldStartTime,m_MemNum*sizeof(char));
+					m_HoldSureTime = (char*)realloc(m_HoldSureTime,m_MemNum*sizeof(char));
 					m_HoldTime = (int*)realloc(m_HoldTime,m_MemNum*sizeof(int));
 					m_TestRT = (long*)realloc(m_TestRT,m_MemNum*sizeof(long));
 					m_HoldError = (int*)realloc(m_HoldError,m_MemNum*sizeof(int));
@@ -1213,12 +1301,12 @@ BOOL CTaskControlDoc::ReadT2Hold()
 					"%f\t%d\t%d\t%d\t%d\t"
 					"%d\t%d\t%f\t"
 					"%d\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%d\t%d\t%d\t%d\t"
-					"%d\t%d\t%d\t%d\t%d\t%d\t%d\t%f\n",
+					"%d\t%d\t%d\t%s\t%s\t%d\t%d\t%f\n",
 					m_PartInfo.m_TesterNo,20, m_PartInfo.m_TesterName,20, m_PartInfo.m_TesterSex,10, &m_PartInfo.m_Session, 
 					&m_HardSetting.m_DistanceError, &m_Setting2[0].m_PracMode, &m_Setting2[0].m_ExperMode, &m_Setting2[0].m_MainTask, &m_Setting2[0].m_SubTask,
 					&m_Setting2[0].m_Background, &m_Setting2[0].m_Direction, &m_Setting2[0].m_InitSpeed, 
 					&m_Setting2[0].m_HoldTimeNum, &m_Setting2[0].m_HoldTime[0], &m_Setting2[0].m_HoldTime[1], &m_Setting2[0].m_HoldTime[2], &m_Setting2[0].m_HoldTime[3], &m_Setting2[0].m_HoldTime[4], &m_Setting2[0].m_HoldTime[5], &m_Setting2[0].m_HoldTime[6], &m_Setting2[0].m_HoldTime[7], &m_Setting2[0].m_HoldTime[8], &m_Setting2[0].m_HoldTime[9], &m_Setting2[0].m_HoldTime[10], &m_Setting2[0].m_HoldTime[11], &m_Setting2[0].m_PracTime, &m_Setting2[0].m_ExperTime, &m_Setting2[0].m_PracTimes, &m_Setting2[0].m_ExperTimes,
-					&m_TrialType, &m_HoldNo, &m_HoldTime[i], &m_HoldStartTime[i], &m_HoldSureTime[i], &m_TestRT[i], &m_HoldError[i], &m_ErrorRatio[i]);		
+					&m_TrialType, &m_HoldNo, &m_HoldTime[i], &m_HoldStartTime, &m_HoldSureTime, &m_TestRT[i], &m_HoldError[i], &m_ErrorRatio[i]);
 				if(m_TrialType==0)
 				{ 
 					m_ExperStart2 = i;
@@ -1255,8 +1343,8 @@ BOOL CTaskControlDoc::ReadT2Hold()
 			return FALSE;
 		}
 		return TRUE;
-	}
-	return FALSE;
+	}*/
+	return TRUE;
 }
 
 BOOL CTaskControlDoc::ReadT3Trace()
@@ -2708,7 +2796,7 @@ void CTaskControlDoc::MemClear()
 		m_ChartTime = NULL;
 	}
 
-	if(m_HoldStartTime!=NULL)
+	/*if(m_HoldStartTime!=NULL)
 	{
 		delete []m_HoldStartTime;
 		m_HoldStartTime = NULL;
@@ -2717,7 +2805,7 @@ void CTaskControlDoc::MemClear()
 	{
 		delete []m_HoldSureTime;
 		m_HoldSureTime = NULL;
-	}
+	}*/
 	if(m_HoldTime!=NULL)
 	{
 		delete []m_HoldTime;

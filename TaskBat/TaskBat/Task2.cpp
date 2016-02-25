@@ -1316,7 +1316,7 @@ VOID t2::UpdateState()
 				}
 
 				//¼ÆËã³¬Ê±
-				if (dfTotal >= (2 * m_HoldTime[m_HoldNo] + 5))
+				if ((m_bHoldStart)&&(dfTotal >= (2 * m_HoldTime[m_HoldNo] + 5)))
 				{
 					SYSTEMTIME eTime;
 					GetLocalTime(&eTime);

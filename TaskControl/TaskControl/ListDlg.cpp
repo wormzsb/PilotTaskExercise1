@@ -1707,9 +1707,9 @@ BOOL CListDlg::AddT2HoldItem(int i)
 	m_ResultList2.AddItem(i,30,str,-1);
 	str.Format("%d",pDoc->m_HoldTime[i]);
 	m_ResultList2.AddItem(i,31,str,-1);
-	str.Format("%d",pDoc->m_HoldStartTime[i]);
+	str.Format("%02d:%02d:%02d",pDoc->m_HoldStartTime.wHour, pDoc->m_HoldStartTime.wMinute, pDoc->m_HoldStartTime.wSecond);
 	m_ResultList2.AddItem(i,32,str,-1);
-	str.Format("%d",pDoc->m_HoldSureTime[i]);
+	str.Format("%02d:%02d:%02d",pDoc->m_HoldSureTime.wHour, pDoc->m_HoldSureTime.wMinute, pDoc->m_HoldSureTime.wSecond);
 	m_ResultList2.AddItem(i,33,str,-1);  
     str.Format("%d",pDoc->m_TestRT[i]);
 	m_ResultList2.AddItem(i,34,str,-1);
