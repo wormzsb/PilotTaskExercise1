@@ -3441,8 +3441,7 @@ void CTaskControlDoc::DataAnalysis()
 						m_FalseCount++;
 					if (m_EventType[i] == 2) //统计未触发事件时错误按键数
 						m_FailCount++;
-					if (m_EventType[i] == 0
-						&& (m_SureButtonNo[i] == 0 || m_SureButtonNo[i] == 1)) //统计靶事件反应时
+					if (m_bEventAcc[i] == 1) //统计靶事件反应时
 						m_RTTotal += m_EventRT[i];
 
 					//旧代码
@@ -3473,7 +3472,7 @@ void CTaskControlDoc::DataAnalysis()
 					////						m_NoTargetCount++;
 					//					}	
 				}
-				m_RTAvg = (float)m_RTTotal / (float)(m_TrueCount/*+m_CRCount*/);//靶事件反应时平均值
+				m_RTAvg = (float)m_RTTotal / (float)(m_TrueCount+m_CRCount);//靶事件反应时平均值
 																				//				m_NoRTAvg = (float)m_NoRTTotal/(float)(m_CRCount);
 				m_RTTotal = 0;
 				double sumRT = 0.;
@@ -3494,8 +3493,8 @@ void CTaskControlDoc::DataAnalysis()
 				}
 				//m_RTSqr = pow((double)m_RTTotal/(double)(m_TrueCount+m_CRCount-1),0.5);//靶事件反应时标准差
 				//				m_NoRTSqr = pow((float)m_NoRTTotal/(float)(m_CRCount-1),0.5);
-				if (m_TrueCount > 1)
-					m_RTSqr = pow((double)sumRT / (double)(m_TrueCount - 1), 0.5);
+				if (m_TrueCount + m_CRCount > 1)
+					m_RTSqr = pow((double)sumRT / (double)(m_TrueCount + m_CRCount - 1), 0.5);
 				else
 					m_RTSqr = 0.;
 			}
