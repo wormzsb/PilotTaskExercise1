@@ -834,6 +834,7 @@ VOID t3::CleanupMem()
 		free(m_PostSpeedY);
 		m_PostSpeedY = NULL;
 	}
+	resEventType.swap(vector<int>());
 }
 
 //************************************************
@@ -1072,8 +1073,8 @@ void t3::RandPlanePoint(int cnt, POINT* m_EventInterval)
 
 void t3::RandEvent()
 {
-	srand((unsigned)time(NULL)); //初始化随机种子 
-
+	
+	/*
 	int i;
 
 	for (i = 0; i < m_Setting.m_ExperTimes; i++)
@@ -1086,35 +1087,45 @@ void t3::RandEvent()
 		{
 			//飞机数量是否用完，用完用直升机
 			if (iPlaneCnt == 0)
-				break;
-			else if (iHelicopterCnt == 0)
-				break;
-			else
 			{
-				if(rand()<RAND_MAX/2)
-				{
-					m_EventType[i] = 0;
-					iPlaneCnt--;
-				}
-				else 
-				{
-					m_EventType[i] = 1;
-					iHelicopterCnt--;
-
-				}						
+				m_EventType[i] = 1;
+				iHelicopterCnt--;
+				continue;
 			}
+			if (iHelicopterCnt == 0)
+			{
+				m_EventType[i] = 0;
+				iPlaneCnt--;
+				continue;
+			}
+			srand((unsigned)time(NULL)); //初始化随机种子 
+			int t1 = rand();
+			srand((unsigned)time(NULL)); //初始化随机种子 
+			int t2 = rand();
+			if(t1 < t2)
+			{
+				m_EventType[i] = 0;
+				iPlaneCnt--;
+			}
+			else 
+			{
+				m_EventType[i] = 1;
+				iHelicopterCnt--;
+
+			}						
+			
 		}
-	
-	}
-
-
-	for (i=i;i < m_Setting.m_ExperTimes; i++)
-	{
-		if (iPlaneCnt == 0)
-			m_EventType[i] = 1;
-		else
-			m_EventType[i] = 0;
-	}
+	*/
+	vector<int> ran_plane;
+	srand((unsigned)time(NULL));
+	for (int i = 0; i < iPlaneCnt; i++) 
+		ran_plane.push_back(0);
+	for (int i = 0; i < iHelicopterCnt; i++) 
+		ran_plane.push_back(1);
+	random_shuffle(ran_plane.begin(), ran_plane.end());
+	for (int i = 0; i < m_Setting.m_ExperTimes; i++)
+		if (m_Setting.m_EventMode == 0) m_EventType[i] = 0;
+		else m_EventType[i] = ran_plane[i];
 	
 }
 //************************************************
@@ -1232,7 +1243,7 @@ VOID t3::TestInit()
 			m_EventPoint = (POINT*)malloc(m_EventCount*sizeof(POINT));
 			//RandEventOrder(m_TrialTime,m_EventCount,m_EventInterval);
 			RandEvent();
-			RandOrder(m_EventCount,m_EventOrder);
+			//RandOrder(m_EventCount,m_EventOrder);
 	    	//RandPoint(x_resolution/2-256, y_resolution/2-256, m_EventCount, m_EventPoint);
 			RandPlanePoint(m_EventCount, m_EventPoint);
 
@@ -2079,6 +2090,8 @@ int APIENTRY t3::_tWinMain(HINSTANCE &hInstance,
 			if (m_TestState == STATE_NEXT
 				|| m_TestState == STATE_EXIT)
 			{
+				Cleanup();
+				CleanupMem();
 				Sleep(50);
 				break;
 			}
