@@ -1181,7 +1181,7 @@ int APIENTRY t8::_tWinMain(HINSTANCE &hInstance,
 	rec_x_end = (x_resolution + 1024) / 2;
 	rec_y_end = (y_resolution + 768) / 2;
 
-	_hWnd = hWnd = CreateWindow(std::to_string(nCmdShow).c_str(), std::to_string(nCmdShow).c_str(),
+	_hWnd = hWnd = CreateWindow(std::to_string(nCmdShow).c_str(), /*std::to_string(nCmdShow).c_str()*/"สตั้8",
 		WS_VISIBLE | WS_POPUP, 0, 0, x_resolution, y_resolution,
 		NULL, NULL, hInstance, NULL);
 

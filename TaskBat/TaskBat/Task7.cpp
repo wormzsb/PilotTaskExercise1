@@ -1426,7 +1426,7 @@ int APIENTRY t7::_tWinMain(HINSTANCE &hInstance, HINSTANCE &hPrevInstance, LPTST
 	int nFullHeight=GetSystemMetrics(SM_CYSCREEN); 
 
     //创建窗口
-	_hWnd = hWnd = CreateWindow(std::to_string(nCmdShow).c_str(), std::to_string(nCmdShow).c_str(),
+	_hWnd = hWnd = CreateWindow(std::to_string(nCmdShow).c_str(), /*std::to_string(nCmdShow).c_str()*/"实验7",
                               WS_VISIBLE|WS_POPUP, 0, 0, nFullWidth, nFullHeight,
                               NULL, NULL, wc.hInstance, NULL );
 

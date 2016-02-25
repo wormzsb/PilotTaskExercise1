@@ -1694,7 +1694,7 @@ int APIENTRY t2::_tWinMain(HINSTANCE &hInstance,
 	
 
 	//创建窗口
-	_hWnd = t2::hWnd = CreateWindow(std::to_string(nCmdShow).c_str(), std::to_string(nCmdShow).c_str(),
+	_hWnd = t2::hWnd = CreateWindow(std::to_string(nCmdShow).c_str(), /*std::to_string(nCmdShow).c_str()*/"实验2",
 		WS_VISIBLE | WS_POPUP, 0, 0, x_resolution, y_resolution,
 		NULL, NULL, wc.hInstance, NULL);
 	

@@ -1561,7 +1561,7 @@ double t1::dfMinus, t1::dfFreq, t1::dfTim, t1::dfTotalPause, t1::dfTotalMove;
 		rec_x_end = (x_resolution + 1024) / 2;
 		rec_y_end = (y_resolution + 768) / 2;
 
-		_hWnd = hWnd = CreateWindow(std::to_string(nCmdShow).c_str(), std::to_string(nCmdShow).c_str(),
+		_hWnd = hWnd = CreateWindow(std::to_string(nCmdShow).c_str(), /*std::to_string(nCmdShow).c_str()*/"สตั้1",
 			WS_VISIBLE | WS_POPUP, 0, 0, x_resolution, y_resolution,
 			NULL, NULL, hInstance, NULL);
 

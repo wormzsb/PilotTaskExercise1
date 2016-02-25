@@ -1984,7 +1984,7 @@ int APIENTRY t3::_tWinMain(HINSTANCE &hInstance,
                               WS_VISIBLE|WS_POPUP, 0, 0, 1024, 768,
                               NULL, NULL, hInstance, NULL );*/
 
-	_hWnd = hWnd = CreateWindow(std::to_string(nCmdShow).c_str(), std::to_string(nCmdShow).c_str(),
+	_hWnd = hWnd = CreateWindow(std::to_string(nCmdShow).c_str(), /*std::to_string(nCmdShow).c_str()*/"สตั้3-1",
     WS_VISIBLE|WS_POPUP, 0, 0, x_resolution, y_resolution,
     NULL, NULL, hInstance, NULL );
   
