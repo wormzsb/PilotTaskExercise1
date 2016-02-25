@@ -1124,6 +1124,7 @@ int APIENTRY t8::_tWinMain(HINSTANCE &hInstance,
 	// 打开控制台
 	//if (!AllocConsole()) return 1;
 	//freopen("CONOUT$", "w", stdout);
+	m_TestState = STATE_DISPLAYINSTURCTION;
 
 	srand((unsigned)time(NULL)); //初始化随机种子 
 
