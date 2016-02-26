@@ -111,6 +111,8 @@ float *t3::m_PostSpeedX = NULL;                              //´æ·ÅÃé×¼Æ÷ËÙ¶ÈµÄÊ
 float *t3::m_PostSpeedY = NULL;                              //´æ·ÅÃé×¼Æ÷ËÙ¶ÈµÄÊı×é
 RECT t3::strurect,t3::lerect,t3::rerect,t3::erect,t3::txtrect,t3::coderect;
 D3DRECT t3::wcoderect;
+SYSTEMTIME *t3::sTime;
+SYSTEMTIME *t3::eTime;
 
 short t3::m_TestState;
 char t3::m_file1[220];
@@ -547,11 +549,11 @@ VOID t3::SaveData()
 			fprintf(fp,"%s\t%s\t%s\t%d\t"
 				"%d\t%d\t%d\t%d\t"
 				"%d\t%d\t%.2f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t"
-				"%d\t%d\t%d\t%u\t%u\t%u\t%d\t%d\n",
+				"%d\t%d\t%d\t%d:%d:%d\t%d:%d:%d\t%u\t%d\t%d\n",
 				m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session, 
 				m_Setting.m_PracMode, m_Setting.m_ExperMode, m_Setting.m_MainTask, m_Setting.m_SubTask,
 				m_Setting.m_MainTaskMode, m_Setting.m_Background, m_Setting.m_InitSpeed, m_Setting.m_EventMode, m_Setting.m_CodePairMode, m_Setting.m_CodePairNum, m_Setting.m_DisplayMode, m_Setting.m_EventFrequency, m_Setting.m_PracTime, m_Setting.m_ExperTime, m_Setting.m_PracTimes, m_Setting.m_ExperTimes, 
-				m_TrialType, i+1,/*m_EventType*/resEventType[i], m_EventStartTime[i], m_EventSureTime[i],m_EventSureTime[i]-m_EventStartTime[i],m_SureButtonNo[i],m_bEventAcc);
+				m_TrialType, i+1,/*m_EventType*/resEventType[i], sTime[i].wHour, sTime[i].wMinute, sTime[i].wSecond, eTime[i].wHour, eTime[i].wMinute, eTime[i].wSecond,m_EventSureTime[i]-m_EventStartTime[i],m_SureButtonNo[i],m_bEventAcc);
 		} 
 		fclose(fp);
 	}
@@ -1193,6 +1195,8 @@ VOID t3::TestInit()
 		m_ObjSpeedY = (float*)malloc(m_MemNum*sizeof(float));
 		m_PostSpeedX = (float*)malloc(m_MemNum*sizeof(float));
 		m_PostSpeedY = (float*)malloc(m_MemNum*sizeof(float));
+		sTime = (SYSTEMTIME*)malloc(m_MemNum*sizeof(SYSTEMTIME));
+		eTime = (SYSTEMTIME*)malloc(m_MemNum*sizeof(SYSTEMTIME));
 		m_PostPointX = x_resolution/2;
 		m_PostPointY = y_resolution/2;
 		m_PostPoint[m_PointNum].x = m_PostPointX;
@@ -1478,6 +1482,7 @@ VOID t3::UpdateState()
 									m_bEventStart = FALSE;
 									dfTotalEvent = 0;
 									m_EventSureTime[m_RecordNo] = 0;
+									eTime[m_RecordNo].wHour = eTime[m_RecordNo].wMinute = eTime[m_RecordNo].wSecond = 0;
 									m_SureButtonNo[m_RecordNo] = -1;
 									m_EventNo++;
 									m_RecordNo++;
@@ -1499,6 +1504,7 @@ VOID t3::UpdateState()
 									//dfTotalEvent = 0; //???
 									m_EventSureTime[m_RecordNo] = 0;
 									m_SureButtonNo[m_RecordNo] = -1;
+									eTime[m_RecordNo].wHour = eTime[m_RecordNo].wMinute = eTime[m_RecordNo].wSecond = -1;
 									//m_EventNo++;
 									//m_RecordNo++;
 									if (m_RecordNo >= m_MemEvent)
@@ -1587,6 +1593,7 @@ VOID t3::UpdateState()
 						m_bEventStart = TRUE;
 						m_bEventReactTime = FALSE;
 						m_EventStartTime[m_RecordNo] = QPart2/dfFreq*1000;
+						GetLocalTime(&sTime[m_RecordNo]);
 						
 
 					}
@@ -1616,6 +1623,8 @@ VOID t3::UpdateState()
 						m_EventStartTime = (unsigned long*)realloc(m_EventStartTime,m_MemEvent*sizeof(unsigned long));
 						m_EventSureTime = (unsigned long*)realloc(m_EventSureTime,m_MemEvent*sizeof(unsigned long));
 						m_SureButtonNo = (short*)realloc(m_SureButtonNo,m_MemEvent*sizeof(short));
+						sTime = (SYSTEMTIME*)realloc(sTime,m_MemEvent*sizeof(SYSTEMTIME));
+						eTime = (SYSTEMTIME*)realloc(eTime,m_MemEvent*sizeof(SYSTEMTIME));
 					}
 				}	
 					
@@ -1663,6 +1672,8 @@ VOID t3::UpdateState()
 				m_EventStartTime = (unsigned long*)realloc(m_EventStartTime,m_MemEvent*sizeof(unsigned long));
 				m_EventSureTime = (unsigned long*)realloc(m_EventSureTime,m_MemEvent*sizeof(unsigned long));
 			    m_SureButtonNo = (short*)realloc(m_SureButtonNo,m_MemEvent*sizeof(short));
+				sTime = (SYSTEMTIME*)realloc(sTime, m_MemEvent*sizeof(SYSTEMTIME));
+				eTime = (SYSTEMTIME*)realloc(eTime, m_MemEvent*sizeof(SYSTEMTIME));
 			}
 			m_TestState = STATE_MOVINGOBJ;
 		}	
@@ -1776,6 +1787,7 @@ DWORD WINAPI t3::InputThreadProcedure(LPVOID lpStartupParam)
 										
 										rangex =  m_Setting.m_iIntervalMin + rand()%(m_Setting.m_iIntervalMax - m_Setting.m_iIntervalMin + 1);
 										m_EventSureTime[m_RecordNo] = QPart2/dfFreq*1000;
+										GetLocalTime(&eTime[m_RecordNo]);
 										m_SureButtonNo[m_RecordNo] = m_SureDownType[i];
 										if(m_Setting.m_EventMode == 0)//¼òµ¥ÈÎÎñ
 										{
@@ -1825,6 +1837,8 @@ DWORD WINAPI t3::InputThreadProcedure(LPVOID lpStartupParam)
 												m_EventStartTime = (unsigned long*)realloc(m_EventStartTime,m_MemEvent*sizeof(unsigned long));
 												m_EventSureTime = (unsigned long*)realloc(m_EventSureTime,m_MemEvent*sizeof(unsigned long));
 												m_SureButtonNo = (short*)realloc(m_SureButtonNo,m_MemEvent*sizeof(short));
+												sTime = (SYSTEMTIME*)realloc(sTime, m_MemEvent*sizeof(SYSTEMTIME));
+												eTime = (SYSTEMTIME*)realloc(eTime, m_MemEvent*sizeof(SYSTEMTIME));
 											}
 										}
 	//									m_SureDownNum++;
@@ -1842,7 +1856,9 @@ DWORD WINAPI t3::InputThreadProcedure(LPVOID lpStartupParam)
 										//m_EventType[m_RecordNo] = 2;
 										resEventType.push_back(2);
 										m_EventStartTime[m_RecordNo]  = 0;
-										m_EventSureTime[m_RecordNo] = QPart2/dfFreq*1000;
+										sTime[m_RecordNo].wHour = sTime[m_RecordNo].wMinute = sTime[m_RecordNo].wSecond = 0;
+										m_EventSureTime[m_RecordNo] = 0;
+										eTime[m_RecordNo].wHour = eTime[m_RecordNo].wMinute = eTime[m_RecordNo].wSecond = 0;
 										m_SureButtonNo[m_RecordNo] = m_SureDownType[i];
 										m_RecordNo++;
 										if(m_RecordNo>=m_MemEvent)
