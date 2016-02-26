@@ -899,7 +899,7 @@ BOOL CTaskControlDoc::ReadT1()
 					&m_ObjSpeedX[i], &m_ObjSpeedY[i], &m_PostSpeedX[i], &m_PostSpeedY[i], &m_ObjRotateSpeed[i], &m_PostRotateSpeed[i]);
 	//			if(fp == fp1)
 	//			{
-	//				MessageBox("文件格式有误！");
+	//				MessageBox("文件格式有误！");	
 	//				return FALSE;
 	//			}
                 m_ObjSpeed[i] = pow(pow((double)m_ObjSpeedX[i],2.0)+pow((double)m_ObjSpeedY[i],2.0),0.5);

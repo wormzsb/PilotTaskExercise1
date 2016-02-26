@@ -14,7 +14,7 @@
     <ProjectGuid>{2B6EE894-D985-4A64-8B7E-481793787007}</ProjectGuid>
     <RootNamespace>TaskBat</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <ProjectName>11-11</ProjectName>
+    <ProjectName>TaskBat</ProjectName>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
