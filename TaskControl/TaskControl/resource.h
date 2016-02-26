@@ -26,6 +26,7 @@
 #define IDR_MENU2                       151
 #define IDD_ANALYSISDLG                 152
 #define IDD_DIALOG1                     152
+#define IDR_MENU3                       152
 #define IDD_PROCESSDLG                  153
 #define IDD_SETTINGDLG7                 154
 #define IDD_DIALOG2                     155
