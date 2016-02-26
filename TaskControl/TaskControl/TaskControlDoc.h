@@ -68,8 +68,10 @@ public:
 	short m_TouchNo;
 
 	UINT m_MemNum;
-	SPOINT *m_ObjPoint;
-	SPOINT *m_PostPoint;
+	//SPOINT *m_ObjPoint;
+	//SPOINT *m_PostPoint;
+	SPOINT m_ObjPoint;
+	SPOINT m_PostPoint;
 	float *m_ObjRotate;
 	float *m_PostRotate;
 	float *m_Distance;
