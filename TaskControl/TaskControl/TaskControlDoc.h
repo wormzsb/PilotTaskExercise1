@@ -276,7 +276,7 @@ public:
 	double getTotalTaskPeriod();
 // Operations
 public:
-
+	
 // Overrides
 public:
 	virtual BOOL OnNewDocument();

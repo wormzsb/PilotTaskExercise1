@@ -1028,6 +1028,7 @@ BOOL CListDlg::AddT7Item(int i, int n) {
 	m_ResultList.AddItem(i, 9, getCString(rec.evaluateTime), -1);
 	str = (rec.deviationRate > 1e-6) ? "+" : "";
 	str += getCString(rec.deviationRate*100)+"%";
+	if (rec.deviationRate == -1)	str = "-1";
 	m_ResultList.AddItem(i, 10, str.c_str(), -1);
 	m_ResultList.AddItem(i, 11, rec.getCo(rec.smallBallBegCo).c_str(), -1);
 	m_ResultList.AddItem(i, 12, rec.getCo(rec.targetCo).c_str(), -1);

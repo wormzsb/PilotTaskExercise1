@@ -4161,20 +4161,31 @@ void CTaskControlDoc::DataAnalysis()
 
 double CTaskControlDoc::getAvgAbsDevRatio() {
 	double avg = 0.0;
+	int count=0;
 	for (int i = 0; i < recs["t7"].size(); i++) {
-		avg += fabs(recs["t7"][i].deviationRate);
+		if (recs["t7"][i].deviationRate != -1)
+		{
+			avg += fabs(recs["t7"][i].deviationRate);
+			count++;
+		}
+		
 	}
-	return avg / recs["t7"].size();
+	return avg / (double)count;
 }
 
 double CTaskControlDoc::getSDAbsDveRatio() {
 	double absAvg = getAvgAbsDevRatio();
 	double absSum = 0.;
+	int count=0;
 	for (int i = 0; i < recs["t7"].size(); i++) {
-		absSum += pow(fabs(recs["t7"][i].deviationRate) - absAvg, 2);
+		if (recs["t7"][i].deviationRate != -1)
+		{
+			absSum += pow(fabs(recs["t7"][i].deviationRate) - absAvg, 2);
+			count++;
+		}
 	}
-	if (recs["t7"].size() >= 2)
-		return sqrt(absSum / (recs["t7"].size() - 1));
+		if (count >= 2)
+		return sqrt(absSum / (count - 1));
 	else
 		return 0.;
 }
