@@ -207,8 +207,8 @@ CTaskControlDoc::CTaskControlDoc()
 	m_DefSetting7.m_iObstacleColorR = 80;
 	m_DefSetting7.m_iObstacleColorG = 80;
 	m_DefSetting7.m_iObstacleColorB = 80;
-	m_DefSetting7.m_iObstacleRadius = 200;
-	m_DefSetting7.m_iBallCenterDis = 350;
+	m_DefSetting7.m_iObstacleRadius = 180;
+	m_DefSetting7.m_iBallCenterDis = 330;
 	m_DefSetting7.m_iPracTimes = 3;
 	m_DefSetting7.m_iSpeedMode = 0;
 
