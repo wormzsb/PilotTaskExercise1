@@ -244,19 +244,19 @@ CTaskControlDoc::CTaskControlDoc()
 	//m_PostPoint = NULL;
 	m_ObjRotate = NULL;
 	m_PostRotate = NULL;
-	m_Distance = NULL;
-	m_RotateError = NULL;
-	m_ObjSpeedX = NULL;
-	m_ObjSpeedY = NULL;
-	m_ObjSpeed = NULL;
-	m_PostSpeedX = NULL;
-	m_PostSpeedY = NULL;
-	m_PostSpeed = NULL;
+	//m_Distance = NULL;
+	//m_RotateError = NULL;
+	//m_ObjSpeedX = NULL;
+	//m_ObjSpeedY = NULL;
+	//m_ObjSpeed = NULL;
+	//m_PostSpeedX = NULL;
+	//m_PostSpeedY = NULL;
+	//m_PostSpeed = NULL;
 	m_ObjRotateSpeed = NULL;
 	m_PostRotateSpeed = NULL;
-	m_PointTime = NULL;
-    m_bHit = NULL;
-    m_ChartTime=NULL;
+	//m_PointTime = NULL;
+    //m_bHit = NULL;
+    //m_ChartTime=NULL;
 
 	//m_HoldStartTime = NULL;
 	//m_HoldSureTime = NULL;
@@ -830,7 +830,7 @@ BOOL CTaskControlDoc::ReadT1()
 	int i = 0;
 	if(fp!=NULL)
 	{
-		m_MemNum = 1000;
+		/*m_MemNum = 2000;
 
 		//m_ObjPoint = (SPOINT*)malloc(m_MemNum*sizeof(POINT));
 		//m_PostPoint = (SPOINT*)malloc(m_MemNum*sizeof(POINT));
@@ -848,7 +848,7 @@ BOOL CTaskControlDoc::ReadT1()
 		m_PostRotateSpeed = (float*)malloc(m_MemNum*sizeof(float));
 		m_ChartTime = (float*)malloc(m_MemNum*sizeof(float));
 		m_ObjSpeed = (float*)malloc(m_MemNum*sizeof(float));
-		m_PostSpeed = (float*)malloc(m_MemNum*sizeof(float));
+		m_PostSpeed = (float*)malloc(m_MemNum*sizeof(float));*/
 //		fprintf(fp,"ID\tName\tSex\tSession\t"
 //			"DistanceError\tAngleError\tPracMode\tExperMode\t"
 //			"Background\tTrack\tDirection\tMoveMode\tSpeedMode\tPause\tPauseNum\tInitSpeed\t"
@@ -862,7 +862,7 @@ BOOL CTaskControlDoc::ReadT1()
 			while(!feof(fp))
 			{
 	//			fp1 = fp;
-				if(i>=m_MemNum)
+				/*if(i>=m_MemNum)
 				{
 					m_MemNum+=1000;
 					//m_ObjPoint = (SPOINT*)realloc(m_ObjPoint,m_MemNum*sizeof(SPOINT));
@@ -882,7 +882,15 @@ BOOL CTaskControlDoc::ReadT1()
 					m_ChartTime = (float*)realloc(m_ChartTime,m_MemNum*sizeof(float));
 					m_ObjSpeed = (float*)realloc(m_ObjSpeed,m_MemNum*sizeof(float));
 	            	m_PostSpeed = (float*)realloc(m_PostSpeed,m_MemNum*sizeof(float));
-				}
+				}*/
+				float m_Distance_t;
+				float m_RotateError_t;
+				float m_ObjSpeedX_t;
+				float m_ObjSpeedY_t;
+				float m_PostSpeedX_t;
+				float m_PostSpeedY_t;
+				unsigned long m_PointTime_t;
+				BOOL m_bHit_t;
 				fscanf_s(fp,"%s\t%s\t%s\t%d\t"
 					"%f\t%f\t%d\t%d\t"
 					"%d\t%d\t%d\t%d\t%d\t"
@@ -895,15 +903,23 @@ BOOL CTaskControlDoc::ReadT1()
 					&m_Setting1[0].m_Background, &m_Setting1[0].m_Track, &m_Setting1[0].m_Direction, &m_Setting1[0].m_MoveMode, &m_Setting1[0].m_SpeedMode,
 					&m_Setting1[0].m_Pause, &m_Setting1[0].m_PauseNum, &m_Setting1[0].m_Speed, &m_Setting1[0].m_InitSpeed,
 					&m_Setting1[0].m_SpeedMin, &m_Setting1[0].m_SpeedMax, &m_Setting1[0].m_AccelerationMin, &m_Setting1[0].m_AccelerationMax, &m_Setting1[0].m_AngleSpeedMin, &m_Setting1[0].m_AngleSpeedMax, &m_Setting1[0].m_RotateAngleMin, &m_Setting1[0].m_RotateAngleMax, &m_Setting1[0].m_PracTime, &m_Setting1[0].m_ExperTime, &m_Setting1[0].m_PracTimes, &m_Setting1[0].m_ExperTimes,
-					&m_TrialType, &m_TrialNo, &m_PointNum, &m_PointTime[i], &m_ObjPoint.x, &m_ObjPoint.y, &m_PostPoint.x, &m_PostPoint.y, &m_ObjRotate[i], &m_PostRotate[i], &m_Distance[i], &m_RotateError[i], &m_bHit[i],		
-					&m_ObjSpeedX[i], &m_ObjSpeedY[i], &m_PostSpeedX[i], &m_PostSpeedY[i], &m_ObjRotateSpeed[i], &m_PostRotateSpeed[i]);
+					&m_TrialType, &m_TrialNo, &m_PointNum, &m_PointTime_t, &m_ObjPoint.x, &m_ObjPoint.y, &m_PostPoint.x, &m_PostPoint.y, &m_ObjRotate, &m_PostRotate, &m_Distance_t, &m_RotateError_t, &m_bHit_t,
+					&m_ObjSpeedX_t, &m_ObjSpeedY_t, &m_PostSpeedX_t, &m_PostSpeedY_t, &m_ObjRotateSpeed, &m_PostRotateSpeed);
+				m_Distance.push_back(m_Distance_t);
+				m_RotateError.push_back(m_RotateError_t);
+				m_ObjSpeedX.push_back(m_ObjSpeedX_t);
+				m_ObjSpeedY.push_back(m_ObjSpeedY_t);
+				m_PostSpeedX.push_back(m_PostSpeedX_t);
+				m_PostSpeedY.push_back(m_PostSpeedY_t);
+				m_PointTime.push_back(m_PointTime_t);
+				m_bHit.push_back(m_bHit_t);
 	//			if(fp == fp1)
 	//			{
 	//				MessageBox("文件格式有误！");	
 	//				return FALSE;
 	//			}
-                m_ObjSpeed[i] = pow(pow((double)m_ObjSpeedX[i],2.0)+pow((double)m_ObjSpeedY[i],2.0),0.5);
-				m_PostSpeed[i] = pow(pow((double)m_PostSpeedX[i],2.0)+pow((double)m_PostSpeedY[i],2.0),0.5);
+                m_ObjSpeed.push_back(pow(pow((double)m_ObjSpeedX[i],2.0)+pow((double)m_ObjSpeedY[i],2.0),0.5));
+				m_PostSpeed.push_back(pow(pow((double)m_PostSpeedX[i],2.0)+pow((double)m_PostSpeedY[i],2.0),0.5));
 				if(m_TrialType==0)
 				{ 
 					m_ExperStart1 = i;
@@ -915,7 +931,7 @@ BOOL CTaskControlDoc::ReadT1()
 				} 
 				if(m_TrialType==1)
 				{
-					m_ChartTime[i] = (float)(m_PointTime[i] - m_PointTime[m_StartPoint[j-1]])/1000.0;
+					m_ChartTime.push_back((float)(m_PointTime[i] - m_PointTime[m_StartPoint[j-1]])/1000.0);
 				}
 				if (!bBatch)
 				{
@@ -1011,7 +1027,7 @@ BOOL CTaskControlDoc::ReadT2Trace()
 	i = 0;
 	if(fp!=NULL)
 	{
-		m_MemNum = 1000;
+		/*m_MemNum = 1000;
 		//m_ObjPoint = (SPOINT*)malloc(m_MemNum*sizeof(POINT));
 		//m_PostPoint = (SPOINT*)malloc(m_MemNum*sizeof(POINT));
 		m_Distance = (float*)malloc(m_MemNum*sizeof(float));
@@ -1023,7 +1039,7 @@ BOOL CTaskControlDoc::ReadT2Trace()
 		m_PostSpeedY = (float*)malloc(m_MemNum*sizeof(float));
 		m_ChartTime = (float*)malloc(m_MemNum*sizeof(float));
 		m_ObjSpeed = (float*)malloc(m_MemNum*sizeof(float));
-		m_PostSpeed = (float*)malloc(m_MemNum*sizeof(float));
+		m_PostSpeed = (float*)malloc(m_MemNum*sizeof(float));*/
 		//m_StartPoint = (int*)malloc(m_MemNum*sizeof(int));
 		//m_ValidStart = (int*)malloc(m_MemNum*sizeof(int));
 //		fprintf(fp,"ID\tName\tSex\tSession\t"
@@ -1039,7 +1055,7 @@ BOOL CTaskControlDoc::ReadT2Trace()
 			while(!feof(fp))
 			{
 				fp1 = fp;
-				if(i>=m_MemNum)
+				/*if(i>=m_MemNum)
 				{
 					m_MemNum+=1000;
 					//m_ObjPoint = (SPOINT*)realloc(m_ObjPoint,m_MemNum*sizeof(SPOINT));
@@ -1056,8 +1072,15 @@ BOOL CTaskControlDoc::ReadT2Trace()
 	           		m_PostSpeed = (float*)realloc(m_PostSpeed,m_MemNum*sizeof(float));
 					//m_StartPoint = (int*)realloc(m_StartPoint, m_MemNum*sizeof(int));
 					//m_ValidStart = (int*)realloc(m_ValidStart, m_MemNum*sizeof(int));
-				}
-
+				}*/
+				float m_Distance_t;
+				float m_RotateError_t;
+				float m_ObjSpeedX_t;
+				float m_ObjSpeedY_t;
+				float m_PostSpeedX_t;
+				float m_PostSpeedY_t;
+				unsigned long m_PointTime_t;
+				BOOL m_bHit_t;
 				fscanf_s(fp,"%s\t%s\t%s\t%d\t"
 					"%f\t%d\t%d\t%d\t%d\t"
 					"%d\t%d\t%f\t"
@@ -1068,10 +1091,18 @@ BOOL CTaskControlDoc::ReadT2Trace()
 					&m_HardSetting.m_DistanceError, &m_Setting2[0].m_PracMode, &m_Setting2[0].m_ExperMode, &m_Setting2[0].m_MainTask, &m_Setting2[0].m_SubTask,
 					&m_Setting2[0].m_Background, &m_Setting2[0].m_Direction, &m_Setting2[0].m_InitSpeed, 
 					&m_Setting2[0].m_HoldTimeNum, &m_Setting2[0].m_HoldTime[0], &m_Setting2[0].m_HoldTime[1], &m_Setting2[0].m_HoldTime[2], &m_Setting2[0].m_HoldTime[3], &m_Setting2[0].m_HoldTime[4], &m_Setting2[0].m_HoldTime[5], &m_Setting2[0].m_HoldTime[6], &m_Setting2[0].m_HoldTime[7], &m_Setting2[0].m_HoldTime[8], &m_Setting2[0].m_HoldTime[9], &m_Setting2[0].m_HoldTime[10], &m_Setting2[0].m_HoldTime[11], &m_Setting2[0].m_PracTime, &m_Setting2[0].m_ExperTime, &m_Setting2[0].m_PracTimes, &m_Setting2[0].m_ExperTimes,
-					&m_TrialType, &m_PointNum, &m_PointTime[i], &m_ObjPoint.x, &m_ObjPoint.y, &m_PostPoint.x, &m_PostPoint.y, &m_Distance[i], &m_bHit[i],
-					&m_ObjSpeedX[i], &m_ObjSpeedY[i], &m_PostSpeedX[i], &m_PostSpeedY[i]);		
-				m_ObjSpeed[i] = pow(pow((double)m_ObjSpeedX[i],2.0)+pow((double)m_ObjSpeedY[i],2.0),0.5);
-				m_PostSpeed[i] = pow(pow((double)m_PostSpeedX[i],2.0)+pow((double)m_PostSpeedY[i],2.0),0.5);
+					&m_TrialType, /*&m_TrialNo,*/ &m_PointNum, &m_PointTime_t, &m_ObjPoint.x, &m_ObjPoint.y, &m_PostPoint.x, &m_PostPoint.y, &m_Distance_t, &m_bHit_t,
+					&m_ObjSpeedX_t, &m_ObjSpeedY_t, &m_PostSpeedX_t, &m_PostSpeedY_t);
+				m_Distance.push_back(m_Distance_t);
+				m_RotateError.push_back(m_RotateError_t);
+				m_ObjSpeedX.push_back(m_ObjSpeedX_t);
+				m_ObjSpeedY.push_back(m_ObjSpeedY_t);
+				m_PostSpeedX.push_back(m_PostSpeedX_t);
+				m_PostSpeedY.push_back(m_PostSpeedY_t);
+				m_PointTime.push_back(m_PointTime_t);
+				m_bHit.push_back(m_bHit_t);
+				m_ObjSpeed.push_back(pow(pow((double)m_ObjSpeedX[i], 2.0) + pow((double)m_ObjSpeedY[i], 2.0), 0.5));
+				m_PostSpeed.push_back(pow(pow((double)m_PostSpeedX[i], 2.0) + pow((double)m_PostSpeedY[i], 2.0), 0.5));
 	//			if(fp == fp1)
 	//			{
 	//				MessageBox("文件格式有误！");
@@ -1088,7 +1119,7 @@ BOOL CTaskControlDoc::ReadT2Trace()
 				} 
 				if(m_TrialType==1)
 				{
-					m_ChartTime[i] = (float)(m_PointTime[i] - m_PointTime[m_StartPoint[j-1]])/1000.0;
+					m_ChartTime.push_back((float)(m_PointTime[i] - m_PointTime[m_StartPoint[j - 1]]) / 1000.0);
 				}
 				if (!bBatch)
 				{
@@ -1412,7 +1443,7 @@ BOOL CTaskControlDoc::ReadT3Trace()
 	i = 0;
 	if(fp!=NULL)
 	{
-		m_MemNum = 1000;
+		/*m_MemNum = 1000;
 		//m_ObjPoint = (SPOINT*)malloc(m_MemNum*sizeof(POINT));
 		//m_PostPoint = (SPOINT*)malloc(m_MemNum*sizeof(POINT));
 		m_Distance = (float*)malloc(m_MemNum*sizeof(float));
@@ -1424,7 +1455,7 @@ BOOL CTaskControlDoc::ReadT3Trace()
 		m_PostSpeedY = (float*)malloc(m_MemNum*sizeof(float));
 		m_ChartTime = (float*)malloc(m_MemNum*sizeof(float));
 		m_ObjSpeed = (float*)malloc(m_MemNum*sizeof(float));
-		m_PostSpeed = (float*)malloc(m_MemNum*sizeof(float));
+		m_PostSpeed = (float*)malloc(m_MemNum*sizeof(float));*/
 //		fprintf(fp,"ID\tName\tSex\tSession\t"
 //			"DistanceError\tPracMode\tExperMode\tMainTask\tSubTask\t"
 //			"MainTaskMode\tBackground\tInitSpeed\tEventMode\tCodePairMode\tCodePairNum\tDisplayMode\tPracTime\tExperTime\tPracTimes\tExperTimes\t"
@@ -1435,7 +1466,7 @@ BOOL CTaskControlDoc::ReadT3Trace()
 			while(!feof(fp))
 			{
 				fp1 = fp;
-				if(i>=m_MemNum)
+				/*if(i>=m_MemNum)
 				{
 					m_MemNum+=1000;
 					//m_ObjPoint = (SPOINT*)realloc(m_ObjPoint,m_MemNum*sizeof(SPOINT));
@@ -1450,7 +1481,15 @@ BOOL CTaskControlDoc::ReadT3Trace()
 					m_ChartTime = (float*)realloc(m_ChartTime,m_MemNum*sizeof(float));
 					m_ObjSpeed = (float*)realloc(m_ObjSpeed,m_MemNum*sizeof(float));
 	           		m_PostSpeed = (float*)realloc(m_PostSpeed,m_MemNum*sizeof(float));
-				}
+				}*/
+				float m_Distance_t;
+				float m_RotateError_t;
+				float m_ObjSpeedX_t;
+				float m_ObjSpeedY_t;
+				float m_PostSpeedX_t;
+				float m_PostSpeedY_t;
+				unsigned long m_PointTime_t;
+				BOOL m_bHit_t;
 				fscanf_s(fp,"%s\t%s\t%s\t%d\t"
 					"%f\t%d\t%d\t%d\t%d\t"
 					"%d\t%d\t%f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t"
@@ -1459,10 +1498,18 @@ BOOL CTaskControlDoc::ReadT3Trace()
 					m_PartInfo.m_TesterNo,20, m_PartInfo.m_TesterName,20, m_PartInfo.m_TesterSex,10, &m_PartInfo.m_Session, 
 					&m_HardSetting.m_DistanceError, &m_Setting3[0].m_PracMode, &m_Setting3[0].m_ExperMode, &m_Setting3[0].m_MainTask, &m_Setting3[0].m_SubTask,
 					&m_Setting3[0].m_MainTaskMode, &m_Setting3[0].m_Background, &m_Setting3[0].m_InitSpeed, &m_Setting3[0].m_EventMode, &m_Setting3[0].m_CodePairMode, &m_Setting3[0].m_CodePairNum, &m_Setting3[0].m_DisplayMode, &m_Setting3[0].m_EventFrequency, &m_Setting3[0].m_PracTime, &m_Setting3[0].m_ExperTime, &m_Setting3[0].m_PracTimes, &m_Setting3[0].m_ExperTimes, 
-					&m_TrialType, &m_PointNum, &m_PointTime[i], &m_ObjPoint.x, &m_ObjPoint.y, &m_PostPoint.x, &m_PostPoint.y, &m_Distance[i], &m_bHit[i],
-					&m_ObjSpeedX[i], &m_ObjSpeedY[i], &m_PostSpeedX[i], &m_PostSpeedY[i]);
-				m_ObjSpeed[i] = pow(pow((double)m_ObjSpeedX[i],2.0)+pow((double)m_ObjSpeedY[i],2.0),0.5);
-    			m_PostSpeed[i] = pow(pow((double)m_PostSpeedX[i],2.0)+pow((double)m_PostSpeedY[i],2.0),0.5);
+					&m_TrialType, /*&m_TrialNo,*/ &m_PointNum, &m_PointTime_t, &m_ObjPoint.x, &m_ObjPoint.y, &m_PostPoint.x, &m_PostPoint.y, &m_Distance_t, &m_bHit_t,
+					&m_ObjSpeedX_t, &m_ObjSpeedY_t, &m_PostSpeedX_t, &m_PostSpeedY_t);
+				m_Distance.push_back(m_Distance_t);
+				m_RotateError.push_back(m_RotateError_t);
+				m_ObjSpeedX.push_back(m_ObjSpeedX_t);
+				m_ObjSpeedY.push_back(m_ObjSpeedY_t);
+				m_PostSpeedX.push_back(m_PostSpeedX_t);
+				m_PostSpeedY.push_back(m_PostSpeedY_t);
+				m_PointTime.push_back(m_PointTime_t);
+				m_bHit.push_back(m_bHit_t);
+				m_ObjSpeed.push_back(pow(pow((double)m_ObjSpeedX[i], 2.0) + pow((double)m_ObjSpeedY[i], 2.0), 0.5));
+				m_PostSpeed.push_back(pow(pow((double)m_PostSpeedX[i], 2.0) + pow((double)m_PostSpeedY[i], 2.0), 0.5));
 	//			if(fp == fp1)
 	//			{
 	//				MessageBox("文件格式有误！");
@@ -1479,7 +1526,7 @@ BOOL CTaskControlDoc::ReadT3Trace()
 				} 
 				if(m_TrialType==1)
 				{
-					m_ChartTime[i] = (float)(m_PointTime[i] - m_PointTime[m_StartPoint[j-1]])/1000.0;
+					m_ChartTime.push_back((float)(m_PointTime[i] - m_PointTime[m_StartPoint[j - 1]]) / 1000.0);
 				}
 				if (!bBatch)
 				{
@@ -2004,7 +2051,7 @@ BOOL CTaskControlDoc::ReadT5Trace()
 	i = 0;
 	if(fp!=NULL)
 	{
-		m_MemNum = 1000;
+		/*m_MemNum = 1000;
 		//m_ObjPoint = (SPOINT*)malloc(m_MemNum*sizeof(POINT));
 		//m_PostPoint = (SPOINT*)malloc(m_MemNum*sizeof(POINT));
 		m_Distance = (float*)malloc(m_MemNum*sizeof(float));
@@ -2016,7 +2063,7 @@ BOOL CTaskControlDoc::ReadT5Trace()
 		m_PostSpeedY = (float*)malloc(m_MemNum*sizeof(float));
 		m_ChartTime = (float*)malloc(m_MemNum*sizeof(float));
 		m_ObjSpeed = (float*)malloc(m_MemNum*sizeof(float));
-		m_PostSpeed = (float*)malloc(m_MemNum*sizeof(float));
+		m_PostSpeed = (float*)malloc(m_MemNum*sizeof(float));*/
 //		fprintf(fp,"ID\tName\tSex\tSession\t"
 //			"DistanceError\tPracMode\tExperMode\tMainTask\tSubTask\t"
 //			"Background\tInitSpeed\tSignMemType\tSignMemMode\tSignMemNum\tSignShowMode\tSignShowTime\tPracTime\tExperTime\tPracTimes\tExperTimes\t"
@@ -2027,7 +2074,7 @@ BOOL CTaskControlDoc::ReadT5Trace()
 			while(!feof(fp))
 			{
 				fp1 = fp;
-				if(i>=m_MemNum)
+				/*if(i>=m_MemNum)
 				{
 					m_MemNum+=1000;
 					//m_ObjPoint = (SPOINT*)realloc(m_ObjPoint,m_MemNum*sizeof(SPOINT));
@@ -2042,7 +2089,15 @@ BOOL CTaskControlDoc::ReadT5Trace()
 					m_ChartTime = (float*)realloc(m_ChartTime,m_MemNum*sizeof(float));
 					m_ObjSpeed = (float*)realloc(m_ObjSpeed,m_MemNum*sizeof(float));
 	           		m_PostSpeed = (float*)realloc(m_PostSpeed,m_MemNum*sizeof(float));
-				}
+				}*/
+				float m_Distance_t;
+				float m_RotateError_t;
+				float m_ObjSpeedX_t;
+				float m_ObjSpeedY_t;
+				float m_PostSpeedX_t;
+				float m_PostSpeedY_t;
+				unsigned long m_PointTime_t;
+				BOOL m_bHit_t;
 				fscanf_s(fp,"%s\t%s\t%s\t%d\t"
 					"%f\t%d\t%d\t%d\t%d\t"
 					"%d\t%f\t%d\t%d\t%d\t%d\t%f\t%d\t%d\t%d\t%d\t"
@@ -2051,10 +2106,18 @@ BOOL CTaskControlDoc::ReadT5Trace()
 					m_PartInfo.m_TesterNo,20, m_PartInfo.m_TesterName,20, m_PartInfo.m_TesterSex, 10,&m_PartInfo.m_Session, 
 					&m_HardSetting.m_DistanceError, &m_Setting5[0].m_PracMode, &m_Setting5[0].m_ExperMode, &m_Setting5[0].m_MainTask, &m_Setting5[0].m_SubTask,
 					&m_Setting5[0].m_Background, &m_Setting5[0].m_InitSpeed, &m_Setting5[0].m_SignMemType, &m_Setting5[0].m_SignMemMode, &m_SignMemNum, &m_Setting5[0].m_SignShowMode, &m_Setting5[0].m_SignShowTime, &m_Setting5[0].m_PracTime, &m_Setting5[0].m_ExperTime, &m_Setting5[0].m_PracTimes, &m_Setting5[0].m_ExperTimes,
-					&m_TrialType, &m_PointNum, &m_PointTime[i], &m_ObjPoint.x, &m_ObjPoint.y, &m_PostPoint.x, &m_PostPoint.y, &m_Distance[i], &m_bHit[i],
-					&m_ObjSpeedX[i], &m_ObjSpeedY[i], &m_PostSpeedX[i], &m_PostSpeedY[i]);
-				m_ObjSpeed[i] = pow(pow((double)m_ObjSpeedX[i],2.0)+pow((double)m_ObjSpeedY[i],2.0),0.5);
-    			m_PostSpeed[i] = pow(pow((double)m_PostSpeedX[i],2.0)+pow((double)m_PostSpeedY[i],2.0),0.5);
+					&m_TrialType, /*&m_TrialNo,*/ &m_PointNum, &m_PointTime_t, &m_ObjPoint.x, &m_ObjPoint.y, &m_PostPoint.x, &m_PostPoint.y, &m_Distance_t, &m_bHit_t,
+					&m_ObjSpeedX_t, &m_ObjSpeedY_t, &m_PostSpeedX_t, &m_PostSpeedY_t);
+				m_Distance.push_back(m_Distance_t);
+				m_RotateError.push_back(m_RotateError_t);
+				m_ObjSpeedX.push_back(m_ObjSpeedX_t);
+				m_ObjSpeedY.push_back(m_ObjSpeedY_t);
+				m_PostSpeedX.push_back(m_PostSpeedX_t);
+				m_PostSpeedY.push_back(m_PostSpeedY_t);
+				m_PointTime.push_back(m_PointTime_t);
+				m_bHit.push_back(m_bHit_t);
+				m_ObjSpeed.push_back(pow(pow((double)m_ObjSpeedX[i], 2.0) + pow((double)m_ObjSpeedY[i], 2.0), 0.5));
+				m_PostSpeed.push_back(pow(pow((double)m_PostSpeedX[i], 2.0) + pow((double)m_PostSpeedY[i], 2.0), 0.5));
 	//			if(fp == fp1)
 	//			{
 	//				MessageBox("文件格式有误！");
@@ -2071,7 +2134,7 @@ BOOL CTaskControlDoc::ReadT5Trace()
 				} 
 				if(m_TrialType==1)
 				{
-					m_ChartTime[i] = (float)(m_PointTime[i] - m_PointTime[m_StartPoint[j-1]])/1000.0;
+					m_ChartTime.push_back((float)(m_PointTime[i] - m_PointTime[m_StartPoint[j - 1]]) / 1000.0);
 				}
 				if (!bBatch)
 				{
@@ -2306,7 +2369,7 @@ BOOL CTaskControlDoc::ReadT6Trace()
 	i = 0;
 	if(fp!=NULL)
 	{
-		m_MemNum = 1000;
+		/*m_MemNum = 1000;
 		//m_ObjPoint = (SPOINT*)malloc(m_MemNum*sizeof(POINT));
 		//m_PostPoint = (SPOINT*)malloc(m_MemNum*sizeof(POINT));
 		m_Distance = (float*)malloc(m_MemNum*sizeof(float));
@@ -2318,7 +2381,7 @@ BOOL CTaskControlDoc::ReadT6Trace()
 		m_PostSpeedY = (float*)malloc(m_MemNum*sizeof(float));
 		m_ChartTime = (float*)malloc(m_MemNum*sizeof(float));
 		m_ObjSpeed = (float*)malloc(m_MemNum*sizeof(float));
-		m_PostSpeed = (float*)malloc(m_MemNum*sizeof(float));
+		m_PostSpeed = (float*)malloc(m_MemNum*sizeof(float));*/
         fgets(tmp,1000,fp);
 //        fscanf(fp,"ID\tName\tSex\tSession\t"
 //			"DistanceError\tPracMode\tExperMode\tMainTask\tSubTask\t"
@@ -2329,7 +2392,7 @@ BOOL CTaskControlDoc::ReadT6Trace()
  			while(!feof(fp))
 			{
 				fp1 = fp;
-				if(i>=m_MemNum)
+				/*if(i>=m_MemNum)
 				{
 					m_MemNum+=1000;
 					//m_ObjPoint = (SPOINT*)realloc(m_ObjPoint,m_MemNum*sizeof(SPOINT));
@@ -2344,7 +2407,15 @@ BOOL CTaskControlDoc::ReadT6Trace()
 					m_ChartTime = (float*)realloc(m_ChartTime,m_MemNum*sizeof(float));
 					m_ObjSpeed = (float*)realloc(m_ObjSpeed,m_MemNum*sizeof(float));
 					m_PostSpeed = (float*)realloc(m_PostSpeed,m_MemNum*sizeof(float));
-				}
+				}*/
+				float m_Distance_t;
+				float m_RotateError_t;
+				float m_ObjSpeedX_t;
+				float m_ObjSpeedY_t;
+				float m_PostSpeedX_t;
+				float m_PostSpeedY_t;
+				unsigned long m_PointTime_t;
+				BOOL m_bHit_t;
 				fscanf_s(fp,"%s\t%s\t%s\t%d\t"
 					"%f\t%d\t%d\t%d\t%d\t"
 					"%d\t%f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t"
@@ -2353,10 +2424,18 @@ BOOL CTaskControlDoc::ReadT6Trace()
 					m_PartInfo.m_TesterNo,20, m_PartInfo.m_TesterName, 20,m_PartInfo.m_TesterSex,10, &m_PartInfo.m_Session, 
 					&m_HardSetting.m_DistanceError, &m_Setting6[0].m_PracMode, &m_Setting6[0].m_ExperMode, &m_Setting6[0].m_MainTask, &m_Setting6[0].m_SubTask,
 					&m_Setting6[0].m_Background, &m_Setting6[0].m_InitSpeed, &m_Setting6[0].m_CubeNum1, &m_Setting6[0].m_CubeNum2, &m_Setting6[0].m_CubeNum3, &m_Setting6[0].m_CubeNum4, &m_Setting6[0].m_Prototype, &m_Setting6[0].m_RefAxis, &m_Setting6[0].m_MemTaskMode, &m_Setting6[0].m_PracTime, &m_Setting6[0].m_ExperTime, &m_Setting6[0].m_PracTimes, &m_Setting6[0].m_ExperTimes, 
-					&m_TrialType, &m_PointNum, &m_PointTime[i], &m_ObjPoint.x, &m_ObjPoint.y, &m_PostPoint.x, &m_PostPoint.y, &m_Distance[i], &m_bHit[i],
-					&m_ObjSpeedX[i], &m_ObjSpeedY[i], &m_PostSpeedX[i], &m_PostSpeedY[i]);
-				m_ObjSpeed[i] = pow(pow((double)m_ObjSpeedX[i],2.0)+pow((double)m_ObjSpeedY[i],2.0),0.5);
-				m_PostSpeed[i] = pow(pow((double)m_PostSpeedX[i],2.0)+pow((double)m_PostSpeedY[i],2.0),0.5);
+					&m_TrialType, /*&m_TrialNo,*/ &m_PointNum, &m_PointTime_t, &m_ObjPoint.x, &m_ObjPoint.y, &m_PostPoint.x, &m_PostPoint.y, &m_Distance_t, &m_bHit_t,
+					&m_ObjSpeedX_t, &m_ObjSpeedY_t, &m_PostSpeedX_t, &m_PostSpeedY_t);
+				m_Distance.push_back(m_Distance_t);
+				m_RotateError.push_back(m_RotateError_t);
+				m_ObjSpeedX.push_back(m_ObjSpeedX_t);
+				m_ObjSpeedY.push_back(m_ObjSpeedY_t);
+				m_PostSpeedX.push_back(m_PostSpeedX_t);
+				m_PostSpeedY.push_back(m_PostSpeedY_t);
+				m_PointTime.push_back(m_PointTime_t);
+				m_bHit.push_back(m_bHit_t);
+				m_ObjSpeed.push_back(pow(pow((double)m_ObjSpeedX[i], 2.0) + pow((double)m_ObjSpeedY[i], 2.0), 0.5));
+				m_PostSpeed.push_back(pow(pow((double)m_PostSpeedX[i], 2.0) + pow((double)m_PostSpeedY[i], 2.0), 0.5));
 	//			if(fp == fp1)
 	//			{
 	//				MessageBox("文件格式有误！");
@@ -2373,7 +2452,7 @@ BOOL CTaskControlDoc::ReadT6Trace()
 				} 
 				if(m_TrialType==1)
 				{
-					m_ChartTime[i] = (float)(m_PointTime[i] - m_PointTime[m_StartPoint[j-1]])/1000.0;
+					m_ChartTime.push_back((float)(m_PointTime[i] - m_PointTime[m_StartPoint[j-1]])/1000.0);
 				}
 				if (!bBatch)
 				{
@@ -2723,7 +2802,7 @@ void CTaskControlDoc::MemClear()
 		delete []m_PostPoint;
 		m_PostPoint = NULL;
 	}*/
-	if(m_ObjRotate!=NULL)
+	/*if(m_ObjRotate!=NULL)
 	{
 		delete []m_ObjRotate;
 		m_ObjRotate = NULL;
@@ -2798,7 +2877,7 @@ void CTaskControlDoc::MemClear()
 	{
 		delete []m_ChartTime;
 		m_ChartTime = NULL;
-	}
+	}*/
 
 	/*if(m_HoldStartTime!=NULL)
 	{

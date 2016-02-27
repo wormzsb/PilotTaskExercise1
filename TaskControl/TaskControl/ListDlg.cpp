@@ -1207,7 +1207,7 @@ BOOL CListDlg::AddT1Item(int i)
 	{
 		str.Format("%d",pDoc->m_Setting1[0].m_PracTime);
 	}
-	m_ResultList.AddItem(i,25,str,-1);
+	m_ResultList.AddItem(i,20,str,-1);
     if(pDoc->m_Setting1[0].m_ExperTime<0)
 	{
 	    str = "Disabled";
@@ -1216,7 +1216,7 @@ BOOL CListDlg::AddT1Item(int i)
 	{
 	    str.Format("%d",pDoc->m_Setting1[0].m_ExperTime);
 	}
-	m_ResultList.AddItem(i,26,str,-1);
+	m_ResultList.AddItem(i,21,str,-1);
 	if(pDoc->m_Setting1[0].m_PracTimes<0)
 	{
 	    str = "Disabled";
@@ -1225,7 +1225,7 @@ BOOL CListDlg::AddT1Item(int i)
 	{
 	    str.Format("%d",pDoc->m_Setting1[0].m_PracTimes);
 	}
-	m_ResultList.AddItem(i,27,str,-1);
+	m_ResultList.AddItem(i,22,str,-1);
 	if(pDoc->m_Setting1[0].m_ExperTimes<0)
 	{
 	    str = "Disabled";
@@ -1234,47 +1234,47 @@ BOOL CListDlg::AddT1Item(int i)
 	{
 	    str.Format("%d",pDoc->m_Setting1[0].m_ExperTimes);
 	}
-	m_ResultList.AddItem(i,28,str,-1);
+	m_ResultList.AddItem(i,23,str,-1);
 
 	str.Format("%d",pDoc->m_TrialType);
-	m_ResultList.AddItem(i,29,str,-1);
+	m_ResultList.AddItem(i,24,str,-1);
 	str.Format("%d",pDoc->m_TrialNo);
-	m_ResultList.AddItem(i,30,str,-1);
+	m_ResultList.AddItem(i,25,str,-1);
 	str.Format("%d",pDoc->m_PointNum);
-	m_ResultList.AddItem(i,31,str,-1);
+	m_ResultList.AddItem(i,26,str,-1);
 	str.Format("%u",pDoc->m_PointTime[i]);
-	m_ResultList.AddItem(i,32,str,-1);
+	m_ResultList.AddItem(i,27,str,-1);
 	str.Format("%d",pDoc->m_ObjPoint.x);
-	m_ResultList.AddItem(i,33,str,-1);
+	m_ResultList.AddItem(i,28,str,-1);
 	str.Format("%d",pDoc->m_ObjPoint.y);
-	m_ResultList.AddItem(i,34,str,-1);
+	m_ResultList.AddItem(i,29,str,-1);
 	str.Format("%d",pDoc->m_PostPoint.x);
-	m_ResultList.AddItem(i,35,str,-1);
+	m_ResultList.AddItem(i,30,str,-1);
 	str.Format("%d",pDoc->m_PostPoint.y);
-	m_ResultList.AddItem(i,36,str,-1);
-	str.Format("%.2f",pDoc->m_ObjRotate[i]);
-	m_ResultList.AddItem(i,37,str,-1);
-	str.Format("%.2f",pDoc->m_PostRotate[i]);
-	m_ResultList.AddItem(i,38,str,-1);
+	m_ResultList.AddItem(i,31,str,-1);
+	str.Format("%.2f",pDoc->m_ObjRotate);
+	m_ResultList.AddItem(i,32,str,-1);
+	str.Format("%.2f",pDoc->m_PostRotate);
+	m_ResultList.AddItem(i,33,str,-1);
 	str.Format("%.2f",pDoc->m_Distance[i]);
-	m_ResultList.AddItem(i,39,str,-1);
+	m_ResultList.AddItem(i,34,str,-1);
 	str.Format("%.2f",pDoc->m_RotateError[i]);
-	m_ResultList.AddItem(i,40,str,-1);
+	m_ResultList.AddItem(i,35,str,-1);
 	str.Format("%d",pDoc->m_bHit[i]);
-	m_ResultList.AddItem(i,41,str,-1);
+	m_ResultList.AddItem(i,36,str,-1);
 
 	str.Format("%.2f",pDoc->m_ObjSpeedX[i]);
-	m_ResultList.AddItem(i,42,str,-1);
+	m_ResultList.AddItem(i,37,str,-1);
 	str.Format("%.2f",pDoc->m_ObjSpeedY[i]);
-	m_ResultList.AddItem(i,43,str,-1);
+	m_ResultList.AddItem(i,38,str,-1);
 	str.Format("%.2f",pDoc->m_PostSpeedX[i]);
-	m_ResultList.AddItem(i,44,str,-1);
+	m_ResultList.AddItem(i,39,str,-1);
 	str.Format("%.2f",pDoc->m_PostSpeedY[i]);
-	m_ResultList.AddItem(i,45,str,-1);
-	str.Format("%.2f",pDoc->m_ObjRotateSpeed[i]);
-	m_ResultList.AddItem(i,46,str,-1);
-	str.Format("%.2f",pDoc->m_PostRotateSpeed[i]);
-	m_ResultList.AddItem(i,47,str,-1);
+	m_ResultList.AddItem(i,40,str,-1);
+	str.Format("%.2f",pDoc->m_ObjRotateSpeed);
+	m_ResultList.AddItem(i,41,str,-1);
+	str.Format("%.2f",pDoc->m_PostRotateSpeed);
+	m_ResultList.AddItem(i,42,str,-1);
 	return TRUE;
 }
 

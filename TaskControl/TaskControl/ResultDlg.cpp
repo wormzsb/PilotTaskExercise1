@@ -317,7 +317,7 @@ void CResultDlg::DataChart(short PlotNo)
 	pDoc = (CTaskControlDoc*)pView->GetDocument();	
     int i;
 
-	switch(pDoc->m_TaskNo)
+	/*switch(pDoc->m_TaskNo)
 	{
 	case 1:
 		switch(PlotNo)
@@ -344,21 +344,21 @@ void CResultDlg::DataChart(short PlotNo)
 	case 3:
 	case 5:
 	case 6:
-		switch(PlotNo)
+		/*switch(PlotNo)
 		{
 		case 0://位移误差随时间变化的曲线
 			m_ChartDlg.m_Chart.put_TitleText("位移误差随时间变化曲线");
 			m_ChartDlg.Plot(PlotNo, pDoc->m_PointNum-pDoc->m_ExperStart1,0,1000,pDoc->m_ChartTime,pDoc->m_Distance,pDoc->m_TrialNum,pDoc->m_StartPoint); // displays the dialog window
             break;
 		case 2://目标、瞄准器速度随时间变化的曲线
-			m_ChartDlg.m_Chart.put_TitleText("目标和瞄准器速度随时间变化曲线");
+			/*m_ChartDlg.m_Chart.put_TitleText("目标和瞄准器速度随时间变化曲线");
 			m_ChartDlg.Plot(PlotNo, pDoc->m_PointNum-pDoc->m_ExperStart1,-100,100,pDoc->m_ChartTime,pDoc->m_ObjSpeed,pDoc->m_PostSpeed,pDoc->m_TrialNum,pDoc->m_StartPoint); // displays the dialog window
 			break;
 		}
 		break;
 	case 7:
 		break;
-	}
+	}*/
 	SetCurDlg(1);
 }
 

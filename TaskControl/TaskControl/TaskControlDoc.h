@@ -70,7 +70,7 @@ public:
 	UINT m_MemNum;
 	//SPOINT *m_ObjPoint;
 	//SPOINT *m_PostPoint;
-	SPOINT m_ObjPoint;
+	/*SPOINT m_ObjPoint;
 	SPOINT m_PostPoint;
 	float *m_ObjRotate;
 	float *m_PostRotate;
@@ -86,7 +86,24 @@ public:
 	float *m_PostRotateSpeed;
 	unsigned long *m_PointTime;
     BOOL *m_bHit;
-	float *m_ChartTime;
+	float *m_ChartTime;*/
+	SPOINT m_ObjPoint;
+	SPOINT m_PostPoint;
+	float m_ObjRotate;
+	float m_PostRotate;
+	vector<float> m_Distance;
+	vector<float> m_RotateError;
+	vector<float> m_ObjSpeedX;
+	vector<float> m_ObjSpeedY;
+	vector<float> m_ObjSpeed;
+	vector<float> m_PostSpeedX;
+	vector<float> m_PostSpeedY;
+	vector<float> m_PostSpeed;
+	float m_ObjRotateSpeed;
+	float m_PostRotateSpeed;
+	vector<unsigned long> m_PointTime;
+	vector<BOOL> m_bHit;
+	vector<float> m_ChartTime;
 
 	SYSTEMTIME m_HoldStartTime;
 	SYSTEMTIME m_HoldSureTime;
