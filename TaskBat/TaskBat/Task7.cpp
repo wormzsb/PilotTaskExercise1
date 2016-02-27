@@ -5,9 +5,18 @@
 #include "Task7.h"
 #include "TaskRec.h"
 #include <iostream>
+#include <algorithm>
 using namespace std;
 
 double rs;
+
+struct LIST{
+	int speed;
+	int sPos;
+};
+
+vector<struct LIST> list;
+
 
 /*记录数据*/
 TaskRec rec;
@@ -120,6 +129,25 @@ LONGLONG t7::QPart1,t7::QPart2,t7::QPart3;
 double t7::dfMinus, t7::dfMinus1, t7::dfFreq, t7::dfTim, 
 	t7::dfdetTim, t7::dfInterval, t7::dfTotalMove/*小球运动时间记录*/; 
 BOOL t7::bXdown,t7::bZdown;
+
+
+vector<struct LIST> getRandList(vector<int> speed, vector<int> sPos, int repeatCnt) {
+	srand((unsigned)time(NULL)); //初始化随机种子 
+	vector<struct LIST> list;
+	for (int i = 0; i < speed.size(); i++) {
+		for (int j = 0; j < sPos.size(); j++) {
+			for (int k = 0; k < repeatCnt; k++) {
+				struct LIST li;
+				li.speed = speed[i];
+				li.sPos = sPos[j];
+				list.push_back(li);
+			}
+		}
+	}
+	random_shuffle(list.begin(), list.end());
+	return list;
+}
+
 
 
 
@@ -902,6 +930,9 @@ void t7::TaskOver()
 // 设置小球的初始位置
 void t7::setSmallBallOriPos(struct Point &stPntSmallBallOrg, int &curStartPos, int startPos)
 {
+	// 不用了
+	return;
+
 	bool bStartPosTop, bStartPosRight, bStartPosBottom, bStartPosLeft;
 	bStartPosTop = (startPos & S_TOP) >> (unsigned)log2((double)S_TOP);
 	bStartPosRight = (startPos & S_RIGHT) >> (unsigned)log2((double)S_RIGHT);
@@ -984,33 +1015,30 @@ VOID t7::UpdateState()
 		QPart2 = QPart1;
 
 		// 设置小球的初始位置
-		setSmallBallOriPos(stPntSmallBallOrg, curStartPos, m_Setting.m_iBallStartPos);
-		/*if(RANDOM == m_Setting.m_iBallStartPos)
-			iBallStartPos = rand() % 4;
-		else
-			iBallStartPos =  m_Setting.m_iBallStartPos; 
-
-		switch (iBallStartPos)
+		//setSmallBallOriPos(stPntSmallBallOrg, curStartPos, m_Setting.m_iBallStartPos);
+		dBallSpeed = list[iTskCnt].speed;
+		curStartPos = list[iTskCnt].sPos;
+		switch (/*iBallStartPos*/curStartPos)
 		{
 		case TOP:
 			stPntSmallBallOrg.dX = x_resolution / 2;
-			stPntSmallBallOrg.dY = y_resolution / 2 - 350;//两者相据350pixles
+			stPntSmallBallOrg.dY = y_resolution / 2 - dOrgDistance;//和中心的距离：350pixles
 			break;
 		case RIGHT:
-			stPntSmallBallOrg.dX = x_resolution / 2 + 350;
+			stPntSmallBallOrg.dX = x_resolution / 2 + dOrgDistance;
 			stPntSmallBallOrg.dY = y_resolution / 2;
 			break;
 		case BOTTOM:
 			stPntSmallBallOrg.dX = x_resolution / 2;
-			stPntSmallBallOrg.dY = y_resolution / 2 + 350;//两者相据350pixles
+			stPntSmallBallOrg.dY = y_resolution / 2 + dOrgDistance;//和中心的距离：350pixles
 			break;
 		case LEFT:
-			stPntSmallBallOrg.dX = x_resolution / 2 - 350;
+			stPntSmallBallOrg.dX = x_resolution / 2 - dOrgDistance;
 			stPntSmallBallOrg.dY = y_resolution / 2;
 			break;
 
 
-		}*/
+		}
 		stPntSmallBall = stPntSmallBallOrg;
 		
 		rec.smallBallBegCo = Point2(stPntSmallBallOrg.dX, stPntSmallBallOrg.dY);
@@ -1339,7 +1367,28 @@ DWORD WINAPI t7::InputThreadProcedure(LPVOID lpStartupParam)
     g_nThreadExitCount++;
 	return 0;
 }
+vector<int> getSPos(int startPos) {
+	bool bStartPosTop, bStartPosRight, bStartPosBottom, bStartPosLeft;
+	bStartPosTop = (startPos & S_TOP) >> (unsigned)log2((double)S_TOP);
+	bStartPosRight = (startPos & S_RIGHT) >> (unsigned)log2((double)S_RIGHT);
+	bStartPosBottom = (startPos & S_BOTTOM) >> (unsigned)log2((double)S_BOTTOM);
+	bStartPosLeft = (startPos & S_LEFT) >> (unsigned)log2((double)S_LEFT);
 
+	std::vector<int> vec;
+	if (bStartPosTop) vec.push_back(TOP);
+	if (bStartPosRight) vec.push_back(RIGHT);
+	if (bStartPosBottom) vec.push_back(BOTTOM);
+	if (bStartPosLeft) vec.push_back(LEFT);
+	return vec;
+}
+
+void saveList(vector<struct LIST> list) {
+	ofstream fout("t7list.csv");
+	for (int i = 0; i < list.size(); i++) {
+		fout << list[i].speed << ","<< list[i].sPos << endl;
+	}
+	fout.close();
+}
 //************************************************
 //*主程序
 //************************************************
@@ -1416,6 +1465,13 @@ int APIENTRY t7::_tWinMain(HINSTANCE &hInstance, HINSTANCE &hPrevInstance, LPTST
         MessageBox(hWnd,"任务设置文件格式错误！","测试任务", MB_OK);
 		return 0;
 	}
+
+	vector<int> speed = { m_Setting.m_iBallSpeed1, 
+		m_Setting.m_iBallSpeed2, m_Setting.m_iBallSpeed3};
+	vector<int> sPos = getSPos(m_Setting.m_iBallStartPos);
+
+	list = getRandList(speed, sPos, m_Setting.m_iPracTimes);
+	saveList(list);
 	//注册窗口类
     WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_VREDRAW|CS_HREDRAW|CS_DBLCLKS, MsgProc, 0L, 0L, 
                       hInstance, NULL, NULL, NULL, NULL,
