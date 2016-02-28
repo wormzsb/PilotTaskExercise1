@@ -128,6 +128,7 @@ BOOL CSettingDlg3::OnInitDialog()
 	CDialog::OnInitDialog();
 	
 	// TODO: Add extra initialization here
+
 	CMainFrame*   pMain   =(CMainFrame*)AfxGetMainWnd();
     CTaskControlDoc* pDoc = (CTaskControlDoc*)pMain->GetActiveDocument();
 	m_bLeftTop =  pDoc->m_Setting3[m_DlgIdx].m_iPlanePos & LEFT_TOP ;

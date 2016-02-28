@@ -227,6 +227,14 @@ CTaskControlDoc::CTaskControlDoc()
 	m_Setting6 = NULL;
 	m_Setting7 = NULL;
 	m_Setting8 = NULL;
+	m_ReadSetting1 = NULL;
+	m_ReadSetting2 = NULL;
+	m_ReadSetting3 = NULL;
+	m_ReadSetting4 = NULL;
+	m_ReadSetting5 = NULL;
+	m_ReadSetting6 = NULL;
+	m_ReadSetting7 = NULL;
+	m_ReadSetting8 = NULL;
 
 	m_HardSetting.m_JoySpeedMax = 200;
 	m_HardSetting.m_KnobSensitive = 1;
@@ -381,47 +389,47 @@ void CTaskControlDoc::NewTester()
 void CTaskControlDoc::NewSetting()
 {
 	m_TaskCount = 0;
-	if(m_Setting1!=NULL)
+	if(m_ReadSetting1!=NULL)
 	{
-		delete []m_Setting1;
-		m_Setting1 = NULL;
+		delete []m_ReadSetting1;
+		m_ReadSetting1 = NULL;
 	}
-	if(m_Setting2!=NULL)
+	if(m_ReadSetting2!=NULL)
 	{
-		delete []m_Setting2;
-		m_Setting2 = NULL;
+		delete []m_ReadSetting2;
+		m_ReadSetting2 = NULL;
 	}
-	if(m_Setting3!=NULL)
+	if(m_ReadSetting3!=NULL)
 	{
-		delete []m_Setting3;
-		m_Setting3 = NULL;
+		delete []m_ReadSetting3;
+		m_ReadSetting3 = NULL;
 	}
-	if(m_Setting4!=NULL)
+	if(m_ReadSetting4!=NULL)
 	{
-		delete []m_Setting4;
-		m_Setting4 = NULL;
+		delete []m_ReadSetting4;
+		m_ReadSetting4 = NULL;
 	}
-	if(m_Setting5!=NULL)
+	if(m_ReadSetting5!=NULL)
 	{
-		delete []m_Setting5;
-		m_Setting5 = NULL;
+		delete []m_ReadSetting5;
+		m_ReadSetting5 = NULL;
 	}
-	if(m_Setting6!=NULL)
+	if(m_ReadSetting6!=NULL)
 	{
-		delete []m_Setting6;
-		m_Setting6 = NULL;
-	}
-
-	if(m_Setting7!=NULL)
-	{
-		delete []m_Setting7;
-		m_Setting7 = NULL;
+		delete []m_ReadSetting6;
+		m_ReadSetting6 = NULL;
 	}
 
-	if (m_Setting8 != NULL)
+	if(m_ReadSetting7!=NULL)
 	{
-		delete[]m_Setting8;
-		m_Setting8 = NULL;
+		delete []m_ReadSetting7;
+		m_ReadSetting7 = NULL;
+	}
+
+	if (m_ReadSetting8 != NULL)
+	{
+		delete[]m_ReadSetting8;
+		m_ReadSetting8 = NULL;
 	}
 
 	m_TaskCount = 0;
@@ -463,22 +471,22 @@ BOOL CTaskControlDoc::ReadDataFile()
 	switch (m_TaskNo)
 	{
 	case 1:
-		if(m_Setting1!=NULL)
+		if(m_ReadSetting1!=NULL)
 		{
-			delete []m_Setting1;
-			m_Setting1 = NULL;
+			delete []m_ReadSetting1;
+			m_ReadSetting1 = NULL;
 		}
-		m_Setting1 = new struct TaskSetting1[1];
+		m_ReadSetting1 = new struct TaskSetting1[1];
 		MemClear();
         m_bOpenFile1 = ReadT1();
 		break;
 	case 2:
-		if(m_Setting2!=NULL)
+		if(m_ReadSetting2!=NULL)
 		{
-			delete []m_Setting2;
-			m_Setting2 = NULL;
+			delete []m_ReadSetting2;
+			m_ReadSetting2 = NULL;
 		}
-		m_Setting2 = new struct TaskSetting2[1];
+		m_ReadSetting2 = new struct TaskSetting2[1];
 		pos = m_FileName.ReverseFind('\\');
         pos1 = m_FileName.Find('-',pos+1);
 		pos2 = m_FileName.Find('-',pos1+1);
@@ -492,12 +500,12 @@ BOOL CTaskControlDoc::ReadDataFile()
 		pos = m_FileName.ReverseFind('\\');
         pos1 = m_FileName.Find('_',pos+1);
 		m_MainTaskMode = atoi(m_FileName.Mid(pos1+1,1))-1;	
-		if(m_Setting3!=NULL)
+		if(m_ReadSetting3!=NULL)
 		{
-			delete []m_Setting3;
-			m_Setting3 = NULL;
+			delete []m_ReadSetting3;
+			m_ReadSetting3 = NULL;
 		}
-		m_Setting3 = new struct TaskSetting3[1];
+		m_ReadSetting3 = new struct TaskSetting3[1];
 		pos = m_FileName.ReverseFind('\\');
         pos1 = m_FileName.Find('-',pos+1);
 		pos2 = m_FileName.Find('-',pos1+1);	
@@ -517,22 +525,22 @@ BOOL CTaskControlDoc::ReadDataFile()
 		m_bOpenFile2 = ReadT3Event();
 		break;
 	case 4:
-		if(m_Setting4!=NULL)
+		if(m_ReadSetting4!=NULL)
 		{
-			delete []m_Setting4;
-			m_Setting4 = NULL;
+			delete []m_ReadSetting4;
+			m_ReadSetting4 = NULL;
 		}
-		m_Setting4 = new struct TaskSetting4[1];
+		m_ReadSetting4 = new struct TaskSetting4[1];
 		MemClear();		
 		m_bOpenFile1 = ReadT4();
 		break;
 	case 5:
-		if(m_Setting5!=NULL)
+		if(m_ReadSetting5!=NULL)
 		{
-			delete []m_Setting5;
-			m_Setting5 = NULL;
+			delete []m_ReadSetting5;
+			m_ReadSetting5 = NULL;
 		}
-		m_Setting5 = new struct TaskSetting5[1];
+		m_ReadSetting5 = new struct TaskSetting5[1];
 		pos = m_FileName.ReverseFind('\\');
         pos1 = m_FileName.Find('-',pos+1);
 		pos2 = m_FileName.Find('-',pos1+1);
@@ -546,12 +554,12 @@ BOOL CTaskControlDoc::ReadDataFile()
 		pos = m_FileName.ReverseFind('\\');
         pos1 = m_FileName.Find('_',pos+1);
 		m_MemTaskMode = atoi(m_FileName.Mid(pos1+1,1))-1;	
-		if(m_Setting6!=NULL)
+		if(m_ReadSetting6!=NULL)
 		{
-			delete []m_Setting6;
-			m_Setting6 = NULL;
+			delete []m_ReadSetting6;
+			m_ReadSetting6 = NULL;
 		}
-		m_Setting6 = new struct TaskSetting6[1];
+		m_ReadSetting6 = new struct TaskSetting6[1];
 		pos = m_FileName.ReverseFind('\\');
         pos1 = m_FileName.Find('-',pos+1);
 		pos2 = m_FileName.Find('-',pos1+1);
@@ -574,24 +582,24 @@ BOOL CTaskControlDoc::ReadDataFile()
 	case 7:
 		// xxx
 
-		if (m_Setting7 != NULL)
+		if (m_ReadSetting7 != NULL)
 		{
-			delete[]m_Setting7;
-			m_Setting7 = NULL;
+			delete[]m_ReadSetting7;
+			m_ReadSetting7 = NULL;
 		}
-		m_Setting7 = new struct TaskSetting7[1];
+		m_ReadSetting7 = new struct TaskSetting7[1];
 		MemClear();
 		break;
 
 	case 8:
 		// xxx
 
-		if (m_Setting8 != NULL)
+		if (m_ReadSetting8 != NULL)
 		{
-			delete[]m_Setting8;
-			m_Setting8 = NULL;
+			delete[]m_ReadSetting8;
+			m_ReadSetting8 = NULL;
 		}
-		m_Setting8 = new struct TaskSetting8[1];
+		m_ReadSetting8 = new struct TaskSetting8[1];
 		MemClear();
 		m_bOpenFile1 = ReadT8();
 		break;
@@ -899,10 +907,10 @@ BOOL CTaskControlDoc::ReadT1()
 					"%d\t%d\t%d\t%u\t%d\t%d\t%d\t%d\t%f\t%f\t%f\t%f\t%d\t"
 					"%f\t%f\t%f\t%f\t%f\t%f\n",
 					m_PartInfo.m_TesterNo,20, m_PartInfo.m_TesterName,20, m_PartInfo.m_TesterSex,10, &m_PartInfo.m_Session, 
-					&m_HardSetting.m_DistanceError, &m_HardSetting.m_AngleError, &m_Setting1[0].m_PracMode, &m_Setting1[0].m_ExperMode,
-					&m_Setting1[0].m_Background, &m_Setting1[0].m_Track, &m_Setting1[0].m_Direction, &m_Setting1[0].m_MoveMode, &m_Setting1[0].m_SpeedMode,
-					&m_Setting1[0].m_Pause, &m_Setting1[0].m_PauseNum, &m_Setting1[0].m_Speed, &m_Setting1[0].m_InitSpeed,
-					&m_Setting1[0].m_SpeedMin, &m_Setting1[0].m_SpeedMax, &m_Setting1[0].m_AccelerationMin, &m_Setting1[0].m_AccelerationMax, &m_Setting1[0].m_AngleSpeedMin, &m_Setting1[0].m_AngleSpeedMax, &m_Setting1[0].m_RotateAngleMin, &m_Setting1[0].m_RotateAngleMax, &m_Setting1[0].m_PracTime, &m_Setting1[0].m_ExperTime, &m_Setting1[0].m_PracTimes, &m_Setting1[0].m_ExperTimes,
+					&m_HardSetting.m_DistanceError, &m_HardSetting.m_AngleError, &m_ReadSetting1[0].m_PracMode, &m_ReadSetting1[0].m_ExperMode,
+					&m_ReadSetting1[0].m_Background, &m_ReadSetting1[0].m_Track, &m_ReadSetting1[0].m_Direction, &m_ReadSetting1[0].m_MoveMode, &m_ReadSetting1[0].m_SpeedMode,
+					&m_ReadSetting1[0].m_Pause, &m_ReadSetting1[0].m_PauseNum, &m_ReadSetting1[0].m_Speed, &m_ReadSetting1[0].m_InitSpeed,
+					&m_ReadSetting1[0].m_SpeedMin, &m_ReadSetting1[0].m_SpeedMax, &m_ReadSetting1[0].m_AccelerationMin, &m_ReadSetting1[0].m_AccelerationMax, &m_ReadSetting1[0].m_AngleSpeedMin, &m_ReadSetting1[0].m_AngleSpeedMax, &m_ReadSetting1[0].m_RotateAngleMin, &m_ReadSetting1[0].m_RotateAngleMax, &m_ReadSetting1[0].m_PracTime, &m_ReadSetting1[0].m_ExperTime, &m_ReadSetting1[0].m_PracTimes, &m_ReadSetting1[0].m_ExperTimes,
 					&m_TrialType, &m_TrialNo, &m_PointNum, &m_PointTime_t, &m_ObjPoint.x, &m_ObjPoint.y, &m_PostPoint.x, &m_PostPoint.y, &m_ObjRotate, &m_PostRotate, &m_Distance_t, &m_RotateError_t, &m_bHit_t,
 					&m_ObjSpeedX_t, &m_ObjSpeedY_t, &m_PostSpeedX_t, &m_PostSpeedY_t, &m_ObjRotateSpeed, &m_PostRotateSpeed);
 				m_Distance.push_back(m_Distance_t);
@@ -953,8 +961,8 @@ BOOL CTaskControlDoc::ReadT1()
 			{
 				return FALSE;
 			}
-			m_StartPoint[m_Setting1[0].m_ExperTimes] = m_PointNum;
-			m_TrialNum = m_Setting1[0].m_ExperTimes;
+			m_StartPoint[m_ReadSetting1[0].m_ExperTimes] = m_PointNum;
+			m_TrialNum = m_ReadSetting1[0].m_ExperTimes;
 		}
 		catch(...)
 		{
@@ -1088,9 +1096,9 @@ BOOL CTaskControlDoc::ReadT2Trace()
 					"%d\t%d\t%u\t%d\t%d\t%d\t%d\t%f\t%d\t"
 					"%f\t%f\t%f\t%f\n",
 					m_PartInfo.m_TesterNo,20, m_PartInfo.m_TesterName,20, m_PartInfo.m_TesterSex,10, &m_PartInfo.m_Session, 
-					&m_HardSetting.m_DistanceError, &m_Setting2[0].m_PracMode, &m_Setting2[0].m_ExperMode, &m_Setting2[0].m_MainTask, &m_Setting2[0].m_SubTask,
-					&m_Setting2[0].m_Background, &m_Setting2[0].m_Direction, &m_Setting2[0].m_InitSpeed, 
-					&m_Setting2[0].m_HoldTimeNum, &m_Setting2[0].m_HoldTime[0], &m_Setting2[0].m_HoldTime[1], &m_Setting2[0].m_HoldTime[2], &m_Setting2[0].m_HoldTime[3], &m_Setting2[0].m_HoldTime[4], &m_Setting2[0].m_HoldTime[5], &m_Setting2[0].m_HoldTime[6], &m_Setting2[0].m_HoldTime[7], &m_Setting2[0].m_HoldTime[8], &m_Setting2[0].m_HoldTime[9], &m_Setting2[0].m_HoldTime[10], &m_Setting2[0].m_HoldTime[11], &m_Setting2[0].m_PracTime, &m_Setting2[0].m_ExperTime, &m_Setting2[0].m_PracTimes, &m_Setting2[0].m_ExperTimes,
+					&m_HardSetting.m_DistanceError, &m_ReadSetting2[0].m_PracMode, &m_ReadSetting2[0].m_ExperMode, &m_ReadSetting2[0].m_MainTask, &m_ReadSetting2[0].m_SubTask,
+					&m_ReadSetting2[0].m_Background, &m_ReadSetting2[0].m_Direction, &m_ReadSetting2[0].m_InitSpeed, 
+					&m_ReadSetting2[0].m_HoldTimeNum, &m_ReadSetting2[0].m_HoldTime[0], &m_ReadSetting2[0].m_HoldTime[1], &m_ReadSetting2[0].m_HoldTime[2], &m_ReadSetting2[0].m_HoldTime[3], &m_ReadSetting2[0].m_HoldTime[4], &m_ReadSetting2[0].m_HoldTime[5], &m_ReadSetting2[0].m_HoldTime[6], &m_ReadSetting2[0].m_HoldTime[7], &m_ReadSetting2[0].m_HoldTime[8], &m_ReadSetting2[0].m_HoldTime[9], &m_ReadSetting2[0].m_HoldTime[10], &m_ReadSetting2[0].m_HoldTime[11], &m_ReadSetting2[0].m_PracTime, &m_ReadSetting2[0].m_ExperTime, &m_ReadSetting2[0].m_PracTimes, &m_ReadSetting2[0].m_ExperTimes,
 					&m_TrialType, /*&m_TrialNo,*/ &m_PointNum, &m_PointTime_t, &m_ObjPoint.x, &m_ObjPoint.y, &m_PostPoint.x, &m_PostPoint.y, &m_Distance_t, &m_bHit_t,
 					&m_ObjSpeedX_t, &m_ObjSpeedY_t, &m_PostSpeedX_t, &m_PostSpeedY_t);
 				m_Distance.push_back(m_Distance_t);
@@ -1249,30 +1257,30 @@ BOOL CTaskControlDoc::ReadT2Hold()
 			>> m_PartInfo.m_TesterSex
 			>> m_PartInfo.m_Session
 			>> m_HardSetting.m_DistanceError
-			>> m_Setting2[0].m_PracMode
-			>> m_Setting2[0].m_ExperMode
-			>> m_Setting2[0].m_MainTask
-			>> m_Setting2[0].m_SubTask
-			>> m_Setting2[0].m_Background
-			>> m_Setting2[0].m_Direction
-			>> m_Setting2[0].m_InitSpeed
-			>> m_Setting2[0].m_HoldTimeNum
-			>> m_Setting2[0].m_HoldTime[0]
-			>> m_Setting2[0].m_HoldTime[1]
-			>> m_Setting2[0].m_HoldTime[2]
-			>> m_Setting2[0].m_HoldTime[3]
-			>> m_Setting2[0].m_HoldTime[4]
-			>> m_Setting2[0].m_HoldTime[5]
-			>> m_Setting2[0].m_HoldTime[6]
-			>> m_Setting2[0].m_HoldTime[7]
-			>> m_Setting2[0].m_HoldTime[8]
-			>> m_Setting2[0].m_HoldTime[9]
-			>> m_Setting2[0].m_HoldTime[10]
-			>> m_Setting2[0].m_HoldTime[11]
-			>> m_Setting2[0].m_PracTime
-			>> m_Setting2[0].m_ExperTime
-			>> m_Setting2[0].m_PracTimes
-			>> m_Setting2[0].m_ExperTimes
+			>> m_ReadSetting2[0].m_PracMode
+			>> m_ReadSetting2[0].m_ExperMode
+			>> m_ReadSetting2[0].m_MainTask
+			>> m_ReadSetting2[0].m_SubTask
+			>> m_ReadSetting2[0].m_Background
+			>> m_ReadSetting2[0].m_Direction
+			>> m_ReadSetting2[0].m_InitSpeed
+			>> m_ReadSetting2[0].m_HoldTimeNum
+			>> m_ReadSetting2[0].m_HoldTime[0]
+			>> m_ReadSetting2[0].m_HoldTime[1]
+			>> m_ReadSetting2[0].m_HoldTime[2]
+			>> m_ReadSetting2[0].m_HoldTime[3]
+			>> m_ReadSetting2[0].m_HoldTime[4]
+			>> m_ReadSetting2[0].m_HoldTime[5]
+			>> m_ReadSetting2[0].m_HoldTime[6]
+			>> m_ReadSetting2[0].m_HoldTime[7]
+			>> m_ReadSetting2[0].m_HoldTime[8]
+			>> m_ReadSetting2[0].m_HoldTime[9]
+			>> m_ReadSetting2[0].m_HoldTime[10]
+			>> m_ReadSetting2[0].m_HoldTime[11]
+			>> m_ReadSetting2[0].m_PracTime
+			>> m_ReadSetting2[0].m_ExperTime
+			>> m_ReadSetting2[0].m_PracTimes
+			>> m_ReadSetting2[0].m_ExperTimes
 			>> m_TrialType
 			>> m_HoldNo
 			>> m_HoldTime[i]
@@ -1338,9 +1346,9 @@ BOOL CTaskControlDoc::ReadT2Hold()
 					"%d\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%d\t%d\t%d\t%d\t"
 					"%d\t%d\t%d\t%s\t%s\t%d\t%d\t%f\n",
 					m_PartInfo.m_TesterNo,20, m_PartInfo.m_TesterName,20, m_PartInfo.m_TesterSex,10, &m_PartInfo.m_Session, 
-					&m_HardSetting.m_DistanceError, &m_Setting2[0].m_PracMode, &m_Setting2[0].m_ExperMode, &m_Setting2[0].m_MainTask, &m_Setting2[0].m_SubTask,
-					&m_Setting2[0].m_Background, &m_Setting2[0].m_Direction, &m_Setting2[0].m_InitSpeed, 
-					&m_Setting2[0].m_HoldTimeNum, &m_Setting2[0].m_HoldTime[0], &m_Setting2[0].m_HoldTime[1], &m_Setting2[0].m_HoldTime[2], &m_Setting2[0].m_HoldTime[3], &m_Setting2[0].m_HoldTime[4], &m_Setting2[0].m_HoldTime[5], &m_Setting2[0].m_HoldTime[6], &m_Setting2[0].m_HoldTime[7], &m_Setting2[0].m_HoldTime[8], &m_Setting2[0].m_HoldTime[9], &m_Setting2[0].m_HoldTime[10], &m_Setting2[0].m_HoldTime[11], &m_Setting2[0].m_PracTime, &m_Setting2[0].m_ExperTime, &m_Setting2[0].m_PracTimes, &m_Setting2[0].m_ExperTimes,
+					&m_HardSetting.m_DistanceError, &m_ReadSetting2[0].m_PracMode, &m_ReadSetting2[0].m_ExperMode, &m_ReadSetting2[0].m_MainTask, &m_ReadSetting2[0].m_SubTask,
+					&m_ReadSetting2[0].m_Background, &m_ReadSetting2[0].m_Direction, &m_ReadSetting2[0].m_InitSpeed, 
+					&m_ReadSetting2[0].m_HoldTimeNum, &m_ReadSetting2[0].m_HoldTime[0], &m_ReadSetting2[0].m_HoldTime[1], &m_ReadSetting2[0].m_HoldTime[2], &m_ReadSetting2[0].m_HoldTime[3], &m_ReadSetting2[0].m_HoldTime[4], &m_ReadSetting2[0].m_HoldTime[5], &m_ReadSetting2[0].m_HoldTime[6], &m_ReadSetting2[0].m_HoldTime[7], &m_ReadSetting2[0].m_HoldTime[8], &m_ReadSetting2[0].m_HoldTime[9], &m_ReadSetting2[0].m_HoldTime[10], &m_ReadSetting2[0].m_HoldTime[11], &m_ReadSetting2[0].m_PracTime, &m_ReadSetting2[0].m_ExperTime, &m_ReadSetting2[0].m_PracTimes, &m_ReadSetting2[0].m_ExperTimes,
 					&m_TrialType, &m_HoldNo, &m_HoldTime[i], &m_HoldStartTime, &m_HoldSureTime, &m_TestRT[i], &m_HoldError[i], &m_ErrorRatio[i]);
 				if(m_TrialType==0)
 				{ 
@@ -1496,8 +1504,8 @@ BOOL CTaskControlDoc::ReadT3Trace()
 					"%d\t%d\t%u\t%d\t%d\t%d\t%d\t%f\t%d\t"
 					"%f\t%f\t%f\t%f\n",
 					m_PartInfo.m_TesterNo,20, m_PartInfo.m_TesterName,20, m_PartInfo.m_TesterSex,10, &m_PartInfo.m_Session, 
-					&m_HardSetting.m_DistanceError, &m_Setting3[0].m_PracMode, &m_Setting3[0].m_ExperMode, &m_Setting3[0].m_MainTask, &m_Setting3[0].m_SubTask,
-					&m_Setting3[0].m_MainTaskMode, &m_Setting3[0].m_Background, &m_Setting3[0].m_InitSpeed, &m_Setting3[0].m_EventMode, &m_Setting3[0].m_CodePairMode, &m_Setting3[0].m_CodePairNum, &m_Setting3[0].m_DisplayMode, &m_Setting3[0].m_EventFrequency, &m_Setting3[0].m_PracTime, &m_Setting3[0].m_ExperTime, &m_Setting3[0].m_PracTimes, &m_Setting3[0].m_ExperTimes, 
+					&m_HardSetting.m_DistanceError, &m_ReadSetting3[0].m_PracMode, &m_ReadSetting3[0].m_ExperMode, &m_ReadSetting3[0].m_MainTask, &m_ReadSetting3[0].m_SubTask,
+					&m_ReadSetting3[0].m_MainTaskMode, &m_ReadSetting3[0].m_Background, &m_ReadSetting3[0].m_InitSpeed, &m_ReadSetting3[0].m_EventMode, &m_ReadSetting3[0].m_CodePairMode, &m_ReadSetting3[0].m_CodePairNum, &m_ReadSetting3[0].m_DisplayMode, &m_ReadSetting3[0].m_EventFrequency, &m_ReadSetting3[0].m_PracTime, &m_ReadSetting3[0].m_ExperTime, &m_ReadSetting3[0].m_PracTimes, &m_ReadSetting3[0].m_ExperTimes, 
 					&m_TrialType, /*&m_TrialNo,*/ &m_PointNum, &m_PointTime_t, &m_ObjPoint.x, &m_ObjPoint.y, &m_PostPoint.x, &m_PostPoint.y, &m_Distance_t, &m_bHit_t,
 					&m_ObjSpeedX_t, &m_ObjSpeedY_t, &m_PostSpeedX_t, &m_PostSpeedY_t);
 				m_Distance.push_back(m_Distance_t);
@@ -1659,8 +1667,8 @@ BOOL CTaskControlDoc::ReadT3Code()
 					"%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t"
 					"%d\t%d\t%d\t%u\t%u\t%d\t%d\t%d\n",
 					m_PartInfo.m_TesterNo,20, m_PartInfo.m_TesterName,20, m_PartInfo.m_TesterSex,10, &m_PartInfo.m_Session, 
-					&m_Setting3[0].m_PracMode, &m_Setting3[0].m_ExperMode, &m_Setting3[0].m_MainTask, &m_Setting3[0].m_SubTask,
-					&m_Setting3[0].m_MainTaskMode, &m_Setting3[0].m_Background, &m_Setting3[0].m_InitSpeed, &m_Setting3[0].m_EventMode, &m_Setting3[0].m_CodePairMode, &m_CodePairNum, &m_Setting3[0].m_DisplayMode, &m_Setting3[0].m_EventFrequency, &m_Setting3[0].m_PracTime, &m_Setting3[0].m_ExperTime, &m_Setting3[0].m_PracTimes, &m_Setting3[0].m_ExperTimes, 
+					&m_ReadSetting3[0].m_PracMode, &m_ReadSetting3[0].m_ExperMode, &m_ReadSetting3[0].m_MainTask, &m_ReadSetting3[0].m_SubTask,
+					&m_ReadSetting3[0].m_MainTaskMode, &m_ReadSetting3[0].m_Background, &m_ReadSetting3[0].m_InitSpeed, &m_ReadSetting3[0].m_EventMode, &m_ReadSetting3[0].m_CodePairMode, &m_CodePairNum, &m_ReadSetting3[0].m_DisplayMode, &m_ReadSetting3[0].m_EventFrequency, &m_ReadSetting3[0].m_PracTime, &m_ReadSetting3[0].m_ExperTime, &m_ReadSetting3[0].m_PracTimes, &m_ReadSetting3[0].m_ExperTimes, 
 					&m_Shape[0], &m_Character[0],&m_Shape[1],&m_Character[1],&m_Shape[2],&m_Character[2],&m_Shape[3],&m_Character[3],&m_Shape[4],&m_Character[4],&m_Shape[5],&m_Character[5],
 					&m_TrialType, &m_CodeNo, &m_CodeType[i], &m_CodeStartTime[i], &m_CodeSureTime[i], &m_CodeRT[i], &m_CodeButtonNo[i], &m_bCodeAcc[i]);		
 				for(int j=0;j<m_CodePairNum;j++)
@@ -1805,8 +1813,8 @@ BOOL CTaskControlDoc::ReadT3Event()
 					"%d\t%d\t%f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t"
 					"%d\t%d\t%d\t%d:%d:%d\t%d:%d:%d\t%u\t%d\t%d\n",
 					m_PartInfo.m_TesterNo,20, m_PartInfo.m_TesterName,20, m_PartInfo.m_TesterSex, 10,&m_PartInfo.m_Session, 
-					&m_Setting3[0].m_PracMode, &m_Setting3[0].m_ExperMode, &m_Setting3[0].m_MainTask, &m_Setting3[0].m_SubTask,
-					&m_Setting3[0].m_MainTaskMode, &m_Setting3[0].m_Background, &m_Setting3[0].m_InitSpeed, &m_Setting3[0].m_EventMode, &m_Setting3[0].m_CodePairMode, &m_Setting3[0].m_CodePairNum, &m_Setting3[0].m_DisplayMode, &m_Setting3[0].m_EventFrequency, &m_Setting3[0].m_PracTime, &m_Setting3[0].m_ExperTime, &m_Setting3[0].m_PracTimes, &m_Setting3[0].m_ExperTimes, 
+					&m_ReadSetting3[0].m_PracMode, &m_ReadSetting3[0].m_ExperMode, &m_ReadSetting3[0].m_MainTask, &m_ReadSetting3[0].m_SubTask,
+					&m_ReadSetting3[0].m_MainTaskMode, &m_ReadSetting3[0].m_Background, &m_ReadSetting3[0].m_InitSpeed, &m_ReadSetting3[0].m_EventMode, &m_ReadSetting3[0].m_CodePairMode, &m_ReadSetting3[0].m_CodePairNum, &m_ReadSetting3[0].m_DisplayMode, &m_ReadSetting3[0].m_EventFrequency, &m_ReadSetting3[0].m_PracTime, &m_ReadSetting3[0].m_ExperTime, &m_ReadSetting3[0].m_PracTimes, &m_ReadSetting3[0].m_ExperTimes, 
 					&m_TrialType, &m_RecordNo, &m_EventType[i], &m_HoldStartTime.wHour, &m_HoldStartTime.wMinute, &m_HoldStartTime.wSecond, &m_HoldSureTime.wHour, &m_HoldSureTime.wMinute, &m_HoldSureTime.wSecond, &m_EventRT[i],&m_SureButtonNo[i],&m_bEventAcc[i]);
 				if(m_TrialType==0)
 				{ 
@@ -1946,7 +1954,7 @@ BOOL CTaskControlDoc::ReadT4()
 					"%d\t%d\t%d\t%d\t%d\t%d\t"
 					"%d\t%u\t%u\t%u\t%d\n",
 					m_PartInfo.m_TesterNo,20, m_PartInfo.m_TesterName,20, m_PartInfo.m_TesterSex, 10,&m_PartInfo.m_Session,
-					&m_Setting4[0].m_PracMode, &m_Setting4[0].m_ExperMode, &m_Setting4[0].m_TouchOrder,
+					&m_ReadSetting4[0].m_PracMode, &m_ReadSetting4[0].m_ExperMode, &m_ReadSetting4[0].m_TouchOrder,
 					&m_TrialType,&m_TouchGroupNo,&m_TouchNo,&m_TouchNoOrder[i],&m_TouchDistance[i],&m_sizediff[i],
 					&m_SureButtonNo[i],&m_TouchStartTime[i],&m_TouchSureTime[i],&m_TouchRT[i],&m_TouchAcc[i]);		
 				if(m_TrialType==0)
@@ -2104,8 +2112,8 @@ BOOL CTaskControlDoc::ReadT5Trace()
 					"%d\t%d\t%u\t%d\t%d\t%d\t%d\t%f\t%d\t"
 					"%f\t%f\t%f\t%f\n",
 					m_PartInfo.m_TesterNo,20, m_PartInfo.m_TesterName,20, m_PartInfo.m_TesterSex, 10,&m_PartInfo.m_Session, 
-					&m_HardSetting.m_DistanceError, &m_Setting5[0].m_PracMode, &m_Setting5[0].m_ExperMode, &m_Setting5[0].m_MainTask, &m_Setting5[0].m_SubTask,
-					&m_Setting5[0].m_Background, &m_Setting5[0].m_InitSpeed, &m_Setting5[0].m_SignMemType, &m_Setting5[0].m_SignMemMode, &m_SignMemNum, &m_Setting5[0].m_SignShowMode, &m_Setting5[0].m_SignShowTime, &m_Setting5[0].m_PracTime, &m_Setting5[0].m_ExperTime, &m_Setting5[0].m_PracTimes, &m_Setting5[0].m_ExperTimes,
+					&m_HardSetting.m_DistanceError, &m_ReadSetting5[0].m_PracMode, &m_ReadSetting5[0].m_ExperMode, &m_ReadSetting5[0].m_MainTask, &m_ReadSetting5[0].m_SubTask,
+					&m_ReadSetting5[0].m_Background, &m_ReadSetting5[0].m_InitSpeed, &m_ReadSetting5[0].m_SignMemType, &m_ReadSetting5[0].m_SignMemMode, &m_SignMemNum, &m_ReadSetting5[0].m_SignShowMode, &m_ReadSetting5[0].m_SignShowTime, &m_ReadSetting5[0].m_PracTime, &m_ReadSetting5[0].m_ExperTime, &m_ReadSetting5[0].m_PracTimes, &m_ReadSetting5[0].m_ExperTimes,
 					&m_TrialType, /*&m_TrialNo,*/ &m_PointNum, &m_PointTime_t, &m_ObjPoint.x, &m_ObjPoint.y, &m_PostPoint.x, &m_PostPoint.y, &m_Distance_t, &m_bHit_t,
 					&m_ObjSpeedX_t, &m_ObjSpeedY_t, &m_PostSpeedX_t, &m_PostSpeedY_t);
 				m_Distance.push_back(m_Distance_t);
@@ -2265,8 +2273,8 @@ BOOL CTaskControlDoc::ReadT5Sign()
 					"%d\t%f\t%d\t%d\t%d\t%d\t%f\t%d\t%d\t%d\t%d\t"
 					"%d\t%d\t%d\t%u\t%d\t%s\t%u\t%u\t%d\t%u\t%d\n",
 					m_PartInfo.m_TesterNo,20, m_PartInfo.m_TesterName,20, m_PartInfo.m_TesterSex,10, &m_PartInfo.m_Session, 
-					&m_HardSetting.m_DistanceError, &m_Setting5[0].m_PracMode, &m_Setting5[0].m_ExperMode, &m_Setting5[0].m_MainTask, &m_Setting5[0].m_SubTask,
-					&m_Setting5[0].m_Background, &m_Setting5[0].m_InitSpeed, &m_Setting5[0].m_SignMemType, &m_Setting5[0].m_SignMemMode, &m_SignMemNum[i], &m_Setting5[0].m_SignShowMode, &m_Setting5[0].m_SignShowTime, &m_Setting5[0].m_PracTime, &m_Setting5[0].m_ExperTime, &m_Setting5[0].m_PracTimes, &m_Setting5[0].m_ExperTimes,
+					&m_HardSetting.m_DistanceError, &m_ReadSetting5[0].m_PracMode, &m_ReadSetting5[0].m_ExperMode, &m_ReadSetting5[0].m_MainTask, &m_ReadSetting5[0].m_SubTask,
+					&m_ReadSetting5[0].m_Background, &m_ReadSetting5[0].m_InitSpeed, &m_ReadSetting5[0].m_SignMemType, &m_ReadSetting5[0].m_SignMemMode, &m_SignMemNum[i], &m_ReadSetting5[0].m_SignShowMode, &m_ReadSetting5[0].m_SignShowTime, &m_ReadSetting5[0].m_PracTime, &m_ReadSetting5[0].m_ExperTime, &m_ReadSetting5[0].m_PracTimes, &m_ReadSetting5[0].m_ExperTimes,
 					&m_TrialType, &m_SignGroupNo, &m_SignNo, &m_MemTime, &m_SignType[i], m_SignName,30, &m_SignStartTime[i], &m_SignSureTime[i], &m_SureButtonNo[i], &m_SignRT[i], &m_SignAcc[i]);		
 				if(m_TrialType==0)
 				{ 
@@ -2422,8 +2430,8 @@ BOOL CTaskControlDoc::ReadT6Trace()
 					"%d\t%d\t%u\t%d\t%d\t%d\t%d\t%f\t%d\t"
 					"%f\t%f\t%f\t%f\n",
 					m_PartInfo.m_TesterNo,20, m_PartInfo.m_TesterName, 20,m_PartInfo.m_TesterSex,10, &m_PartInfo.m_Session, 
-					&m_HardSetting.m_DistanceError, &m_Setting6[0].m_PracMode, &m_Setting6[0].m_ExperMode, &m_Setting6[0].m_MainTask, &m_Setting6[0].m_SubTask,
-					&m_Setting6[0].m_Background, &m_Setting6[0].m_InitSpeed, &m_Setting6[0].m_CubeNum1, &m_Setting6[0].m_CubeNum2, &m_Setting6[0].m_CubeNum3, &m_Setting6[0].m_CubeNum4, &m_Setting6[0].m_Prototype, &m_Setting6[0].m_RefAxis, &m_Setting6[0].m_MemTaskMode, &m_Setting6[0].m_PracTime, &m_Setting6[0].m_ExperTime, &m_Setting6[0].m_PracTimes, &m_Setting6[0].m_ExperTimes, 
+					&m_HardSetting.m_DistanceError, &m_ReadSetting6[0].m_PracMode, &m_ReadSetting6[0].m_ExperMode, &m_ReadSetting6[0].m_MainTask, &m_ReadSetting6[0].m_SubTask,
+					&m_ReadSetting6[0].m_Background, &m_ReadSetting6[0].m_InitSpeed, &m_ReadSetting6[0].m_CubeNum1, &m_ReadSetting6[0].m_CubeNum2, &m_ReadSetting6[0].m_CubeNum3, &m_ReadSetting6[0].m_CubeNum4, &m_ReadSetting6[0].m_Prototype, &m_ReadSetting6[0].m_RefAxis, &m_ReadSetting6[0].m_MemTaskMode, &m_ReadSetting6[0].m_PracTime, &m_ReadSetting6[0].m_ExperTime, &m_ReadSetting6[0].m_PracTimes, &m_ReadSetting6[0].m_ExperTimes, 
 					&m_TrialType, /*&m_TrialNo,*/ &m_PointNum, &m_PointTime_t, &m_ObjPoint.x, &m_ObjPoint.y, &m_PostPoint.x, &m_PostPoint.y, &m_Distance_t, &m_bHit_t,
 					&m_ObjSpeedX_t, &m_ObjSpeedY_t, &m_PostSpeedX_t, &m_PostSpeedY_t);
 				m_Distance.push_back(m_Distance_t);
@@ -2594,8 +2602,8 @@ BOOL CTaskControlDoc::ReadT6Judge()
 					"%d\t%f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t"
 					"%d\t%d\t%d\t%d\t%s\t%s\t%d\t%d\t%d\t%d\t%u\t%u\t%d\t%u\t%d\n",
 					m_PartInfo.m_TesterNo,20, m_PartInfo.m_TesterName,20, m_PartInfo.m_TesterSex,10, &m_PartInfo.m_Session, 
-					&m_HardSetting.m_DistanceError, &m_Setting6[0].m_PracMode, &m_Setting6[0].m_ExperMode, &m_Setting6[0].m_MainTask, &m_Setting6[0].m_SubTask,
-					&m_Setting6[0].m_Background, &m_Setting6[0].m_InitSpeed, &m_Setting6[0].m_CubeNum1, &m_Setting6[0].m_CubeNum2, &m_Setting6[0].m_CubeNum3, &m_Setting6[0].m_CubeNum4, &m_Setting6[0].m_Prototype, &m_Setting6[0].m_RefAxis, &m_Setting6[0].m_MemTaskMode, &m_Setting6[0].m_PracTime, &m_Setting6[0].m_ExperTime, &m_Setting6[0].m_PracTimes, &m_Setting6[0].m_ExperTimes, 
+					&m_HardSetting.m_DistanceError, &m_ReadSetting6[0].m_PracMode, &m_ReadSetting6[0].m_ExperMode, &m_ReadSetting6[0].m_MainTask, &m_ReadSetting6[0].m_SubTask,
+					&m_ReadSetting6[0].m_Background, &m_ReadSetting6[0].m_InitSpeed, &m_ReadSetting6[0].m_CubeNum1, &m_ReadSetting6[0].m_CubeNum2, &m_ReadSetting6[0].m_CubeNum3, &m_ReadSetting6[0].m_CubeNum4, &m_ReadSetting6[0].m_Prototype, &m_ReadSetting6[0].m_RefAxis, &m_ReadSetting6[0].m_MemTaskMode, &m_ReadSetting6[0].m_PracTime, &m_ReadSetting6[0].m_ExperTime, &m_ReadSetting6[0].m_PracTimes, &m_ReadSetting6[0].m_ExperTimes, 
 					&m_TrialType, &m_SignGroupNo, &m_MemNo, &m_CubeNum[i], m_LMemName,30, m_RMemName,30, &m_LMemAngle[i], &m_RMemAngle[i], &m_MemAngleDiff[i], &m_Same[i], &m_SignStartTime[i], &m_SignSureTime[i], &m_SureButtonNo[i], &m_SignRT[i], &m_SignAcc[i]);		
 				if(m_TrialType==0)
 				{ 
@@ -2745,8 +2753,8 @@ BOOL CTaskControlDoc::ReadT6Memory()
 					"%d\t%f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t"
 					"%d\t%d\t%d\t%d\t%s\t%s\t%d\t%d\t%d\t%d\t%u\t%u\t%d\t%u\t%d\n",
 					m_PartInfo.m_TesterNo,20, m_PartInfo.m_TesterName,20, m_PartInfo.m_TesterSex,10, &m_PartInfo.m_Session, 
-					&m_HardSetting.m_DistanceError, &m_Setting6[0].m_PracMode, &m_Setting6[0].m_ExperMode, &m_Setting6[0].m_MainTask, &m_Setting6[0].m_SubTask,
-					&m_Setting6[0].m_Background, &m_Setting6[0].m_InitSpeed, &m_Setting6[0].m_CubeNum1, &m_Setting6[0].m_CubeNum2, &m_Setting6[0].m_CubeNum3, &m_Setting6[0].m_CubeNum4, &m_Setting6[0].m_Prototype, &m_Setting6[0].m_RefAxis, &m_Setting6[0].m_MemTaskMode, &m_Setting6[0].m_PracTime, &m_Setting6[0].m_ExperTime, &m_Setting6[0].m_PracTimes, &m_Setting6[0].m_ExperTimes, 
+					&m_HardSetting.m_DistanceError, &m_ReadSetting6[0].m_PracMode, &m_ReadSetting6[0].m_ExperMode, &m_ReadSetting6[0].m_MainTask, &m_ReadSetting6[0].m_SubTask,
+					&m_ReadSetting6[0].m_Background, &m_ReadSetting6[0].m_InitSpeed, &m_ReadSetting6[0].m_CubeNum1, &m_ReadSetting6[0].m_CubeNum2, &m_ReadSetting6[0].m_CubeNum3, &m_ReadSetting6[0].m_CubeNum4, &m_ReadSetting6[0].m_Prototype, &m_ReadSetting6[0].m_RefAxis, &m_ReadSetting6[0].m_MemTaskMode, &m_ReadSetting6[0].m_PracTime, &m_ReadSetting6[0].m_ExperTime, &m_ReadSetting6[0].m_PracTimes, &m_ReadSetting6[0].m_ExperTimes, 
 					&m_TrialType, &m_SignGroupNo, &m_MemNo, &m_CubeNum[i], m_LMemName,30, m_RMemName,30, &m_LMemAngle[i], &m_RMemAngle[i], &m_MemAngleDiff[i], &m_Same[i], &m_SignStartTime[i], &m_SignSureTime[i], &m_SureButtonNo[i], &m_SignRT[i], &m_SignAcc[i]);		
 				if(m_TrialType==0)
 				{ 
@@ -3127,7 +3135,7 @@ void CTaskControlDoc::DataAnalysis()
 	case 1:
 		if(m_bOpenFile1)
 		{
-			m_TrialNum = m_Setting1[0].m_ExperTimes;
+			m_TrialNum = m_ReadSetting1[0].m_ExperTimes;
 			for(j=0;j<m_TrialNum;j++)
 			{
 				m_ValidStart[j] = m_StartPoint[j] + 125; //从第125个开始计算
@@ -3184,10 +3192,10 @@ void CTaskControlDoc::DataAnalysis()
 						"%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%d\t%d\t%d\t%d\t"
 						"%.2f\t%.2f\t%.2f\t%.2f\t%d\t%.2f\n",
 						m_DataFileName, m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session, 
-						m_HardSetting.m_DistanceError, m_HardSetting.m_AngleError, m_Setting1[0].m_PracMode, m_Setting1[0].m_ExperMode,
-						m_Setting1[0].m_Background, m_Setting1[0].m_Track, m_Setting1[0].m_Direction, m_Setting1[0].m_MoveMode, m_Setting1[0].m_SpeedMode,
-						m_Setting1[0].m_Pause, m_Setting1[0].m_PauseNum, m_Setting1[0].m_InitSpeed,
-						m_Setting1[0].m_SpeedMin, m_Setting1[0].m_SpeedMax, m_Setting1[0].m_AccelerationMin, m_Setting1[0].m_AccelerationMax, m_Setting1[0].m_AngleSpeedMin, m_Setting1[0].m_AngleSpeedMax, m_Setting1[0].m_RotateAngleMin, m_Setting1[0].m_RotateAngleMax, m_Setting1[0].m_PracTime, m_Setting1[0].m_ExperTime, m_Setting1[0].m_PracTimes, m_Setting1[0].m_ExperTimes,
+						m_HardSetting.m_DistanceError, m_HardSetting.m_AngleError, m_ReadSetting1[0].m_PracMode, m_ReadSetting1[0].m_ExperMode,
+						m_ReadSetting1[0].m_Background, m_ReadSetting1[0].m_Track, m_ReadSetting1[0].m_Direction, m_ReadSetting1[0].m_MoveMode, m_ReadSetting1[0].m_SpeedMode,
+						m_ReadSetting1[0].m_Pause, m_ReadSetting1[0].m_PauseNum, m_ReadSetting1[0].m_InitSpeed,
+						m_ReadSetting1[0].m_SpeedMin, m_ReadSetting1[0].m_SpeedMax, m_ReadSetting1[0].m_AccelerationMin, m_ReadSetting1[0].m_AccelerationMax, m_ReadSetting1[0].m_AngleSpeedMin, m_ReadSetting1[0].m_AngleSpeedMax, m_ReadSetting1[0].m_RotateAngleMin, m_ReadSetting1[0].m_RotateAngleMax, m_ReadSetting1[0].m_PracTime, m_ReadSetting1[0].m_ExperTime, m_ReadSetting1[0].m_PracTimes, m_ReadSetting1[0].m_ExperTimes,
 						m_DistanceAve, m_DistanceSqt, m_RotateErrorAve, m_RotateErrorSqt, m_HitTimeTotal, m_HitTimeRate);
 					fclose(fp);
 				}
@@ -3241,7 +3249,7 @@ void CTaskControlDoc::DataAnalysis()
 			//{
 				/*for(j=0;j<12;j++)
 				{
-					if((float)m_HoldTime[i]/1000.0==m_Setting2[0].m_HoldTime[j])
+					if((float)m_HoldTime[i]/1000.0==m_ReadSetting2[0].m_HoldTime[j])
 					{
 						m_HoldErrorTotal[j] += m_HoldError[i];
 						m_HoldCountTotal[j]++;
@@ -3254,7 +3262,7 @@ void CTaskControlDoc::DataAnalysis()
 
 			// ------------------------------------------------------
 			// pDoc->m_HoldTime[i]: is the real hold time order
-			// pDoc->m_Setting2[0].m_HoldTime[i] is the setting hold time 
+			// pDoc->m_ReadSetting2[0].m_HoldTime[i] is the setting hold time 
 			// which should be the expected order in Analysis dialog 
 			// ------------------------------------------------------
 
@@ -3290,10 +3298,10 @@ void CTaskControlDoc::DataAnalysis()
 				}
 			}
 			// Sort in setting hold time order
-			for (int i = 0; i < m_Setting2[0].m_HoldTimeNum; i++) {
+			for (int i = 0; i < m_ReadSetting2[0].m_HoldTimeNum; i++) {
 				settingOrderHoldTimeErrRateAve.push_back(-1);
 				for (int j = 0; j < m_HoldNo; j++) {
-					if ((m_Setting2[0].m_HoldTime[i]*1000 == m_HoldTime[j])&&(m_ErrorRatio[j] != -1)) {
+					if ((m_ReadSetting2[0].m_HoldTime[i]*1000 == m_HoldTime[j])&&(m_ErrorRatio[j] != -1)) {
 						settingOrderHoldTimeErrRateAve[i] = m_HoldTimeErrAve[j];
 						break;
 					}
@@ -3324,9 +3332,9 @@ void CTaskControlDoc::DataAnalysis()
 						"%d\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%d\t%d\t%d\t%d\t"
 						"%.2f\t%.2f\t%d\t%.2f\n",
 						m_DataFileName, m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session, 
-						m_HardSetting.m_DistanceError, m_Setting2[0].m_PracMode, m_Setting2[0].m_ExperMode, m_Setting2[0].m_MainTask, m_Setting2[0].m_SubTask,
-						m_Setting2[0].m_Background, m_Setting2[0].m_Direction, m_Setting2[0].m_InitSpeed, 
-						m_Setting2[0].m_HoldTimeNum, m_Setting2[0].m_HoldTime[0], m_Setting2[0].m_HoldTime[1], m_Setting2[0].m_HoldTime[2], m_Setting2[0].m_HoldTime[3], m_Setting2[0].m_HoldTime[4], m_Setting2[0].m_HoldTime[5], m_Setting2[0].m_HoldTime[6], m_Setting2[0].m_HoldTime[7], m_Setting2[0].m_HoldTime[8], m_Setting2[0].m_HoldTime[9], m_Setting2[0].m_HoldTime[10], m_Setting2[0].m_HoldTime[11], m_Setting2[0].m_PracTime, m_Setting2[0].m_ExperTime, m_Setting2[0].m_PracTimes, m_Setting2[0].m_ExperTimes,
+						m_HardSetting.m_DistanceError, m_ReadSetting2[0].m_PracMode, m_ReadSetting2[0].m_ExperMode, m_ReadSetting2[0].m_MainTask, m_ReadSetting2[0].m_SubTask,
+						m_ReadSetting2[0].m_Background, m_ReadSetting2[0].m_Direction, m_ReadSetting2[0].m_InitSpeed, 
+						m_ReadSetting2[0].m_HoldTimeNum, m_ReadSetting2[0].m_HoldTime[0], m_ReadSetting2[0].m_HoldTime[1], m_ReadSetting2[0].m_HoldTime[2], m_ReadSetting2[0].m_HoldTime[3], m_ReadSetting2[0].m_HoldTime[4], m_ReadSetting2[0].m_HoldTime[5], m_ReadSetting2[0].m_HoldTime[6], m_ReadSetting2[0].m_HoldTime[7], m_ReadSetting2[0].m_HoldTime[8], m_ReadSetting2[0].m_HoldTime[9], m_ReadSetting2[0].m_HoldTime[10], m_ReadSetting2[0].m_HoldTime[11], m_ReadSetting2[0].m_PracTime, m_ReadSetting2[0].m_ExperTime, m_ReadSetting2[0].m_PracTimes, m_ReadSetting2[0].m_ExperTimes,
 						m_DistanceAve, m_DistanceSqt, m_HitTimeTotal, m_HitTimeRate);
 					fclose(fp);
 				}
@@ -3356,15 +3364,15 @@ void CTaskControlDoc::DataAnalysis()
 						"%d\t%d\t%.2f\t"
 						"%d\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%d\t%d\t%d\t%d\t",
 						m_DataFileName, m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session, 
-						m_HardSetting.m_DistanceError, m_Setting2[0].m_PracMode, m_Setting2[0].m_ExperMode, m_Setting2[0].m_MainTask, m_Setting2[0].m_SubTask,
-						m_Setting2[0].m_Background, m_Setting2[0].m_Direction, m_Setting2[0].m_InitSpeed, 
-						m_Setting2[0].m_HoldTimeNum, m_Setting2[0].m_HoldTime[0], m_Setting2[0].m_HoldTime[1], m_Setting2[0].m_HoldTime[2], m_Setting2[0].m_HoldTime[3], m_Setting2[0].m_HoldTime[4], m_Setting2[0].m_HoldTime[5], m_Setting2[0].m_HoldTime[6], m_Setting2[0].m_HoldTime[7], m_Setting2[0].m_HoldTime[8], m_Setting2[0].m_HoldTime[9], m_Setting2[0].m_HoldTime[10], m_Setting2[0].m_HoldTime[11], m_Setting2[0].m_PracTime, m_Setting2[0].m_ExperTime, m_Setting2[0].m_PracTimes, m_Setting2[0].m_ExperTimes);
-					for(i=0;i<m_Setting2[0].m_HoldTimeNum;i++)
+						m_HardSetting.m_DistanceError, m_ReadSetting2[0].m_PracMode, m_ReadSetting2[0].m_ExperMode, m_ReadSetting2[0].m_MainTask, m_ReadSetting2[0].m_SubTask,
+						m_ReadSetting2[0].m_Background, m_ReadSetting2[0].m_Direction, m_ReadSetting2[0].m_InitSpeed, 
+						m_ReadSetting2[0].m_HoldTimeNum, m_ReadSetting2[0].m_HoldTime[0], m_ReadSetting2[0].m_HoldTime[1], m_ReadSetting2[0].m_HoldTime[2], m_ReadSetting2[0].m_HoldTime[3], m_ReadSetting2[0].m_HoldTime[4], m_ReadSetting2[0].m_HoldTime[5], m_ReadSetting2[0].m_HoldTime[6], m_ReadSetting2[0].m_HoldTime[7], m_ReadSetting2[0].m_HoldTime[8], m_ReadSetting2[0].m_HoldTime[9], m_ReadSetting2[0].m_HoldTime[10], m_ReadSetting2[0].m_HoldTime[11], m_ReadSetting2[0].m_PracTime, m_ReadSetting2[0].m_ExperTime, m_ReadSetting2[0].m_PracTimes, m_ReadSetting2[0].m_ExperTimes);
+					for(i=0;i<m_ReadSetting2[0].m_HoldTimeNum;i++)
 					{	
 						//fprintf(fp, "%.2f\t", (float)m_HoldErrorTotal[i] / (float)m_HoldCountTotal[i]);//错了
 						fprintf(fp,"%.2f\t", settingOrderHoldTimeErrRateAve[i]);
 					}
-					for(i=m_Setting2[0].m_HoldTimeNum;i<12;i++)
+					for(i=m_ReadSetting2[0].m_HoldTimeNum;i<12;i++)
 					{
 						fprintf(fp,"%s\t","");
 					}
@@ -3444,7 +3452,7 @@ void CTaskControlDoc::DataAnalysis()
 		}
 		if (m_bOpenFile2)//Event
 		{
-			if (m_Setting3[0].m_EventMode == 0)// eventMode==0 简单模式
+			if (m_ReadSetting3[0].m_EventMode == 0)// eventMode==0 简单模式
 			{
 				//初始化统计变量
 				m_TrueCount = 0;
@@ -3609,8 +3617,8 @@ void CTaskControlDoc::DataAnalysis()
 							"%d\t%d\t%.2f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t"
 							"%.2f\t%.2f\t%.2f\t%.2f\n",
 							m_DataFileName, m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session,
-							m_HardSetting.m_DistanceError, m_Setting3[0].m_PracMode, m_Setting3[0].m_ExperMode, m_Setting3[0].m_MainTask, m_Setting3[0].m_SubTask,
-							m_Setting3[0].m_MainTaskMode, m_Setting3[0].m_Background, m_Setting3[0].m_InitSpeed, m_Setting3[0].m_EventMode, m_Setting3[0].m_CodePairMode, m_Setting3[0].m_CodePairNum, m_Setting3[0].m_DisplayMode, m_Setting3[0].m_EventFrequency, m_Setting3[0].m_PracTime, m_Setting3[0].m_ExperTime, m_Setting3[0].m_PracTimes, m_Setting3[0].m_ExperTimes,
+							m_HardSetting.m_DistanceError, m_ReadSetting3[0].m_PracMode, m_ReadSetting3[0].m_ExperMode, m_ReadSetting3[0].m_MainTask, m_ReadSetting3[0].m_SubTask,
+							m_ReadSetting3[0].m_MainTaskMode, m_ReadSetting3[0].m_Background, m_ReadSetting3[0].m_InitSpeed, m_ReadSetting3[0].m_EventMode, m_ReadSetting3[0].m_CodePairMode, m_ReadSetting3[0].m_CodePairNum, m_ReadSetting3[0].m_DisplayMode, m_ReadSetting3[0].m_EventFrequency, m_ReadSetting3[0].m_PracTime, m_ReadSetting3[0].m_ExperTime, m_ReadSetting3[0].m_PracTimes, m_ReadSetting3[0].m_ExperTimes,
 							m_DistanceAve, m_DistanceSqt, m_HitTimeTotal, m_HitTimeRate);
 						fclose(fp);
 					}
@@ -3637,8 +3645,8 @@ void CTaskControlDoc::DataAnalysis()
 							"%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t"
 							"%d\t%d\t%.2f\t%.2f\t%.2f\t%.2f\n",
 							m_DataFileName, m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session,
-							m_Setting3[0].m_PracMode, m_Setting3[0].m_ExperMode, m_Setting3[0].m_MainTask, m_Setting3[0].m_SubTask,
-							m_Setting3[0].m_MainTaskMode, m_Setting3[0].m_Background, m_Setting3[0].m_InitSpeed, m_Setting3[0].m_EventMode, m_Setting3[0].m_CodePairMode, m_CodePairNum, m_Setting3[0].m_DisplayMode, m_Setting3[0].m_EventFrequency, m_Setting3[0].m_PracTime, m_Setting3[0].m_ExperTime, m_Setting3[0].m_PracTimes, m_Setting3[0].m_ExperTimes,
+							m_ReadSetting3[0].m_PracMode, m_ReadSetting3[0].m_ExperMode, m_ReadSetting3[0].m_MainTask, m_ReadSetting3[0].m_SubTask,
+							m_ReadSetting3[0].m_MainTaskMode, m_ReadSetting3[0].m_Background, m_ReadSetting3[0].m_InitSpeed, m_ReadSetting3[0].m_EventMode, m_ReadSetting3[0].m_CodePairMode, m_CodePairNum, m_ReadSetting3[0].m_DisplayMode, m_ReadSetting3[0].m_EventFrequency, m_ReadSetting3[0].m_PracTime, m_ReadSetting3[0].m_ExperTime, m_ReadSetting3[0].m_PracTimes, m_ReadSetting3[0].m_ExperTimes,
 							m_Shape[0], m_Character[0], m_Shape[1], m_Character[1], m_Shape[2], m_Character[2], m_Shape[3], m_Character[3], m_Shape[4], m_Character[4], m_Shape[5], m_Character[5],
 							m_TrueCode, m_FalseCode, (float)m_TrueCode / (float)(m_TrueCode + m_FalseCode), (float)m_FalseCode / (float)(m_TrueCode + m_FalseCode), m_CodeRTAvg, m_CodeRTSqr);
 						fclose(fp);
@@ -3651,7 +3659,7 @@ void CTaskControlDoc::DataAnalysis()
 		{
 			if (!bExitItem2)
 			{
-				if (m_Setting3[0].m_EventMode == 0)//简单任务
+				if (m_ReadSetting3[0].m_EventMode == 0)//简单任务
 				{
 					_mkdir("Result");
 					_mkdir("Result\\Task3");
@@ -3671,8 +3679,8 @@ void CTaskControlDoc::DataAnalysis()
 							"%d\t%d\t%.2f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t"
 							"%d\t%d\t%d\t%d\t%.2f\t%.2f\n",
 							m_DataFileName, m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session,
-							m_Setting3[0].m_PracMode, m_Setting3[0].m_ExperMode, m_Setting3[0].m_MainTask, m_Setting3[0].m_SubTask,
-							m_Setting3[0].m_MainTaskMode, m_Setting3[0].m_Background, m_Setting3[0].m_InitSpeed, m_Setting3[0].m_EventMode, m_Setting3[0].m_CodePairMode, m_Setting3[0].m_CodePairNum, m_Setting3[0].m_DisplayMode, m_Setting3[0].m_EventFrequency, m_Setting3[0].m_PracTime, m_Setting3[0].m_ExperTime, m_Setting3[0].m_PracTimes, m_Setting3[0].m_ExperTimes,
+							m_ReadSetting3[0].m_PracMode, m_ReadSetting3[0].m_ExperMode, m_ReadSetting3[0].m_MainTask, m_ReadSetting3[0].m_SubTask,
+							m_ReadSetting3[0].m_MainTaskMode, m_ReadSetting3[0].m_Background, m_ReadSetting3[0].m_InitSpeed, m_ReadSetting3[0].m_EventMode, m_ReadSetting3[0].m_CodePairMode, m_ReadSetting3[0].m_CodePairNum, m_ReadSetting3[0].m_DisplayMode, m_ReadSetting3[0].m_EventFrequency, m_ReadSetting3[0].m_PracTime, m_ReadSetting3[0].m_ExperTime, m_ReadSetting3[0].m_PracTimes, m_ReadSetting3[0].m_ExperTimes,
 							m_TrueCount, m_MissingCount, m_FalseCount, m_FailCount, m_RTAvg, m_RTSqr);
 						fclose(fp);
 					}
@@ -3697,8 +3705,8 @@ void CTaskControlDoc::DataAnalysis()
 							"%d\t%d\t%.2f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t"
 							"%d\t%d\t%d\t%d\t%d\t%.2f\t%.2f\n",
 							m_DataFileName, m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session,
-							m_Setting3[0].m_PracMode, m_Setting3[0].m_ExperMode, m_Setting3[0].m_MainTask, m_Setting3[0].m_SubTask,
-							m_Setting3[0].m_MainTaskMode, m_Setting3[0].m_Background, m_Setting3[0].m_InitSpeed, m_Setting3[0].m_EventMode, m_Setting3[0].m_CodePairMode, m_Setting3[0].m_CodePairNum, m_Setting3[0].m_DisplayMode, m_Setting3[0].m_EventFrequency, m_Setting3[0].m_PracTime, m_Setting3[0].m_ExperTime, m_Setting3[0].m_PracTimes, m_Setting3[0].m_ExperTimes,
+							m_ReadSetting3[0].m_PracMode, m_ReadSetting3[0].m_ExperMode, m_ReadSetting3[0].m_MainTask, m_ReadSetting3[0].m_SubTask,
+							m_ReadSetting3[0].m_MainTaskMode, m_ReadSetting3[0].m_Background, m_ReadSetting3[0].m_InitSpeed, m_ReadSetting3[0].m_EventMode, m_ReadSetting3[0].m_CodePairMode, m_ReadSetting3[0].m_CodePairNum, m_ReadSetting3[0].m_DisplayMode, m_ReadSetting3[0].m_EventFrequency, m_ReadSetting3[0].m_PracTime, m_ReadSetting3[0].m_ExperTime, m_ReadSetting3[0].m_PracTimes, m_ReadSetting3[0].m_ExperTimes,
 							m_TrueCount, m_MissingCount, m_CRCount, m_FalseCount, m_FailCount, m_RTAvg, m_RTSqr);
 						fclose(fp);
 					}
@@ -3758,7 +3766,7 @@ void CTaskControlDoc::DataAnalysis()
 						"%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t"
 						"%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\n",
 						m_DataFileName, m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session,
-						m_Setting4[0].m_PracMode, m_Setting4[0].m_ExperMode, m_Setting4[0].m_TouchOrder,
+						m_ReadSetting4[0].m_PracMode, m_ReadSetting4[0].m_ExperMode, m_ReadSetting4[0].m_TouchOrder,
 						(float)m_TouchRTTotal[0][0]/(float)m_TouchTotal,(float)m_TouchRTTotal[0][1]/(float)m_TouchTotal,(float)m_TouchRTTotal[0][2]/(float)m_TouchTotal,(float)m_TouchRTTotal[0][3]/(float)m_TouchTotal,(float)m_TouchRTTotal[0][4]/(float)m_TouchTotal,(float)m_TouchRTTotal[0][5]/(float)m_TouchTotal,
 						(float)m_TouchRTTotal[1][0]/(float)m_TouchTotal,(float)m_TouchRTTotal[1][1]/(float)m_TouchTotal,(float)m_TouchRTTotal[1][2]/(float)m_TouchTotal,(float)m_TouchRTTotal[1][3]/(float)m_TouchTotal,(float)m_TouchRTTotal[1][4]/(float)m_TouchTotal,(float)m_TouchRTTotal[1][5]/(float)m_TouchTotal,
 						(float)m_TouchRTTotal[2][0]/(float)m_TouchTotal,(float)m_TouchRTTotal[2][1]/(float)m_TouchTotal,(float)m_TouchRTTotal[2][2]/(float)m_TouchTotal,(float)m_TouchRTTotal[2][3]/(float)m_TouchTotal,(float)m_TouchRTTotal[2][4]/(float)m_TouchTotal,(float)m_TouchRTTotal[2][5]/(float)m_TouchTotal);
@@ -3904,8 +3912,8 @@ void CTaskControlDoc::DataAnalysis()
 						"%d\t%.2f\t%d\t%d\t%d\t%.1f\t%d\t%d\t%d\t%d\t"
 						"%.2f\t%.2f\t%.2f\t%.2f\n",
 						m_DataFileName, m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session, 
-						m_HardSetting.m_DistanceError, m_Setting5[0].m_PracMode, m_Setting5[0].m_ExperMode, m_Setting5[0].m_MainTask, m_Setting5[0].m_SubTask,
-						m_Setting5[0].m_Background, m_Setting5[0].m_InitSpeed, m_Setting5[0].m_SignMemType, m_Setting5[0].m_SignMemMode, m_Setting5[0].m_SignShowMode, m_Setting5[0].m_SignShowTime, m_Setting5[0].m_PracTime, m_Setting5[0].m_ExperTime, m_Setting5[0].m_PracTimes, m_Setting5[0].m_ExperTimes,
+						m_HardSetting.m_DistanceError, m_ReadSetting5[0].m_PracMode, m_ReadSetting5[0].m_ExperMode, m_ReadSetting5[0].m_MainTask, m_ReadSetting5[0].m_SubTask,
+						m_ReadSetting5[0].m_Background, m_ReadSetting5[0].m_InitSpeed, m_ReadSetting5[0].m_SignMemType, m_ReadSetting5[0].m_SignMemMode, m_ReadSetting5[0].m_SignShowMode, m_ReadSetting5[0].m_SignShowTime, m_ReadSetting5[0].m_PracTime, m_ReadSetting5[0].m_ExperTime, m_ReadSetting5[0].m_PracTimes, m_ReadSetting5[0].m_ExperTimes,
 						m_DistanceAve, m_DistanceSqt, m_HitTimeTotal, m_HitTimeRate);
 					fclose(fp);
 				}
@@ -3934,8 +3942,8 @@ void CTaskControlDoc::DataAnalysis()
 						"%.2f\t%d\t%d\t%d\t%d\t"
 						"%d\t%.2f\t%d\t%d\t%d\t%.1f\t%d\t%d\t%d\t%d\t",
 						m_DataFileName, m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session, 
-						m_HardSetting.m_DistanceError, m_Setting5[0].m_PracMode, m_Setting5[0].m_ExperMode, m_Setting5[0].m_MainTask, m_Setting5[0].m_SubTask,
-						m_Setting5[0].m_Background, m_Setting5[0].m_InitSpeed, m_Setting5[0].m_SignMemType, m_Setting5[0].m_SignMemMode, m_Setting5[0].m_SignShowMode, m_Setting5[0].m_SignShowTime, m_Setting5[0].m_PracTime, m_Setting5[0].m_ExperTime, m_Setting5[0].m_PracTimes, m_Setting5[0].m_ExperTimes);
+						m_HardSetting.m_DistanceError, m_ReadSetting5[0].m_PracMode, m_ReadSetting5[0].m_ExperMode, m_ReadSetting5[0].m_MainTask, m_ReadSetting5[0].m_SubTask,
+						m_ReadSetting5[0].m_Background, m_ReadSetting5[0].m_InitSpeed, m_ReadSetting5[0].m_SignMemType, m_ReadSetting5[0].m_SignMemMode, m_ReadSetting5[0].m_SignShowMode, m_ReadSetting5[0].m_SignShowTime, m_ReadSetting5[0].m_PracTime, m_ReadSetting5[0].m_ExperTime, m_ReadSetting5[0].m_PracTimes, m_ReadSetting5[0].m_ExperTimes);
 					for(i=0;i<5;i++)
 					{
 						if(m_SignTotal[i]>0)
@@ -4092,8 +4100,8 @@ void CTaskControlDoc::DataAnalysis()
 						"%d\t%.2f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t"
 						"%.2f\t%.2f\t%.2f\t%.2f\n",
 						m_DataFileName, m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session, 
-						m_HardSetting.m_DistanceError, m_Setting6[0].m_PracMode, m_Setting6[0].m_ExperMode, m_Setting6[0].m_MainTask, m_Setting6[0].m_SubTask,
-						m_Setting6[0].m_Background, m_Setting6[0].m_InitSpeed, m_Setting6[0].m_CubeNum1, m_Setting6[0].m_CubeNum2, m_Setting6[0].m_CubeNum3, m_Setting6[0].m_CubeNum4, m_Setting6[0].m_Prototype, m_Setting6[0].m_RefAxis, m_Setting6[0].m_MemTaskMode, m_Setting6[0].m_PracTime, m_Setting6[0].m_ExperTime, m_Setting6[0].m_PracTimes, m_Setting6[0].m_ExperTimes, 
+						m_HardSetting.m_DistanceError, m_ReadSetting6[0].m_PracMode, m_ReadSetting6[0].m_ExperMode, m_ReadSetting6[0].m_MainTask, m_ReadSetting6[0].m_SubTask,
+						m_ReadSetting6[0].m_Background, m_ReadSetting6[0].m_InitSpeed, m_ReadSetting6[0].m_CubeNum1, m_ReadSetting6[0].m_CubeNum2, m_ReadSetting6[0].m_CubeNum3, m_ReadSetting6[0].m_CubeNum4, m_ReadSetting6[0].m_Prototype, m_ReadSetting6[0].m_RefAxis, m_ReadSetting6[0].m_MemTaskMode, m_ReadSetting6[0].m_PracTime, m_ReadSetting6[0].m_ExperTime, m_ReadSetting6[0].m_PracTimes, m_ReadSetting6[0].m_ExperTimes, 
 						m_DistanceAve, m_DistanceSqt, m_HitTimeTotal, m_HitTimeRate);
 					fclose(fp);
 				}
@@ -4124,8 +4132,8 @@ void CTaskControlDoc::DataAnalysis()
 							"%.2f\t%d\t%d\t%d\t%d\t"
 							"%d\t%.2f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t",
 							m_DataFileName, m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session, 
-							m_HardSetting.m_DistanceError, m_Setting6[0].m_PracMode, m_Setting6[0].m_ExperMode, m_Setting6[0].m_MainTask, m_Setting6[0].m_SubTask,
-							m_Setting6[0].m_Background, m_Setting6[0].m_InitSpeed, m_Setting6[0].m_CubeNum1, m_Setting6[0].m_CubeNum2, m_Setting6[0].m_CubeNum3, m_Setting6[0].m_CubeNum4, m_Setting6[0].m_Prototype, m_Setting6[0].m_RefAxis, m_Setting6[0].m_MemTaskMode, m_Setting6[0].m_PracTime, m_Setting6[0].m_ExperTime, m_Setting6[0].m_PracTimes, m_Setting6[0].m_ExperTimes);	
+							m_HardSetting.m_DistanceError, m_ReadSetting6[0].m_PracMode, m_ReadSetting6[0].m_ExperMode, m_ReadSetting6[0].m_MainTask, m_ReadSetting6[0].m_SubTask,
+							m_ReadSetting6[0].m_Background, m_ReadSetting6[0].m_InitSpeed, m_ReadSetting6[0].m_CubeNum1, m_ReadSetting6[0].m_CubeNum2, m_ReadSetting6[0].m_CubeNum3, m_ReadSetting6[0].m_CubeNum4, m_ReadSetting6[0].m_Prototype, m_ReadSetting6[0].m_RefAxis, m_ReadSetting6[0].m_MemTaskMode, m_ReadSetting6[0].m_PracTime, m_ReadSetting6[0].m_ExperTime, m_ReadSetting6[0].m_PracTimes, m_ReadSetting6[0].m_ExperTimes);	
 						for(i=0;i<4;i++)
 						{
 							if(m_SignTotal[i]>0)
@@ -4159,8 +4167,8 @@ void CTaskControlDoc::DataAnalysis()
 							"%.2f\t%d\t%d\t%d\t%d\t"
 							"%d\t%.2f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t",
 							m_DataFileName, m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session, 
-							m_HardSetting.m_DistanceError, m_Setting6[0].m_PracMode, m_Setting6[0].m_ExperMode, m_Setting6[0].m_MainTask, m_Setting6[0].m_SubTask,
-							m_Setting6[0].m_Background, m_Setting6[0].m_InitSpeed, m_Setting6[0].m_CubeNum1, m_Setting6[0].m_CubeNum2, m_Setting6[0].m_CubeNum3, m_Setting6[0].m_CubeNum4, m_Setting6[0].m_Prototype, m_Setting6[0].m_RefAxis, m_Setting6[0].m_MemTaskMode, m_Setting6[0].m_PracTime, m_Setting6[0].m_ExperTime, m_Setting6[0].m_PracTimes, m_Setting6[0].m_ExperTimes);
+							m_HardSetting.m_DistanceError, m_ReadSetting6[0].m_PracMode, m_ReadSetting6[0].m_ExperMode, m_ReadSetting6[0].m_MainTask, m_ReadSetting6[0].m_SubTask,
+							m_ReadSetting6[0].m_Background, m_ReadSetting6[0].m_InitSpeed, m_ReadSetting6[0].m_CubeNum1, m_ReadSetting6[0].m_CubeNum2, m_ReadSetting6[0].m_CubeNum3, m_ReadSetting6[0].m_CubeNum4, m_ReadSetting6[0].m_Prototype, m_ReadSetting6[0].m_RefAxis, m_ReadSetting6[0].m_MemTaskMode, m_ReadSetting6[0].m_PracTime, m_ReadSetting6[0].m_ExperTime, m_ReadSetting6[0].m_PracTimes, m_ReadSetting6[0].m_ExperTimes);
 						for(i=0;i<4;i++)
 						{
 							if(m_SignTotal[i]>0)

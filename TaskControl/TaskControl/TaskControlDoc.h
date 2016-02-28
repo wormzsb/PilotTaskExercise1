@@ -45,6 +45,14 @@ public:
 	struct TaskSetting6  *m_Setting6;
 	struct TaskSetting7  *m_Setting7;
 	struct TaskSetting8  *m_Setting8;
+	struct TaskSetting1  *m_ReadSetting1;
+	struct TaskSetting2  *m_ReadSetting2;
+	struct TaskSetting3  *m_ReadSetting3;
+	struct TaskSetting4  *m_ReadSetting4;
+	struct TaskSetting5  *m_ReadSetting5;
+	struct TaskSetting6  *m_ReadSetting6;
+	struct TaskSetting7  *m_ReadSetting7;
+	struct TaskSetting8  *m_ReadSetting8;
 	struct HardSetting   m_HardSetting;
 	struct PartInfo      m_PartInfo;
 	struct PartInfo      m_CurPartInfo;

@@ -684,12 +684,12 @@ BOOL CListDlg::OnInitDialog()
 		m_ResultList.DeleteAllItems();            //删除列表中所有内容(行)
 		while (m_ResultList.DeleteColumn(0));     //删除列表中所有列
 		//向列表框中添加列
-		if(pDoc->m_Setting1!=NULL)
+		if(pDoc->m_ReadSetting1!=NULL)
 		{
-			delete []pDoc->m_Setting1;
-			pDoc->m_Setting1 = NULL;
+			delete []pDoc->m_ReadSetting1;
+			pDoc->m_ReadSetting1 = NULL;
 		}
-		pDoc->m_Setting1 = new struct TaskSetting1[1];
+		pDoc->m_ReadSetting1 = new struct TaskSetting1[1];
         AddHeadT1();
 		pDoc->MemClear();
         pDoc->m_bOpenFile1 = pDoc->ReadT1();
@@ -714,12 +714,12 @@ BOOL CListDlg::OnInitDialog()
 		m_ResultList.DeleteAllItems();            //删除列表中所有内容(行)
 		while (m_ResultList.DeleteColumn(0));     //删除列表中所有列
 		//向列表框中添加列
-		if(pDoc->m_Setting2!=NULL)
+		if(pDoc->m_ReadSetting2!=NULL)
 		{
-			delete []pDoc->m_Setting2;
-			pDoc->m_Setting2 = NULL;
+			delete []pDoc->m_ReadSetting2;
+			pDoc->m_ReadSetting2 = NULL;
 		}
-		pDoc->m_Setting2 = new struct TaskSetting2[1];
+		pDoc->m_ReadSetting2 = new struct TaskSetting2[1];
         AddHeadT2Trace();
 
 		m_ResultList2.DeleteAllItems();            //删除列表中所有内容(行)
@@ -769,12 +769,12 @@ BOOL CListDlg::OnInitDialog()
 		m_ResultList.DeleteAllItems();            //删除列表中所有内容(行)
 		while (m_ResultList.DeleteColumn(0));     //删除列表中所有列
 		//向列表框中添加列 
-		if(pDoc->m_Setting3!=NULL)
+		if(pDoc->m_ReadSetting3!=NULL)
 		{
-			delete []pDoc->m_Setting3;
-			pDoc->m_Setting3 = NULL;
+			delete []pDoc->m_ReadSetting3;
+			pDoc->m_ReadSetting3 = NULL;
 		}
-		pDoc->m_Setting3 = new struct TaskSetting3[1];
+		pDoc->m_ReadSetting3 = new struct TaskSetting3[1];
 		pos = pDoc->m_FileName.ReverseFind('\\');
         pos1 = pDoc->m_FileName.Find('-',pos+1);
 		pos2 = pDoc->m_FileName.Find('-',pos1+1);	
@@ -812,12 +812,12 @@ BOOL CListDlg::OnInitDialog()
 		m_ResultList.DeleteAllItems();            //删除列表中所有内容(行)
 		while (m_ResultList.DeleteColumn(0));     //删除列表中所有列
 		//向列表框中添加列
-		if(pDoc->m_Setting4!=NULL)
+		if(pDoc->m_ReadSetting4!=NULL)
 		{
-			delete []pDoc->m_Setting4;
-			pDoc->m_Setting4 = NULL;
+			delete []pDoc->m_ReadSetting4;
+			pDoc->m_ReadSetting4 = NULL;
 		}
-		pDoc->m_Setting4 = new struct TaskSetting4[1];
+		pDoc->m_ReadSetting4 = new struct TaskSetting4[1];
         AddHeadT4();
 		pDoc->MemClear();		
 		pDoc->m_bOpenFile1 = pDoc->ReadT4();
@@ -842,12 +842,12 @@ BOOL CListDlg::OnInitDialog()
 		m_ResultList.DeleteAllItems();            //删除列表中所有内容(行)
 		while (m_ResultList.DeleteColumn(0));     //删除列表中所有列
 		//向列表框中添加列
-		if(pDoc->m_Setting5!=NULL)
+		if(pDoc->m_ReadSetting5!=NULL)
 		{
-			delete []pDoc->m_Setting5;
-			pDoc->m_Setting5 = NULL;
+			delete []pDoc->m_ReadSetting5;
+			pDoc->m_ReadSetting5 = NULL;
 		}
-		pDoc->m_Setting5 = new struct TaskSetting5[1];
+		pDoc->m_ReadSetting5 = new struct TaskSetting5[1];
 
         AddHeadT5Trace();
 
@@ -888,7 +888,7 @@ BOOL CListDlg::OnInitDialog()
 			m_TabCtrl.InsertItem(m_TabCtrl.GetItemCount(), &ti);
 			cs.UnlockBuffer();
 		}
-//		if(pDoc->m_Setting3.m_MainTaskMode == 0)
+//		if(pDoc->m_ReadSetting3.m_MainTaskMode == 0)
 		{
 //			m_ChartList.InsertString(0,"位移误差随时间变化的曲线");
 //			m_ChartList.InsertString(1,"目标速度随时间变化的曲线");
@@ -898,12 +898,12 @@ BOOL CListDlg::OnInitDialog()
 		m_ResultList.DeleteAllItems();            //删除列表中所有内容(行)
 		while (m_ResultList.DeleteColumn(0));     //删除列表中所有列
 		//向列表框中添加列
-		if(pDoc->m_Setting6!=NULL)
+		if(pDoc->m_ReadSetting6!=NULL)
 		{
-			delete []pDoc->m_Setting6;
-			pDoc->m_Setting6 = NULL;
+			delete []pDoc->m_ReadSetting6;
+			pDoc->m_ReadSetting6 = NULL;
 		}
-		pDoc->m_Setting6 = new struct TaskSetting6[1];
+		pDoc->m_ReadSetting6 = new struct TaskSetting6[1];
 
 		AddHeadT6Trace();
 
@@ -945,12 +945,12 @@ BOOL CListDlg::OnInitDialog()
 		m_ResultList.DeleteAllItems();            //删除列表中所有内容(行)
 		while (m_ResultList.DeleteColumn(0));     //删除列表中所有列
 												  //向列表框中添加列
-		if (pDoc->m_Setting7 != NULL)
+		if (pDoc->m_ReadSetting7 != NULL)
 		{
-			delete[]pDoc->m_Setting7;
-			pDoc->m_Setting7 = NULL;
+			delete[]pDoc->m_ReadSetting7;
+			pDoc->m_ReadSetting7 = NULL;
 		}
-		pDoc->m_Setting7 = new struct TaskSetting7[1];
+		pDoc->m_ReadSetting7 = new struct TaskSetting7[1];
 		AddHead();
 		pDoc->MemClear();
 		pDoc->m_bOpenFile1 = pDoc->ReadT7();
@@ -969,12 +969,12 @@ BOOL CListDlg::OnInitDialog()
 		m_ResultList.DeleteAllItems();            //删除列表中所有内容(行)
 		while (m_ResultList.DeleteColumn(0));     //删除列表中所有列
 												  //向列表框中添加列
-		if (pDoc->m_Setting8 != NULL)
+		if (pDoc->m_ReadSetting8 != NULL)
 		{
-			delete[]pDoc->m_Setting8;
-			pDoc->m_Setting8 = NULL;
+			delete[]pDoc->m_ReadSetting8;
+			pDoc->m_ReadSetting8 = NULL;
 		}
-		pDoc->m_Setting8 = new struct TaskSetting8[1];
+		pDoc->m_ReadSetting8 = new struct TaskSetting8[1];
 		AddHead();
 		pDoc->MemClear();
 		pDoc->m_bOpenFile1 = pDoc->ReadT8();
@@ -1082,151 +1082,151 @@ BOOL CListDlg::AddT1Item(int i)
 	m_ResultList.AddItem(i,4,str,-1);
 	str.Format("%.2f",pDoc->m_HardSetting.m_AngleError);
 	m_ResultList.AddItem(i,5,str,-1);
-	str.Format("%d",pDoc->m_Setting1[0].m_PracMode);
+	str.Format("%d",pDoc->m_ReadSetting1[0].m_PracMode);
 	m_ResultList.AddItem(i,6,str,-1);
-	str.Format("%d",pDoc->m_Setting1[0].m_ExperMode);
+	str.Format("%d",pDoc->m_ReadSetting1[0].m_ExperMode);
 	m_ResultList.AddItem(i,7,str,-1);
 
 //	str.Format("%d",pDoc->m_Setting1.m_Background);
-	m_ResultList.AddItem(i,8,m_BackgroundStr[pDoc->m_Setting1[0].m_Background],-1);
-	m_ResultList.AddItem(i,9,m_TrackStr[pDoc->m_Setting1[0].m_Track],-1);
+	m_ResultList.AddItem(i,8,m_BackgroundStr[pDoc->m_ReadSetting1[0].m_Background],-1);
+	m_ResultList.AddItem(i,9,m_TrackStr[pDoc->m_ReadSetting1[0].m_Track],-1);
 //	str.Format("%d",pDoc->m_Setting1.m_Direction);
-	m_ResultList.AddItem(i,10,m_DirectionStr[pDoc->m_Setting1[0].m_Direction],-1);
+	m_ResultList.AddItem(i,10,m_DirectionStr[pDoc->m_ReadSetting1[0].m_Direction],-1);
 //	str.Format("%d",pDoc->m_Setting1.m_MoveMode);
-	m_ResultList.AddItem(i,11,m_MoveModeStr[pDoc->m_Setting1[0].m_MoveMode],-1);
+	m_ResultList.AddItem(i,11,m_MoveModeStr[pDoc->m_ReadSetting1[0].m_MoveMode],-1);
 //	str.Format("%d",pDoc->m_Setting1.m_SpeedMode);
-	m_ResultList.AddItem(i,12,m_SpeedModeStr[pDoc->m_Setting1[0].m_SpeedMode],-1);
+	m_ResultList.AddItem(i,12,m_SpeedModeStr[pDoc->m_ReadSetting1[0].m_SpeedMode],-1);
 
-	str.Format("%d",pDoc->m_Setting1[0].m_Pause);
+	str.Format("%d",pDoc->m_ReadSetting1[0].m_Pause);
 	m_ResultList.AddItem(i,13,str,-1);
-	if(pDoc->m_Setting1[0].m_PauseNum<0)
+	if(pDoc->m_ReadSetting1[0].m_PauseNum<0)
 	{
         str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting1[0].m_PauseNum);	
+	    str.Format("%d",pDoc->m_ReadSetting1[0].m_PauseNum);	
 	}
 	m_ResultList.AddItem(i,14,str,-1);
-	if(pDoc->m_Setting1[0].m_Speed<0)
+	if(pDoc->m_ReadSetting1[0].m_Speed<0)
 	{
         str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.2f",pDoc->m_Setting1[0].m_Speed);	
+		str.Format("%.2f",pDoc->m_ReadSetting1[0].m_Speed);	
 	}
 	m_ResultList.AddItem(i,15,str,-1);
-	if(pDoc->m_Setting1[0].m_InitSpeed<0)
+	if(pDoc->m_ReadSetting1[0].m_InitSpeed<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%.2f",pDoc->m_Setting1[0].m_InitSpeed);    
+	    str.Format("%.2f",pDoc->m_ReadSetting1[0].m_InitSpeed);    
 	}
 	m_ResultList.AddItem(i,16,str,-1);
-	if(pDoc->m_Setting1[0].m_SpeedMin<0)
+	if(pDoc->m_ReadSetting1[0].m_SpeedMin<0)
 	{
 		str = "Disabled";
 	}
     else
 	{
-		str.Format("%.2f",pDoc->m_Setting1[0].m_SpeedMin);	
+		str.Format("%.2f",pDoc->m_ReadSetting1[0].m_SpeedMin);	
 	}
 	m_ResultList.AddItem(i,17,str,-1);
-	if(pDoc->m_Setting1[0].m_SpeedMax<0)
+	if(pDoc->m_ReadSetting1[0].m_SpeedMax<0)
 	{
         str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%.2f",pDoc->m_Setting1[0].m_SpeedMax);	
+	    str.Format("%.2f",pDoc->m_ReadSetting1[0].m_SpeedMax);	
 	}
 	m_ResultList.AddItem(i,18,str,-1);
-	if(pDoc->m_Setting1[0].m_AccelerationMin<0)
+	if(pDoc->m_ReadSetting1[0].m_AccelerationMin<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%.2f",pDoc->m_Setting1[0].m_AccelerationMin);
+	    str.Format("%.2f",pDoc->m_ReadSetting1[0].m_AccelerationMin);
 	}
 	m_ResultList.AddItem(i,19,str,-1);
-	if(pDoc->m_Setting1[0].m_AccelerationMax<0)
+	if(pDoc->m_ReadSetting1[0].m_AccelerationMax<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%.2f",pDoc->m_Setting1[0].m_AccelerationMax);
+	    str.Format("%.2f",pDoc->m_ReadSetting1[0].m_AccelerationMax);
 	}
 	//m_ResultList.AddItem(i,20,str,-1);
-	if(pDoc->m_Setting1[0].m_AngleSpeedMin<0)
+	if(pDoc->m_ReadSetting1[0].m_AngleSpeedMin<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%.2f",pDoc->m_Setting1[0].m_AngleSpeedMin);
+	    str.Format("%.2f",pDoc->m_ReadSetting1[0].m_AngleSpeedMin);
 	}
 	//m_ResultList.AddItem(i,21,str,-1);
-	if(pDoc->m_Setting1[0].m_AngleSpeedMax<0)
+	if(pDoc->m_ReadSetting1[0].m_AngleSpeedMax<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.2f",pDoc->m_Setting1[0].m_AngleSpeedMax);
+		str.Format("%.2f",pDoc->m_ReadSetting1[0].m_AngleSpeedMax);
 	}
 	//m_ResultList.AddItem(i,22,str,-1);
-	if(pDoc->m_Setting1[0].m_RotateAngleMin<0)
+	if(pDoc->m_ReadSetting1[0].m_RotateAngleMin<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.2f",pDoc->m_Setting1[0].m_RotateAngleMin);
+		str.Format("%.2f",pDoc->m_ReadSetting1[0].m_RotateAngleMin);
 	}
 	//m_ResultList.AddItem(i,23,str,-1);
-	if(pDoc->m_Setting1[0].m_RotateAngleMax<0)
+	if(pDoc->m_ReadSetting1[0].m_RotateAngleMax<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.2f",pDoc->m_Setting1[0].m_RotateAngleMax);
+		str.Format("%.2f",pDoc->m_ReadSetting1[0].m_RotateAngleMax);
 	}
 	//m_ResultList.AddItem(i,24,str,-1);
 
-	if(pDoc->m_Setting1[0].m_PracTime<0)
+	if(pDoc->m_ReadSetting1[0].m_PracTime<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%d",pDoc->m_Setting1[0].m_PracTime);
+		str.Format("%d",pDoc->m_ReadSetting1[0].m_PracTime);
 	}
 	m_ResultList.AddItem(i,20,str,-1);
-    if(pDoc->m_Setting1[0].m_ExperTime<0)
+    if(pDoc->m_ReadSetting1[0].m_ExperTime<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting1[0].m_ExperTime);
+	    str.Format("%d",pDoc->m_ReadSetting1[0].m_ExperTime);
 	}
 	m_ResultList.AddItem(i,21,str,-1);
-	if(pDoc->m_Setting1[0].m_PracTimes<0)
+	if(pDoc->m_ReadSetting1[0].m_PracTimes<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting1[0].m_PracTimes);
+	    str.Format("%d",pDoc->m_ReadSetting1[0].m_PracTimes);
 	}
 	m_ResultList.AddItem(i,22,str,-1);
-	if(pDoc->m_Setting1[0].m_ExperTimes<0)
+	if(pDoc->m_ReadSetting1[0].m_ExperTimes<0)
 	{
 	    str = "Disabled";
 	}
@@ -1292,186 +1292,186 @@ BOOL CListDlg::AddT2TraceItem(int i)
 
 	str.Format("%.2f",pDoc->m_HardSetting.m_DistanceError);
 	m_ResultList.AddItem(i,4,str,-1);
-	str.Format("%d",pDoc->m_Setting2[0].m_PracMode);
+	str.Format("%d",pDoc->m_ReadSetting2[0].m_PracMode);
 	m_ResultList.AddItem(i,5,str,-1);
-	str.Format("%d",pDoc->m_Setting2[0].m_ExperMode);
+	str.Format("%d",pDoc->m_ReadSetting2[0].m_ExperMode);
 	m_ResultList.AddItem(i,6,str,-1);
-	str.Format("%d",pDoc->m_Setting2[0].m_MainTask);
+	str.Format("%d",pDoc->m_ReadSetting2[0].m_MainTask);
 	m_ResultList.AddItem(i,7,str,-1);
-	str.Format("%d",pDoc->m_Setting2[0].m_SubTask);
+	str.Format("%d",pDoc->m_ReadSetting2[0].m_SubTask);
 	m_ResultList.AddItem(i,8,str,-1);
 
-//	str.Format("%d",pDoc->m_Setting2.m_Background);
-	m_ResultList.AddItem(i,9,m_BackgroundStr[pDoc->m_Setting2[0].m_Background],-1);
-//	str.Format("%d",pDoc->m_Setting2.m_Direction);
-	if(pDoc->m_Setting2[0].m_Direction<0)
+//	str.Format("%d",pDoc->m_ReadSetting2.m_Background);
+	m_ResultList.AddItem(i,9,m_BackgroundStr[pDoc->m_ReadSetting2[0].m_Background],-1);
+//	str.Format("%d",pDoc->m_ReadSetting2.m_Direction);
+	if(pDoc->m_ReadSetting2[0].m_Direction<0)
 	{
 	    m_ResultList.AddItem(i,10,"Disabled",-1);
 	}
 	else
 	{
-	    m_ResultList.AddItem(i,10,m_DirectionStr[pDoc->m_Setting2[0].m_Direction],-1);
+	    m_ResultList.AddItem(i,10,m_DirectionStr[pDoc->m_ReadSetting2[0].m_Direction],-1);
 	}
-	if(pDoc->m_Setting2[0].m_Direction<0)
+	if(pDoc->m_ReadSetting2[0].m_Direction<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.2f",pDoc->m_Setting2[0].m_InitSpeed);
+		str.Format("%.2f",pDoc->m_ReadSetting2[0].m_InitSpeed);
 	}
 	m_ResultList.AddItem(i,11,str,-1);
-    if(pDoc->m_Setting2[0].m_HoldTimeNum<0)
+    if(pDoc->m_ReadSetting2[0].m_HoldTimeNum<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%d",pDoc->m_Setting2[0].m_HoldTimeNum);
+		str.Format("%d",pDoc->m_ReadSetting2[0].m_HoldTimeNum);
 	}
 	m_ResultList.AddItem(i,12,str,-1);
-	if(pDoc->m_Setting2[0].m_HoldTime[0]<0)
+	if(pDoc->m_ReadSetting2[0].m_HoldTime[0]<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.1f",pDoc->m_Setting2[0].m_HoldTime[0]);
+		str.Format("%.1f",pDoc->m_ReadSetting2[0].m_HoldTime[0]);
 	}
 	m_ResultList.AddItem(i,13,str,-1);
-	if(pDoc->m_Setting2[0].m_HoldTime[1]<0)
+	if(pDoc->m_ReadSetting2[0].m_HoldTime[1]<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.1f",pDoc->m_Setting2[0].m_HoldTime[1]);
+		str.Format("%.1f",pDoc->m_ReadSetting2[0].m_HoldTime[1]);
 	}
 	m_ResultList.AddItem(i,14,str,-1);
-	if(pDoc->m_Setting2[0].m_HoldTime[2]<0)
+	if(pDoc->m_ReadSetting2[0].m_HoldTime[2]<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.1f",pDoc->m_Setting2[0].m_HoldTime[2]);
+		str.Format("%.1f",pDoc->m_ReadSetting2[0].m_HoldTime[2]);
 	}
 	m_ResultList.AddItem(i,15,str,-1);
-	if(pDoc->m_Setting2[0].m_HoldTime[3]<0)
+	if(pDoc->m_ReadSetting2[0].m_HoldTime[3]<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.1f",pDoc->m_Setting2[0].m_HoldTime[3]);
+		str.Format("%.1f",pDoc->m_ReadSetting2[0].m_HoldTime[3]);
 	}
 	m_ResultList.AddItem(i,16,str,-1);
-	if(pDoc->m_Setting2[0].m_HoldTime[4]<0)
+	if(pDoc->m_ReadSetting2[0].m_HoldTime[4]<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.1f",pDoc->m_Setting2[0].m_HoldTime[4]);
+		str.Format("%.1f",pDoc->m_ReadSetting2[0].m_HoldTime[4]);
 	}
 	m_ResultList.AddItem(i,17,str,-1);
-	if(pDoc->m_Setting2[0].m_HoldTime[5]<0)
+	if(pDoc->m_ReadSetting2[0].m_HoldTime[5]<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.1f",pDoc->m_Setting2[0].m_HoldTime[5]);
+		str.Format("%.1f",pDoc->m_ReadSetting2[0].m_HoldTime[5]);
 	}
 	m_ResultList.AddItem(i,18,str,-1);
-	if(pDoc->m_Setting2[0].m_HoldTime[6]<0)
+	if(pDoc->m_ReadSetting2[0].m_HoldTime[6]<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.1f",pDoc->m_Setting2[0].m_HoldTime[6]);
+		str.Format("%.1f",pDoc->m_ReadSetting2[0].m_HoldTime[6]);
 	}
 	m_ResultList.AddItem(i,19,str,-1);
-	if(pDoc->m_Setting2[0].m_HoldTime[7]<0)
+	if(pDoc->m_ReadSetting2[0].m_HoldTime[7]<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.1f",pDoc->m_Setting2[0].m_HoldTime[7]);
+		str.Format("%.1f",pDoc->m_ReadSetting2[0].m_HoldTime[7]);
 	}
 	m_ResultList.AddItem(i,20,str,-1);
-	if(pDoc->m_Setting2[0].m_HoldTime[8]<0)
+	if(pDoc->m_ReadSetting2[0].m_HoldTime[8]<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.1f",pDoc->m_Setting2[0].m_HoldTime[8]);
+		str.Format("%.1f",pDoc->m_ReadSetting2[0].m_HoldTime[8]);
 	}
 	m_ResultList.AddItem(i,21,str,-1);
-	if(pDoc->m_Setting2[0].m_HoldTime[9]<0)
+	if(pDoc->m_ReadSetting2[0].m_HoldTime[9]<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.1f",pDoc->m_Setting2[0].m_HoldTime[9]);
+		str.Format("%.1f",pDoc->m_ReadSetting2[0].m_HoldTime[9]);
 	}
 	m_ResultList.AddItem(i,22,str,-1);
-	if(pDoc->m_Setting2[0].m_HoldTime[10]<0)
+	if(pDoc->m_ReadSetting2[0].m_HoldTime[10]<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.1f",pDoc->m_Setting2[0].m_HoldTime[10]);
+		str.Format("%.1f",pDoc->m_ReadSetting2[0].m_HoldTime[10]);
 	}
 	m_ResultList.AddItem(i,23,str,-1);
-	if(pDoc->m_Setting2[0].m_HoldTime[11]<0)
+	if(pDoc->m_ReadSetting2[0].m_HoldTime[11]<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.1f",pDoc->m_Setting2[0].m_HoldTime[11]);
+		str.Format("%.1f",pDoc->m_ReadSetting2[0].m_HoldTime[11]);
 	}
 	m_ResultList.AddItem(i,24,str,-1);
-	if(pDoc->m_Setting2[0].m_PracTime<0)
+	if(pDoc->m_ReadSetting2[0].m_PracTime<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%d",pDoc->m_Setting2[0].m_PracTime);
+		str.Format("%d",pDoc->m_ReadSetting2[0].m_PracTime);
 	}
 	m_ResultList.AddItem(i,25,str,-1);
-	if(pDoc->m_Setting2[0].m_ExperTime<0)
+	if(pDoc->m_ReadSetting2[0].m_ExperTime<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting2[0].m_ExperTime);
+	    str.Format("%d",pDoc->m_ReadSetting2[0].m_ExperTime);
 	}
 	m_ResultList.AddItem(i,26,str,-1);
-	if(pDoc->m_Setting2[0].m_PracTimes<0)
+	if(pDoc->m_ReadSetting2[0].m_PracTimes<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%d",pDoc->m_Setting2[0].m_PracTimes);
+		str.Format("%d",pDoc->m_ReadSetting2[0].m_PracTimes);
 	}
 	m_ResultList.AddItem(i,27,str,-1);
-	if(pDoc->m_Setting2[0].m_ExperTimes<0)
+	if(pDoc->m_ReadSetting2[0].m_ExperTimes<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting2[0].m_ExperTimes);
+	    str.Format("%d",pDoc->m_ReadSetting2[0].m_ExperTimes);
 	}
 	m_ResultList.AddItem(i,28,str,-1);
 	        
@@ -1518,187 +1518,187 @@ BOOL CListDlg::AddT2HoldItem(int i)
 
 	str.Format("%.2f",pDoc->m_HardSetting.m_DistanceError);
 	m_ResultList2.AddItem(i,4,str,-1);
-	str.Format("%d",pDoc->m_Setting2[0].m_PracMode);
+	str.Format("%d",pDoc->m_ReadSetting2[0].m_PracMode);
 	m_ResultList2.AddItem(i,5,str,-1);
-    str.Format("%d",pDoc->m_Setting2[0].m_ExperMode);
+    str.Format("%d",pDoc->m_ReadSetting2[0].m_ExperMode);
 	m_ResultList2.AddItem(i,6,str,-1);
-    str.Format("%d",pDoc->m_Setting2[0].m_MainTask);
+    str.Format("%d",pDoc->m_ReadSetting2[0].m_MainTask);
 	m_ResultList2.AddItem(i,7,str,-1);
-    str.Format("%d",pDoc->m_Setting2[0].m_SubTask);
+    str.Format("%d",pDoc->m_ReadSetting2[0].m_SubTask);
 	m_ResultList2.AddItem(i,8,str,-1);
 
-//	str.Format("%d",pDoc->m_Setting2.m_Background);
-	m_ResultList2.AddItem(i,9,m_BackgroundStr[pDoc->m_Setting2[0].m_Background],-1);
-//  str.Format("%d",pDoc->m_Setting2.m_Direction);
-	if(pDoc->m_Setting2[0].m_Direction<0)
+//	str.Format("%d",pDoc->m_ReadSetting2.m_Background);
+	m_ResultList2.AddItem(i,9,m_BackgroundStr[pDoc->m_ReadSetting2[0].m_Background],-1);
+//  str.Format("%d",pDoc->m_ReadSetting2.m_Direction);
+	if(pDoc->m_ReadSetting2[0].m_Direction<0)
 	{
 	    m_ResultList2.AddItem(i,10,"Disabled",-1);
 	}
 	else
 	{
-    	m_ResultList2.AddItem(i,10,m_DirectionStr[pDoc->m_Setting2[0].m_Direction],-1);
+    	m_ResultList2.AddItem(i,10,m_DirectionStr[pDoc->m_ReadSetting2[0].m_Direction],-1);
 	}
-	if(pDoc->m_Setting2[0].m_InitSpeed<0)
+	if(pDoc->m_ReadSetting2[0].m_InitSpeed<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%.2f",pDoc->m_Setting2[0].m_InitSpeed);
+	    str.Format("%.2f",pDoc->m_ReadSetting2[0].m_InitSpeed);
 	}
 	m_ResultList2.AddItem(i,11,str,-1);
 
-	if(pDoc->m_Setting2[0].m_HoldTimeNum<0)
+	if(pDoc->m_ReadSetting2[0].m_HoldTimeNum<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting2[0].m_HoldTimeNum);
+	    str.Format("%d",pDoc->m_ReadSetting2[0].m_HoldTimeNum);
 	}
 	m_ResultList2.AddItem(i,12,str,-1);
-	if(pDoc->m_Setting2[0].m_HoldTime[0]<0)
+	if(pDoc->m_ReadSetting2[0].m_HoldTime[0]<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.1f",pDoc->m_Setting2[0].m_HoldTime[0]);
+		str.Format("%.1f",pDoc->m_ReadSetting2[0].m_HoldTime[0]);
 	}
 	m_ResultList2.AddItem(i,13,str,-1);
-	if(pDoc->m_Setting2[0].m_HoldTime[1]<0)
+	if(pDoc->m_ReadSetting2[0].m_HoldTime[1]<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.1f",pDoc->m_Setting2[0].m_HoldTime[1]);
+		str.Format("%.1f",pDoc->m_ReadSetting2[0].m_HoldTime[1]);
 	}
 	m_ResultList2.AddItem(i,14,str,-1);
-	if(pDoc->m_Setting2[0].m_HoldTime[2]<0)
+	if(pDoc->m_ReadSetting2[0].m_HoldTime[2]<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.1f",pDoc->m_Setting2[0].m_HoldTime[2]);
+		str.Format("%.1f",pDoc->m_ReadSetting2[0].m_HoldTime[2]);
 	}
 	m_ResultList2.AddItem(i,15,str,-1);
-	if(pDoc->m_Setting2[0].m_HoldTime[3]<0)
+	if(pDoc->m_ReadSetting2[0].m_HoldTime[3]<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.1f",pDoc->m_Setting2[0].m_HoldTime[3]);
+		str.Format("%.1f",pDoc->m_ReadSetting2[0].m_HoldTime[3]);
 	}
 	m_ResultList2.AddItem(i,16,str,-1);
-	if(pDoc->m_Setting2[0].m_HoldTime[4]<0)
+	if(pDoc->m_ReadSetting2[0].m_HoldTime[4]<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.1f",pDoc->m_Setting2[0].m_HoldTime[4]);
+		str.Format("%.1f",pDoc->m_ReadSetting2[0].m_HoldTime[4]);
 	}
 	m_ResultList2.AddItem(i,17,str,-1);
-	if(pDoc->m_Setting2[0].m_HoldTime[5]<0)
+	if(pDoc->m_ReadSetting2[0].m_HoldTime[5]<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.1f",pDoc->m_Setting2[0].m_HoldTime[5]);
+		str.Format("%.1f",pDoc->m_ReadSetting2[0].m_HoldTime[5]);
 	}
 	m_ResultList2.AddItem(i,18,str,-1);
-	if(pDoc->m_Setting2[0].m_HoldTime[6]<0)
+	if(pDoc->m_ReadSetting2[0].m_HoldTime[6]<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.1f",pDoc->m_Setting2[0].m_HoldTime[6]);
+		str.Format("%.1f",pDoc->m_ReadSetting2[0].m_HoldTime[6]);
 	}
 	m_ResultList2.AddItem(i,19,str,-1);
-	if(pDoc->m_Setting2[0].m_HoldTime[7]<0)
+	if(pDoc->m_ReadSetting2[0].m_HoldTime[7]<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.1f",pDoc->m_Setting2[0].m_HoldTime[7]);
+		str.Format("%.1f",pDoc->m_ReadSetting2[0].m_HoldTime[7]);
 	}
 	m_ResultList2.AddItem(i,20,str,-1);
-	if(pDoc->m_Setting2[0].m_HoldTime[8]<0)
+	if(pDoc->m_ReadSetting2[0].m_HoldTime[8]<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.1f",pDoc->m_Setting2[0].m_HoldTime[8]);
+		str.Format("%.1f",pDoc->m_ReadSetting2[0].m_HoldTime[8]);
 	}
 	m_ResultList2.AddItem(i,21,str,-1);
-	if(pDoc->m_Setting2[0].m_HoldTime[9]<0)
+	if(pDoc->m_ReadSetting2[0].m_HoldTime[9]<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.1f",pDoc->m_Setting2[0].m_HoldTime[9]);
+		str.Format("%.1f",pDoc->m_ReadSetting2[0].m_HoldTime[9]);
 	}
 	m_ResultList2.AddItem(i,22,str,-1);
-	if(pDoc->m_Setting2[0].m_HoldTime[10]<0)
+	if(pDoc->m_ReadSetting2[0].m_HoldTime[10]<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.1f",pDoc->m_Setting2[0].m_HoldTime[10]);
+		str.Format("%.1f",pDoc->m_ReadSetting2[0].m_HoldTime[10]);
 	}
 	m_ResultList2.AddItem(i,23,str,-1);
-	if(pDoc->m_Setting2[0].m_HoldTime[11]<0)
+	if(pDoc->m_ReadSetting2[0].m_HoldTime[11]<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%.1f",pDoc->m_Setting2[0].m_HoldTime[11]);
+		str.Format("%.1f",pDoc->m_ReadSetting2[0].m_HoldTime[11]);
 	}
 	m_ResultList2.AddItem(i,24,str,-1);
-	if(pDoc->m_Setting2[0].m_PracTime<0)
+	if(pDoc->m_ReadSetting2[0].m_PracTime<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%d",pDoc->m_Setting2[0].m_PracTime);
+		str.Format("%d",pDoc->m_ReadSetting2[0].m_PracTime);
 	}
 	m_ResultList2.AddItem(i,25,str,-1);
-	if(pDoc->m_Setting2[0].m_ExperTime<0)
+	if(pDoc->m_ReadSetting2[0].m_ExperTime<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting2[0].m_ExperTime);
+	    str.Format("%d",pDoc->m_ReadSetting2[0].m_ExperTime);
 	}
 	m_ResultList2.AddItem(i,26,str,-1);
-	if(pDoc->m_Setting2[0].m_PracTimes<0)
+	if(pDoc->m_ReadSetting2[0].m_PracTimes<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-		str.Format("%d",pDoc->m_Setting2[0].m_PracTimes);
+		str.Format("%d",pDoc->m_ReadSetting2[0].m_PracTimes);
 	}
 	m_ResultList2.AddItem(i,27,str,-1);
-	if(pDoc->m_Setting2[0].m_ExperTimes<0)
+	if(pDoc->m_ReadSetting2[0].m_ExperTimes<0)
 	{
 	    str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting2[0].m_ExperTimes);
+	    str.Format("%d",pDoc->m_ReadSetting2[0].m_ExperTimes);
 	}
 	m_ResultList2.AddItem(i,28,str,-1);
 
@@ -1734,105 +1734,105 @@ BOOL CListDlg::AddT3TraceItem(int i)
 
 	str.Format("%.2f",pDoc->m_HardSetting.m_DistanceError);
 	m_ResultList.AddItem(i,4,str,-1);
-	str.Format("%d",pDoc->m_Setting3[0].m_PracMode);
+	str.Format("%d",pDoc->m_ReadSetting3[0].m_PracMode);
 	m_ResultList.AddItem(i,5,str,-1);
-	str.Format("%d",pDoc->m_Setting3[0].m_ExperMode);
+	str.Format("%d",pDoc->m_ReadSetting3[0].m_ExperMode);
 	m_ResultList.AddItem(i,6,str,-1);
-	str.Format("%d",pDoc->m_Setting3[0].m_MainTask);
+	str.Format("%d",pDoc->m_ReadSetting3[0].m_MainTask);
 	m_ResultList.AddItem(i,7,str,-1);
-	str.Format("%d",pDoc->m_Setting3[0].m_SubTask);
+	str.Format("%d",pDoc->m_ReadSetting3[0].m_SubTask);
 	m_ResultList.AddItem(i,8,str,-1);
 
-//	str.Format("%d",pDoc->m_Setting3.m_MainTaskMode);
-	if(pDoc->m_Setting3[0].m_MainTaskMode<0)
+//	str.Format("%d",pDoc->m_ReadSetting3.m_MainTaskMode);
+	if(pDoc->m_ReadSetting3[0].m_MainTaskMode<0)
 	{
 		m_ResultList.AddItem(i,9,"Disabled",-1);
 	}
 	else
 	{
-	    m_ResultList.AddItem(i,9,m_MainTaskModeStr[pDoc->m_Setting3[0].m_MainTaskMode],-1);
+	    m_ResultList.AddItem(i,9,m_MainTaskModeStr[pDoc->m_ReadSetting3[0].m_MainTaskMode],-1);
 	}
-//	str.Format("%d",pDoc->m_Setting3.m_Background);
-	m_ResultList.AddItem(i,10,m_BackgroundStr[pDoc->m_Setting3[0].m_Background],-1);
-	if(pDoc->m_Setting3[0].m_InitSpeed<0)
+//	str.Format("%d",pDoc->m_ReadSetting3.m_Background);
+	m_ResultList.AddItem(i,10,m_BackgroundStr[pDoc->m_ReadSetting3[0].m_Background],-1);
+	if(pDoc->m_ReadSetting3[0].m_InitSpeed<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%.2f",pDoc->m_Setting3[0].m_InitSpeed);
+	    str.Format("%.2f",pDoc->m_ReadSetting3[0].m_InitSpeed);
 	}
 	m_ResultList.AddItem(i,11,str,-1);
-//	str.Format("%d",pDoc->m_Setting3.m_CodePairMode);
-    if(pDoc->m_Setting3[0].m_CodePairMode<0)
+//	str.Format("%d",pDoc->m_ReadSetting3.m_CodePairMode);
+    if(pDoc->m_ReadSetting3[0].m_CodePairMode<0)
 	{
 		m_ResultList.AddItem(i,12,"Disabled",-1);
 	}
 	else
 	{
-	    m_ResultList.AddItem(i,12,m_CodePairModeStr[pDoc->m_Setting3[0].m_CodePairMode],-1);
+	    m_ResultList.AddItem(i,12,m_CodePairModeStr[pDoc->m_ReadSetting3[0].m_CodePairMode],-1);
 	}
-    if(pDoc->m_Setting3[0].m_CodePairNum<0)
+    if(pDoc->m_ReadSetting3[0].m_CodePairNum<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting3[0].m_CodePairNum);
+	    str.Format("%d",pDoc->m_ReadSetting3[0].m_CodePairNum);
 	}
 	m_ResultList.AddItem(i,13,str,-1);
-//	str.Format("%d",pDoc->m_Setting3.m_DisplayMode);
-    if(pDoc->m_Setting3[0].m_CodePairMode<0)
+//	str.Format("%d",pDoc->m_ReadSetting3.m_DisplayMode);
+    if(pDoc->m_ReadSetting3[0].m_CodePairMode<0)
 	{
 		m_ResultList.AddItem(i,14,"Disabled",-1);
 	}
 	else
 	{
-		m_ResultList.AddItem(i,14,m_DisplayModeStr[pDoc->m_Setting3[0].m_DisplayMode],-1);
+		m_ResultList.AddItem(i,14,m_DisplayModeStr[pDoc->m_ReadSetting3[0].m_DisplayMode],-1);
 	}
-	if(pDoc->m_Setting3[0].m_EventFrequency<0)
+	if(pDoc->m_ReadSetting3[0].m_EventFrequency<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting3[0].m_EventFrequency);
+	    str.Format("%d",pDoc->m_ReadSetting3[0].m_EventFrequency);
 	}
 	m_ResultList.AddItem(i,15,str,-1);
-	if(pDoc->m_Setting3[0].m_PracTime<0)
+	if(pDoc->m_ReadSetting3[0].m_PracTime<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-		str.Format("%d",pDoc->m_Setting3[0].m_PracTime);
+		str.Format("%d",pDoc->m_ReadSetting3[0].m_PracTime);
 	}
 	m_ResultList.AddItem(i,16,str,-1);
-	if(pDoc->m_Setting3[0].m_ExperTime<0)
+	if(pDoc->m_ReadSetting3[0].m_ExperTime<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-		str.Format("%d",pDoc->m_Setting3[0].m_ExperTime);
+		str.Format("%d",pDoc->m_ReadSetting3[0].m_ExperTime);
 	}
 	m_ResultList.AddItem(i,17,str,-1);
-	if(pDoc->m_Setting3[0].m_PracTimes<0)
+	if(pDoc->m_ReadSetting3[0].m_PracTimes<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting3[0].m_PracTimes);
+	    str.Format("%d",pDoc->m_ReadSetting3[0].m_PracTimes);
 	}
 	m_ResultList.AddItem(i,18,str,-1);
-	if(pDoc->m_Setting3[0].m_ExperTimes<0)
+	if(pDoc->m_ReadSetting3[0].m_ExperTimes<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting3[0].m_ExperTimes);
+	    str.Format("%d",pDoc->m_ReadSetting3[0].m_ExperTimes);
 	}
 	m_ResultList.AddItem(i,19,str,-1);
 			
@@ -1877,53 +1877,53 @@ BOOL CListDlg::AddT3CodeItem(int i)
     str.Format("%d",pDoc->m_PartInfo.m_Session);
 	m_ResultList.AddItem(i,3,str,-1);
 
-	str.Format("%d",pDoc->m_Setting3[0].m_PracMode);
+	str.Format("%d",pDoc->m_ReadSetting3[0].m_PracMode);
 	m_ResultList.AddItem(i,4,str,-1);
-    str.Format("%d",pDoc->m_Setting3[0].m_ExperMode);
+    str.Format("%d",pDoc->m_ReadSetting3[0].m_ExperMode);
 	m_ResultList.AddItem(i,5,str,-1);
-    str.Format("%d",pDoc->m_Setting3[0].m_MainTask);
+    str.Format("%d",pDoc->m_ReadSetting3[0].m_MainTask);
 	m_ResultList.AddItem(i,6,str,-1);
-    str.Format("%d",pDoc->m_Setting3[0].m_SubTask);
+    str.Format("%d",pDoc->m_ReadSetting3[0].m_SubTask);
 	m_ResultList.AddItem(i,7,str,-1);
 
-//	str.Format("%d",pDoc->m_Setting3.m_MainTaskMode);
-	if(pDoc->m_Setting3[0].m_MainTaskMode<0)
+//	str.Format("%d",pDoc->m_ReadSetting3.m_MainTaskMode);
+	if(pDoc->m_ReadSetting3[0].m_MainTaskMode<0)
 	{
 		m_ResultList.AddItem(i,8,"Disabled",-1);
 	}
 	else
 	{
-        m_ResultList.AddItem(i,8,m_MainTaskModeStr[pDoc->m_Setting3[0].m_MainTaskMode],-1);
+        m_ResultList.AddItem(i,8,m_MainTaskModeStr[pDoc->m_ReadSetting3[0].m_MainTaskMode],-1);
 	}
-//  str.Format("%d",pDoc->m_Setting3.m_Background);
-	m_ResultList.AddItem(i,9,m_BackgroundStr[pDoc->m_Setting3[0].m_Background],-1);
-	if(pDoc->m_Setting3[0].m_InitSpeed<0)
+//  str.Format("%d",pDoc->m_ReadSetting3.m_Background);
+	m_ResultList.AddItem(i,9,m_BackgroundStr[pDoc->m_ReadSetting3[0].m_Background],-1);
+	if(pDoc->m_ReadSetting3[0].m_InitSpeed<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-        str.Format("%.2f",pDoc->m_Setting3[0].m_InitSpeed);
+        str.Format("%.2f",pDoc->m_ReadSetting3[0].m_InitSpeed);
 	}
     m_ResultList.AddItem(i,10,str,-1); 
-//  str.Format("%d",pDoc->m_Setting3.m_CodePairMode);
-	if(pDoc->m_Setting3[0].m_EventMode<0)
+//  str.Format("%d",pDoc->m_ReadSetting3.m_CodePairMode);
+	if(pDoc->m_ReadSetting3[0].m_EventMode<0)
 	{
 	    m_ResultList.AddItem(i,11,"Disabled",-1);
 	}
 	else
 	{
-        m_ResultList.AddItem(i,11,m_EventModeStr[pDoc->m_Setting3[0].m_EventMode],-1);
+        m_ResultList.AddItem(i,11,m_EventModeStr[pDoc->m_ReadSetting3[0].m_EventMode],-1);
 	}
-	if(pDoc->m_Setting3[0].m_CodePairMode<0)
+	if(pDoc->m_ReadSetting3[0].m_CodePairMode<0)
 	{
 		m_ResultList.AddItem(i,12,"Disabled",-1);
 	}
 	else
 	{
-	    m_ResultList.AddItem(i,12,m_CodePairModeStr[pDoc->m_Setting3[0].m_CodePairMode],-1);
+	    m_ResultList.AddItem(i,12,m_CodePairModeStr[pDoc->m_ReadSetting3[0].m_CodePairMode],-1);
 	}
-	if(pDoc->m_Setting3[0].m_CodePairNum<0)
+	if(pDoc->m_ReadSetting3[0].m_CodePairNum<0)
 	{
 		str = "Disabled";
 	}
@@ -1932,58 +1932,58 @@ BOOL CListDlg::AddT3CodeItem(int i)
 	    str.Format("%d",pDoc->m_CodePairNum);
 	}
 	m_ResultList.AddItem(i,13,str,-1);
-//	str.Format("%d",pDoc->m_Setting3.m_DisplayMode);
-	if(pDoc->m_Setting3[0].m_DisplayMode<0)
+//	str.Format("%d",pDoc->m_ReadSetting3.m_DisplayMode);
+	if(pDoc->m_ReadSetting3[0].m_DisplayMode<0)
 	{
 		m_ResultList.AddItem(i,14,"Disabled",-1);
 	}
 	else
 	{
-	    m_ResultList.AddItem(i,14,m_DisplayModeStr[pDoc->m_Setting3[0].m_DisplayMode],-1);
+	    m_ResultList.AddItem(i,14,m_DisplayModeStr[pDoc->m_ReadSetting3[0].m_DisplayMode],-1);
 	}
-	if(pDoc->m_Setting3[0].m_EventFrequency<0)
+	if(pDoc->m_ReadSetting3[0].m_EventFrequency<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting3[0].m_EventFrequency);
+	    str.Format("%d",pDoc->m_ReadSetting3[0].m_EventFrequency);
 	}
 	m_ResultList.AddItem(i,15,str,-1);
-	if(pDoc->m_Setting3[0].m_PracTime<0)
+	if(pDoc->m_ReadSetting3[0].m_PracTime<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-		str.Format("%d",pDoc->m_Setting3[0].m_PracTime);
+		str.Format("%d",pDoc->m_ReadSetting3[0].m_PracTime);
 	}
 	m_ResultList.AddItem(i,16,str,-1);
-	if(pDoc->m_Setting3[0].m_ExperTime<0)
+	if(pDoc->m_ReadSetting3[0].m_ExperTime<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting3[0].m_ExperTime);
+	    str.Format("%d",pDoc->m_ReadSetting3[0].m_ExperTime);
 	}
 	m_ResultList.AddItem(i,17,str,-1);
-	if(pDoc->m_Setting3[0].m_PracTimes<0)
+	if(pDoc->m_ReadSetting3[0].m_PracTimes<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting3[0].m_PracTimes);
+	    str.Format("%d",pDoc->m_ReadSetting3[0].m_PracTimes);
 	}
 	m_ResultList.AddItem(i,18,str,-1);
-	if(pDoc->m_Setting3[0].m_ExperTimes<0)
+	if(pDoc->m_ReadSetting3[0].m_ExperTimes<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting3[0].m_ExperTimes);
+	    str.Format("%d",pDoc->m_ReadSetting3[0].m_ExperTimes);
 	}
 	m_ResultList.AddItem(i,19,str,-1);
 
@@ -2042,114 +2042,114 @@ BOOL CListDlg::AddT3EventItem(int i)
 	str.Format("%d",pDoc->m_PartInfo.m_Session);
 	m_ResultList2.AddItem(i,3,str,-1);
 
-	str.Format("%d",pDoc->m_Setting3[0].m_PracMode);
+	str.Format("%d",pDoc->m_ReadSetting3[0].m_PracMode);
 	m_ResultList2.AddItem(i,4,str,-1);
-	str.Format("%d",pDoc->m_Setting3[0].m_ExperMode);
+	str.Format("%d",pDoc->m_ReadSetting3[0].m_ExperMode);
 	m_ResultList2.AddItem(i,5,str,-1);
-	str.Format("%d",pDoc->m_Setting3[0].m_MainTask);
+	str.Format("%d",pDoc->m_ReadSetting3[0].m_MainTask);
 	m_ResultList2.AddItem(i,6,str,-1);
-	str.Format("%d",pDoc->m_Setting3[0].m_SubTask);
+	str.Format("%d",pDoc->m_ReadSetting3[0].m_SubTask);
 	m_ResultList2.AddItem(i,7,str,-1);
 
-//	str.Format("%d",pDoc->m_Setting3.m_MainTaskMode);
-	if(pDoc->m_Setting3[0].m_MainTaskMode<0)
+//	str.Format("%d",pDoc->m_ReadSetting3.m_MainTaskMode);
+	if(pDoc->m_ReadSetting3[0].m_MainTaskMode<0)
 	{
 		m_ResultList2.AddItem(i,8,"Disabled",-1);
 	}
 	else
 	{
-	    m_ResultList2.AddItem(i,8,m_MainTaskModeStr[pDoc->m_Setting3[0].m_MainTaskMode],-1);
+	    m_ResultList2.AddItem(i,8,m_MainTaskModeStr[pDoc->m_ReadSetting3[0].m_MainTaskMode],-1);
 	}
-//	str.Format("%d",pDoc->m_Setting3.m_Background);
-	m_ResultList2.AddItem(i,9,m_BackgroundStr[pDoc->m_Setting3[0].m_Background],-1);
-	if(pDoc->m_Setting3[0].m_InitSpeed<0)
+//	str.Format("%d",pDoc->m_ReadSetting3.m_Background);
+	m_ResultList2.AddItem(i,9,m_BackgroundStr[pDoc->m_ReadSetting3[0].m_Background],-1);
+	if(pDoc->m_ReadSetting3[0].m_InitSpeed<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-        str.Format("%.2f",pDoc->m_Setting3[0].m_InitSpeed);
+        str.Format("%.2f",pDoc->m_ReadSetting3[0].m_InitSpeed);
 	}
 	m_ResultList2.AddItem(i,10,str,-1); 
-//	str.Format("%d",pDoc->m_Setting3.m_EventMode);
-	if(pDoc->m_Setting3[0].m_EventMode<0)
+//	str.Format("%d",pDoc->m_ReadSetting3.m_EventMode);
+	if(pDoc->m_ReadSetting3[0].m_EventMode<0)
 	{
 		m_ResultList2.AddItem(i,11,"Disabled",-1);
 	}
 	else
 	{
-	    m_ResultList2.AddItem(i,11,m_EventModeStr[pDoc->m_Setting3[0].m_EventMode],-1);
+	    m_ResultList2.AddItem(i,11,m_EventModeStr[pDoc->m_ReadSetting3[0].m_EventMode],-1);
 	}
-//  str.Format("%d",pDoc->m_Setting3.m_CodePairMode);
-	if(pDoc->m_Setting3[0].m_CodePairMode<0)
+//  str.Format("%d",pDoc->m_ReadSetting3.m_CodePairMode);
+	if(pDoc->m_ReadSetting3[0].m_CodePairMode<0)
 	{
 		m_ResultList2.AddItem(i,12,"Disabled",-1);
 	}
 	else
 	{
-	    m_ResultList2.AddItem(i,12,m_CodePairModeStr[pDoc->m_Setting3[0].m_CodePairMode],-1);
+	    m_ResultList2.AddItem(i,12,m_CodePairModeStr[pDoc->m_ReadSetting3[0].m_CodePairMode],-1);
 	}
-	if(pDoc->m_Setting3[0].m_CodePairNum<0)
+	if(pDoc->m_ReadSetting3[0].m_CodePairNum<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-        str.Format("%d",pDoc->m_Setting3[0].m_CodePairNum);
+        str.Format("%d",pDoc->m_ReadSetting3[0].m_CodePairNum);
 	}
 	m_ResultList2.AddItem(i,13,str,-1);
-//  str.Format("%d",pDoc->m_Setting3.m_DisplayMode);
-	if(pDoc->m_Setting3[0].m_DisplayMode<0)
+//  str.Format("%d",pDoc->m_ReadSetting3.m_DisplayMode);
+	if(pDoc->m_ReadSetting3[0].m_DisplayMode<0)
 	{
 		m_ResultList2.AddItem(i,14,"Disabled",-1);
 	}
 	else
 	{
-	    m_ResultList2.AddItem(i,14,m_DisplayModeStr[pDoc->m_Setting3[0].m_DisplayMode],-1);
+	    m_ResultList2.AddItem(i,14,m_DisplayModeStr[pDoc->m_ReadSetting3[0].m_DisplayMode],-1);
 	}
-	if(pDoc->m_Setting3[0].m_EventFrequency<0)
+	if(pDoc->m_ReadSetting3[0].m_EventFrequency<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-        str.Format("%d",pDoc->m_Setting3[0].m_EventFrequency);
+        str.Format("%d",pDoc->m_ReadSetting3[0].m_EventFrequency);
 	}
 	m_ResultList2.AddItem(i,15,str,-1);
-	if(pDoc->m_Setting3[0].m_PracTime<0)
+	if(pDoc->m_ReadSetting3[0].m_PracTime<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting3[0].m_PracTime);
+	    str.Format("%d",pDoc->m_ReadSetting3[0].m_PracTime);
 	}
 	m_ResultList2.AddItem(i,16,str,-1);
-	if(pDoc->m_Setting3[0].m_ExperTime<0)
+	if(pDoc->m_ReadSetting3[0].m_ExperTime<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-        str.Format("%d",pDoc->m_Setting3[0].m_ExperTime);
+        str.Format("%d",pDoc->m_ReadSetting3[0].m_ExperTime);
 	}
 	m_ResultList2.AddItem(i,17,str,-1);
-	if(pDoc->m_Setting3[0].m_PracTimes<0)
+	if(pDoc->m_ReadSetting3[0].m_PracTimes<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-        str.Format("%d",pDoc->m_Setting3[0].m_PracTimes);
+        str.Format("%d",pDoc->m_ReadSetting3[0].m_PracTimes);
 	}
 	m_ResultList2.AddItem(i,18,str,-1);
-	if(pDoc->m_Setting3[0].m_ExperTimes<0)
+	if(pDoc->m_ReadSetting3[0].m_ExperTimes<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-        str.Format("%d",pDoc->m_Setting3[0].m_ExperTimes);
+        str.Format("%d",pDoc->m_ReadSetting3[0].m_ExperTimes);
 	}
     m_ResultList2.AddItem(i,19,str,-1);
 
@@ -2183,11 +2183,11 @@ BOOL CListDlg::AddT4Item(int i)
 	str.Format("%d",pDoc->m_PartInfo.m_Session);
 	m_ResultList.AddItem(i,3,str,-1);
 
-	str.Format("%d",pDoc->m_Setting4[0].m_PracMode);
+	str.Format("%d",pDoc->m_ReadSetting4[0].m_PracMode);
 	m_ResultList.AddItem(i,4,str,-1);
-    str.Format("%d",pDoc->m_Setting4[0].m_ExperMode);
+    str.Format("%d",pDoc->m_ReadSetting4[0].m_ExperMode);
 	m_ResultList.AddItem(i,5,str,-1);
-    m_ResultList.AddItem(i,6,m_TouchOrderStr[pDoc->m_Setting4[0].m_TouchOrder],-1);
+    m_ResultList.AddItem(i,6,m_TouchOrderStr[pDoc->m_ReadSetting4[0].m_TouchOrder],-1);
 
 	str.Format("%d",pDoc->m_TrialType);
 	m_ResultList.AddItem(i,7,str,-1);
@@ -2228,105 +2228,105 @@ BOOL CListDlg::AddT5TraceItem(int i)
 
 	str.Format("%.2f",pDoc->m_HardSetting.m_DistanceError);
 	m_ResultList.AddItem(i,4,str,-1);
-	str.Format("%d",pDoc->m_Setting5[0].m_PracMode);
+	str.Format("%d",pDoc->m_ReadSetting5[0].m_PracMode);
 	m_ResultList.AddItem(i,5,str,-1);
-	str.Format("%d",pDoc->m_Setting5[0].m_ExperMode);
+	str.Format("%d",pDoc->m_ReadSetting5[0].m_ExperMode);
 	m_ResultList.AddItem(i,6,str,-1);
-	str.Format("%d",pDoc->m_Setting5[0].m_MainTask);
+	str.Format("%d",pDoc->m_ReadSetting5[0].m_MainTask);
 	m_ResultList.AddItem(i,7,str,-1);
-	str.Format("%d",pDoc->m_Setting5[0].m_SubTask);
+	str.Format("%d",pDoc->m_ReadSetting5[0].m_SubTask);
 	m_ResultList.AddItem(i,8,str,-1);
 
-//	str.Format("%d",pDoc->m_Setting5.m_Background);
-	m_ResultList.AddItem(i,9,m_BackgroundStr[pDoc->m_Setting5[0].m_Background],-1);
-	if(pDoc->m_Setting5[0].m_InitSpeed<0)
+//	str.Format("%d",pDoc->m_ReadSetting5.m_Background);
+	m_ResultList.AddItem(i,9,m_BackgroundStr[pDoc->m_ReadSetting5[0].m_Background],-1);
+	if(pDoc->m_ReadSetting5[0].m_InitSpeed<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%.2f",pDoc->m_Setting5[0].m_InitSpeed);
+	    str.Format("%.2f",pDoc->m_ReadSetting5[0].m_InitSpeed);
 	}
 	m_ResultList.AddItem(i,10,str,-1);
-//	str.Format("%d",pDoc->m_Setting5.m_SignMemType);
-	if(pDoc->m_Setting5[0].m_SignMemType<0)
+//	str.Format("%d",pDoc->m_ReadSetting5.m_SignMemType);
+	if(pDoc->m_ReadSetting5[0].m_SignMemType<0)
 	{
 		m_ResultList.AddItem(i,11,"Disabled",-1);
 	}
 	else
 	{
-	    m_ResultList.AddItem(i,11,m_SignMemTypeStr[pDoc->m_Setting5[0].m_SignMemType],-1);
+	    m_ResultList.AddItem(i,11,m_SignMemTypeStr[pDoc->m_ReadSetting5[0].m_SignMemType],-1);
 	}
-//	str.Format("%d",pDoc->m_Setting5.m_SignMemMode);
-	if(pDoc->m_Setting5[0].m_SignMemMode<0)
+//	str.Format("%d",pDoc->m_ReadSetting5.m_SignMemMode);
+	if(pDoc->m_ReadSetting5[0].m_SignMemMode<0)
 	{
 		m_ResultList.AddItem(i,12,"Disabled",-1);
 	}
 	else
 	{
-	    m_ResultList.AddItem(i,12,m_SignMemModeStr[pDoc->m_Setting5[0].m_SignMemMode],-1);
+	    m_ResultList.AddItem(i,12,m_SignMemModeStr[pDoc->m_ReadSetting5[0].m_SignMemMode],-1);
 	}
-	if(pDoc->m_Setting5[0].m_SignMemNum<0)
+	if(pDoc->m_ReadSetting5[0].m_SignMemNum<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting5[0].m_SignMemNum);
+	    str.Format("%d",pDoc->m_ReadSetting5[0].m_SignMemNum);
 	}
 	m_ResultList.AddItem(i,13,str,-1);
-//	str.Format("%d",pDoc->m_Setting5.m_SignShowMode);
-	if(pDoc->m_Setting5[0].m_SignShowMode<0)
+//	str.Format("%d",pDoc->m_ReadSetting5.m_SignShowMode);
+	if(pDoc->m_ReadSetting5[0].m_SignShowMode<0)
 	{
 		m_ResultList.AddItem(i,14,"Disabled",-1);
 	}
 	else
 	{
-	    m_ResultList.AddItem(i,14,m_SignShowModeStr[pDoc->m_Setting5[0].m_SignShowMode],-1);
+	    m_ResultList.AddItem(i,14,m_SignShowModeStr[pDoc->m_ReadSetting5[0].m_SignShowMode],-1);
 	}
-    if(pDoc->m_Setting5[0].m_SignShowTime<0)
+    if(pDoc->m_ReadSetting5[0].m_SignShowTime<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%.1f",pDoc->m_Setting5[0].m_SignShowTime);
+	    str.Format("%.1f",pDoc->m_ReadSetting5[0].m_SignShowTime);
 	}
 	m_ResultList.AddItem(i,15,str,-1);
-	if(pDoc->m_Setting5[0].m_PracTime<0)
+	if(pDoc->m_ReadSetting5[0].m_PracTime<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting5[0].m_PracTime);
+	    str.Format("%d",pDoc->m_ReadSetting5[0].m_PracTime);
 	}
 	m_ResultList.AddItem(i,16,str,-1);
-	if(pDoc->m_Setting5[0].m_ExperTime<0)
+	if(pDoc->m_ReadSetting5[0].m_ExperTime<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting5[0].m_ExperTime);
+	    str.Format("%d",pDoc->m_ReadSetting5[0].m_ExperTime);
 	}
 	m_ResultList.AddItem(i,17,str,-1);
-	if(pDoc->m_Setting5[0].m_PracTimes<0)
+	if(pDoc->m_ReadSetting5[0].m_PracTimes<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting5[0].m_PracTimes);
+	    str.Format("%d",pDoc->m_ReadSetting5[0].m_PracTimes);
 	}
 	m_ResultList.AddItem(i,18,str,-1);
-	if(pDoc->m_Setting5[0].m_ExperTimes<0)
+	if(pDoc->m_ReadSetting5[0].m_ExperTimes<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting5[0].m_ExperTimes);
+	    str.Format("%d",pDoc->m_ReadSetting5[0].m_ExperTimes);
 	}
 	m_ResultList.AddItem(i,19,str,-1);
 			
@@ -2373,45 +2373,45 @@ BOOL CListDlg::AddT5SignItem(int i)
 
 	str.Format("%.2f",pDoc->m_HardSetting.m_DistanceError);
 	m_ResultList2.AddItem(i,4,str,-1);
-	str.Format("%d",pDoc->m_Setting5[0].m_PracMode);
+	str.Format("%d",pDoc->m_ReadSetting5[0].m_PracMode);
 	m_ResultList2.AddItem(i,5,str,-1);
-	str.Format("%d",pDoc->m_Setting5[0].m_ExperMode);
+	str.Format("%d",pDoc->m_ReadSetting5[0].m_ExperMode);
 	m_ResultList2.AddItem(i,6,str,-1);
-	str.Format("%d",pDoc->m_Setting5[0].m_MainTask);
+	str.Format("%d",pDoc->m_ReadSetting5[0].m_MainTask);
 	m_ResultList2.AddItem(i,7,str,-1);
-	str.Format("%d",pDoc->m_Setting5[0].m_SubTask);
+	str.Format("%d",pDoc->m_ReadSetting5[0].m_SubTask);
 	m_ResultList2.AddItem(i,8,str,-1);
 
-//	str.Format("%d",pDoc->m_Setting5.m_Background);
-	m_ResultList2.AddItem(i,9,m_BackgroundStr[pDoc->m_Setting5[0].m_Background],-1);
-	if(pDoc->m_Setting5[0].m_InitSpeed<0)
+//	str.Format("%d",pDoc->m_ReadSetting5.m_Background);
+	m_ResultList2.AddItem(i,9,m_BackgroundStr[pDoc->m_ReadSetting5[0].m_Background],-1);
+	if(pDoc->m_ReadSetting5[0].m_InitSpeed<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%.2f",pDoc->m_Setting5[0].m_InitSpeed);
+	    str.Format("%.2f",pDoc->m_ReadSetting5[0].m_InitSpeed);
 	}
 	m_ResultList2.AddItem(i,10,str,-1);
-//	str.Format("%d",pDoc->m_Setting5.m_SignMemType);
-	if(pDoc->m_Setting5[0].m_SignMemType<0)
+//	str.Format("%d",pDoc->m_ReadSetting5.m_SignMemType);
+	if(pDoc->m_ReadSetting5[0].m_SignMemType<0)
 	{
 		m_ResultList.AddItem(i,11,"Disabled",-1);
 	}
 	else
 	{
-	    m_ResultList2.AddItem(i,11,m_SignMemTypeStr[pDoc->m_Setting5[0].m_SignMemType],-1);
+	    m_ResultList2.AddItem(i,11,m_SignMemTypeStr[pDoc->m_ReadSetting5[0].m_SignMemType],-1);
 	}
-//	str.Format("%d",pDoc->m_Setting5.m_SignMemMode);
-	if(pDoc->m_Setting5[0].m_SignMemMode<0)
+//	str.Format("%d",pDoc->m_ReadSetting5.m_SignMemMode);
+	if(pDoc->m_ReadSetting5[0].m_SignMemMode<0)
 	{
 		m_ResultList.AddItem(i,12,"Disabled",-1);
 	}
 	else
 	{
-	    m_ResultList2.AddItem(i,12,m_SignMemModeStr[pDoc->m_Setting5[0].m_SignMemMode],-1);
+	    m_ResultList2.AddItem(i,12,m_SignMemModeStr[pDoc->m_ReadSetting5[0].m_SignMemMode],-1);
 	}
-	if(pDoc->m_Setting5[0].m_SignMemNum<0)
+	if(pDoc->m_ReadSetting5[0].m_SignMemNum<0)
 	{
 		str = "Disabled";
 	}
@@ -2420,58 +2420,58 @@ BOOL CListDlg::AddT5SignItem(int i)
 	    str.Format("%d",pDoc->m_SignMemNum);
 	}
 	m_ResultList2.AddItem(i,13,str,-1);
-//	str.Format("%d",pDoc->m_Setting5.m_SignShowMode);
-	if(pDoc->m_Setting5[0].m_SignShowMode<0)
+//	str.Format("%d",pDoc->m_ReadSetting5.m_SignShowMode);
+	if(pDoc->m_ReadSetting5[0].m_SignShowMode<0)
 	{
 		m_ResultList.AddItem(i,14,"Disabled",-1);
 	}
 	else
 	{
-	    m_ResultList2.AddItem(i,14,m_SignShowModeStr[pDoc->m_Setting5[0].m_SignShowMode],-1);
+	    m_ResultList2.AddItem(i,14,m_SignShowModeStr[pDoc->m_ReadSetting5[0].m_SignShowMode],-1);
 	}
-    if(pDoc->m_Setting5[0].m_SignShowTime<0)
+    if(pDoc->m_ReadSetting5[0].m_SignShowTime<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%.1f",pDoc->m_Setting5[0].m_SignShowTime);
+	    str.Format("%.1f",pDoc->m_ReadSetting5[0].m_SignShowTime);
 	}
 	m_ResultList2.AddItem(i,15,str,-1);
-	if(pDoc->m_Setting5[0].m_PracTime<0)
+	if(pDoc->m_ReadSetting5[0].m_PracTime<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting5[0].m_PracTime);
+	    str.Format("%d",pDoc->m_ReadSetting5[0].m_PracTime);
 	}
 	m_ResultList2.AddItem(i,16,str,-1);
-	if(pDoc->m_Setting5[0].m_ExperTime<0)
+	if(pDoc->m_ReadSetting5[0].m_ExperTime<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting5[0].m_ExperTime);
+	    str.Format("%d",pDoc->m_ReadSetting5[0].m_ExperTime);
 	}
 	m_ResultList2.AddItem(i,17,str,-1);
-	if(pDoc->m_Setting5[0].m_PracTimes<0)
+	if(pDoc->m_ReadSetting5[0].m_PracTimes<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting5[0].m_PracTimes);
+	    str.Format("%d",pDoc->m_ReadSetting5[0].m_PracTimes);
 	}
 	m_ResultList2.AddItem(i,18,str,-1);
-	if(pDoc->m_Setting5[0].m_ExperTimes<0)
+	if(pDoc->m_ReadSetting5[0].m_ExperTimes<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting5[0].m_ExperTimes);
+	    str.Format("%d",pDoc->m_ReadSetting5[0].m_ExperTimes);
 	}
 	m_ResultList2.AddItem(i,19,str,-1);
 			
@@ -2512,122 +2512,122 @@ BOOL CListDlg::AddT6TraceItem(int i)
 
 	str.Format("%.2f",pDoc->m_HardSetting.m_DistanceError);
 	m_ResultList.AddItem(i,4,str,-1);
-	str.Format("%d",pDoc->m_Setting6[0].m_PracMode);
+	str.Format("%d",pDoc->m_ReadSetting6[0].m_PracMode);
 	m_ResultList.AddItem(i,5,str,-1);
-	str.Format("%d",pDoc->m_Setting6[0].m_ExperMode);
+	str.Format("%d",pDoc->m_ReadSetting6[0].m_ExperMode);
 	m_ResultList.AddItem(i,6,str,-1);
-	str.Format("%d",pDoc->m_Setting6[0].m_MainTask);
+	str.Format("%d",pDoc->m_ReadSetting6[0].m_MainTask);
 	m_ResultList.AddItem(i,7,str,-1);
-	str.Format("%d",pDoc->m_Setting6[0].m_SubTask);
+	str.Format("%d",pDoc->m_ReadSetting6[0].m_SubTask);
 	m_ResultList.AddItem(i,8,str,-1);
 
-//	str.Format("%d",pDoc->m_Setting6.m_Background);
-	m_ResultList.AddItem(i,9,m_BackgroundStr[pDoc->m_Setting6[0].m_Background],-1);
-	if(pDoc->m_Setting6[0].m_InitSpeed<0)
+//	str.Format("%d",pDoc->m_ReadSetting6.m_Background);
+	m_ResultList.AddItem(i,9,m_BackgroundStr[pDoc->m_ReadSetting6[0].m_Background],-1);
+	if(pDoc->m_ReadSetting6[0].m_InitSpeed<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%.2f",pDoc->m_Setting6[0].m_InitSpeed);
+	    str.Format("%.2f",pDoc->m_ReadSetting6[0].m_InitSpeed);
 	}
 	m_ResultList.AddItem(i,10,str,-1);
-	if(pDoc->m_Setting6[0].m_CubeNum1<0)
+	if(pDoc->m_ReadSetting6[0].m_CubeNum1<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting6[0].m_CubeNum1);
+	    str.Format("%d",pDoc->m_ReadSetting6[0].m_CubeNum1);
 	}
 	m_ResultList.AddItem(i,11,str,-1);
-	if(pDoc->m_Setting6[0].m_CubeNum2<0)
+	if(pDoc->m_ReadSetting6[0].m_CubeNum2<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting6[0].m_CubeNum2);
+	    str.Format("%d",pDoc->m_ReadSetting6[0].m_CubeNum2);
 	}
 	m_ResultList.AddItem(i,12,str,-1);
-	if(pDoc->m_Setting6[0].m_CubeNum3<0)
+	if(pDoc->m_ReadSetting6[0].m_CubeNum3<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-    	str.Format("%d",pDoc->m_Setting6[0].m_CubeNum3);
+    	str.Format("%d",pDoc->m_ReadSetting6[0].m_CubeNum3);
 	}
 	m_ResultList.AddItem(i,13,str,-1);
-	if(pDoc->m_Setting6[0].m_CubeNum4<0)
+	if(pDoc->m_ReadSetting6[0].m_CubeNum4<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting6[0].m_CubeNum4);
+	    str.Format("%d",pDoc->m_ReadSetting6[0].m_CubeNum4);
 	}
 	m_ResultList.AddItem(i,14,str,-1);
-	if(pDoc->m_Setting6[0].m_Prototype<0)
+	if(pDoc->m_ReadSetting6[0].m_Prototype<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting6[0].m_Prototype+1);
+	    str.Format("%d",pDoc->m_ReadSetting6[0].m_Prototype+1);
 	}
 	m_ResultList.AddItem(i,15,str,-1);
-//	str.Format("%d",pDoc->m_Setting6.m_RefAxis);
-	if(pDoc->m_Setting6[0].m_RefAxis<0)
+//	str.Format("%d",pDoc->m_ReadSetting6.m_RefAxis);
+	if(pDoc->m_ReadSetting6[0].m_RefAxis<0)
 	{
 		m_ResultList.AddItem(i,16,"Disabled",-1);
 	}
 	else
 	{
-	    m_ResultList.AddItem(i,16,m_RefAxisStr[pDoc->m_Setting6[0].m_RefAxis],-1);
+	    m_ResultList.AddItem(i,16,m_RefAxisStr[pDoc->m_ReadSetting6[0].m_RefAxis],-1);
 	}
-	if(pDoc->m_Setting6[0].m_MemTaskMode<0)
+	if(pDoc->m_ReadSetting6[0].m_MemTaskMode<0)
 	{
 		m_ResultList.AddItem(i,17,"Disabled",-1);
 	}
 	else
 	{
-	    m_ResultList2.AddItem(i,17,m_MemTaskModeStr[pDoc->m_Setting6[0].m_MemTaskMode],-1);
+	    m_ResultList2.AddItem(i,17,m_MemTaskModeStr[pDoc->m_ReadSetting6[0].m_MemTaskMode],-1);
 	}
-	if(pDoc->m_Setting6[0].m_PracTime<0)
+	if(pDoc->m_ReadSetting6[0].m_PracTime<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting6[0].m_PracTime);
+	    str.Format("%d",pDoc->m_ReadSetting6[0].m_PracTime);
 	}
 	m_ResultList.AddItem(i,18,str,-1);
-	if(pDoc->m_Setting6[0].m_ExperTime<0)
+	if(pDoc->m_ReadSetting6[0].m_ExperTime<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting6[0].m_ExperTime);
+	    str.Format("%d",pDoc->m_ReadSetting6[0].m_ExperTime);
 	}
 	m_ResultList.AddItem(i,19,str,-1);
-    if(pDoc->m_Setting6[0].m_PracTimes<0)
+    if(pDoc->m_ReadSetting6[0].m_PracTimes<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting6[0].m_PracTimes);
+	    str.Format("%d",pDoc->m_ReadSetting6[0].m_PracTimes);
 	}
 	m_ResultList.AddItem(i,20,str,-1);
-    if(pDoc->m_Setting6[0].m_ExperTimes<0)
+    if(pDoc->m_ReadSetting6[0].m_ExperTimes<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting6[0].m_ExperTimes);
+	    str.Format("%d",pDoc->m_ReadSetting6[0].m_ExperTimes);
 	}
 	m_ResultList.AddItem(i,21,str,-1);
 			
@@ -2674,122 +2674,122 @@ BOOL CListDlg::AddT6JudgeItem(int i)
 
 	str.Format("%.2f",pDoc->m_HardSetting.m_DistanceError);
 	m_ResultList2.AddItem(i,4,str,-1);
-	str.Format("%d",pDoc->m_Setting6[0].m_PracMode);
+	str.Format("%d",pDoc->m_ReadSetting6[0].m_PracMode);
 	m_ResultList2.AddItem(i,5,str,-1);
-	str.Format("%d",pDoc->m_Setting6[0].m_ExperMode);
+	str.Format("%d",pDoc->m_ReadSetting6[0].m_ExperMode);
 	m_ResultList2.AddItem(i,6,str,-1);
-	str.Format("%d",pDoc->m_Setting6[0].m_MainTask);
+	str.Format("%d",pDoc->m_ReadSetting6[0].m_MainTask);
 	m_ResultList2.AddItem(i,7,str,-1);
-	str.Format("%d",pDoc->m_Setting6[0].m_SubTask);
+	str.Format("%d",pDoc->m_ReadSetting6[0].m_SubTask);
 	m_ResultList2.AddItem(i,8,str,-1);
 
-//	str.Format("%d",pDoc->m_Setting6.m_Background);
-	m_ResultList2.AddItem(i,9,m_BackgroundStr[pDoc->m_Setting6[0].m_Background],-1);
-	if(pDoc->m_Setting6[0].m_InitSpeed<0)
+//	str.Format("%d",pDoc->m_ReadSetting6.m_Background);
+	m_ResultList2.AddItem(i,9,m_BackgroundStr[pDoc->m_ReadSetting6[0].m_Background],-1);
+	if(pDoc->m_ReadSetting6[0].m_InitSpeed<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%.2f",pDoc->m_Setting6[0].m_InitSpeed);
+	    str.Format("%.2f",pDoc->m_ReadSetting6[0].m_InitSpeed);
 	}
 	m_ResultList2.AddItem(i,10,str,-1);
-	if(pDoc->m_Setting6[0].m_CubeNum1<0)
+	if(pDoc->m_ReadSetting6[0].m_CubeNum1<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting6[0].m_CubeNum1);
+	    str.Format("%d",pDoc->m_ReadSetting6[0].m_CubeNum1);
 	}
 	m_ResultList2.AddItem(i,11,str,-1);
-	if(pDoc->m_Setting6[0].m_CubeNum2<0)
+	if(pDoc->m_ReadSetting6[0].m_CubeNum2<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting6[0].m_CubeNum2);
+	    str.Format("%d",pDoc->m_ReadSetting6[0].m_CubeNum2);
 	}
 	m_ResultList2.AddItem(i,12,str,-1);
-	if(pDoc->m_Setting6[0].m_CubeNum3<0)
+	if(pDoc->m_ReadSetting6[0].m_CubeNum3<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting6[0].m_CubeNum3);
+	    str.Format("%d",pDoc->m_ReadSetting6[0].m_CubeNum3);
 	}
 	m_ResultList2.AddItem(i,13,str,-1);
-	if(pDoc->m_Setting6[0].m_CubeNum4<0)
+	if(pDoc->m_ReadSetting6[0].m_CubeNum4<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting6[0].m_CubeNum4);
+	    str.Format("%d",pDoc->m_ReadSetting6[0].m_CubeNum4);
 	}
 	m_ResultList2.AddItem(i,14,str,-1);
-	if(pDoc->m_Setting6[0].m_Prototype<0)
+	if(pDoc->m_ReadSetting6[0].m_Prototype<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-    	str.Format("%d",pDoc->m_Setting6[0].m_Prototype+1);
+    	str.Format("%d",pDoc->m_ReadSetting6[0].m_Prototype+1);
 	}
 	m_ResultList2.AddItem(i,15,str,-1);
-//	str.Format("%d",pDoc->m_Setting6.m_RefAxis);
-	if(pDoc->m_Setting6[0].m_RefAxis<0)
+//	str.Format("%d",pDoc->m_ReadSetting6.m_RefAxis);
+	if(pDoc->m_ReadSetting6[0].m_RefAxis<0)
 	{
 		m_ResultList2.AddItem(i,16,"Disabled",-1);
 	}
 	else
 	{
-	    m_ResultList2.AddItem(i,16,m_RefAxisStr[pDoc->m_Setting6[0].m_RefAxis],-1);
+	    m_ResultList2.AddItem(i,16,m_RefAxisStr[pDoc->m_ReadSetting6[0].m_RefAxis],-1);
 	}
-	if(pDoc->m_Setting6[0].m_MemTaskMode<0)
+	if(pDoc->m_ReadSetting6[0].m_MemTaskMode<0)
 	{
 		m_ResultList2.AddItem(i,17,"Disabled",-1);
 	}
 	else
 	{
-	    m_ResultList2.AddItem(i,17,m_MemTaskModeStr[pDoc->m_Setting6[0].m_MemTaskMode],-1);
+	    m_ResultList2.AddItem(i,17,m_MemTaskModeStr[pDoc->m_ReadSetting6[0].m_MemTaskMode],-1);
 	}
-	if(pDoc->m_Setting6[0].m_PracTime<0)
+	if(pDoc->m_ReadSetting6[0].m_PracTime<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-    	str.Format("%d",pDoc->m_Setting6[0].m_PracTime);
+    	str.Format("%d",pDoc->m_ReadSetting6[0].m_PracTime);
 	}
 	m_ResultList2.AddItem(i,18,str,-1);
-	if(pDoc->m_Setting6[0].m_ExperTime<0)
+	if(pDoc->m_ReadSetting6[0].m_ExperTime<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting6[0].m_ExperTime);
+	    str.Format("%d",pDoc->m_ReadSetting6[0].m_ExperTime);
 	}
 	m_ResultList2.AddItem(i,19,str,-1);
-	if(pDoc->m_Setting6[0].m_PracTimes<0)
+	if(pDoc->m_ReadSetting6[0].m_PracTimes<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting6[0].m_PracTimes);
+	    str.Format("%d",pDoc->m_ReadSetting6[0].m_PracTimes);
 	}
 	m_ResultList2.AddItem(i,20,str,-1);
-	if(pDoc->m_Setting6[0].m_ExperTimes<0)
+	if(pDoc->m_ReadSetting6[0].m_ExperTimes<0)
 	{
 		str = "Disabled";
 	}
 	else
 	{
-	    str.Format("%d",pDoc->m_Setting6[0].m_ExperTimes);
+	    str.Format("%d",pDoc->m_ReadSetting6[0].m_ExperTimes);
 	}
 	m_ResultList2.AddItem(i,21,str,-1);
 			
@@ -2837,39 +2837,39 @@ BOOL CListDlg::AddT6MemoryItem(int i)
 
 			str.Format("%.2f",pDoc->m_HardSetting.m_DistanceError);
 			m_ResultList2.AddItem(i,4,str,-1);
-			str.Format("%d",pDoc->m_Setting6[0].m_PracMode);
+			str.Format("%d",pDoc->m_ReadSetting6[0].m_PracMode);
 			m_ResultList2.AddItem(i,5,str,-1);
-	        str.Format("%d",pDoc->m_Setting6[0].m_ExperMode);
+	        str.Format("%d",pDoc->m_ReadSetting6[0].m_ExperMode);
 			m_ResultList2.AddItem(i,6,str,-1);
-		    str.Format("%d",pDoc->m_Setting6[0].m_MainTask);
+		    str.Format("%d",pDoc->m_ReadSetting6[0].m_MainTask);
 			m_ResultList2.AddItem(i,7,str,-1);
-	        str.Format("%d",pDoc->m_Setting6[0].m_SubTask);
+	        str.Format("%d",pDoc->m_ReadSetting6[0].m_SubTask);
 			m_ResultList2.AddItem(i,8,str,-1);
 
-//	        str.Format("%d",pDoc->m_Setting6.m_Background);
-			m_ResultList2.AddItem(i,9,m_BackgroundStr[pDoc->m_Setting6[0].m_Background],-1);
-	        str.Format("%.2f",pDoc->m_Setting6[0].m_InitSpeed);
+//	        str.Format("%d",pDoc->m_ReadSetting6.m_Background);
+			m_ResultList2.AddItem(i,9,m_BackgroundStr[pDoc->m_ReadSetting6[0].m_Background],-1);
+	        str.Format("%.2f",pDoc->m_ReadSetting6[0].m_InitSpeed);
 			m_ResultList2.AddItem(i,10,str,-1);
-			str.Format("%d",pDoc->m_Setting6[0].m_CubeNum1);
+			str.Format("%d",pDoc->m_ReadSetting6[0].m_CubeNum1);
 			m_ResultList2.AddItem(i,11,str,-1);
-			str.Format("%d",pDoc->m_Setting6[0].m_CubeNum2);
+			str.Format("%d",pDoc->m_ReadSetting6[0].m_CubeNum2);
 			m_ResultList2.AddItem(i,12,str,-1);
-			str.Format("%d",pDoc->m_Setting6[0].m_CubeNum3);
+			str.Format("%d",pDoc->m_ReadSetting6[0].m_CubeNum3);
 			m_ResultList2.AddItem(i,13,str,-1);
-			str.Format("%d",pDoc->m_Setting6[0].m_CubeNum4);
+			str.Format("%d",pDoc->m_ReadSetting6[0].m_CubeNum4);
 			m_ResultList2.AddItem(i,14,str,-1);
-	        str.Format("%d",pDoc->m_Setting6[0].m_Prototype+1);
+	        str.Format("%d",pDoc->m_ReadSetting6[0].m_Prototype+1);
 			m_ResultList.AddItem(i,15,str,-1);
-//	        str.Format("%d",pDoc->m_Setting6.m_RefAxis);
-			m_ResultList2.AddItem(i,16,m_RefAxisStr[pDoc->m_Setting6[0].m_RefAxis],-1);
-			m_ResultList2.AddItem(i,17,m_MemTaskModeStr[pDoc->m_Setting6[0].m_MemTaskMode],-1);
-	        str.Format("%d",pDoc->m_Setting6[0].m_PracTime);
+//	        str.Format("%d",pDoc->m_ReadSetting6.m_RefAxis);
+			m_ResultList2.AddItem(i,16,m_RefAxisStr[pDoc->m_ReadSetting6[0].m_RefAxis],-1);
+			m_ResultList2.AddItem(i,17,m_MemTaskModeStr[pDoc->m_ReadSetting6[0].m_MemTaskMode],-1);
+	        str.Format("%d",pDoc->m_ReadSetting6[0].m_PracTime);
 			m_ResultList2.AddItem(i,18,str,-1);
-			str.Format("%d",pDoc->m_Setting6[0].m_ExperTime);
+			str.Format("%d",pDoc->m_ReadSetting6[0].m_ExperTime);
 			m_ResultList2.AddItem(i,19,str,-1);
-	        str.Format("%d",pDoc->m_Setting6[0].m_PracTimes);
+	        str.Format("%d",pDoc->m_ReadSetting6[0].m_PracTimes);
 			m_ResultList2.AddItem(i,20,str,-1);
-	        str.Format("%d",pDoc->m_Setting6[0].m_ExperTimes);
+	        str.Format("%d",pDoc->m_ReadSetting6[0].m_ExperTimes);
 			m_ResultList2.AddItem(i,21,str,-1);
 			
             str.Format("%d",pDoc->m_TrialType);
