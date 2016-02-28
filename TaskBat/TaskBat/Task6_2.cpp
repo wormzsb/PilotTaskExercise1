@@ -142,7 +142,7 @@ VOID t6_2::MoveTrace()
 		m_PostSpeedX = (float*)realloc(m_PostSpeedX, m_MemNum*sizeof(float));
 		m_PostSpeedY = (float*)realloc(m_PostSpeedY, m_MemNum*sizeof(float));
 	}
-	if (abs(JoyX)> 10)
+	/*if (abs(JoyX)> 10)
 		m_PostSpeedX[m_PointNum] = JoyX / abs(JoyX) * m_HardSetting.m_JoySpeedMax;
 	else
 		m_PostSpeedX[m_PointNum] = 0;
@@ -150,7 +150,9 @@ VOID t6_2::MoveTrace()
 	if (abs(JoyY) > 10)
 		m_PostSpeedY[m_PointNum] = JoyY / abs(JoyY) * m_HardSetting.m_JoySpeedMax;
 	else
-		m_PostSpeedY[m_PointNum] = 0;
+		m_PostSpeedY[m_PointNum] = 0;*/
+	hp.getAnologSpeed(m_PostSpeedX[m_PointNum], m_PostSpeedY[m_PointNum],
+		JoyX, JoyY, dfTim, iJoyMoveDirection);
 	//当前点时间
 	m_PointTime[m_PointNum] = m_PointTime[m_PointNum - 1] + (int)(dfTim * 1000);// QPart2/dfFreq*1000;
 

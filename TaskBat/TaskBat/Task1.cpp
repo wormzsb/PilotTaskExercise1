@@ -132,7 +132,7 @@ double t1::dfMinus, t1::dfFreq, t1::dfTim, t1::dfTotalPause, t1::dfTotalMove;
 		}
 		//m_PostSpeedX[m_PointNum] = JoyX;
 		// m_PostSpeedY[m_PointNum] = JoyY;
-		if (abs(JoyX)> 10)
+		/*if (abs(JoyX)> 10)
 			m_PostSpeedX[m_PointNum] = JoyX / abs(JoyX) * m_HardSetting.m_JoySpeedMax;
 		else
 			m_PostSpeedX[m_PointNum] = 0;
@@ -140,7 +140,9 @@ double t1::dfMinus, t1::dfFreq, t1::dfTim, t1::dfTotalPause, t1::dfTotalMove;
 		if (abs(JoyY) > 10)
 			m_PostSpeedY[m_PointNum] = JoyY / abs(JoyY) * m_HardSetting.m_JoySpeedMax;
 		else
-			m_PostSpeedY[m_PointNum] = 0;
+			m_PostSpeedY[m_PointNum] = 0;*/
+		hp.getAnologSpeed(m_PostSpeedX[m_PointNum], m_PostSpeedY[m_PointNum], 
+			JoyX, JoyY, dfTim, iJoyMoveDirection);
 
 		//当前点时间
 		m_PointTime[m_PointNum] = m_PointTime[m_PointNum - 1] + (int)(dfTim * 1000);//QPart2/dfFreq*1000;

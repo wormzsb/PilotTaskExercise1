@@ -27,3 +27,16 @@ void Helper::updateAnalogNewPos(double &x, double &y, int JoyX, int JoyY, double
 	}
 }
 
+void Helper::getAnologSpeed(float &sx, float &sy, int JoyX, int JoyY, double dfTim, int dir) {
+	if (!(JoyX == 0 && JoyY == 0)) {
+		double rJ = sqrt(JoyX * JoyX + JoyY * JoyY);
+		double cosJ = (double)JoyX / rJ;
+		double sinJ = (double)JoyY / rJ;
+		sx = cosJ * rJ  * dfTim * dir;
+		sy = sinJ * rJ  * dfTim * dir;
+	}
+	else {
+		sx = sy = 0;
+	}
+}
+
