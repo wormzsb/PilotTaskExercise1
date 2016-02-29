@@ -30,7 +30,6 @@ public:
 	int m_CurItem;
     int	m_MainTaskMode;
 	int	m_MemTaskMode;
-	BOOL Initial;//判断是否是第一次进行设置
 // Dialog Data
 	//{{AFX_DATA(CSettingDlg)
 	enum { IDD = IDD_SETTINGDLG };

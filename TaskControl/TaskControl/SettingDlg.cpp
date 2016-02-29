@@ -27,7 +27,6 @@ CSettingDlg::CSettingDlg(CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 	iCurIdx=-1;
 	m_CurItem = 0;
-	Initial = TRUE;
 }
 
 
@@ -85,8 +84,7 @@ void CSettingDlg::AddPages()
 			csIds.Add(IDD_SETTINGDLG2);
 			break;
 		case 2:
-			if (Initial == TRUE)
-				m_SettingDlg3 = new CSettingDlg3();
+			m_SettingDlg3 = new CSettingDlg3();
 			m_SettingDlg3->m_DlgIdx = pDoc->m_ItemData[pDoc->m_ItemOrder[i]].TaskNo;
 			pPages.Add(m_SettingDlg3);
 			csIds.Add(IDD_SETTINGDLG3);
@@ -123,7 +121,6 @@ void CSettingDlg::AddPages()
 			break;
 		}
 	}  
-	Initial = FALSE;
 }
 
 CDialog* CSettingDlg::GetDialog(const int id)
