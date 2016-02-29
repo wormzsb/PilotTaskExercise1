@@ -153,14 +153,14 @@ void CAnalysisDlg::DisplayResult()
 		}
 		if(pDoc->m_bOpenFile2)
 		{
-			for(i=0;i<pDoc->m_Setting2[0].m_HoldTimeNum;i++)
+			for(i=0;i<pDoc->/*m_Setting2*/m_ReadSetting2[0].m_HoldTimeNum;i++)
 			{
 				//str.Format("%.2f", (float)pDoc->m_HoldErrorTotal[i] / (float)pDoc->m_HoldCountTotal[i]);
 				if (pDoc->settingOrderHoldTimeErrRateAve[i] == -1)	str.Format("反应超时");
 				else str.Format("%.2f", pDoc->settingOrderHoldTimeErrRateAve[i]);
 				m_ResultList.AddItem(i+4,1,str,-1);
 			}
-			for (int i = pDoc->m_Setting2[0].m_HoldTimeNum; i < 12; i++)
+			for (int i = pDoc->/*m_Setting2*/m_ReadSetting2[0].m_HoldTimeNum; i < 12; i++)
 			{
 				str.Format("未设置");
 				m_ResultList.AddItem(i + 4, 1, str, -1);
