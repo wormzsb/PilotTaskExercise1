@@ -1196,8 +1196,8 @@ VOID t3::TestInit()
 		m_ObjSpeedY = (float*)malloc(m_MemNum*sizeof(float));
 		m_PostSpeedX = (float*)malloc(m_MemNum*sizeof(float));
 		m_PostSpeedY = (float*)malloc(m_MemNum*sizeof(float));
-		sTime = (SYSTEMTIME*)malloc(m_MemNum*sizeof(SYSTEMTIME));
-		eTime = (SYSTEMTIME*)malloc(m_MemNum*sizeof(SYSTEMTIME));
+		//sTime = (SYSTEMTIME*)malloc(m_MemNum*sizeof(SYSTEMTIME));
+		//eTime = (SYSTEMTIME*)malloc(m_MemNum*sizeof(SYSTEMTIME));
 		m_PostPointX = x_resolution/2;
 		m_PostPointY = y_resolution/2;
 		m_PostPoint[m_PointNum].x = m_PostPointX;
@@ -1231,6 +1231,8 @@ VOID t3::TestInit()
 		m_EventSureTime = (unsigned long*)malloc(m_MemEvent*sizeof(unsigned long));
 		m_SureButtonNo = (short*)malloc(m_MemEvent*sizeof(short));
 		m_EventCount = m_Setting.m_ExperTimes;
+		sTime = (SYSTEMTIME*)malloc(m_MemNum*sizeof(SYSTEMTIME));
+		eTime = (SYSTEMTIME*)malloc(m_MemNum*sizeof(SYSTEMTIME));
 	
 		if(m_EventCount>0)
 		{
