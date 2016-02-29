@@ -1,34 +1,38 @@
 [TaskOrder]
-Task6
+Task3
 
-[Task6(任务6-双任务模式三维图形记忆判别能力测试)]
-TaskName	0-任务6-双任务模式三维图形记忆判别能力测试
+[Task3(任务3-双任务模式突发事件反应时测试)]
+TaskName	0-任务3-双任务模式突发事件反应时测试
 PracMode	1
 ExperMode	0
 MainTask	1
 SubTask	1
+MainTaskMode	0
 Background	0
-InitSpeed	50.000000
-CubeNum1	1
-CubeNum2	0
-CubeNum3	0
-CubeNum4	0
-Prototype	0
-RefAxis	0
-MemTaskMode	0
+InitSpeed	50.00
+EventMode	0
+CodePairMode	-1
+CodePairNum	-1
+DisplayMode	-1
+EventFrequency	0
 PracTime	60
 ExperTime	60
-PracTimes	10
-ExperTimes	10
+PracTimes	1
+ExperTimes	1
 JoyMoveDirection	0
-SubTaskInterval	2
-PresentTime	2
-ReactTime	1
+PlanePos	15
+Direction	0
+SpeedMode	0
 Speed	100.000000
 SpeedMin	50.000000
 SpeedMax	150.000000
 AccelerationMin	2.000000
 AccelerationMax	5.000000
-SpeedMode	0
-Direction	0
+Track	0
+Plane	1
+Helicopter	1
+PresentTime	2
+IntervalMin	4
+IntervalMax	8
+ReactTime	2
 

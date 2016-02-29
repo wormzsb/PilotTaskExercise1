@@ -898,7 +898,7 @@ VOID t3::Cleanup()
 	}
     if( g_pd3dDevice != NULL ) 
 	{
-        g_pd3dDevice->Release();
+       // g_pd3dDevice->Release();
 		g_pd3dDevice = NULL;
 	}
 
