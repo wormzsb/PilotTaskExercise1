@@ -32,8 +32,8 @@ void Helper::getAnologSpeed(float &sx, float &sy, int JoyX, int JoyY, double dfT
 		double rJ = sqrt(JoyX * JoyX + JoyY * JoyY);
 		double cosJ = (double)JoyX / rJ;
 		double sinJ = (double)JoyY / rJ;
-		sx = cosJ * rJ  * dfTim * dir;
-		sy = sinJ * rJ  * dfTim * dir;
+		sx = cosJ * rJ  /** dfTim*/ * dir;
+		sy = sinJ * rJ  /** dfTim*/ * dir;
 	}
 	else {
 		sx = sy = 0;
