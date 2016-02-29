@@ -1405,7 +1405,7 @@ LRESULT WINAPI t3::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		//程序结束消息
 	case WM_DESTROY:
 		CleanupMem();
-		//Cleanup();
+		Cleanup();
 		//PostQuitMessage( 0 );
 		
 		PostQuitMessage(rtn);
@@ -2119,7 +2119,7 @@ int APIENTRY t3::_tWinMain(HINSTANCE &hInstance,
 			if (m_TestState == STATE_NEXT
 				|| m_TestState == STATE_EXIT)
 			{
-				//Cleanup();
+				Cleanup();
 				CleanupMem();
 				Sleep(50);
 				break;
