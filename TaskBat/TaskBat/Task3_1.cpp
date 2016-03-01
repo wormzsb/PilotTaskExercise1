@@ -1383,7 +1383,7 @@ LRESULT WINAPI t3::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				break;
 			case ID_NEXT:
 				//若在任务中途退出 则保存当前所有实验数据
-				if (m_TestState == STATE_MOVINGOBJ)
+				if ((m_TestState == STATE_MOVINGOBJ)||(m_TestState == STATE_DISPLAYFEEDBACK))
 					SaveData();
 				m_bEventStart = 0;
 				m_bShowFeedback = 0;//解决同一任务中途退出的问题
@@ -1393,7 +1393,7 @@ LRESULT WINAPI t3::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				break;
 			case ID_CANCEL:
 				//若在任务中途退出 则保存当前所有实验数据
-				if (m_TestState == STATE_MOVINGOBJ)
+				if ((m_TestState == STATE_MOVINGOBJ) || (m_TestState == STATE_DISPLAYFEEDBACK))
 					SaveData();
 				EndDialog(hWnd,rtn);
 				PostThreadMessage(dwInputThreadID, WM_THREADSTOP,0,0); 	//退出线程
