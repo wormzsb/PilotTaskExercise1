@@ -124,7 +124,7 @@ public:
 	unsigned long *m_EventStartTime;
 	unsigned long *m_EventSureTime;
 	short *m_SureButtonNo;
-    unsigned long *m_EventRT;
+    long *m_EventRT;
 	int *m_bEventAcc;
 
 	short *m_CodeType;

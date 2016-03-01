@@ -506,6 +506,7 @@ VOID t3::SaveData()
 {
 	FILE *fp;
 	BOOL m_bEventAcc;
+	long EventRT = 0;
 	int i;
 
     //±£´æ×·×ÙÊý¾Ý
@@ -548,14 +549,18 @@ VOID t3::SaveData()
 			{
 				m_bEventAcc = (/*m_EventType*/resEventType[i]==m_SureButtonNo[i]);
 			}
+			if (m_SureButtonNo[i] == -1)
+				EventRT = -1;
+			else
+				EventRT = m_EventSureTime[i] - m_EventStartTime[i];
 			fprintf(fp,"%s\t%s\t%s\t%d\t"
 				"%d\t%d\t%d\t%d\t"
 				"%d\t%d\t%.2f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t"
-				"%d\t%d\t%d\t%d:%d:%d\t%d:%d:%d\t%u\t%d\t%d\n",
+				"%d\t%d\t%d\t%d:%d:%d\t%d:%d:%d\t%d\t%d\t%d\n",
 				m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session, 
 				m_Setting.m_PracMode, m_Setting.m_ExperMode, m_Setting.m_MainTask, m_Setting.m_SubTask,
 				m_Setting.m_MainTaskMode, m_Setting.m_Background, m_Setting.m_InitSpeed, m_Setting.m_EventMode, m_Setting.m_CodePairMode, m_Setting.m_CodePairNum, m_Setting.m_DisplayMode, m_Setting.m_EventFrequency, m_Setting.m_PracTime, m_Setting.m_ExperTime, m_Setting.m_PracTimes, m_Setting.m_ExperTimes, 
-				m_TrialType, i+1,/*m_EventType*/resEventType[i], sTimeVec[i].wHour, sTimeVec[i].wMinute, sTimeVec[i].wSecond, eTimeVec[i].wHour, eTimeVec[i].wMinute, eTimeVec[i].wSecond,m_EventSureTime[i]-m_EventStartTime[i],m_SureButtonNo[i],m_bEventAcc);
+				m_TrialType, i+1,/*m_EventType*/resEventType[i], sTimeVec[i].wHour, sTimeVec[i].wMinute, sTimeVec[i].wSecond, eTimeVec[i].wHour, eTimeVec[i].wMinute, eTimeVec[i].wSecond, EventRT,m_SureButtonNo[i],m_bEventAcc);
 		} 
 		fclose(fp);
 	}
@@ -1523,7 +1528,7 @@ VOID t3::UpdateState()
 									m_EventSureTime[m_RecordNo] = 0;
 									m_SureButtonNo[m_RecordNo] = -1;
 									SYSTEMTIME eTime;
-									eTime.wHour = eTime.wMinute = eTime.wSecond = -1;
+									eTime.wHour = eTime.wMinute = eTime.wSecond = 0;
 									eTimeVec.push_back(eTime);
 									//m_EventNo++;
 									//m_RecordNo++;

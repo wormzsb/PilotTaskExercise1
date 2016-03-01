@@ -1,7 +1,5 @@
 [TaskOrder]
 Task3
-Task3
-Task3
 
 [Task3(任务3-双任务模式突发事件反应时测试)]
 TaskName	0-任务3-双任务模式突发事件反应时测试
@@ -20,77 +18,7 @@ EventFrequency	0
 PracTime	60
 ExperTime	60
 PracTimes	1
-ExperTimes	5
-JoyMoveDirection	0
-PlanePos	15
-Direction	0
-SpeedMode	0
-Speed	100.000000
-SpeedMin	50.000000
-SpeedMax	150.000000
-AccelerationMin	2.000000
-AccelerationMax	5.000000
-Track	0
-Plane	1
-Helicopter	1
-PresentTime	2
-IntervalMin	1
-IntervalMax	2
-ReactTime	2
-
-[Task3(任务3-双任务模式突发事件反应时测试)]
-TaskName	1-任务3-双任务模式突发事件反应时测试
-PracMode	1
-ExperMode	0
-MainTask	0
-SubTask	1
-MainTaskMode	-1
-Background	0
-InitSpeed	50.00
-EventMode	0
-CodePairMode	-1
-CodePairNum	-1
-DisplayMode	-1
-EventFrequency	0
-PracTime	60
-ExperTime	60
-PracTimes	1
-ExperTimes	5
-JoyMoveDirection	0
-PlanePos	15
-Direction	0
-SpeedMode	0
-Speed	100.000000
-SpeedMin	50.000000
-SpeedMax	150.000000
-AccelerationMin	2.000000
-AccelerationMax	5.000000
-Track	0
-Plane	1
-Helicopter	1
-PresentTime	2
-IntervalMin	1
-IntervalMax	2
-ReactTime	2
-
-[Task3(任务3-双任务模式突发事件反应时测试)]
-TaskName	2-任务3-双任务模式突发事件反应时测试
-PracMode	1
-ExperMode	0
-MainTask	0
-SubTask	1
-MainTaskMode	-1
-Background	0
-InitSpeed	50.00
-EventMode	0
-CodePairMode	-1
-CodePairNum	-1
-DisplayMode	-1
-EventFrequency	0
-PracTime	60
-ExperTime	60
-PracTimes	1
-ExperTimes	5
+ExperTimes	40
 JoyMoveDirection	0
 PlanePos	15
 Direction	0

@@ -187,7 +187,7 @@ void CAnalysisDlg::DisplayResult()
 			m_ResultList.AddItem(5,0,"编码反应时标准差(CodeRTSqr)",-1);
 			j=6;
 		}
-		if(pDoc->m_Setting3[0].m_EventMode ==0)//简单任务
+		if(pDoc->m_ReadSetting3[0].m_EventMode ==0)//简单任务
 		{
 			m_ResultList.AddItem(j,0,"击中数(HIT)",-1);
 			m_ResultList.AddItem(j+1,0,"漏报数(MISS)",-1);
@@ -241,7 +241,7 @@ void CAnalysisDlg::DisplayResult()
 		}
         if(pDoc->m_bOpenFile2)
 		{
-			if(pDoc->m_Setting3[0].m_EventMode ==0)//简单任务
+			if(pDoc->m_ReadSetting3[0].m_EventMode ==0)//简单任务
 			{
 				str.Format("%d",pDoc->m_TrueCount);//击中数HIT
 				m_ResultList.AddItem(j,1,str,-1);

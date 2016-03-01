@@ -1785,7 +1785,7 @@ BOOL CTaskControlDoc::ReadT3Event()
 		m_EventStartTime = (unsigned long*)malloc(m_MemNum*sizeof(unsigned long));
 		m_EventSureTime = (unsigned long*)malloc(m_MemNum*sizeof(unsigned long));
 		m_SureButtonNo = (short*)malloc(m_MemNum*sizeof(short));
-        m_EventRT = (unsigned long*)malloc(m_MemNum*sizeof(unsigned long));
+        m_EventRT = (long*)malloc(m_MemNum*sizeof(long));
 		m_bEventAcc = (int*)malloc(m_MemNum*sizeof(int));
 //		fprintf(fp,"ID\tName\tSex\tSession\t"
 //			"PracMode\tExperMode\tMainTask\tSubTask\t"
@@ -1804,14 +1804,14 @@ BOOL CTaskControlDoc::ReadT3Event()
 					m_EventStartTime = (unsigned long*)realloc(m_EventStartTime,m_MemNum*sizeof(unsigned long));
 					m_EventSureTime = (unsigned long*)realloc(m_EventSureTime,m_MemNum*sizeof(unsigned long));
 					m_SureButtonNo = (short*)realloc(m_SureButtonNo,m_MemNum*sizeof(short));
-					m_EventRT = (unsigned long*)realloc(m_EventRT,m_MemNum*sizeof(unsigned long));
+					m_EventRT = (long*)realloc(m_EventRT,m_MemNum*sizeof(long));
 					m_bEventAcc = (int*)realloc(m_bEventAcc,m_MemNum*sizeof(int));
 				}
 
 				fscanf_s(fp,"%s\t%s\t%s\t%d\t"
 					"%d\t%d\t%d\t%d\t"
 					"%d\t%d\t%f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t"
-					"%d\t%d\t%d\t%d:%d:%d\t%d:%d:%d\t%u\t%d\t%d\n",
+					"%d\t%d\t%d\t%d:%d:%d\t%d:%d:%d\t%d\t%d\t%d\n",
 					m_PartInfo.m_TesterNo,20, m_PartInfo.m_TesterName,20, m_PartInfo.m_TesterSex, 10,&m_PartInfo.m_Session, 
 					&m_ReadSetting3[0].m_PracMode, &m_ReadSetting3[0].m_ExperMode, &m_ReadSetting3[0].m_MainTask, &m_ReadSetting3[0].m_SubTask,
 					&m_ReadSetting3[0].m_MainTaskMode, &m_ReadSetting3[0].m_Background, &m_ReadSetting3[0].m_InitSpeed, &m_ReadSetting3[0].m_EventMode, &m_ReadSetting3[0].m_CodePairMode, &m_ReadSetting3[0].m_CodePairNum, &m_ReadSetting3[0].m_DisplayMode, &m_ReadSetting3[0].m_EventFrequency, &m_ReadSetting3[0].m_PracTime, &m_ReadSetting3[0].m_ExperTime, &m_ReadSetting3[0].m_PracTimes, &m_ReadSetting3[0].m_ExperTimes, 

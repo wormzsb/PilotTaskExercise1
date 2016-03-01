@@ -2163,7 +2163,7 @@ BOOL CListDlg::AddT3EventItem(int i)
 	m_ResultList2.AddItem(i, 23, str, -1);
 	str.Format("%02d:%02d:%02d", pDoc->m_HoldSureTime.wHour, pDoc->m_HoldSureTime.wMinute, pDoc->m_HoldSureTime.wSecond);
 	m_ResultList2.AddItem(i, 24, str, -1);
-    str.Format("%u",pDoc->m_EventRT[i]);
+    str.Format("%d",pDoc->m_EventRT[i]);
 	m_ResultList2.AddItem(i,25,str,-1);  
     str.Format("%d",pDoc->m_SureButtonNo[i]);
 	m_ResultList2.AddItem(i,26,str,-1);

@@ -116,8 +116,7 @@ namespace t3
 	extern float *m_PostSpeedY;                                //存放瞄准器速度的数组
 	extern RECT strurect, lerect, rerect, erect, txtrect, coderect;
 	extern D3DRECT wcoderect;
-	//extern SYSTEMTIME *sTime;
-	//extern SYSTEMTIME *eTime;//记录开始结束时间
+
 
 	extern short m_TestState;
 	extern char m_file1[220];
