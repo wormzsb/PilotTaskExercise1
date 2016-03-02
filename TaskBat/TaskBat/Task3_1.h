@@ -17,7 +17,7 @@
 
 namespace t3
 {
-	extern vector<SYSTEMTIME> sTimeVec, eTimeVec;
+	//extern vector<SYSTEMTIME> sTimeVec, eTimeVec;
 	extern Helper hp;
 	extern int rtn; 
 	extern HINSTANCE gHinstance; 
@@ -98,7 +98,7 @@ namespace t3
 	extern UINT m_PointNum;
 	extern UINT m_MemNum, m_MemEvent;
 
-	extern short *m_EventType;                                 //存放突发事件类型的数组
+	/*extern short *m_EventType;                                 //存放突发事件类型的数组
 	extern int *m_EventOrder;                                  //存放突发事件类型序列的数组
 	extern int *m_EventInterval;                               //存放突发事件开始间隔的数组
 	extern unsigned long *m_EventStartTime;                    //存放突发事件开始时间的数组 
@@ -113,10 +113,27 @@ namespace t3
 	extern float *m_ObjSpeedX;                                 //存放目标速度的数组
 	extern float *m_ObjSpeedY;                                 //存放目标速度的数组
 	extern float *m_PostSpeedX;                                //存放瞄准器速度的数组
-	extern float *m_PostSpeedY;                                //存放瞄准器速度的数组
+	extern float *m_PostSpeedY;                                //存放瞄准器速度的数组*/
 	extern RECT strurect, lerect, rerect, erect, txtrect, coderect;
 	extern D3DRECT wcoderect;
 
+	extern vector<short> m_EventType;                                 //存放突发事件类型的数组
+	extern int m_EventOrder;                                  //存放突发事件类型序列的数组
+	extern int m_EventInterval;                               //存放突发事件开始间隔的数组
+	extern unsigned long m_EventStartTime;                    //存放突发事件开始时间的数组 
+	extern unsigned long m_EventSureTime;                     //存放突发事件确认时间的数组
+	extern short m_SureButtonNo;                              //存放突发事件确认键类型的数组
+	extern BOOL m_bHit;                                       //存放击中状态的数组
+	extern SPOINT m_ObjPoint;                                 //存放目标坐标的数组
+	extern SPOINT m_PostPoint;                                //存放瞄准器坐标的数组
+	extern float m_Distance;                                  //存放目标和瞄准器距离的数组
+	extern vector<unsigned long> m_PointTime;                         //存放采样时间的数组
+	extern vector<POINT> m_EventPoint;                                //存放突发事件显示坐标的数组
+	extern float m_ObjSpeedX;                                 //存放目标速度的数组
+	extern float m_ObjSpeedY;                                 //存放目标速度的数组
+	extern float m_PostSpeedX;                                //存放瞄准器速度的数组
+	extern float m_PostSpeedY;                                //存放瞄准器速度的数组
+	extern SYSTEMTIME sTime, eTime;
 
 	extern short m_TestState;
 	extern char m_file1[220];
@@ -134,12 +151,12 @@ namespace t3
 	VOID MoveTrace();
 	BOOL ReadSetting();
 	VOID SaveName();
-	VOID SaveData();
+	VOID SaveData(int datatype, int i);
 	HRESULT InitD3D(HWND hWnd);
 	VOID CleanupMem();
 	VOID Cleanup();
 	VOID Render();
-	void RandPlanePoint(int cnt, POINT* m_EventInterval);
+	void RandPlanePoint(int cnt/*, POINT* m_EventInterval*/);
 	void RandEvent();
 	VOID TestInit();
 	BOOL CALLBACK PauseMsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);

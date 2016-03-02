@@ -9,7 +9,8 @@
 using namespace std;
 
 Helper t3::hp;
-vector<int> resEventType;
+//vector<int> resEventType;
+int EventType;
 
 int t3::rtn;
 HINSTANCE t3::gHinstance;
@@ -93,7 +94,7 @@ BOOL t3::m_bEventAcc;                                        //°´¼üÈ·ÈÏÕýÈ·±êÖ¾
 UINT t3::m_PointNum;
 UINT t3::m_MemNum, t3::m_MemEvent;
 
-short *t3::m_EventType = NULL;                               //´æ·ÅÍ»·¢ÊÂ¼þÀàÐÍµÄÊý×é
+/*short *t3::m_EventType = NULL;                               //´æ·ÅÍ»·¢ÊÂ¼þÀàÐÍµÄÊý×é
 int *t3::m_EventOrder = NULL;                                //´æ·ÅÍ»·¢ÊÂ¼þÀàÐÍÐòÁÐµÄÊý×é
 int *t3::m_EventInterval = NULL;                             //´æ·ÅÍ»·¢ÊÂ¼þ¿ªÊ¼¼ä¸ôµÄÊý×é
 unsigned long *t3::m_EventStartTime = NULL;                  //´æ·ÅÍ»·¢ÊÂ¼þ¿ªÊ¼Ê±¼äµÄÊý×é 
@@ -108,12 +109,31 @@ POINT *t3::m_EventPoint = NULL;                              //´æ·ÅÍ»·¢ÊÂ¼þÏÔÊ¾×
 float *t3::m_ObjSpeedX = NULL;                               //´æ·ÅÄ¿±êËÙ¶ÈµÄÊý×é
 float *t3::m_ObjSpeedY = NULL;                               //´æ·ÅÄ¿±êËÙ¶ÈµÄÊý×é
 float *t3::m_PostSpeedX = NULL;                              //´æ·ÅÃé×¼Æ÷ËÙ¶ÈµÄÊý×é
-float *t3::m_PostSpeedY = NULL;                              //´æ·ÅÃé×¼Æ÷ËÙ¶ÈµÄÊý×é
+float *t3::m_PostSpeedY = NULL;                              //´æ·ÅÃé×¼Æ÷ËÙ¶ÈµÄÊý×é*/
+
+vector<short> t3::m_EventType;                               //´æ·ÅÍ»·¢ÊÂ¼þÀàÐÍµÄÊý×é
+int t3::m_EventOrder = NULL;                                //´æ·ÅÍ»·¢ÊÂ¼þÀàÐÍÐòÁÐµÄÊý×é
+int t3::m_EventInterval = NULL;                             //´æ·ÅÍ»·¢ÊÂ¼þ¿ªÊ¼¼ä¸ôµÄÊý×é
+unsigned long t3::m_EventStartTime = NULL;                  //´æ·ÅÍ»·¢ÊÂ¼þ¿ªÊ¼Ê±¼äµÄÊý×é 
+unsigned long t3::m_EventSureTime = NULL;                   //´æ·ÅÍ»·¢ÊÂ¼þÈ·ÈÏÊ±¼äµÄÊý×é
+short t3::m_SureButtonNo = NULL;                            //´æ·ÅÍ»·¢ÊÂ¼þÈ·ÈÏ¼üÀàÐÍµÄÊý×é
+BOOL t3::m_bHit = NULL;                                     //´æ·Å»÷ÖÐ×´Ì¬µÄÊý×é
+SPOINT t3::m_ObjPoint;                               //´æ·ÅÄ¿±ê×ø±êµÄÊý×é
+SPOINT t3::m_PostPoint;                              //´æ·ÅÃé×¼Æ÷×ø±êµÄÊý×é
+float t3::m_Distance = NULL;                                //´æ·ÅÄ¿±êºÍÃé×¼Æ÷¾àÀëµÄÊý×é
+vector<unsigned long> t3::m_PointTime;                       //´æ·Å²ÉÑùÊ±¼äµÄÊý×é
+vector<POINT> t3::m_EventPoint;                              //´æ·ÅÍ»·¢ÊÂ¼þÏÔÊ¾×ø±êµÄÊý×é
+float t3::m_ObjSpeedX = NULL;                               //´æ·ÅÄ¿±êËÙ¶ÈµÄÊý×é
+float t3::m_ObjSpeedY = NULL;                               //´æ·ÅÄ¿±êËÙ¶ÈµÄÊý×é
+float t3::m_PostSpeedX = NULL;                              //´æ·ÅÃé×¼Æ÷ËÙ¶ÈµÄÊý×é
+float t3::m_PostSpeedY = NULL;                              //´æ·ÅÃé×¼Æ÷ËÙ¶ÈµÄÊý×é
+
 RECT t3::strurect,t3::lerect,t3::rerect,t3::erect,t3::txtrect,t3::coderect;
 D3DRECT t3::wcoderect;
 //SYSTEMTIME *t3::sTime;
 //SYSTEMTIME *t3::eTime;
-vector<SYSTEMTIME> t3::sTimeVec, t3::eTimeVec;
+//vector<SYSTEMTIME> t3::sTimeVec, t3::eTimeVec;
+SYSTEMTIME t3::sTime, t3::eTime;
 
 short t3::m_TestState;
 char t3::m_file1[220];
@@ -143,7 +163,7 @@ void initGlobalTimer() {
 VOID t3::MoveTrace()
 {
 	m_PointNum++;
-	if(m_PointNum>=m_MemNum)
+	/*if(m_PointNum>=m_MemNum)
 	{
 		m_MemNum+=1000;
 		m_ObjPoint = (SPOINT*)realloc(m_ObjPoint,m_MemNum*sizeof(SPOINT));
@@ -156,7 +176,7 @@ VOID t3::MoveTrace()
 		m_PostSpeedX = (float*)realloc(m_PostSpeedX,m_MemNum*sizeof(float));
 		m_PostSpeedY = (float*)realloc(m_PostSpeedY,m_MemNum*sizeof(float));
 	
-	}
+	}*/
 	//m_PostSpeedX[m_PointNum] = JoyX;
    // m_PostSpeedY[m_PointNum] = JoyY;
 	/*if (abs(JoyX )> 10)
@@ -168,11 +188,11 @@ VOID t3::MoveTrace()
 		m_PostSpeedY[m_PointNum] = JoyY / abs(JoyY) * m_HardSetting.m_JoySpeedMax;
 	else
 		m_PostSpeedY[m_PointNum] = 0;*/
-	hp.getAnologSpeed(m_PostSpeedX[m_PointNum], m_PostSpeedY[m_PointNum],
+	hp.getAnologSpeed(m_PostSpeedX/*[m_PointNum]*/, m_PostSpeedY/*[m_PointNum]*/,
 		JoyX, JoyY, dfTim, iJoyMoveDirection);
 	//µ±Ç°µãÊ±¼ä
-	m_PointTime[m_PointNum] = m_PointTime[m_PointNum-1] + (int)(dfTim*1000);//QPart2/dfFreq*1000;
-
+	//m_PointTime[m_PointNum] = m_PointTime[m_PointNum-1] + (int)(dfTim*1000);//QPart2/dfFreq*1000;
+	m_PointTime.push_back(m_PointTime[m_PointNum - 1] + (int)(dfTim * 1000));
 	////µ±Ç°×·×Ù»·Î»ÖÃ
 	//double JoyAlpha = 0;
 	//JoyAlpha = atan(fabs((double)(JoyY - m_PostPointY) / (double)(JoyX - m_PostPointX)));//Ò¡¸Ë½Ç¶È
@@ -192,28 +212,28 @@ VOID t3::MoveTrace()
 	}*/
 	hp.updateAnalogNewPos(m_PostPointX, m_PostPointY, JoyX, JoyY, dfTim, iJoyMoveDirection);
 
-	m_PostPoint[m_PointNum].x = m_PostPointX;
-	m_PostPoint[m_PointNum].y = m_PostPointY;
+	m_PostPoint/*[m_PointNum]*/.x = m_PostPointX;
+	m_PostPoint/*[m_PointNum]*/.y = m_PostPointY;
 
-	if(m_PostPoint[m_PointNum].x<0)
+	if(m_PostPoint/*[m_PointNum]*/.x<0)
 	{
 		m_PostPointX = 0;
-		m_PostPoint[m_PointNum].x = 0;
+		m_PostPoint/*[m_PointNum]*/.x = 0;
 	}
-	else if(m_PostPoint[m_PointNum].x>x_resolution)
+	else if(m_PostPoint/*[m_PointNum]*/.x>x_resolution)
 	{
 		m_PostPointX = x_resolution;
-		m_PostPoint[m_PointNum].x = x_resolution;
+		m_PostPoint/*[m_PointNum]*/.x = x_resolution;
 	}
-	if(m_PostPoint[m_PointNum].y<0)
+	if(m_PostPoint/*[m_PointNum]*/.y<0)
 	{
 		m_PostPointY = 0;
-		m_PostPoint[m_PointNum].y = 0;
+		m_PostPoint/*[m_PointNum]*/.y = 0;
 	}
-	else if(m_PostPoint[m_PointNum].y>y_resolution)
+	else if(m_PostPoint/*[m_PointNum]*/.y>y_resolution)
 	{
 		m_PostPointY = y_resolution;
-		m_PostPoint[m_PointNum].y = y_resolution;
+		m_PostPoint/*[m_PointNum]*/.y = y_resolution;
 	}
 
 
@@ -249,8 +269,8 @@ VOID t3::MoveTrace()
 		{
 			alpha = alpha + 2*PI;
 		}
-		m_ObjPoint[m_PointNum].x = a + r1 * cos(alpha);
-		m_ObjPoint[m_PointNum].y = b - r1 * sin(alpha);   
+		m_ObjPoint/*[m_PointNum]*/.x = a + r1 * cos(alpha);
+		m_ObjPoint/*[m_PointNum]*/.y = b - r1 * sin(alpha);
 		break;
 	
 	//°Ë×ÖÐÎ¹ì¼£
@@ -265,29 +285,29 @@ VOID t3::MoveTrace()
 		}
 		if((alpha<=PI/2.0)||(alpha>=PI*3.0/2.0))
 		{
-			m_ObjPoint[m_PointNum].x = a + r2 + r2 * cos(2*alpha);
-			m_ObjPoint[m_PointNum].y = b - r2 * sin(2*alpha); 
+			m_ObjPoint/*[m_PointNum]*/.x = a + r2 + r2 * cos(2*alpha);
+			m_ObjPoint/*[m_PointNum]*/.y = b - r2 * sin(2*alpha);
 		}
 		else
 		{
-			m_ObjPoint[m_PointNum].x = a - r2 - r2 * cos(-2*alpha);
-			m_ObjPoint[m_PointNum].y = b + r2 * sin(-2*alpha); 
+			m_ObjPoint/*[m_PointNum]*/.x = a - r2 - r2 * cos(-2*alpha);
+			m_ObjPoint/*[m_PointNum]*/.y = b + r2 * sin(-2*alpha);
 		}	
 		break;
 	}
 
 	//¼ÆËãÄ¿±êºÍÃé×¼Æ÷¾àÀë
-	m_Distance[m_PointNum] = pow(pow((m_ObjPoint[m_PointNum].y-m_PostPoint[m_PointNum].y),2.0)+pow((m_ObjPoint[m_PointNum].x-m_PostPoint[m_PointNum].x),2.0),0.5);
+	m_Distance/*[m_PointNum]*/ = pow(pow((m_ObjPoint/*[m_PointNum]*/.y-m_PostPoint/*[m_PointNum]*/.y),2.0)+pow((m_ObjPoint/*[m_PointNum]*/.x-m_PostPoint/*[m_PointNum]*/.x),2.0),0.5);
   
 
 	//¼ÆËã»÷ÖÐ×´Ì¬
-	if((m_Distance[m_PointNum]<m_HardSetting.m_DistanceError))
+	if((m_Distance/*[m_PointNum]*/<m_HardSetting.m_DistanceError))
 	{
-		m_bHit[m_PointNum] = TRUE;
+		m_bHit/*[m_PointNum]*/ = TRUE;
 	}
 	else
 	{
-        m_bHit[m_PointNum] = FALSE;
+        m_bHit/*[m_PointNum]*/ = FALSE;
 	}
 
 	//¼ÆËãµ±Ç°Ä¿±êËÙ¶È
@@ -317,8 +337,9 @@ VOID t3::MoveTrace()
 	{
 		omiga = v/r;
 	}
-	m_ObjSpeedX[m_PointNum] = -v * sin(alpha);
-	m_ObjSpeedY[m_PointNum] = -v * cos(alpha);
+	m_ObjSpeedX/*[m_PointNum]*/ = -v * sin(alpha);
+	m_ObjSpeedY/*[m_PointNum]*/ = -v * cos(alpha);
+	SaveData(0, m_PointNum);
 }
 
 //************************************************
@@ -502,18 +523,17 @@ VOID t3::SaveName()
 //************************************************
 //*±£´æ½á¹ûÊý¾Ý¼ÇÂ¼ÎÄ¼þ
 //************************************************
-VOID t3::SaveData()
+VOID t3::SaveData(int datatype, int i)
 {
 	FILE *fp;
 	BOOL m_bEventAcc;
 	long EventRT = 0;
-	int i;
 
     //±£´æ×·×ÙÊý¾Ý
-    if(m_Setting.m_MainTask == 1)
+    if/*(m_Setting.m_MainTask == 1)*/(datatype == 0)
 	{
 		fp = fopen(m_file1,"at");
-		for(i=0;i<m_PointNum;i++)
+		//for(i=0;i<m_PointNum;i++)
 		{
 			fprintf(fp,"%s\t%s\t%s\t%d\t"
 				"%.2f\t%d\t%d\t%d\t%d\t"
@@ -523,20 +543,20 @@ VOID t3::SaveData()
 				m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session, 
 				m_HardSetting.m_DistanceError, m_Setting.m_PracMode, m_Setting.m_ExperMode, m_Setting.m_MainTask, m_Setting.m_SubTask,
 				m_Setting.m_MainTaskMode, m_Setting.m_Background, m_Setting.m_InitSpeed, m_Setting.m_EventMode, m_Setting.m_CodePairMode, m_Setting.m_CodePairNum, m_Setting.m_DisplayMode, m_Setting.m_EventFrequency, m_Setting.m_PracTime, m_Setting.m_ExperTime, m_Setting.m_PracTimes, m_Setting.m_ExperTimes, 
-				m_TrialType, i+1, m_PointTime[i], m_ObjPoint[i].x, m_ObjPoint[i].y, m_PostPoint[i].x, m_PostPoint[i].y, m_Distance[i], m_bHit[i],
-		        m_ObjSpeedX[i], m_ObjSpeedY[i], m_PostSpeedX[i], m_PostSpeedY[i]);
+				m_TrialType, i+1, m_PointTime[i], m_ObjPoint/*[i]*/.x, m_ObjPoint/*[i]*/.y, m_PostPoint/*[i]*/.x, m_PostPoint/*[i]*/.y, m_Distance/*[i]*/, m_bHit/*[i]*/,
+		        m_ObjSpeedX/*[i]*/, m_ObjSpeedY/*[i]*/, m_PostSpeedX/*[i]*/, m_PostSpeedY/*[i]*/);
 		}
 		fclose(fp);
 	}
 	//±£´æÍ»·¢ÊÂ¼þÊý¾Ý
-	if(m_Setting.m_SubTask == 1)
+	if/*(m_Setting.m_SubTask == 1)*/(datatype == 1)
 	{
 		fp = fopen(m_file2,"at");
-		for(i=0;i<m_RecordNo;i++)
+		//for(i=0;i<m_RecordNo;i++)
 		{
 			if(m_Setting.m_EventMode == 0)
 			{
-				if(((/*m_EventType*/resEventType[i]==0)||(/*m_EventType*/resEventType[i]==1))&&(m_SureButtonNo[i]==0))
+				if(((/*m_EventType*/EventType ==0)||(/*m_EventType*/EventType ==1))&&(m_SureButtonNo/*[i]*/==0))
 				{
 					m_bEventAcc = TRUE;
 				}
@@ -547,12 +567,12 @@ VOID t3::SaveData()
 			}
 			else
 			{
-				m_bEventAcc = (/*m_EventType*/resEventType[i]==m_SureButtonNo[i]);
+				m_bEventAcc = (/*m_EventType*/EventType==m_SureButtonNo/*[i]*/);
 			}
-			if (m_SureButtonNo[i] == -1)
+			if (m_SureButtonNo/*[i]*/ == -1)
 				EventRT = -1;
 			else
-				EventRT = m_EventSureTime[i] - m_EventStartTime[i];
+				EventRT = m_EventSureTime/*[i]*/ - m_EventStartTime/*[i]*/;
 			fprintf(fp,"%s\t%s\t%s\t%d\t"
 				"%d\t%d\t%d\t%d\t"
 				"%d\t%d\t%.2f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t"
@@ -560,7 +580,7 @@ VOID t3::SaveData()
 				m_PartInfo.m_TesterNo, m_PartInfo.m_TesterName, m_PartInfo.m_TesterSex, m_PartInfo.m_Session, 
 				m_Setting.m_PracMode, m_Setting.m_ExperMode, m_Setting.m_MainTask, m_Setting.m_SubTask,
 				m_Setting.m_MainTaskMode, m_Setting.m_Background, m_Setting.m_InitSpeed, m_Setting.m_EventMode, m_Setting.m_CodePairMode, m_Setting.m_CodePairNum, m_Setting.m_DisplayMode, m_Setting.m_EventFrequency, m_Setting.m_PracTime, m_Setting.m_ExperTime, m_Setting.m_PracTimes, m_Setting.m_ExperTimes, 
-				m_TrialType, i+1,/*m_EventType*/resEventType[i], sTimeVec[i].wHour, sTimeVec[i].wMinute, sTimeVec[i].wSecond, eTimeVec[i].wHour, eTimeVec[i].wMinute, eTimeVec[i].wSecond, EventRT,m_SureButtonNo[i],m_bEventAcc);
+				m_TrialType, i+1,/*m_EventType*/EventType, sTime.wHour, sTime.wMinute, sTime.wSecond, eTime.wHour, eTime.wMinute, eTime.wSecond, EventRT,m_SureButtonNo/*[i]*/,m_bEventAcc);
 		} 
 		fclose(fp);
 	}
@@ -763,7 +783,7 @@ HRESULT t3::InitD3D(HWND hWnd)
 //************************************************
 VOID t3::CleanupMem()
 {
-	if(m_ObjPoint != NULL)
+	/*if(m_ObjPoint != NULL)
 	{
 		free(m_ObjPoint);
 		m_ObjPoint = NULL;
@@ -843,19 +863,16 @@ VOID t3::CleanupMem()
 		free(m_PostSpeedY);
 		m_PostSpeedY = NULL;
 	}
-	/*if (sTime != NULL)
-	{
-		free(sTime);
-		sTime = NULL;
-	}
-	if (eTime != NULL)
-	{
-		free(eTime);
-		eTime = NULL;
-	}*/
-	sTimeVec.swap(vector<SYSTEMTIME>());
-	eTimeVec.swap(vector<SYSTEMTIME>());
-	resEventType.swap(vector<int>());
+	*/
+	//sTimeVec.swap(vector<SYSTEMTIME>());
+	//eTimeVec.swap(vector<SYSTEMTIME>());
+	//resEventType.swap(vector<int>());
+	m_EventType.swap(vector<short>());                       
+	m_PointTime.swap(vector<unsigned long>());        
+	m_EventPoint.swap(vector<POINT>());                           
+	m_EventNo = 0;
+	m_RecordNo = 0;
+
 }
 
 //************************************************
@@ -988,9 +1005,9 @@ VOID t3::Render()
 				//ÏÔÊ¾×·×ÙÄ¿±êºÍÃé×¼Æ÷
                 if(m_Setting.m_MainTask == 1)
 				{
-					D3DXMatrixTransformation2D(&mx, NULL, 0.0, &D3DXVECTOR2((float)128/(float)128,(float)32/(float)32), &D3DXVECTOR2(0,0), 0, &D3DXVECTOR2(m_PostPoint[m_PointNum].x,m_PostPoint[m_PointNum].y));
+					D3DXMatrixTransformation2D(&mx, NULL, 0.0, &D3DXVECTOR2((float)128/(float)128,(float)32/(float)32), &D3DXVECTOR2(0,0), 0, &D3DXVECTOR2(m_PostPoint/*[m_PointNum]*/.x,m_PostPoint/*[m_PointNum]*/.y));
 					g_pSprite->SetTransform(&mx);
-					if(m_bHit[m_PointNum])
+					if(m_bHit/*[m_PointNum]*/)
 					{
 						g_pSprite->Draw(g_pTexture2, NULL, &D3DXVECTOR3(64,20,0), &D3DXVECTOR3(0,0,0), 0xffffffff);
 						
@@ -999,7 +1016,7 @@ VOID t3::Render()
 					{
 						g_pSprite->Draw(g_pTexture1, NULL, &D3DXVECTOR3(64,20,0), &D3DXVECTOR3(0,0,0), 0xffffffff);
 					}	
-					D3DXMatrixTransformation2D(&mx, NULL, 0.0, &D3DXVECTOR2((float)64/(float)64,(float)16/(float)16), &D3DXVECTOR2(0,0), 0, &D3DXVECTOR2(m_ObjPoint[m_PointNum].x,m_ObjPoint[m_PointNum].y));
+					D3DXMatrixTransformation2D(&mx, NULL, 0.0, &D3DXVECTOR2((float)64/(float)64,(float)16/(float)16), &D3DXVECTOR2(0,0), 0, &D3DXVECTOR2(m_ObjPoint/*[m_PointNum]*/.x,m_ObjPoint/*[m_PointNum]*/.y));
  					g_pSprite->SetTransform(&mx);
 					g_pSprite->Draw(g_pTexture0, NULL, &D3DXVECTOR3(32,12,0), &D3DXVECTOR3(0,0,0), 0xffffffff);
 				}
@@ -1053,12 +1070,13 @@ VOID t3::Render()
 
     g_pd3dDevice->Present( NULL, NULL, NULL, NULL );
 }
-void t3::RandPlanePoint(int cnt, POINT* m_EventInterval)
+void t3::RandPlanePoint(int cnt/*, POINT* m_EventInterval*/)
 {
 	
 	int randPos;
 	for (int i = 0; i < cnt; i++)
 	{
+		POINT t;
 		randPos = 1 << rand()%4;
 		
 		while(!(m_Setting.m_iPlanePos & randPos))
@@ -1069,20 +1087,32 @@ void t3::RandPlanePoint(int cnt, POINT* m_EventInterval)
 		switch (randPos)
 		{
 		case LEFT_TOP:
-			m_EventPoint[i].x = rec_x_begin + 64;
-			m_EventPoint[i].y = rec_y_begin + 64;
+			//m_EventPoint[i].x = rec_x_begin + 64;
+			//m_EventPoint[i].y = rec_y_begin + 64;
+			t.x = rec_x_begin + 64;
+			t.y = rec_y_begin + 64;
+			m_EventPoint.push_back(t);
 			break;
 		case RIGHT_TOP:
-			m_EventPoint[i].x = rec_x_end - 64;
-			m_EventPoint[i].y = rec_y_begin + 64;
+			//m_EventPoint[i].x = rec_x_end - 64;
+			//m_EventPoint[i].y = rec_y_begin + 64;
+			t.x = rec_x_end - 64;
+			t.y = rec_y_begin + 64;
+			m_EventPoint.push_back(t);
 			break;
 		case RIGHT_BOTTOM:
-			m_EventPoint[i].x = rec_x_end - 64;
-			m_EventPoint[i].y = rec_y_end - 64;
+			t.x = rec_x_end - 64;
+			t.y = rec_y_end - 64;
+			m_EventPoint.push_back(t);
+			//m_EventPoint[i].x = rec_x_end - 64;
+			//m_EventPoint[i].y = rec_y_end - 64;
 			break;
 		case LEFT_BOTTOM:
-			m_EventPoint[i].x = rec_x_begin + 64;
-			m_EventPoint[i].y = rec_y_end - 64;
+			t.x = rec_x_begin + 64;
+			t.y = rec_y_end - 64;
+			m_EventPoint.push_back(t);
+			//m_EventPoint[i].x = rec_x_begin + 64;
+			//m_EventPoint[i].y = rec_y_end - 64;
 			break;
 
 		}
@@ -1145,8 +1175,8 @@ void t3::RandEvent()
 		ran_plane.push_back(1);
 	random_shuffle(ran_plane.begin(), ran_plane.end());
 	for (int i = 0; i < m_Setting.m_ExperTimes; i++)
-		if (m_Setting.m_EventMode == 0) m_EventType[i] = 0;
-		else m_EventType[i] = ran_plane[i];
+		if (m_Setting.m_EventMode == 0) m_EventType.push_back(0);
+		else m_EventType.push_back(ran_plane[i]);
 	
 }
 //************************************************
@@ -1204,7 +1234,7 @@ VOID t3::TestInit()
 		fai = 0.0;
 		
 		m_PointNum = 0;
-		m_MemNum = 1000;
+		/*m_MemNum = 1000;
 		m_ObjPoint = (SPOINT*)malloc(m_MemNum*sizeof(SPOINT));
 		m_PostPoint = (SPOINT*)malloc(m_MemNum*sizeof(SPOINT));
 		m_Distance = (float*)malloc(m_MemNum*sizeof(float));
@@ -1213,20 +1243,20 @@ VOID t3::TestInit()
 		m_ObjSpeedX = (float*)malloc(m_MemNum*sizeof(float));
 		m_ObjSpeedY = (float*)malloc(m_MemNum*sizeof(float));
 		m_PostSpeedX = (float*)malloc(m_MemNum*sizeof(float));
-		m_PostSpeedY = (float*)malloc(m_MemNum*sizeof(float));
+		m_PostSpeedY = (float*)malloc(m_MemNum*sizeof(float));*/
 		//sTime = (SYSTEMTIME*)malloc(m_MemNum*sizeof(SYSTEMTIME));
 		//eTime = (SYSTEMTIME*)malloc(m_MemNum*sizeof(SYSTEMTIME));
 		m_PostPointX = x_resolution/2;
 		m_PostPointY = y_resolution/2;
-		m_PostPoint[m_PointNum].x = m_PostPointX;
-		m_PostPoint[m_PointNum].y = m_PostPointY;
+		m_PostPoint/*[m_PointNum]*/.x = m_PostPointX;
+		m_PostPoint/*[m_PointNum]*/.y = m_PostPointY;
 		alpha = 0;
-		m_ObjPoint[m_PointNum].x = a + r * cos(alpha);
-		m_ObjPoint[m_PointNum].y = b - r * sin(alpha);  
-		m_Distance[m_PointNum] = pow(pow((m_ObjPoint[m_PointNum].y-m_PostPoint[m_PointNum].y),2.0)+pow((m_ObjPoint[m_PointNum].x-m_PostPoint[m_PointNum].x),2.0),0.5);
-	    m_bHit[m_PointNum] = FALSE;	
-		m_ObjSpeedX[m_PointNum] = -v * sin(alpha);
-		m_ObjSpeedY[m_PointNum] = -v * cos(alpha);
+		m_ObjPoint/*[m_PointNum]*/.x = a + r * cos(alpha);
+		m_ObjPoint/*[m_PointNum]*/.y = b - r * sin(alpha);
+		m_Distance/*[m_PointNum]*/ = pow(pow((m_ObjPoint/*[m_PointNum]*/.y-m_PostPoint/*[m_PointNum]*/.y),2.0)+pow((m_ObjPoint/*[m_PointNum]*/.x-m_PostPoint/*[m_PointNum]*/.x),2.0),0.5);
+	    m_bHit/*[m_PointNum]*/ = FALSE;	
+		m_ObjSpeedX/*[m_PointNum]*/ = -v * sin(alpha);
+		m_ObjSpeedY/*[m_PointNum]*/ = -v * cos(alpha);
 		JoyX = 0;
 		JoyY = 0;
 	}
@@ -1243,11 +1273,11 @@ VOID t3::TestInit()
 				m_TrialTime = m_Setting.m_ExperTime;
 			}
 		}
-	    m_MemEvent = 100;
+	   /* m_MemEvent = 100;
 		m_EventType = (short*)malloc(m_MemEvent*sizeof(short));
 		m_EventStartTime = (unsigned long*)malloc(m_MemEvent*sizeof(unsigned long));
 		m_EventSureTime = (unsigned long*)malloc(m_MemEvent*sizeof(unsigned long));
-		m_SureButtonNo = (short*)malloc(m_MemEvent*sizeof(short));
+		m_SureButtonNo = (short*)malloc(m_MemEvent*sizeof(short));*/
 		m_EventCount = m_Setting.m_ExperTimes;
 		//sTime = (SYSTEMTIME*)malloc(m_MemNum*sizeof(SYSTEMTIME));
 		//eTime = (SYSTEMTIME*)malloc(m_MemNum*sizeof(SYSTEMTIME));
@@ -1263,14 +1293,14 @@ VOID t3::TestInit()
 			}
 		
 
-			m_EventOrder = (int*)malloc(m_EventCount*sizeof(int));
+			/*m_EventOrder = (int*)malloc(m_EventCount*sizeof(int));
 			m_EventInterval = (int*)malloc(m_EventCount*sizeof(int));
-			m_EventPoint = (POINT*)malloc(m_EventCount*sizeof(POINT));
+			m_EventPoint = (POINT*)malloc(m_EventCount*sizeof(POINT));*/
 			//RandEventOrder(m_TrialTime,m_EventCount,m_EventInterval);
 			RandEvent();
 			//RandOrder(m_EventCount,m_EventOrder);
 	    	//RandPoint(x_resolution/2-256, y_resolution/2-256, m_EventCount, m_EventPoint);
-			RandPlanePoint(m_EventCount, m_EventPoint);
+			RandPlanePoint(m_EventCount/*, m_EventPoint*/);
 
 		}
 		
@@ -1297,8 +1327,8 @@ VOID t3::TestInit()
 		{
 			case 0:
 				alpha = 0;
-				m_ObjPoint[m_PointNum].x = a + r1 * cos(alpha);
-				m_ObjPoint[m_PointNum].y = b - r1 * sin(alpha);   
+				m_ObjPoint/*[m_PointNum]*/.x = a + r1 * cos(alpha);
+				m_ObjPoint/*[m_PointNum]*/.y = b - r1 * sin(alpha);
 				r = r1;
 			
 	
@@ -1306,8 +1336,8 @@ VOID t3::TestInit()
 	
 			case 1:
  				alpha = 0;
-				m_ObjPoint[m_PointNum].x = a + r2 + r2 * cos(2*alpha);
-				m_ObjPoint[m_PointNum].y = b - r2 * sin(2*alpha); 
+				m_ObjPoint/*[m_PointNum]*/.x = a + r2 + r2 * cos(2*alpha);
+				m_ObjPoint/*[m_PointNum]*/.y = b - r2 * sin(2*alpha);
 				r = r2;
 				break;
 		}
@@ -1383,8 +1413,9 @@ LRESULT WINAPI t3::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				break;
 			case ID_NEXT:
 				//ÈôÔÚÈÎÎñÖÐÍ¾ÍË³ö Ôò±£´æµ±Ç°ËùÓÐÊµÑéÊý¾Ý
-				if ((m_TestState == STATE_MOVINGOBJ)||(m_TestState == STATE_DISPLAYFEEDBACK))
-					SaveData();
+				if ((m_TestState == STATE_MOVINGOBJ) || (m_TestState == STATE_DISPLAYFEEDBACK))
+					SaveData(0, m_PointNum);
+					SaveData(1, m_RecordNo);
 				m_bEventStart = 0;
 				m_bShowFeedback = 0;//½â¾öÍ¬Ò»ÈÎÎñÖÐÍ¾ÍË³öµÄÎÊÌâ
 				EndDialog(hWnd, rtn);
@@ -1394,7 +1425,8 @@ LRESULT WINAPI t3::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			case ID_CANCEL:
 				//ÈôÔÚÈÎÎñÖÐÍ¾ÍË³ö Ôò±£´æµ±Ç°ËùÓÐÊµÑéÊý¾Ý
 				if ((m_TestState == STATE_MOVINGOBJ) || (m_TestState == STATE_DISPLAYFEEDBACK))
-					SaveData();
+					SaveData(0, m_PointNum);
+					SaveData(1, m_RecordNo);
 				EndDialog(hWnd,rtn);
 				PostThreadMessage(dwInputThreadID, WM_THREADSTOP,0,0); 	//ÍË³öÏß³Ì
 				m_TestState = STATE_EXIT;
@@ -1450,9 +1482,9 @@ VOID t3::UpdateState()
 			dfTotal = 0;
 			if(m_Setting.m_MainTask == 1)
 			{
-				m_PointTime[m_PointNum] = QPart1/dfFreq*1000;
-				m_PostSpeedX[m_PointNum] = 0;
-	            m_PostSpeedY[m_PointNum] = 0;
+				m_PointTime.push_back(QPart1/dfFreq*1000);
+				m_PostSpeedX/*[m_PointNum]*/ = 0;
+	            m_PostSpeedY/*[m_PointNum]*/ = 0;
 			}
             m_TestState = STATE_MOVINGOBJ;
 		}
@@ -1502,21 +1534,22 @@ VOID t3::UpdateState()
 								{
 									m_bEventStart = FALSE;
 									dfTotalEvent = 0;
-									m_EventSureTime[m_RecordNo] = 0;
-									SYSTEMTIME eTime;
+									m_EventSureTime/*[m_RecordNo]*/ = 0;
+									//SYSTEMTIME eTime;
 									eTime.wHour = eTime.wMinute = eTime.wSecond = 0;
-									eTimeVec.push_back(eTime);
-									m_SureButtonNo[m_RecordNo] = -1;
+									//eTimeVec.push_back(eTime);
+									m_SureButtonNo/*[m_RecordNo]*/ = -1;
 									m_EventNo++;
+									SaveData(1, m_RecordNo);
 									m_RecordNo++;
-									if(m_RecordNo>=m_MemEvent)
+									/*if(m_RecordNo>=m_MemEvent)
 									{
 										m_MemEvent+=100;
 										//m_EventType = (short*)realloc(m_EventType,m_MemEvent*sizeof(short));
 										m_EventStartTime = (unsigned long*)realloc(m_EventStartTime,m_MemEvent*sizeof(unsigned long));
 										m_EventSureTime = (unsigned long*)realloc(m_EventSureTime,m_MemEvent*sizeof(unsigned long));
 										m_SureButtonNo = (short*)realloc(m_SureButtonNo,m_MemEvent*sizeof(short));
-									}
+									}*/
 								
 									
 								}
@@ -1525,26 +1558,28 @@ VOID t3::UpdateState()
 
 									m_bEventStart = FALSE;
 									//dfTotalEvent = 0; //???
-									m_EventSureTime[m_RecordNo] = 0;
-									m_SureButtonNo[m_RecordNo] = -1;
-									SYSTEMTIME eTime;
+									m_EventSureTime/*[m_RecordNo]*/ = 0;
+									m_SureButtonNo/*[m_RecordNo]*/ = -1;
+									//SYSTEMTIME eTime;
 									eTime.wHour = eTime.wMinute = eTime.wSecond = 0;
-									eTimeVec.push_back(eTime);
+									//eTimeVec.push_back(eTime);
 									//m_EventNo++;
 									//m_RecordNo++;
-									if (m_RecordNo >= m_MemEvent)
+									/*if (m_RecordNo >= m_MemEvent)
 									{
 										m_MemEvent += 100;
 										//m_EventType = (short*)realloc(m_EventType,m_MemEvent*sizeof(short));
 										m_EventStartTime = (unsigned long*)realloc(m_EventStartTime, m_MemEvent*sizeof(unsigned long));
 										m_EventSureTime = (unsigned long*)realloc(m_EventSureTime, m_MemEvent*sizeof(unsigned long));
 										m_SureButtonNo = (short*)realloc(m_SureButtonNo, m_MemEvent*sizeof(short));
-									}
+									}*/
 
 									if (m_Setting.m_EventMode == 0)
-										resEventType.push_back(0);
+										//resEventType.push_back(0);
+										EventType = 0;
 									else
-										resEventType.push_back(m_EventType[m_EventNo]);
+										//resEventType.push_back(m_EventType[m_EventNo]);
+										EventType = m_EventType[m_EventNo];
 									sprintf(szFeedBack,"·´Ó¦³¬Ê±");
 									m_bShowFeedback = TRUE;
 								}
@@ -1617,10 +1652,10 @@ VOID t3::UpdateState()
 						dfTotalEvent = 0;
 						m_bEventStart = TRUE;
 						m_bEventReactTime = FALSE;
-						m_EventStartTime[m_RecordNo] = QPart2/dfFreq*1000;
-						SYSTEMTIME sTime;
+						m_EventStartTime/*[m_RecordNo]*/ = QPart2/dfFreq*1000;
+						//SYSTEMTIME sTime;
 						GetLocalTime(&sTime);
-						sTimeVec.push_back(sTime);
+						//sTimeVec.push_back(sTime);
 
 					}
 				}
@@ -1641,8 +1676,9 @@ VOID t3::UpdateState()
 					m_bEventStart = FALSE;
 					dfTotalEvent = 0;
 					m_EventNo++;
-					m_RecordNo++;
-					if(m_RecordNo>=m_MemEvent)
+					SaveData(1, m_RecordNo);
+					m_RecordNo++;					
+					/*if(m_RecordNo>=m_MemEvent)
 					{
 						m_MemEvent+=100;
 						//m_EventType = (short*)realloc(m_EventType,m_MemEvent*sizeof(short));
@@ -1651,7 +1687,7 @@ VOID t3::UpdateState()
 						m_SureButtonNo = (short*)realloc(m_SureButtonNo,m_MemEvent*sizeof(short));
 						//sTime = (SYSTEMTIME*)realloc(sTime,m_MemEvent*sizeof(SYSTEMTIME));
 						//eTime = (SYSTEMTIME*)realloc(eTime,m_MemEvent*sizeof(SYSTEMTIME));
-					}
+					}*/
 				}	
 					
 			}
@@ -1660,7 +1696,7 @@ VOID t3::UpdateState()
 		else
 		{
 			//±£´æÊý¾Ý
-			SaveData();
+			//SaveData(m_RecordNo);
 			/*if((m_TrialType == TRIAL_PRACTICE)&&(m_Setting.m_ExperMode == 1))
 			{
 				//³ÊÏÖÕýÊ½²âÊÔÑ¡Ïî
@@ -1690,8 +1726,9 @@ VOID t3::UpdateState()
 			m_bEventStart = FALSE;
 			dfTotalEvent = 0;
 			m_EventNo++;
+			SaveData(1, m_RecordNo);
 			m_RecordNo++;
-			if(m_RecordNo>=m_MemEvent)
+			/*if(m_RecordNo>=m_MemEvent)
 			{
 				m_MemEvent+=100;
 				//m_EventType = (short*)realloc(m_EventType,m_MemEvent*sizeof(short));
@@ -1700,7 +1737,7 @@ VOID t3::UpdateState()
 			    m_SureButtonNo = (short*)realloc(m_SureButtonNo,m_MemEvent*sizeof(short));
 				//sTime = (SYSTEMTIME*)realloc(sTime, m_MemEvent*sizeof(SYSTEMTIME));
 				//eTime = (SYSTEMTIME*)realloc(eTime, m_MemEvent*sizeof(SYSTEMTIME));
-			}
+			}*/
 			m_TestState = STATE_MOVINGOBJ;
 		}	
 		break;
@@ -1812,15 +1849,16 @@ DWORD WINAPI t3::InputThreadProcedure(LPVOID lpStartupParam)
 									{	
 										
 										rangex =  m_Setting.m_iIntervalMin + rand()%(m_Setting.m_iIntervalMax - m_Setting.m_iIntervalMin + 1);
-										m_EventSureTime[m_RecordNo] = QPart2/dfFreq*1000;
-										SYSTEMTIME eTime;
+										m_EventSureTime/*[m_RecordNo]*/ = QPart2/dfFreq*1000;
+										//SYSTEMTIME eTime;
 										GetLocalTime(&eTime);
-										eTimeVec.push_back(eTime);
-										m_SureButtonNo[m_RecordNo] = m_SureDownType[i];
+										//eTimeVec.push_back(eTime);
+										m_SureButtonNo/*[m_RecordNo]*/ = m_SureDownType[i];
 										if(m_Setting.m_EventMode == 0)//¼òµ¥ÈÎÎñ
 										{
-											resEventType.push_back(0);
-											if(m_SureButtonNo[m_RecordNo]==0)
+											//resEventType.push_back(0);
+											EventType = 0;
+											if(m_SureButtonNo/*[m_RecordNo]*/ ==0)
 											{
 												m_bEventAcc = TRUE;
 											}
@@ -1832,15 +1870,16 @@ DWORD WINAPI t3::InputThreadProcedure(LPVOID lpStartupParam)
 										else//Ñ¡ÔñÈÎÎñ
 										{
 											//m_bEventAcc = (m_EventType[m_RecordNo] == m_SureButtonNo[m_RecordNo]);
-											m_bEventAcc = (m_EventType[m_EventNo] == m_SureButtonNo[m_RecordNo]);
-											resEventType.push_back(m_EventType[m_EventNo]);
+											m_bEventAcc = (m_EventType[m_EventNo] == m_SureButtonNo/*[m_RecordNo]*/);
+											//resEventType.push_back(m_EventType[m_EventNo]);
+											EventType = m_EventType[m_EventNo];
 
 										}
                                        //È·±£´Ëº¯Êý²»±»ÖØÈë£¬ÒÔÃâÐÞ¸ÄfeedbackµÄÖµ
 										if(m_TrialType == TRIAL_PRACTICE && !m_bShowFeedback)
 										{
 											//Á·Ï°×´Ì¬³ÊÏÖ·´À¡
-											sprintf(szFeedBack,"%s ·´Ó¦Ê±¼äÎª%dms", FeedBack[m_bEventAcc],m_EventSureTime[m_RecordNo] - m_EventStartTime[m_RecordNo]);
+											sprintf(szFeedBack,"%s ·´Ó¦Ê±¼äÎª%dms", FeedBack[m_bEventAcc],m_EventSureTime/*[m_RecordNo]*/ - m_EventStartTime/*[m_RecordNo]*/);
 											QueryPerformanceCounter(&litmp);
 											QPart3 = litmp.QuadPart;           // »ñµÃ³õÊ¼Öµ
 											TimeInt = 1;
@@ -1857,8 +1896,9 @@ DWORD WINAPI t3::InputThreadProcedure(LPVOID lpStartupParam)
 											m_bEventStart = FALSE;
 											dfTotalEvent = 0;
 											m_EventNo++;
+											SaveData(1, m_RecordNo);
 											m_RecordNo++;
-											if(m_RecordNo>=m_MemEvent)
+											/*if(m_RecordNo>=m_MemEvent)
 											{
 												m_MemEvent+=100;
 												//m_EventType = (short*)realloc(m_EventType,m_MemEvent*sizeof(short));
@@ -1867,7 +1907,7 @@ DWORD WINAPI t3::InputThreadProcedure(LPVOID lpStartupParam)
 												m_SureButtonNo = (short*)realloc(m_SureButtonNo,m_MemEvent*sizeof(short));
 												//sTime = (SYSTEMTIME*)realloc(sTime, m_MemEvent*sizeof(SYSTEMTIME));
 												//eTime = (SYSTEMTIME*)realloc(eTime, m_MemEvent*sizeof(SYSTEMTIME));
-											}
+											}*/
 										}
 	//									m_SureDownNum++;
 										break;
@@ -1882,25 +1922,27 @@ DWORD WINAPI t3::InputThreadProcedure(LPVOID lpStartupParam)
 									if(IsButtonDown(m_EventKey[i]))
 									{
 										//m_EventType[m_RecordNo] = 2;
-										resEventType.push_back(2);
-										m_EventStartTime[m_RecordNo]  = 0;
-										SYSTEMTIME sTime;
+										//resEventType.push_back(2);
+										EventType = 2;
+										m_EventStartTime/*[m_RecordNo]*/  = 0;
+										//SYSTEMTIME sTime;
 										sTime.wHour = sTime.wMinute = sTime.wSecond = 0;
-										sTimeVec.push_back(sTime);
-										m_EventSureTime[m_RecordNo] = 0;
-										SYSTEMTIME eTime;
+										//sTimeVec.push_back(sTime);
+										m_EventSureTime/*[m_RecordNo]*/ = 0;
+										//SYSTEMTIME eTime;
 										eTime.wHour = eTime.wMinute = eTime.wSecond = 0;
-										eTimeVec.push_back(eTime);
-										m_SureButtonNo[m_RecordNo] = m_SureDownType[i];
+										//eTimeVec.push_back(eTime);
+										m_SureButtonNo/*[m_RecordNo]*/ = m_SureDownType[i];
+										SaveData(1, m_RecordNo);
 										m_RecordNo++;
-										if(m_RecordNo>=m_MemEvent)
+										/*if(m_RecordNo>=m_MemEvent)
 										{
 											m_MemEvent+=100;
 											//m_EventType = (short*)realloc(m_EventType,m_MemEvent*sizeof(short));
 											m_EventStartTime = (unsigned long*)realloc(m_EventStartTime,m_MemEvent*sizeof(unsigned long));
 											m_EventSureTime = (unsigned long*)realloc(m_EventSureTime,m_MemEvent*sizeof(unsigned long));
 											m_SureButtonNo = (short*)realloc(m_SureButtonNo,m_MemEvent*sizeof(short));
-										}
+										}*/
 //										m_SureDownNum++;
 										break;
 									}
