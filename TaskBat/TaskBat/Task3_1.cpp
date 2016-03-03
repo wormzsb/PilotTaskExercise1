@@ -10,7 +10,7 @@ using namespace std;
 
 Helper t3::hp;
 //vector<int> resEventType;
-int EventType;
+int EventType = 0;
 
 int t3::rtn;
 HINSTANCE t3::gHinstance;
@@ -872,6 +872,7 @@ VOID t3::CleanupMem()
 	m_EventPoint.swap(vector<POINT>());                           
 	m_EventNo = 0;
 	m_RecordNo = 0;
+	
 
 }
 
@@ -1168,6 +1169,7 @@ void t3::RandEvent()
 		}
 	*/
 	vector<int> ran_plane;
+	ran_plane.swap(vector<int>());
 	srand((unsigned)time(NULL));
 	for (int i = 0; i < iPlaneCnt; i++) 
 		ran_plane.push_back(0);
@@ -1176,8 +1178,12 @@ void t3::RandEvent()
 	random_shuffle(ran_plane.begin(), ran_plane.end());
 	for (int i = 0; i < m_Setting.m_ExperTimes; i++)
 		if (m_Setting.m_EventMode == 0) m_EventType.push_back(0);
-		else m_EventType.push_back(ran_plane[i]);
-	
+		else
+		{
+			m_EventType.push_back(ran_plane[i]);
+			//cout << m_EventType[i] <<' ';
+		}
+	ran_plane.swap(vector<int>());
 }
 //************************************************
 //*测试任务初始化
@@ -1186,6 +1192,13 @@ VOID t3::TestInit()
 {
 	
 	rangex =  m_Setting.m_iIntervalMin + rand()%(m_Setting.m_iIntervalMax - m_Setting.m_iIntervalMin + 1);
+
+	m_EventType.swap(vector<short>());
+	m_PointTime.swap(vector<unsigned long>());
+	m_EventPoint.swap(vector<POINT>());
+	m_EventNo = 0;
+	m_RecordNo = 0;
+
 
 	if (m_Setting.m_Direction == 0)
 		iDirection = 1;
@@ -1530,38 +1543,13 @@ VOID t3::UpdateState()
 							if (dfTotalEvent >= m_Setting.m_iReactTime)
 							{	
 
-								if (m_Setting.m_PracMode == 0)
-								{
-									m_bEventStart = FALSE;
-									dfTotalEvent = 0;
-									m_EventSureTime/*[m_RecordNo]*/ = 0;
-									//SYSTEMTIME eTime;
-									eTime.wHour = eTime.wMinute = eTime.wSecond = 0;
-									//eTimeVec.push_back(eTime);
-									m_SureButtonNo/*[m_RecordNo]*/ = -1;
-									m_EventNo++;
-									SaveData(1, m_RecordNo);
-									m_RecordNo++;
-									/*if(m_RecordNo>=m_MemEvent)
-									{
-										m_MemEvent+=100;
-										//m_EventType = (short*)realloc(m_EventType,m_MemEvent*sizeof(short));
-										m_EventStartTime = (unsigned long*)realloc(m_EventStartTime,m_MemEvent*sizeof(unsigned long));
-										m_EventSureTime = (unsigned long*)realloc(m_EventSureTime,m_MemEvent*sizeof(unsigned long));
-										m_SureButtonNo = (short*)realloc(m_SureButtonNo,m_MemEvent*sizeof(short));
-									}*/
-								
-									
-								}
-								else//从m_Setting.m_PracMode == 0那里copy过来
-								{
-
 									m_bEventStart = FALSE;
 									//dfTotalEvent = 0; //???
 									m_EventSureTime/*[m_RecordNo]*/ = 0;
 									m_SureButtonNo/*[m_RecordNo]*/ = -1;
 									//SYSTEMTIME eTime;
 									eTime.wHour = eTime.wMinute = eTime.wSecond = 0;
+									m_bEventAcc = FALSE;
 									//eTimeVec.push_back(eTime);
 									//m_EventNo++;
 									//m_RecordNo++;
@@ -1580,10 +1568,38 @@ VOID t3::UpdateState()
 									else
 										//resEventType.push_back(m_EventType[m_EventNo]);
 										EventType = m_EventType[m_EventNo];
-									sprintf(szFeedBack,"反应超时");
-									m_bShowFeedback = TRUE;
-								}
+
+									if (m_TrialType == TRIAL_PRACTICE && !m_bShowFeedback)
+									{
+										//练习状态呈现反馈
+										sprintf(szFeedBack, "反应超时");
+										if (!m_Setting.m_MainTask)
+											m_TestState = STATE_DISPLAYFEEDBACK;
+										else
+											m_bShowFeedback = TRUE;
+										dfTotalEvent = 0;
+									}
+									else if (m_TrialType == TRIAL_EXPERMENT)
+									{
+										//正式测试状态不呈现反馈
+										m_bEventStart = FALSE;
+										dfTotalEvent = 0;
+										m_EventNo++;
+										SaveData(1, m_RecordNo);
+										m_RecordNo++;
+										/*if(m_RecordNo>=m_MemEvent)
+										{
+										m_MemEvent+=100;
+										//m_EventType = (short*)realloc(m_EventType,m_MemEvent*sizeof(short));
+										m_EventStartTime = (unsigned long*)realloc(m_EventStartTime,m_MemEvent*sizeof(unsigned long));
+										m_EventSureTime = (unsigned long*)realloc(m_EventSureTime,m_MemEvent*sizeof(unsigned long));
+										m_SureButtonNo = (short*)realloc(m_SureButtonNo,m_MemEvent*sizeof(short));
+										//sTime = (SYSTEMTIME*)realloc(sTime, m_MemEvent*sizeof(SYSTEMTIME));
+										//eTime = (SYSTEMTIME*)realloc(eTime, m_MemEvent*sizeof(SYSTEMTIME));
+										}*/
+									}
 								
+							
 								dfTotalEvent = 0;
 							}
 						

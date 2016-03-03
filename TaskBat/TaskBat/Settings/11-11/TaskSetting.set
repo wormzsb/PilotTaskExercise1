@@ -4,8 +4,8 @@ Task3
 
 [Task3(任务3-双任务模式突发事件反应时测试)]
 TaskName	0-任务3-双任务模式突发事件反应时测试
-PracMode	1
-ExperMode	0
+PracMode	0
+ExperMode	1
 MainTask	0
 SubTask	1
 MainTaskMode	-1
@@ -19,8 +19,8 @@ EventFrequency	0
 PracTime	60
 ExperTime	60
 PracTimes	1
-ExperTimes	4
-JoyMoveDirection	0
+ExperTimes	30
+JoyMoveDirection	1
 PlanePos	15
 Direction	0
 SpeedMode	0
@@ -33,14 +33,14 @@ Track	0
 Plane	1
 Helicopter	1
 PresentTime	2
-IntervalMin	1
-IntervalMax	2
+IntervalMin	2
+IntervalMax	4
 ReactTime	2
 
 [Task3(任务3-双任务模式突发事件反应时测试)]
 TaskName	1-任务3-双任务模式突发事件反应时测试
-PracMode	1
-ExperMode	0
+PracMode	0
+ExperMode	1
 MainTask	1
 SubTask	1
 MainTaskMode	0
@@ -54,8 +54,8 @@ EventFrequency	0
 PracTime	60
 ExperTime	60
 PracTimes	1
-ExperTimes	4
-JoyMoveDirection	0
+ExperTimes	30
+JoyMoveDirection	1
 PlanePos	15
 Direction	0
 SpeedMode	0
@@ -68,7 +68,7 @@ Track	0
 Plane	1
 Helicopter	1
 PresentTime	2
-IntervalMin	1
-IntervalMax	2
+IntervalMin	2
+IntervalMax	4
 ReactTime	2
 
